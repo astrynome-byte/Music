@@ -1,0 +1,164 @@
+name: 'Cadence Studio: isolated Windows build'
+
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cadence-windows-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  reference-and-cadence:
+    runs-on: windows-2025
+    timeout-minutes: 360
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: ${{ github.workspace }}/cadence-src
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Reconstruct the exact Cadence source tree from pinned upstream
+        working-directory: ${{ github.workspace }}
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/Bootstrap.ps1" `
+            -DriverPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio" `
+            -SourcePath "$env:GITHUB_WORKSPACE/cadence-src" `
+            -ResultPath "$env:RUNNER_TEMP/cadence-bootstrap.json"
+
+      - name: Use MSVC x64
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Install the Qt kit used by the pinned upstream CI
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.2'
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          modules: 'qt5compat qtnetworkauth qtshadertools qtwebsockets'
+          cache: true
+
+      - name: Prepare build tools
+        run: |
+          choco install cmake --version=3.31.6 --allow-downgrade --yes --installargs 'ADD_CMAKE_TO_PATH=System'
+          if ($LASTEXITCODE -ne 0) { throw 'CMake installation failed' }
+          choco install ninja --version=1.11.1 --allow-downgrade --yes
+          if ($LASTEXITCODE -ne 0) { throw 'Ninja installation failed' }
+          choco install wixtoolset --version=3.11.2 --allow-downgrade --yes
+          if ($LASTEXITCODE -ne 0) { throw 'WiX installation failed' }
+          'C:\Program Files\CMake\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+          'C:\Program Files (x86)\WiX Toolset v3.11\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Use Python for the regression harness
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Validate the original corpus and WAV regression gate
+        run: |
+          python --version
+          python test/cadence/run_exports.py --validate-only
+          if ($LASTEXITCODE -ne 0) { throw 'Corpus validation failed' }
+          python -m unittest discover -s test/cadence -p test_audio_gate.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'WAV gate tests failed' }
+
+      - name: Check wrappers and Windows prerequisites
+        run: |
+          ./scripts/windows/Test-Scripts.ps1
+          ./scripts/windows/Doctor.ps1 -QtPath $env:QT_ROOT_DIR -Packaging
+
+      - name: Fetch pinned dependencies
+        run: ./scripts/windows/Prepare-Dependencies.ps1 -Destination "$env:RUNNER_TEMP/cadence-deps" -WithVstSdk
+
+      - name: Compile and stage the clean upstream reference first
+        run: |
+          $sdks = Get-Content "$env:RUNNER_TEMP/cadence-deps/prepared-sdks.json" -Raw | ConvertFrom-Json
+          ./scripts/windows/New-Baseline.ps1 -Destination "$env:RUNNER_TEMP/musescore-reference"
+          ./scripts/windows/Configure.ps1 -Variant Baseline `
+            -SourcePath "$env:RUNNER_TEMP/musescore-reference" -QtPath $env:QT_ROOT_DIR `
+            -WinDepsPath "$env:RUNNER_TEMP/cadence-deps/win-deps" `
+            -VstSdkPath "$env:RUNNER_TEMP/cadence-deps/vst3sdk" `
+            -AsioSdkPath $sdks.asio_sdk_path `
+            -BuildPath "$env:RUNNER_TEMP/build-reference" -InstallPath "$env:RUNNER_TEMP/stage-reference"
+          ./scripts/windows/Build.ps1 -BuildPath "$env:RUNNER_TEMP/build-reference" -Jobs 2
+
+      - name: Test the staged upstream reference on copied scores
+        run: |
+          python test/cadence/run_exports.py `
+            --executable "$env:RUNNER_TEMP/stage-reference/bin/MuseScore4.exe" `
+            --output "$env:RUNNER_TEMP/qa-reference" `
+            --formats pdf mid mxl wav --timeout 180
+          if ($LASTEXITCODE -ne 0) { throw 'Upstream reference export regression failed; inspect QA report' }
+
+      - name: Compile and stage Cadence
+        run: |
+          $sdks = Get-Content "$env:RUNNER_TEMP/cadence-deps/prepared-sdks.json" -Raw | ConvertFrom-Json
+          ./scripts/windows/Configure.ps1 -Variant Cadence -QtPath $env:QT_ROOT_DIR `
+            -WinDepsPath "$env:RUNNER_TEMP/cadence-deps/win-deps" `
+            -VstSdkPath "$env:RUNNER_TEMP/cadence-deps/vst3sdk" `
+            -AsioSdkPath $sdks.asio_sdk_path `
+            -BuildPath "$env:RUNNER_TEMP/build-cadence" -InstallPath "$env:RUNNER_TEMP/stage-cadence" `
+            -BuildNumber ([int]$env:GITHUB_RUN_NUMBER)
+          ./scripts/windows/Build.ps1 -BuildPath "$env:RUNNER_TEMP/build-cadence" -Jobs 2
+
+      - name: Test staged Cadence before packaging
+        run: |
+          python test/cadence/run_exports.py `
+            --executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
+            --output "$env:RUNNER_TEMP/qa-cadence" `
+            --formats pdf mid mxl wav --timeout 180
+          if ($LASTEXITCODE -ne 0) { throw 'Cadence export regression failed; packaging is blocked' }
+
+      - name: Package experimental installer and source archive
+        run: |
+          ./scripts/windows/Package.ps1 -BuildPath "$env:RUNNER_TEMP/build-cadence" `
+            -OutputPath "$env:RUNNER_TEMP/cadence-delivery" -IncludeStagedZip
+
+      - name: Retain experimental build artifacts (requires GitHub access, expires)
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-windows-experimental-${{ github.run_number }}
+          path: |
+            ${{ runner.temp }}/cadence-delivery/*.msi
+            ${{ runner.temp }}/cadence-delivery/*.zip
+            ${{ runner.temp }}/cadence-delivery/*.tar.gz
+            ${{ runner.temp }}/cadence-delivery/*.patch
+            ${{ runner.temp }}/cadence-delivery/*.json
+            ${{ runner.temp }}/cadence-delivery/*.txt
+            ${{ runner.temp }}/cadence-delivery/*.md
+            ${{ runner.temp }}/cadence-bootstrap.json
+            ${{ github.workspace }}/driver/.cadence-studio/source.json
+            ${{ github.workspace }}/driver/.cadence-studio/README-CI.md
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Retain logs even if construction fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-windows-logs-${{ github.run_number }}
+          path: |
+            ${{ runner.temp }}/build-reference/*.log
+            ${{ runner.temp }}/build-reference/*.json
+            ${{ runner.temp }}/build-cadence/*.log
+            ${{ runner.temp }}/build-cadence/*.json
+            ${{ runner.temp }}/qa-reference/report.json
+            ${{ runner.temp }}/qa-reference/**/*.log
+            ${{ runner.temp }}/qa-cadence/report.json
+            ${{ runner.temp }}/qa-cadence/**/*.log
+            ${{ runner.temp }}/cadence-bootstrap.json
+            ${{ github.workspace }}/driver/.cadence-studio/source.json
+          retention-days: 14
+          if-no-files-found: warn
