@@ -1,0 +1,148 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: isolated system AAC probe (no application)'
+
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/mf-aac-probe/**'
+      - '.github/workflows/cadence-mf-aac-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cadence-mf-aac-probe-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  encode-system-aac:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v6
+        env:
+          # Preserve the LF source bytes measured by the prepared manifest,
+          # without changing global Git configuration or the full-build job.
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: 'core.autocrlf'
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Use the Windows x64 compiler and SDK, without Qt
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+
+      - name: Use Python for independent ADTS and decoded-signal checks
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Prepare small build tools and require an available AAC decoder
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $false
+          $evidence = "$env:RUNNER_TEMP/mf-aac-tooling"
+          New-Item -ItemType Directory -Path $evidence -Force | Out-Null
+          function Read-VersionLine([string] $Executable, [string[]] $Arguments) {
+            $lines = @(& $Executable @Arguments 2>&1)
+            $code = $LASTEXITCODE
+            if ($code -ne 0 -or -not $lines.Count) { throw "Version query failed for $Executable (exit $code)" }
+            return $lines[0].ToString()
+          }
+          $cmake = Get-Command cmake -CommandType Application -ErrorAction SilentlyContinue
+          if (-not $cmake -or (Read-VersionLine $cmake.Source @('--version')) -ne 'cmake version 3.31.6') {
+            choco install cmake --version=3.31.6 --allow-downgrade --yes --no-progress --installargs 'ADD_CMAKE_TO_PATH=System' 2>&1 | Tee-Object -FilePath "$evidence/cmake-install.log"
+            if ($LASTEXITCODE -ne 0) { throw 'CMake 3.31.6 installation failed' }
+          }
+          $env:PATH = 'C:\Program Files\CMake\bin;' + $env:PATH
+          'C:\Program Files\CMake\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+          $ninja = Get-Command ninja -CommandType Application -ErrorAction SilentlyContinue
+          if (-not $ninja -or (Read-VersionLine $ninja.Source @('--version')) -ne '1.11.1') {
+            choco install ninja --version=1.11.1 --allow-downgrade --yes --no-progress 2>&1 | Tee-Object -FilePath "$evidence/ninja-install.log"
+            if ($LASTEXITCODE -ne 0) { throw 'Ninja 1.11.1 installation failed' }
+          }
+          if (-not (Get-Command ffmpeg -CommandType Application -ErrorAction SilentlyContinue)) {
+            # This decoder is a runner-only test tool, never bundled with Cadence.
+            # Use the current Chocolatey package if absent; record its real version.
+            choco install ffmpeg --yes --no-progress 2>&1 | Tee-Object -FilePath "$evidence/ffmpeg-install.log"
+            if ($LASTEXITCODE -ne 0) { throw 'Required test decoder installation failed' }
+          }
+          $chocoBin = Join-Path $env:ProgramData 'chocolatey/bin'
+          $env:PATH = $chocoBin + ';' + $env:PATH
+          $chocoBin | Out-File -FilePath $env:GITHUB_PATH -Append
+          if ((Read-VersionLine cmake @('--version')) -ne 'cmake version 3.31.6') { throw 'Unexpected selected CMake version' }
+          if ((Read-VersionLine ninja @('--version')) -ne '1.11.1') { throw 'Unexpected selected Ninja version' }
+          & ffmpeg -version 2>&1 | Tee-Object -FilePath "$evidence/ffmpeg-version.log"
+          if ($LASTEXITCODE -ne 0) { throw 'FFmpeg decoder is unavailable' }
+          & python --version 2>&1 | Tee-Object -FilePath "$evidence/python-version.log"
+          if ($LASTEXITCODE -ne 0) { throw 'Python is unavailable' }
+          & cl.exe 2>&1 | Out-File -FilePath "$evidence/msvc-version.log"
+          # cl without an input intentionally returns a usage error; do not use
+          # that stale status as the result of this successful tooling step.
+          [ordered]@{
+            os = [Runtime.InteropServices.RuntimeInformation]::OSDescription
+            architecture = [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()
+            windows_sdk = $env:WindowsSDKVersion
+            compiler = (Get-Command cl.exe -CommandType Application).Source
+            cmake = Read-VersionLine cmake @('--version')
+            ninja = Read-VersionLine ninja @('--version')
+            decoder = (Get-Command ffmpeg -CommandType Application).Source
+            note = 'FFmpeg is only a validation tool; Windows system MFT must perform the probe encoding.'
+          } | ConvertTo-Json | Set-Content -LiteralPath "$evidence/tooling.json" -Encoding utf8
+          exit 0
+
+      - name: Verify the exact GPL source set and validate the checker
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          $probe = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/mf-aac-probe"
+          $env:CADENCE_MF_PROBE_SOURCE = $probe
+          @'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path(os.environ['CADENCE_MF_PROBE_SOURCE'])
+          manifest = json.loads((root / 'evidence/source-manifest.json').read_text())
+          for entry in manifest['files']:
+              data = (root / entry['path']).read_bytes()
+              assert len(data) == entry['size_bytes'], entry['path']
+              assert hashlib.sha256(data).hexdigest() == entry['sha256'], entry['path']
+          assert (root / 'LICENSE.txt').is_file()
+          print('PASS: exact source manifest and GPL text present; this does not validate the Windows codec')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Probe source inventory mismatch' }
+          python -m unittest discover -s "$probe/tests" -p test_verify_adts.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'ADTS/checker regression tests failed' }
+
+      - name: Compile the SDK-only probe and run both real system-encoder cases
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/mf-aac-probe/scripts/Run-Probe.ps1" `
+            -Generator Ninja -BuildPath "$env:RUNNER_TEMP/mf-aac-build" `
+            -ResultsPath "$env:RUNNER_TEMP/mf-aac-results" -RequireDecode
+          if ($LASTEXITCODE -ne 0) { throw 'The system AAC probe failed; no Windows success is claimed.' }
+
+      - name: Retain evidence, including a missing or failing system MFT
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-mf-aac-probe-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mf-aac-tooling/
+            ${{ runner.temp }}/mf-aac-results/
+            ${{ runner.temp }}/mf-aac-build/CMakeCache.txt
+            ${{ runner.temp }}/mf-aac-build/CMakeFiles/CMakeConfigureLog.yaml
+            ${{ runner.temp }}/mf-aac-build/Testing/Temporary/
+            ${{ github.workspace }}/driver/.cadence-studio/mf-aac-probe/evidence/
+          retention-days: 14
+          if-no-files-found: warn

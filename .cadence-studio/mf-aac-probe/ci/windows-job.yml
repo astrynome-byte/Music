@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Template only: merge this job into the authorized CI branch after checking out
+# the probe at experiments/mf-aac-probe. No workflow is installed or submitted.
+mf-aac-probe:
+  runs-on: windows-2022
+  timeout-minutes: 10
+  permissions:
+    contents: read
+  steps:
+    # Add the repository's existing pinned checkout step before these steps.
+    - name: Build and run the Windows system AAC probe
+      shell: pwsh
+      run: |
+        .\experiments\mf-aac-probe\scripts\Run-Probe.ps1 `
+          -BuildPath "$env:RUNNER_TEMP\mf-aac-build" `
+          -ResultsPath "$env:RUNNER_TEMP\mf-aac-results"
+    # Archive the results with the repository's pinned upload action, including
+    # on failure. Do not create a release or publish the prototype executable.

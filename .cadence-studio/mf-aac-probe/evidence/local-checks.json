@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "date_utc": "2026-11-03",
+  "prototype_version": "0.1.0",
+  "platform": "Linux",
+  "windows_cpp_build": "NOT RUN",
+  "windows_mf_encoding": "NOT RUN",
+  "cadence_integration": false,
+  "tools": {
+    "python": "Python 3.12.14",
+    "cmake": "cmake version 3.31.6",
+    "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe": "ffprobe version 7.1.5-0+deb13u1 Copyright (c) 2007-2026 the FFmpeg developers"
+  },
+  "checks": {
+    "python_validator_unit_tests": {
+      "result": "PASS",
+      "count": 16,
+      "command": "python3 -m unittest discover -s tests -p test_verify_adts.py -v",
+      "scope": "ADTS/checker tests plus actual AAC created/decoded with existing Linux FFmpeg; not Windows MF"
+    },
+    "python_syntax": "PASS: all 3 files parsed",
+    "powershell_parse": "PASS: Run-Probe.ps1 parsed using PowerShell 7 under Linux",
+    "powershell_host_guard": "PASS: Linux invocation rejected with nonzero exit; requires Windows",
+    "cmake_host_guard": "PASS: Linux configure rejected with nonzero exit; requires Windows x64/MSVC",
+    "runner_missing_executable": "PASS: missing native encoder returns exit1 and failed/native_encoding_completed=false report",
+    "source_whitespace": "PASS",
+    "independent_source_review": "READ ONLY: API/ownership review; no Windows compiler or execution proof"
+  },
+  "limits": [
+    "No MSVC compilation",
+    "No system AAC MFT used on this machine",
+    "No manual listening",
+    "No AAC/MP4 backend integrated into Cadence",
+    "No Windows N/Server availability test",
+    "No GitHub job run or publication"
+  ],
+  "next_action": "Run scripts/Run-Probe.ps1 in an authorized Windows x64 test job and inspect both native/decoded reports."
+}

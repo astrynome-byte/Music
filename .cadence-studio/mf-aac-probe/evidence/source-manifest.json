@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "prototype_version": "0.1.0",
+  "license": "GPL-3.0-only",
+  "windows_built": false,
+  "integrated_into_cadence": false,
+  "files": [
+    {
+      "path": ".gitignore",
+      "size_bytes": 49,
+      "sha256": "b2b97652edd61e7fdc77b519a0e3aa6467814d7f0a43685716ed19655ad6ee33"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "size_bytes": 1768,
+      "sha256": "41c350f3793e381119421354110774ab190ef9ce4b4330fedc705ef053a3e6ed"
+    },
+    {
+      "path": "LICENSE.txt",
+      "size_bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "README.md",
+      "size_bytes": 9246,
+      "sha256": "2cb964daa6e98090c618398c1a6121a3e558b8488630cfb6f2518b0bd33ce904"
+    },
+    {
+      "path": "STATUS.md",
+      "size_bytes": 2694,
+      "sha256": "6b91da8f5d311232ce745e59bd08ffa395c4e880e9ed229e4d8e98c06d2b3082"
+    },
+    {
+      "path": "ci/windows-job.yml",
+      "size_bytes": 797,
+      "sha256": "0e5f5f0a9c6fb08719f34ee7d8e43fde2ba1cf1a90207b3508690dff045c167f"
+    },
+    {
+      "path": "evidence/local-checks.json",
+      "size_bytes": 1772,
+      "sha256": "0a05a8c7fa82422a316c00b03c5429b19e9d6db441feaeeaa5763c301b32e988"
+    },
+    {
+      "path": "scripts/Run-Probe.ps1",
+      "size_bytes": 6324,
+      "sha256": "8c4bf103dcb4a350cc5ced475ba72530019ead883c3b5ff0db8500d6dc5e506d"
+    },
+    {
+      "path": "src/mf_aac_probe.cpp",
+      "size_bytes": 28956,
+      "sha256": "cc86b9545ef402b86c86cde5153302d7ba6de4d81d4954769c370fd5b00dde44"
+    },
+    {
+      "path": "tests/run_probe_case.py",
+      "size_bytes": 3555,
+      "sha256": "8b49a0960694f1c7a14b6a6b977c208e5118f29aa6f93b85ed16721fd8147102"
+    },
+    {
+      "path": "tests/test_verify_adts.py",
+      "size_bytes": 8999,
+      "sha256": "a775cf768948bc206b75ba70234564b5353076fd489e3867f6427c557f5438d5"
+    },
+    {
+      "path": "tests/verify_adts.py",
+      "size_bytes": 12613,
+      "sha256": "85acce1b152581342e7c8e8118fceedaff50c7b8a503058634b4fd61d645bb48"
+    }
+  ]
+}
