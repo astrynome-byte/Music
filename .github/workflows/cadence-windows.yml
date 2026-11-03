@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   reference-and-cadence:
-    runs-on: windows-2025
+    runs-on: windows-2022
     timeout-minutes: 360
     defaults:
       run:
