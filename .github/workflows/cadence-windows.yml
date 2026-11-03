@@ -39,6 +39,8 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
 
       - name: Install the Qt kit used by the pinned upstream CI
         uses: jurplel/install-qt-action@v4
