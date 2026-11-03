@@ -69,13 +69,13 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Validate the original corpus and WAV regression gate
+      - name: Validate the original corpus and regression harness
         run: |
           python --version
           python test/cadence/run_exports.py --validate-only
           if ($LASTEXITCODE -ne 0) { throw 'Corpus validation failed' }
-          python -m unittest discover -s test/cadence -p test_audio_gate.py -v
-          if ($LASTEXITCODE -ne 0) { throw 'WAV gate tests failed' }
+          python -m unittest discover -s test/cadence -v
+          if ($LASTEXITCODE -ne 0) { throw 'Regression harness tests failed' }
 
       - name: Check wrappers and Windows prerequisites
         run: |
@@ -97,13 +97,74 @@ jobs:
             -BuildPath "$env:RUNNER_TEMP/build-reference" -InstallPath "$env:RUNNER_TEMP/stage-reference"
           ./scripts/windows/Build.ps1 -BuildPath "$env:RUNNER_TEMP/build-reference" -Jobs 2
 
+      - name: Preserve the experimental upstream reference stage before testing
+        run: |
+          . ./scripts/windows/Common.ps1
+          $lock = Get-CadenceLock
+          $build = "$env:RUNNER_TEMP/build-reference"
+          $stage = "$env:RUNNER_TEMP/stage-reference"
+          $bundle = "$env:RUNNER_TEMP/reference-stage-delivery"
+          New-Item -ItemType Directory -Path $bundle | Out-Null
+          $state = Get-Content "$build/cadence-build.json" -Raw | ConvertFrom-Json
+          $result = Get-Content "$build/cadence-build-result.json" -Raw | ConvertFrom-Json
+          if ($state.variant -ne 'Baseline' -or $state.source_commit -ne $result.source_commit) { throw 'Build result and configured variant/source do not match' }
+          if ($state.source_dirty_at_configure -or $result.source_dirty_at_build -or (Get-GitText $state.source_path @('status', '--porcelain', '--untracked-files=all'))) { throw 'Source must be clean at configuration, build and archive time' }
+          if ((Get-GitText $state.source_path @('rev-parse', 'HEAD')) -ne $state.source_commit) { throw 'Source commit changed after build' }
+          $sourceTree = Get-GitText $state.source_path @('rev-parse', 'HEAD^{tree}')
+          if ($state.source_commit -ne $lock.upstream.commit) { throw 'Reference source is not the pinned upstream commit' }
+          if ((Resolve-CadencePath $state.install_path) -ne (Resolve-CadencePath $stage)) { throw 'Stage does not match the configured installation path' }
+          if ((Resolve-CadencePath $result.executable) -ne (Resolve-CadencePath "$stage/bin/MuseScore4.exe")) { throw 'Verified executable is outside the archived stage' }
+          $executableHash = (Get-FileHash -LiteralPath $result.executable -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($executableHash -ne $result.executable_sha256) { throw 'Executable changed after build' }
+          $archive = "MuseScore-$($lock.upstream.tag)-reference-stage-build-$env:GITHUB_RUN_NUMBER-attempt-$env:GITHUB_RUN_ATTEMPT-x64.zip"
+          Push-Location $stage
+          try {
+              Invoke-CheckedNative cmake @('-E', 'tar', 'cf', "$bundle/$archive", '--format=zip', '--', '.') "$bundle/archive.log"
+          } finally { Pop-Location }
+          Copy-Item "$build/cadence-build.json", "$build/cadence-build-result.json" -Destination $bundle
+          Copy-Item ./scripts/config/dependencies.lock.json -Destination "$bundle/dependencies.lock.json"
+          @(
+              (Get-Content "$build/configure.log" -TotalCount 1),
+              "cmake --build `"$build`" --config $($state.configuration) --parallel 2",
+              "cmake --install `"$build`" --config $($state.configuration)"
+          ) | Set-Content "$bundle/BUILD-COMMANDS.txt" -Encoding UTF8
+          $manifest = [ordered]@{
+              schema_version = 1; status = 'experimental-stage-before-qa'; variant = $state.variant
+              upstream_tag = $lock.upstream.tag; upstream_commit = $lock.upstream.commit
+              source_commit = $state.source_commit; source_tree = $sourceTree
+              executable_sha256 = $executableHash; stage_archive = $archive
+              stage_archive_sha256 = (Get-FileHash "$bundle/$archive" -Algorithm SHA256).Hash.ToLowerInvariant()
+              qt_version = $state.qt_version; configuration = $state.configuration; build_number = $state.build_number
+              windows_installation_tested = $false; visual_and_listening_validation_completed = $false
+              cli_qa_completed_before_archive = $false; is_portable_distribution = $false
+              run_number = [int]$env:GITHUB_RUN_NUMBER; run_attempt = [int]$env:GITHUB_RUN_ATTEMPT
+              retention_days = 14; durable_local_download_required = $true
+              purpose = 'Retain the actual compiled stage for QA and comparison; not the gift installer'
+          }
+          Write-CadenceJson $manifest "$bundle/stage-manifest.json"
+          Get-ChildItem -LiteralPath $bundle -File | Where-Object Name -ne 'SHA256SUMS.txt' | Sort-Object Name | ForEach-Object {
+              '{0}  {1}' -f (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name
+          } | Set-Content "$bundle/SHA256SUMS.txt" -Encoding ASCII
+
+      - name: Retain the experimental upstream reference stage (download before expiry)
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-reference-stage-experimental-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/reference-stage-delivery/*
+          retention-days: 14
+          if-no-files-found: error
+
       - name: Test the staged upstream reference on copied scores
         run: |
           python test/cadence/run_exports.py `
             --executable "$env:RUNNER_TEMP/stage-reference/bin/MuseScore4.exe" `
             --output "$env:RUNNER_TEMP/qa-reference" `
-            --formats pdf mid mxl wav --timeout 180
+            --timeout 180
           if ($LASTEXITCODE -ne 0) { throw 'Upstream reference export regression failed; inspect QA report' }
+          python test/cadence/audit_roundtrip.py `
+            --executable "$env:RUNNER_TEMP/stage-reference/bin/MuseScore4.exe" `
+            --output "$env:RUNNER_TEMP/qa-roundtrip-reference" --timeout 180
+          if ($LASTEXITCODE -ne 0) { throw 'reference musical roundtrip audit failed; inspect semantic comparisons' }
 
       - name: Compile and stage Cadence
         run: |
@@ -116,23 +177,102 @@ jobs:
             -BuildNumber ([int]$env:GITHUB_RUN_NUMBER)
           ./scripts/windows/Build.ps1 -BuildPath "$env:RUNNER_TEMP/build-cadence" -Jobs 2
 
+      - name: Preserve the experimental Cadence stage before testing
+        run: |
+          . ./scripts/windows/Common.ps1
+          $lock = Get-CadenceLock
+          $build = "$env:RUNNER_TEMP/build-cadence"
+          $stage = "$env:RUNNER_TEMP/stage-cadence"
+          $bundle = "$env:RUNNER_TEMP/cadence-stage-delivery"
+          New-Item -ItemType Directory -Path $bundle | Out-Null
+          $state = Get-Content "$build/cadence-build.json" -Raw | ConvertFrom-Json
+          $result = Get-Content "$build/cadence-build-result.json" -Raw | ConvertFrom-Json
+          if ($state.variant -ne 'Cadence' -or $state.source_commit -ne $result.source_commit) { throw 'Build result and configured variant/source do not match' }
+          if ($state.source_dirty_at_configure -or $result.source_dirty_at_build -or (Get-GitText $state.source_path @('status', '--porcelain', '--untracked-files=all'))) { throw 'Source must be clean at configuration, build and archive time' }
+          if ((Get-GitText $state.source_path @('rev-parse', 'HEAD')) -ne $state.source_commit) { throw 'Source commit changed after build' }
+          $sourceTree = Get-GitText $state.source_path @('rev-parse', 'HEAD^{tree}')
+          $bootstrap = Get-Content "$env:RUNNER_TEMP/cadence-bootstrap.json" -Raw | ConvertFrom-Json
+          if ($state.source_commit -ne $bootstrap.ci_source_commit -or $sourceTree -ne $bootstrap.source_tree) { throw 'Cadence source does not match the reconstructed source tree' }
+          if ((Resolve-CadencePath $state.install_path) -ne (Resolve-CadencePath $stage)) { throw 'Stage does not match the configured installation path' }
+          if ((Resolve-CadencePath $result.executable) -ne (Resolve-CadencePath "$stage/bin/CadenceStudio4.exe")) { throw 'Verified executable is outside the archived stage' }
+          $executableHash = (Get-FileHash -LiteralPath $result.executable -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($executableHash -ne $result.executable_sha256) { throw 'Executable changed after build' }
+          $archive = "CadenceStudio-$($lock.upstream.tag)-cadence-stage-build-$env:GITHUB_RUN_NUMBER-attempt-$env:GITHUB_RUN_ATTEMPT-x64.zip"
+          Push-Location $stage
+          try {
+              Invoke-CheckedNative cmake @('-E', 'tar', 'cf', "$bundle/$archive", '--format=zip', '--', '.') "$bundle/archive.log"
+          } finally { Pop-Location }
+          Copy-Item "$build/cadence-build.json", "$build/cadence-build-result.json" -Destination $bundle
+          Copy-Item ./scripts/config/dependencies.lock.json -Destination "$bundle/dependencies.lock.json"
+          @(
+              (Get-Content "$build/configure.log" -TotalCount 1),
+              "cmake --build `"$build`" --config $($state.configuration) --parallel 2",
+              "cmake --install `"$build`" --config $($state.configuration)"
+          ) | Set-Content "$bundle/BUILD-COMMANDS.txt" -Encoding UTF8
+          $manifest = [ordered]@{
+              schema_version = 1; status = 'experimental-stage-before-qa'; variant = $state.variant
+              upstream_tag = $lock.upstream.tag; upstream_commit = $lock.upstream.commit
+              source_commit = $state.source_commit; source_tree = $sourceTree
+              executable_sha256 = $executableHash; stage_archive = $archive
+              stage_archive_sha256 = (Get-FileHash "$bundle/$archive" -Algorithm SHA256).Hash.ToLowerInvariant()
+              qt_version = $state.qt_version; configuration = $state.configuration; build_number = $state.build_number
+              windows_installation_tested = $false; visual_and_listening_validation_completed = $false
+              cli_qa_completed_before_archive = $false; is_portable_distribution = $false
+              run_number = [int]$env:GITHUB_RUN_NUMBER; run_attempt = [int]$env:GITHUB_RUN_ATTEMPT
+              retention_days = 14; durable_local_download_required = $true
+              purpose = 'Retain the actual compiled stage for QA and comparison; not the gift installer'
+          }
+          Write-CadenceJson $manifest "$bundle/stage-manifest.json"
+          Get-ChildItem -LiteralPath $bundle -File | Where-Object Name -ne 'SHA256SUMS.txt' | Sort-Object Name | ForEach-Object {
+              '{0}  {1}' -f (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name
+          } | Set-Content "$bundle/SHA256SUMS.txt" -Encoding ASCII
+
+      - name: Retain the experimental Cadence stage (download before expiry)
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-cadence-stage-experimental-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cadence-stage-delivery/*
+          retention-days: 14
+          if-no-files-found: error
+
       - name: Test staged Cadence before packaging
         run: |
           python test/cadence/run_exports.py `
             --executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
             --output "$env:RUNNER_TEMP/qa-cadence" `
-            --formats pdf mid mxl wav --timeout 180
+            --timeout 180
           if ($LASTEXITCODE -ne 0) { throw 'Cadence export regression failed; packaging is blocked' }
+          python test/cadence/audit_roundtrip.py `
+            --executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
+            --output "$env:RUNNER_TEMP/qa-roundtrip-cadence" --timeout 180
+          if ($LASTEXITCODE -ne 0) { throw 'cadence musical roundtrip audit failed; inspect semantic comparisons' }
+
+      - name: Observe the actual Cadence GUI without SDK search paths
+        run: |
+          & "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Run-CleanGuiProbe.ps1" `
+            -Executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
+            -ProbePath "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Test-GuiLaunch.ps1" `
+            -OutputDirectory "$env:RUNNER_TEMP/gui-cadence"
 
       - name: Package experimental installer and source archive
         run: |
           ./scripts/windows/Package.ps1 -BuildPath "$env:RUNNER_TEMP/build-cadence" `
             -OutputPath "$env:RUNNER_TEMP/cadence-delivery" -IncludeStagedZip
 
+      - name: Test the real MSI install, isolated CLI and exact uninstall
+        run: |
+          $msi = @(Get-ChildItem "$env:RUNNER_TEMP/cadence-delivery/*.msi" -File)
+          if ($msi.Count -ne 1) { throw 'Expected one real Cadence MSI' }
+          & "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Test-MsiInstall.ps1" `
+            -MsiPath $msi[0].FullName `
+            -StageBuildResultPath "$env:RUNNER_TEMP/build-cadence/cadence-build-result.json" `
+            -OutputDirectory "$env:RUNNER_TEMP/msi-qa" -ExpectedVersion '4.7.6'
+
       - name: Retain experimental build artifacts (requires GitHub access, expires)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cadence-windows-experimental-${{ github.run_number }}
+          name: cadence-windows-experimental-${{ github.run_number }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/cadence-delivery/*.msi
             ${{ runner.temp }}/cadence-delivery/*.zip
@@ -145,22 +285,31 @@ jobs:
             ${{ github.workspace }}/driver/.cadence-studio/source.json
             ${{ github.workspace }}/driver/.cadence-studio/README-CI.md
           retention-days: 14
-          if-no-files-found: error
+          if-no-files-found: warn
 
       - name: Retain logs even if construction fails
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cadence-windows-logs-${{ github.run_number }}
+          name: cadence-windows-logs-${{ github.run_number }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/build-reference/*.log
             ${{ runner.temp }}/build-reference/*.json
             ${{ runner.temp }}/build-cadence/*.log
             ${{ runner.temp }}/build-cadence/*.json
+            ${{ runner.temp }}/build-cadence/CPackConfig.cmake
+            ${{ runner.temp }}/build-cadence/CPackSourceConfig.cmake
+            ${{ runner.temp }}/cadence-delivery/**/*.log
+            ${{ runner.temp }}/cadence-delivery/**/*.wxs
+            ${{ runner.temp }}/cadence-delivery/**/*.wxi
             ${{ runner.temp }}/qa-reference/report.json
             ${{ runner.temp }}/qa-reference/**/*.log
             ${{ runner.temp }}/qa-cadence/report.json
             ${{ runner.temp }}/qa-cadence/**/*.log
+            ${{ runner.temp }}/qa-roundtrip-reference/**
+            ${{ runner.temp }}/qa-roundtrip-cadence/**
+            ${{ runner.temp }}/gui-cadence/**
+            ${{ runner.temp }}/msi-qa/**
             ${{ runner.temp }}/cadence-bootstrap.json
             ${{ github.workspace }}/driver/.cadence-studio/source.json
           retention-days: 14
