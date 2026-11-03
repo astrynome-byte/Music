@@ -1,0 +1,77 @@
+name: 'Cadence Studio: short WiX diagnostic (no application delivery)'
+
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/packaging-diagnostic/**'
+      - '.github/workflows/cadence-packaging-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose-real-wix-template:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Reconstruct the exact application source used by the full build
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/Bootstrap.ps1" `
+            -DriverPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio" `
+            -SourcePath "$env:GITHUB_WORKSPACE/cadence-src" `
+            -ResultPath "$env:RUNNER_TEMP/cadence-bootstrap.json"
+
+      - name: Use the same Windows compiler and SDK
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+
+      - name: Install the same CMake, Ninja and WiX tools
+        run: |
+          choco install cmake --version=3.31.6 --allow-downgrade --yes --installargs 'ADD_CMAKE_TO_PATH=System'
+          if ($LASTEXITCODE -ne 0) { throw 'CMake installation failed' }
+          choco install ninja --version=1.11.1 --allow-downgrade --yes
+          if ($LASTEXITCODE -ne 0) { throw 'Ninja installation failed' }
+          choco install wixtoolset --version=3.14.1 --allow-downgrade --yes
+          if ($LASTEXITCODE -ne 0) { throw 'WiX installation failed' }
+          'C:\Program Files\CMake\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+          'C:\Program Files (x86)\WiX Toolset v3.14\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Compile a tiny fixture and diagnose the unchanged release template
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/packaging-diagnostic/Run-PackagingDiagnostic.ps1" `
+            -SourcePath "$env:GITHUB_WORKSPACE/cadence-src" `
+            -WorkPath "$env:RUNNER_TEMP/packaging-diagnostic" -BuildNumber 4
+
+      - name: Retain diagnostic evidence even after candle or light failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-wix-diagnostic-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/packaging-diagnostic/**/*.log
+            ${{ runner.temp }}/packaging-diagnostic/**/*.wxs
+            ${{ runner.temp }}/packaging-diagnostic/**/*.wxi
+            ${{ runner.temp }}/packaging-diagnostic/**/CPackConfig.cmake
+            ${{ runner.temp }}/packaging-diagnostic/**/CPackSourceConfig.cmake
+            ${{ runner.temp }}/packaging-diagnostic/**/CMakeCache.txt
+            ${{ runner.temp }}/packaging-diagnostic/*.json
+            ${{ runner.temp }}/packaging-diagnostic/*.txt
+            ${{ runner.temp }}/cadence-bootstrap.json
+            ${{ github.workspace }}/driver/.cadence-studio/source.json
+          retention-days: 14
+          if-no-files-found: warn

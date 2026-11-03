@@ -1,0 +1,3 @@
+This payload is only a CPack/WiX diagnostic fixture.
+It is not Cadence Studio, cannot edit scores, and must never be offered as the gift.
+No diagnostic MSI is uploaded, published, installed, or launched by the workflow.
