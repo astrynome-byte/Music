@@ -9,6 +9,10 @@ if(NOT WIN32 AND NOT CADENCE_DIAGNOSTIC_CONFIGURE_ONLY)
     message(FATAL_ERROR "The actual WiX diagnostic requires native Windows")
 endif()
 
+# -D arguments retain native backslashes. GetPlatformInfo's try_run forwards
+# CMAKE_MODULE_PATH into a generated CMakeLists, where '\a' would be invalid.
+# Convert before putting this external path into any CMake path/list variable.
+string(REPLACE "\\" "/" CADENCE_SOURCE_ROOT "${CADENCE_SOURCE_ROOT}")
 list(PREPEND CMAKE_MODULE_PATH "${CADENCE_SOURCE_ROOT}/buildscripts/cmake")
 set(CADENCE_BUILD ON CACHE BOOL "Use actual Cadence packaging metadata" FORCE)
 set(MUSE_APP_BUILD_MODE release)
