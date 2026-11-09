@@ -1,0 +1,54 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: inspect retained Windows evidence'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/retained-inspection/**'
+      - '.github/workflows/cadence-retained-inspection.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Retrieve this project's original GUI and conversion evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: cadence-windows-logs-7-1
+          run-id: 41740259712
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/original-logs
+      - name: Retrieve the real Cadence stage with its original provenance
+        uses: actions/download-artifact@v4
+        with:
+          name: cadence-cadence-stage-experimental-7-1
+          run-id: 41740259712
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/original-stage
+      - name: Inspect reports, bounded original screenshots and binary inventory
+        run: >-
+          python .cadence-studio/retained-inspection/inspect_retained.py
+          --logs '${{ runner.temp }}/original-logs'
+          --stage '${{ runner.temp }}/original-stage'
+          --output '${{ runner.temp }}/retained-inspection.json'
+      - name: Retain the inspection result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-retained-inspection-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/retained-inspection.json
+          retention-days: 14
+          if-no-files-found: warn
