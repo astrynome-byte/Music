@@ -61,14 +61,14 @@ jobs:
             if ($code -ne 0 -or -not $lines.Count) { throw "Version query failed for $Executable (exit $code)" }
             return $lines[0].ToString()
           }
-          $cmake = Get-Command cmake -CommandType Application -ErrorAction SilentlyContinue
+          $cmake = Get-Command cmake -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
           if (-not $cmake -or (Read-VersionLine $cmake.Source @('--version')) -ne 'cmake version 3.31.6') {
             choco install cmake --version=3.31.6 --allow-downgrade --yes --no-progress --installargs 'ADD_CMAKE_TO_PATH=System' 2>&1 | Tee-Object -FilePath "$evidence/cmake-install.log"
             if ($LASTEXITCODE -ne 0) { throw 'CMake 3.31.6 installation failed' }
           }
           $env:PATH = 'C:\Program Files\CMake\bin;' + $env:PATH
           'C:\Program Files\CMake\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
-          $ninja = Get-Command ninja -CommandType Application -ErrorAction SilentlyContinue
+          $ninja = Get-Command ninja -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
           if (-not $ninja -or (Read-VersionLine $ninja.Source @('--version')) -ne '1.11.1') {
             choco install ninja --version=1.11.1 --allow-downgrade --yes --no-progress 2>&1 | Tee-Object -FilePath "$evidence/ninja-install.log"
             if ($LASTEXITCODE -ne 0) { throw 'Ninja 1.11.1 installation failed' }
@@ -95,10 +95,10 @@ jobs:
             os = [Runtime.InteropServices.RuntimeInformation]::OSDescription
             architecture = [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()
             windows_sdk = $env:WindowsSDKVersion
-            compiler = (Get-Command cl.exe -CommandType Application).Source
+            compiler = (Get-Command cl.exe -CommandType Application | Select-Object -First 1).Source
             cmake = Read-VersionLine cmake @('--version')
             ninja = Read-VersionLine ninja @('--version')
-            decoder = (Get-Command ffmpeg -CommandType Application).Source
+            decoder = (Get-Command ffmpeg -CommandType Application | Select-Object -First 1).Source
             note = 'FFmpeg is only a validation tool; Windows system MFT must perform the probe encoding.'
           } | ConvertTo-Json | Set-Content -LiteralPath "$evidence/tooling.json" -Encoding utf8
           exit 0

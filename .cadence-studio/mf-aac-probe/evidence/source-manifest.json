@@ -42,8 +42,8 @@
     },
     {
       "path": "scripts/Run-Probe.ps1",
-      "size_bytes": 6324,
-      "sha256": "8c4bf103dcb4a350cc5ced475ba72530019ead883c3b5ff0db8500d6dc5e506d"
+      "size_bytes": 6555,
+      "sha256": "9aa709b6f27e607c1929e7864f5676996b36ae476045fd5331ccaed80d67a3b3"
     },
     {
       "path": "src/mf_aac_probe.cpp",

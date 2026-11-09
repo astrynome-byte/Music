@@ -45,9 +45,11 @@ function Invoke-ProbeNative([string] $Executable, [string[]] $Arguments, [string
     if ($exitCode -ne 0) { throw "Native command failed with exit code $exitCode; see $LogPath" }
 }
 try {
-    $pythonPath = (Get-Command $PythonExecutable -CommandType Application -ErrorAction Stop).Source
-    $cmakePath = (Get-Command 'cmake' -CommandType Application -ErrorAction Stop).Source
-    $ctestPath = (Get-Command 'ctest' -CommandType Application -ErrorAction Stop).Source
+    # A developer environment can expose several installations of one command.
+    # Keep PATH precedence and pass one executable, never an array of paths.
+    $pythonPath = (Get-Command $PythonExecutable -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
+    $cmakePath = (Get-Command 'cmake' -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
+    $ctestPath = (Get-Command 'ctest' -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
     $ffmpegCommand = Get-Command 'ffmpeg' -CommandType Application -ErrorAction SilentlyContinue
     $report.python_executable = $pythonPath
     $report.ffmpeg_available = [bool]$ffmpegCommand
