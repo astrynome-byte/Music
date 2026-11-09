@@ -54,6 +54,52 @@ function Assert-Source {
 function Hash([string] $Path) { (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant() }
 function Read-Json([string] $Path) { Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json }
 function Write-Json($Value, [string] $Path) { $Value | ConvertTo-Json -Depth 15 | Set-Content -LiteralPath $Path -Encoding utf8 }
+function Hash-Bytes([byte[]] $Bytes) {
+    $algorithm = [Security.Cryptography.SHA256]::Create()
+    try { [BitConverter]::ToString($algorithm.ComputeHash($Bytes)).Replace('-', '').ToLowerInvariant() }
+    finally { $algorithm.Dispose() }
+}
+function Convert-CrlfToLfOnly([byte[]] $Bytes) {
+    $buffer = [IO.MemoryStream]::new()
+    try {
+        for ($i = 0; $i -lt $Bytes.Length; $i++) {
+            # Remove only CR immediately followed by LF. Keep every other byte,
+            # including BOM, spaces, encoding bytes and any lone CR, unchanged.
+            if ($Bytes[$i] -eq 13 -and $i + 1 -lt $Bytes.Length -and $Bytes[$i + 1] -eq 10) { continue }
+            $buffer.WriteByte($Bytes[$i])
+        }
+        return ,($buffer.ToArray())
+    } finally { $buffer.Dispose() }
+}
+function Same-Bytes([byte[]] $Left, [byte[]] $Right) {
+    if ($Left.Length -ne $Right.Length) { return $false }
+    for ($i = 0; $i -lt $Left.Length; $i++) { if ($Left[$i] -ne $Right[$i]) { return $false } }
+    return $true
+}
+function Assert-DependencyLockBytes([string] $SourceFile, [string] $ArchivedFile, [string] $ExpectedLfHash) {
+    $sourceBytes = [IO.File]::ReadAllBytes($SourceFile)
+    $archivedBytes = [IO.File]::ReadAllBytes($ArchivedFile)
+    $sourceLf = Convert-CrlfToLfOnly $sourceBytes
+    $archivedLf = Convert-CrlfToLfOnly $archivedBytes
+    $rawEqual = Same-Bytes $sourceBytes $archivedBytes
+    $lfEqual = Same-Bytes $sourceLf $archivedLf
+    $comparison = [ordered]@{
+        source_raw_sha256 = Hash-Bytes $sourceBytes; source_raw_bytes = $sourceBytes.Length
+        archived_raw_sha256 = Hash-Bytes $archivedBytes; archived_raw_bytes = $archivedBytes.Length
+        source_lf_sha256 = Hash-Bytes $sourceLf; archived_lf_sha256 = Hash-Bytes $archivedLf
+        expected_git_blob_lf_sha256 = $ExpectedLfHash
+        raw_byte_equal = $rawEqual; crlf_to_lf_byte_equal = $lfEqual
+        comparison_transform = if ($rawEqual) { 'none' } else { 'CRLF-to-LF-only-in-memory' }
+        original_files_modified = $false
+    }
+    Write-Host 'CADENCE_DEPENDENCY_LOCK_COMPARISON_BEGIN'
+    Write-Host ($comparison | ConvertTo-Json -Depth 4)
+    Write-Host 'CADENCE_DEPENDENCY_LOCK_COMPARISON_END'
+    if ($comparison.source_lf_sha256 -ne $ExpectedLfHash -or -not $lfEqual) {
+        throw 'Stage dependency lock differs from the audited Git blob beyond CRLF/LF line endings. No JSON normalization or file rewriting is permitted.'
+    }
+    return $comparison
+}
 function Native([string] $Tool, [string[]] $Arguments, [string] $Log) {
     $command = (Get-Command $Tool -ErrorAction Stop).Source
     Write-Host ($Tool + ' ' + ($Arguments -join ' '))
@@ -107,7 +153,12 @@ if ($manifest.schema_version -ne 1 -or $manifest.variant -ne 'Cadence' -or $stat
     $manifest.qt_version -ne $lock.qt.version -or $state.qt_version -ne $lock.qt.version) {
     throw 'Retained stage records do not identify the clean audited Cadence release build 7.'
 }
-if ((Hash (Join-Path $SourcePath 'scripts/config/dependencies.lock.json')) -ne $checksums['dependencies.lock.json']) { throw 'Stage dependency lock differs from the audited source.' }
+# The original root files have already passed their original SHA256SUMS above.
+# Git text checkout can vary CRLF/LF even with an identical authenticated tree.
+# Allow that single byte transformation for comparison only, never JSON parsing,
+# reserialization, BOM removal or rewriting the retained provenance records.
+$lockComparison = Assert-DependencyLockBytes (Join-Path $SourcePath 'scripts/config/dependencies.lock.json') `
+    (Join-Path $StageArtifactPath 'dependencies.lock.json') '1e784253ab5124b2f3de680b6a90cd153f3a4bf470ce3482ee4ea2ef8b814d45'
 if ($manifest.executable_sha256 -ne $retainedExecutableHash -or $result.executable_sha256 -ne $manifest.executable_sha256 -or
     [IO.Path]::GetFileName(($result.executable -replace '\\', '/')) -ne 'CadenceStudio4.exe') { throw 'Retained executable identity is inconsistent.' }
 $archiveName = [string]$manifest.stage_archive
@@ -151,6 +202,7 @@ $report = [ordered]@{
     native_version_checked = $false; windows_installation_tested = $false; gui_tested = $false; musical_listening_completed = $false
     source_unchanged = $false; payload_unchanged = $false; transitive_license_audit = 'open'
     signature = 'unsigned'; publication_url = $null; asset_sha256 = @{}; error = $null
+    dependency_lock_comparison = $lockComparison
 }
 function Stage-Inventory {
     $items = [ordered]@{}

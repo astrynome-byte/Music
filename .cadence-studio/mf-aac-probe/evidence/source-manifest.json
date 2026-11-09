@@ -6,6 +6,11 @@
   "integrated_into_cadence": false,
   "files": [
     {
+      "path": ".gitattributes",
+      "size_bytes": 54,
+      "sha256": "487d90293305f8a87fd48d738e13ac5f42962f4bc2a31f575e8aa08a91278a09"
+    },
+    {
       "path": ".gitignore",
       "size_bytes": 49,
       "sha256": "b2b97652edd61e7fdc77b519a0e3aa6467814d7f0a43685716ed19655ad6ee33"
