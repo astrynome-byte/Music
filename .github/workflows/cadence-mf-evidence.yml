@@ -1,0 +1,60 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: read completed system AAC evidence (no encoding)'
+
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/mf-evidence/**'
+      - '.github/workflows/cadence-mf-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: cadence-mf-evidence-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  inspect-completed-aac-artifact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Download the existing successful Windows probe artifact
+        uses: actions/download-artifact@v4
+        with:
+          repository: astrynome-byte/Music
+          run-id: '42721049013'
+          name: cadence-mf-aac-probe-3-1
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/cadence-mf-run42721049013
+
+      - name: Print small JSON reports and identify the two existing AAC files
+        shell: bash
+        run: |
+          python -I "$GITHUB_WORKSPACE/driver/.cadence-studio/mf-evidence/inspect.py" \
+            --root "$RUNNER_TEMP/cadence-mf-run42721049013" \
+            --output "$RUNNER_TEMP/cadence-mf-evidence-summary" \
+            --run-id 42721049013 --artifact-name cadence-mf-aac-probe-3-1 \
+            --artifact-id 13719986823
+
+      - name: Retain the read-only summary for 14 days
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-mf-evidence-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cadence-mf-evidence-summary/
+          retention-days: 14
+          if-no-files-found: warn
