@@ -1,0 +1,266 @@
+name: 'Cadence Studio: local library Windows qualification (prepared)'
+
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/library-source/**'
+      - '.github/workflows/cadence-library-windows.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cadence-library-windows-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  library-candidate:
+    runs-on: windows-2022
+    timeout-minutes: 360
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: ${{ github.workspace }}/cadence-src
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Reconstruct the exact Cadence source tree from pinned upstream
+        working-directory: ${{ github.workspace }}
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/library-source/Bootstrap.ps1" `
+            -DriverPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/library-source" `
+            -SourcePath "$env:GITHUB_WORKSPACE/cadence-src" `
+            -ResultPath "$env:RUNNER_TEMP/cadence-bootstrap.json"
+
+      - name: Use MSVC x64
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+
+      - name: Install the Qt kit used by the pinned upstream CI
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.2'
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          modules: 'qt5compat qtnetworkauth qtshadertools qtwebsockets'
+          cache: true
+
+      - name: Prepare build tools
+        run: |
+          choco install cmake --version=3.31.6 --allow-downgrade --yes --installargs 'ADD_CMAKE_TO_PATH=System'
+          if ($LASTEXITCODE -ne 0) { throw 'CMake installation failed' }
+          choco install ninja --version=1.11.1 --allow-downgrade --yes
+          if ($LASTEXITCODE -ne 0) { throw 'Ninja installation failed' }
+          choco install wixtoolset --version=3.14.1 --allow-downgrade --yes
+          if ($LASTEXITCODE -ne 0) { throw 'WiX installation failed' }
+          'C:\Program Files\CMake\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+          'C:\Program Files (x86)\WiX Toolset v3.14\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Use Python for the regression harness
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Validate the original corpus and regression harness
+        run: |
+          python --version
+          python test/cadence/run_exports.py --validate-only
+          if ($LASTEXITCODE -ne 0) { throw 'Corpus validation failed' }
+          python -m unittest discover -s test/cadence -v
+          if ($LASTEXITCODE -ne 0) { throw 'Regression harness tests failed' }
+
+      - name: Check wrappers and Windows prerequisites
+        run: |
+          ./scripts/windows/Test-Scripts.ps1
+          ./scripts/windows/Doctor.ps1 -QtPath $env:QT_ROOT_DIR -Packaging
+
+      - name: Compile and run the eight production storage and XML scenarios
+        run: |
+          . ./scripts/windows/Common.ps1
+          $cadenceSource = Get-CadenceRoot
+          $qtKit = (Resolve-Path -LiteralPath $env:QT_ROOT_DIR).Path
+          $storeBuild = Join-Path $env:RUNNER_TEMP 'library-store-tests'
+          if (Test-Path -LiteralPath $storeBuild) { throw 'Use a new store-test build directory' }
+          New-Item -ItemType Directory -Path $storeBuild | Out-Null
+          $env:PATH = (Join-Path $qtKit 'bin') + ';' + $env:PATH
+          Invoke-CheckedNative cmake @('-S', "$cadenceSource/test/cadence/local_library_store", '-B', $storeBuild, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_COMPILER=cl.exe', "-DCMAKE_PREFIX_PATH=$qtKit", '-DCMAKE_CXX_FLAGS_INIT=/utf-8') (Join-Path $storeBuild 'configure.log')
+          Invoke-CheckedNative cmake @('--build', $storeBuild, '--parallel', '2') (Join-Path $storeBuild 'build.log')
+          Invoke-CheckedNative ctest @('--test-dir', $storeBuild, '-C', 'Release', '--output-on-failure', '--verbose', '--timeout', '45', '--output-junit', (Join-Path $storeBuild 'ctest-results.xml')) (Join-Path $storeBuild 'ctest.log')
+
+      - name: Fetch pinned dependencies
+        run: ./scripts/windows/Prepare-Dependencies.ps1 -Destination "$env:RUNNER_TEMP/cadence-deps" -WithVstSdk
+
+      - name: Compile and stage the complete Cadence library candidate
+        run: |
+          $buildNumber = 1000 + [int]$env:GITHUB_RUN_NUMBER
+          if ($buildNumber -gt 65535) { throw 'Build-number space exhausted; choose a new reviewed version without reusing an MSI identity' }
+          $sdks = Get-Content "$env:RUNNER_TEMP/cadence-deps/prepared-sdks.json" -Raw | ConvertFrom-Json
+          ./scripts/windows/Configure.ps1 -Variant Cadence -QtPath $env:QT_ROOT_DIR `
+            -WinDepsPath "$env:RUNNER_TEMP/cadence-deps/win-deps" `
+            -VstSdkPath "$env:RUNNER_TEMP/cadence-deps/vst3sdk" `
+            -AsioSdkPath $sdks.asio_sdk_path `
+            -BuildPath "$env:RUNNER_TEMP/build-cadence" -InstallPath "$env:RUNNER_TEMP/stage-cadence" `
+            -BuildNumber $buildNumber
+          ./scripts/windows/Build.ps1 -BuildPath "$env:RUNNER_TEMP/build-cadence" -Jobs 2
+
+      - name: Preserve the actual library candidate stage before CLI, GUI and MSI testing
+        run: |
+          . ./scripts/windows/Common.ps1
+          $lock = Get-CadenceLock
+          $build = "$env:RUNNER_TEMP/build-cadence"
+          $stage = "$env:RUNNER_TEMP/stage-cadence"
+          $bundle = "$env:RUNNER_TEMP/cadence-stage-delivery"
+          New-Item -ItemType Directory -Path $bundle | Out-Null
+          $state = Get-Content "$build/cadence-build.json" -Raw | ConvertFrom-Json
+          $result = Get-Content "$build/cadence-build-result.json" -Raw | ConvertFrom-Json
+          if ($state.variant -ne 'Cadence' -or $state.source_commit -ne $result.source_commit) { throw 'Build result and configured variant/source do not match' }
+          if ($state.source_dirty_at_configure -or $result.source_dirty_at_build -or (Get-GitText $state.source_path @('status', '--porcelain', '--untracked-files=all'))) { throw 'Source must be clean at configuration, build and archive time' }
+          if ((Get-GitText $state.source_path @('rev-parse', 'HEAD')) -ne $state.source_commit) { throw 'Source commit changed after build' }
+          $sourceTree = Get-GitText $state.source_path @('rev-parse', 'HEAD^{tree}')
+          $bootstrap = Get-Content "$env:RUNNER_TEMP/cadence-bootstrap.json" -Raw | ConvertFrom-Json
+          if ($state.source_commit -ne $bootstrap.ci_source_commit -or $sourceTree -ne $bootstrap.source_tree) { throw 'Cadence source does not match the reconstructed source tree' }
+          if ((Resolve-CadencePath $state.install_path) -ne (Resolve-CadencePath $stage)) { throw 'Stage does not match the configured installation path' }
+          if ((Resolve-CadencePath $result.executable) -ne (Resolve-CadencePath "$stage/bin/CadenceStudio4.exe")) { throw 'Verified executable is outside the archived stage' }
+          $executableHash = (Get-FileHash -LiteralPath $result.executable -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($executableHash -ne $result.executable_sha256) { throw 'Executable changed after build' }
+          $archive = "CadenceStudio-$($lock.upstream.tag)-library-stage-build-$($state.build_number)-attempt-$env:GITHUB_RUN_ATTEMPT-x64.zip"
+          Push-Location $stage
+          try {
+              Invoke-CheckedNative cmake @('-E', 'tar', 'cf', "$bundle/$archive", '--format=zip', '--', '.') "$bundle/archive.log"
+          } finally { Pop-Location }
+          Copy-Item "$build/cadence-build.json", "$build/cadence-build-result.json" -Destination $bundle
+          Copy-Item ./scripts/config/dependencies.lock.json -Destination "$bundle/dependencies.lock.json"
+          @(
+              (Get-Content "$build/configure.log" -TotalCount 1),
+              "cmake --build `"$build`" --config $($state.configuration) --parallel 2",
+              "cmake --install `"$build`" --config $($state.configuration)"
+          ) | Set-Content "$bundle/BUILD-COMMANDS.txt" -Encoding UTF8
+          $manifest = [ordered]@{
+              schema_version = 1; status = 'experimental-stage-before-qa'; variant = $state.variant
+              upstream_tag = $lock.upstream.tag; upstream_commit = $lock.upstream.commit
+              source_commit = $state.source_commit; source_tree = $sourceTree
+              original_source_commit = $bootstrap.original_source_commit
+              executable_sha256 = $executableHash; stage_archive = $archive
+              stage_archive_sha256 = (Get-FileHash "$bundle/$archive" -Algorithm SHA256).Hash.ToLowerInvariant()
+              qt_version = $state.qt_version; configuration = $state.configuration; build_number = $state.build_number
+              windows_installation_tested = $false; visual_and_listening_validation_completed = $false
+              cli_qa_completed_before_archive = $false; is_portable_distribution = $false
+              run_number = [int]$env:GITHUB_RUN_NUMBER; run_attempt = [int]$env:GITHUB_RUN_ATTEMPT
+              retention_days = 14; durable_local_download_required = $true
+              purpose = 'Retain the complete local-library candidate for QA; not a qualified portable package or gift installer'
+          }
+          Write-CadenceJson $manifest "$bundle/stage-manifest.json"
+          Get-ChildItem -LiteralPath $bundle -File | Where-Object Name -ne 'SHA256SUMS.txt' | Sort-Object Name | ForEach-Object {
+              '{0}  {1}' -f (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name
+          } | Set-Content "$bundle/SHA256SUMS.txt" -Encoding ASCII
+
+      - name: Retain the experimental Cadence stage (download before expiry)
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-library-stage-experimental-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cadence-stage-delivery/*
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Run all 57 full-application CLI checks and the musical roundtrip audit
+        run: |
+          python test/cadence/run_exports.py `
+            --executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
+            --output "$env:RUNNER_TEMP/qa-cadence" `
+            --timeout 180
+          if ($LASTEXITCODE -ne 0) { throw 'Cadence export regression failed; packaging is blocked' }
+          $cliReport = Get-Content "$env:RUNNER_TEMP/qa-cadence/report.json" -Raw | ConvertFrom-Json
+          if (@($cliReport.checks).Count -ne 57 -or @($cliReport.checks | Where-Object { -not $_.passed }).Count -ne 0) { throw 'Expected all 57 native/score/audio export checks to pass' }
+          python test/cadence/audit_roundtrip.py `
+            --executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
+            --output "$env:RUNNER_TEMP/qa-roundtrip-cadence" --timeout 180
+          if ($LASTEXITCODE -ne 0) { throw 'cadence musical roundtrip audit failed; inspect semantic comparisons' }
+
+      - name: Compare 35 stable output hashes against the retained Windows reference
+        run: |
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/library-source/compare_reference.py" `
+            --expected "$env:GITHUB_WORKSPACE/driver/.cadence-studio/library-source/expected-reference.json" `
+            --candidate-report "$env:RUNNER_TEMP/qa-cadence/report.json" `
+            --output "$env:RUNNER_TEMP/qa-library-reference-bytes/report.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed-reference byte differences require review; inspect the report before packaging' }
+
+      - name: Observe the actual Cadence GUI without SDK search paths
+        run: |
+          & "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Run-CleanGuiProbe.ps1" `
+            -Executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
+            -ProbePath "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Test-GuiLaunch.ps1" `
+            -OutputDirectory "$env:RUNNER_TEMP/gui-cadence"
+
+      - name: Package experimental installer and source archive
+        run: |
+          ./scripts/windows/Package.ps1 -BuildPath "$env:RUNNER_TEMP/build-cadence" `
+            -OutputPath "$env:RUNNER_TEMP/cadence-delivery" -IncludeStagedZip
+
+      - name: Test the real MSI, installed GUI observation and exact-product uninstall
+        run: |
+          $msi = @(Get-ChildItem "$env:RUNNER_TEMP/cadence-delivery/*.msi" -File)
+          if ($msi.Count -ne 1) { throw 'Expected one real Cadence MSI' }
+          & "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Test-MsiInstall.ps1" `
+            -MsiPath $msi[0].FullName `
+            -StageBuildResultPath "$env:RUNNER_TEMP/build-cadence/cadence-build-result.json" `
+            -OutputDirectory "$env:RUNNER_TEMP/msi-qa" -ExpectedVersion '4.7.6' `
+            -GuiWrapperPath "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Run-CleanGuiProbe.ps1" `
+            -GuiProbePath "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Test-GuiLaunch.ps1"
+
+      - name: Retain experimental build artifacts (requires GitHub access, expires)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-library-windows-experimental-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/cadence-delivery/*.msi
+            ${{ runner.temp }}/cadence-delivery/*.zip
+            ${{ runner.temp }}/cadence-delivery/*.tar.gz
+            ${{ runner.temp }}/cadence-delivery/*.patch
+            ${{ runner.temp }}/cadence-delivery/*.json
+            ${{ runner.temp }}/cadence-delivery/*.txt
+            ${{ runner.temp }}/cadence-delivery/*.md
+            ${{ runner.temp }}/cadence-bootstrap.json
+            ${{ github.workspace }}/driver/.cadence-studio/library-source/README.md
+            ${{ github.workspace }}/driver/.cadence-studio/library-source/source.json
+            ${{ github.workspace }}/driver/.cadence-studio/library-source/expected-reference.json
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Retain logs even if construction fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-library-windows-logs-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/build-cadence/*.log
+            ${{ runner.temp }}/build-cadence/*.json
+            ${{ runner.temp }}/build-cadence/CPackConfig.cmake
+            ${{ runner.temp }}/build-cadence/CPackSourceConfig.cmake
+            ${{ runner.temp }}/cadence-delivery/**/*.log
+            ${{ runner.temp }}/cadence-delivery/**/*.wxs
+            ${{ runner.temp }}/cadence-delivery/**/*.wxi
+            ${{ runner.temp }}/qa-cadence/report.json
+            ${{ runner.temp }}/qa-cadence/**/*.log
+            ${{ runner.temp }}/qa-roundtrip-cadence/**
+            ${{ runner.temp }}/gui-cadence/**
+            ${{ runner.temp }}/msi-qa/**
+            ${{ runner.temp }}/cadence-bootstrap.json
+            ${{ runner.temp }}/library-store-tests/*.log
+            ${{ runner.temp }}/library-store-tests/*.xml
+            ${{ runner.temp }}/library-store-tests/Testing/Temporary/**
+            ${{ runner.temp }}/qa-library-reference-bytes/**
+            ${{ github.workspace }}/driver/.cadence-studio/library-source/source.json
+            ${{ github.workspace }}/driver/.cadence-studio/library-source/expected-reference.json
+          retention-days: 14
+          if-no-files-found: warn

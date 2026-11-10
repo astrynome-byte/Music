@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "scope": "Thirty-five outputs byte-identical in the retained Windows reference and Cadence run; strict byte regression gate, not a musical or listening certificate",
+  "reference_run_id": 41740259712,
+  "reference_executable_sha256": "b7816061416ed62155bb0f48bbad6ce878d64fd797416d3f57bb039fc0e2a3f4",
+  "comparison_source": "docs/evidence/windows-run-7-byte-comparison.json",
+  "comparison_source_sha256": "5a4118a17ae184e407c1f919b7d0d3a6cf26ede3b35732a05a8638aed7b7a78f",
+  "upstream_commit": "96480d58445e3b24b230a3fe7d4725d639aa2eb3",
+  "previous_cadence_source_commit": "24cce38f0fea7d976382bb09e54d90415c9de6c4",
+  "expected_output_count": 35,
+  "excluded_output_count": 22,
+  "outputs": [
+    {
+      "fixture": "piano",
+      "stage": "reopen-native",
+      "name": "reopened.mscx",
+      "bytes": 10582,
+      "sha256": "a373631c05e32e57efeca529f175bdc39305b46fd3fda8e41b31e582806f7478"
+    },
+    {
+      "fixture": "piano",
+      "stage": "export-svg",
+      "name": "export-1.svg",
+      "bytes": 113940,
+      "sha256": "52fdff4ae95e563ff11e449056d328e0db379ed13c4e9db04de46f570821b545"
+    },
+    {
+      "fixture": "piano",
+      "stage": "export-png",
+      "name": "export-1.png",
+      "bytes": 60850,
+      "sha256": "92e09c59d9b7e1e6b8700a7c5c225244f5c5c440fc1e846595cbf5b129a06fd1"
+    },
+    {
+      "fixture": "piano",
+      "stage": "export-mid",
+      "name": "export.mid",
+      "bytes": 314,
+      "sha256": "5284b811c7c24c2233ffcb4e60732168f90b38dde3f4bb34b1a8a0a8fc68f74e"
+    },
+    {
+      "fixture": "piano",
+      "stage": "export-wav",
+      "name": "export.wav",
+      "bytes": 4390286,
+      "sha256": "9bb1578b6b09a2ddd01a0a03dddd22a74c0f21b4409cef81ced10cd99ec1d676"
+    },
+    {
+      "fixture": "piano",
+      "stage": "export-flac",
+      "name": "export.flac",
+      "bytes": 406366,
+      "sha256": "cd52dd7d2479241237d00fd841924ba66fd8daefa77ce4fdc306670d62caa6bd"
+    },
+    {
+      "fixture": "piano",
+      "stage": "export-mp3",
+      "name": "export.mp3",
+      "bytes": 200201,
+      "sha256": "a8329fbcd5e29b65808f871af5eea7b64cb3356fc55a4d6b0866206e17fa4bd3"
+    },
+    {
+      "fixture": "voice",
+      "stage": "reopen-native",
+      "name": "reopened.mscx",
+      "bytes": 6809,
+      "sha256": "ea62feb691fa8a056b4d798e567c1369426497622f8f95d9472cb300c7668efe"
+    },
+    {
+      "fixture": "voice",
+      "stage": "export-svg",
+      "name": "export-1.svg",
+      "bytes": 107884,
+      "sha256": "621842e3b6db20c775cda05ddd6b67a0ffd3e8669c01e7f46203df9a35d4fb38"
+    },
+    {
+      "fixture": "voice",
+      "stage": "export-png",
+      "name": "export-1.png",
+      "bytes": 44880,
+      "sha256": "7b6a32ad32b52bfae377831afd05c541ee950d0449e760e57955268390b3dda1"
+    },
+    {
+      "fixture": "voice",
+      "stage": "export-mid",
+      "name": "export.mid",
+      "bytes": 201,
+      "sha256": "c6c8cc755e98aed26cd30fd32df43d2eef919730413a938eb7ba26b31120ab46"
+    },
+    {
+      "fixture": "voice",
+      "stage": "export-wav",
+      "name": "export.wav",
+      "bytes": 3074342,
+      "sha256": "35565fcbe6a6f707b77b1bc189753dacb1007c1290f45a24d1c6a8b3577e6a24"
+    },
+    {
+      "fixture": "voice",
+      "stage": "export-flac",
+      "name": "export.flac",
+      "bytes": 161890,
+      "sha256": "e9c160aac3a8023179c5e8fa4307a6b16346d4b554b5a06bdec429213f3c6c6a"
+    },
+    {
+      "fixture": "voice",
+      "stage": "export-mp3",
+      "name": "export.mp3",
+      "bytes": 140433,
+      "sha256": "b0a1f27f559e6e54a952b108122df80663029e279862e271fd6cdaff8e3c5be3"
+    },
+    {
+      "fixture": "guitar",
+      "stage": "reopen-native",
+      "name": "reopened.mscx",
+      "bytes": 8775,
+      "sha256": "fd33b2400c6a19602925467761fed6a2915231187cd4c9b1077ee39f1291814f"
+    },
+    {
+      "fixture": "guitar",
+      "stage": "export-svg",
+      "name": "export-1.svg",
+      "bytes": 132814,
+      "sha256": "ab764e9169c5cc9006446bb0ba1f7ff259d9e3c940e1b8a6ad67771a13e54350"
+    },
+    {
+      "fixture": "guitar",
+      "stage": "export-png",
+      "name": "export-1.png",
+      "bytes": 47206,
+      "sha256": "cfcde64de028feefd00d3900558932e50ce560aa9d6cd3fb00ec6f3456176bd2"
+    },
+    {
+      "fixture": "guitar",
+      "stage": "export-mid",
+      "name": "export.mid",
+      "bytes": 259,
+      "sha256": "3453f2f356094929ac6f49d603805cc188ccae16c4bace5fe1f0ebae03a71a90"
+    },
+    {
+      "fixture": "guitar",
+      "stage": "export-wav",
+      "name": "export.wav",
+      "bytes": 2939926,
+      "sha256": "65ac933b7bba4950901a41dd4ca19c010cf869feaef4398a8fccff24df709582"
+    },
+    {
+      "fixture": "guitar",
+      "stage": "export-flac",
+      "name": "export.flac",
+      "bytes": 278504,
+      "sha256": "a4840fd0da539f142392b1209ea66a2093337c72e2dc353353b1e20c064b6d9a"
+    },
+    {
+      "fixture": "guitar",
+      "stage": "export-mp3",
+      "name": "export.mp3",
+      "bytes": 134163,
+      "sha256": "4a96803b40a1dc94123687d223c8f293bdd44d6333ffc9762db40071f762a552"
+    },
+    {
+      "fixture": "percussion",
+      "stage": "reopen-native",
+      "name": "reopened.mscx",
+      "bytes": 10363,
+      "sha256": "4bb8180a2769901715f21f97c574b41c08f56856670c5514f2084fe724cd2485"
+    },
+    {
+      "fixture": "percussion",
+      "stage": "export-svg",
+      "name": "export-1.svg",
+      "bytes": 102788,
+      "sha256": "c119663e2475a2f2131b64fbf300222345e6fab9e16aa705246eabd9717d5620"
+    },
+    {
+      "fixture": "percussion",
+      "stage": "export-png",
+      "name": "export-1.png",
+      "bytes": 40401,
+      "sha256": "9a03f865cf92cafe9c036d89071d8ab35ea4dc5c39e9710b9f1725ee2f18eb09"
+    },
+    {
+      "fixture": "percussion",
+      "stage": "export-mid",
+      "name": "export.mid",
+      "bytes": 202,
+      "sha256": "27532afd147199f4b703945d2e3725a72c85b0a5da6722e26b9c91817e1ad04d"
+    },
+    {
+      "fixture": "percussion",
+      "stage": "export-wav",
+      "name": "export.wav",
+      "bytes": 2570190,
+      "sha256": "a617b2cb966f96d7fd391434840b18732b646165f03bc15a6d0cfca7e1d0e3ee"
+    },
+    {
+      "fixture": "percussion",
+      "stage": "export-flac",
+      "name": "export.flac",
+      "bytes": 296344,
+      "sha256": "4eb1eb6de80aa8c9f679ab56c4550113e4a269875c8a027be2e37ad530636f09"
+    },
+    {
+      "fixture": "percussion",
+      "stage": "export-mp3",
+      "name": "export.mp3",
+      "bytes": 117445,
+      "sha256": "3e643e452f7e4d9c51f21b3908c16b7a97a377902e589aeaf6508a77bb57a68c"
+    },
+    {
+      "fixture": "ensemble",
+      "stage": "reopen-native",
+      "name": "reopened.mscx",
+      "bytes": 49393,
+      "sha256": "c7373c3f781cb3ff6ef4ef93096324315ba5443d1c28c41d44638ae3759c24fe"
+    },
+    {
+      "fixture": "ensemble",
+      "stage": "export-svg",
+      "name": "export-1.svg",
+      "bytes": 216615,
+      "sha256": "fcabb7be48c32a681057ecadf03bddabe7fffb37ecb2fec06e310f789bf59b3f"
+    },
+    {
+      "fixture": "ensemble",
+      "stage": "export-png",
+      "name": "export-1.png",
+      "bytes": 106051,
+      "sha256": "795465419c9eb7f23adc888a10aff7fa2e2b7854b861f4123af27fff8b6ae2cf"
+    },
+    {
+      "fixture": "ensemble",
+      "stage": "export-mid",
+      "name": "export.mid",
+      "bytes": 1831,
+      "sha256": "6788d40861116cf61b360d666f22ba19e4bac5b5ed659447402241a0b6ff5855"
+    },
+    {
+      "fixture": "ensemble",
+      "stage": "export-wav",
+      "name": "export.wav",
+      "bytes": 4444966,
+      "sha256": "06ef1df1e975ebd6f2928c7a9329f96efc0acf4675d81a8e0a0069529891bad1"
+    },
+    {
+      "fixture": "ensemble",
+      "stage": "export-flac",
+      "name": "export.flac",
+      "bytes": 786425,
+      "sha256": "314ed4cb4882a648d408907099efbabd2fcf5b9f6f3a7b1cd71eb1a1e25af1ad"
+    },
+    {
+      "fixture": "ensemble",
+      "stage": "export-mp3",
+      "name": "export.mp3",
+      "bytes": 202709,
+      "sha256": "df8dd3dc91018be31a0b3d63a2a27573ec25d01a3bbc0bea776114998063e834"
+    }
+  ],
+  "limits": [
+    "PDF and ZIP containers are excluded because their bytes were not identical in the retained comparison.",
+    "Other output bytes may still vary across machine or runtime changes; any difference requires inspection, not an automatic conclusion of musical corruption.",
+    "Candidate outputs must be freshly produced by the full application, with SHA-256 checked from the files themselves."
+  ]
+}
