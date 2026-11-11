@@ -143,3 +143,32 @@ pour vérifier l'onglet avant Return puis le bouton Ajouter après Tab.
 Le rapport distingue explicitement ce canal d'observation de l'arbre global.
 Elle reste à compiler et exécuter sur Windows. Aucun fichier n'est ajouté par
 cette seule étape ; favoris, recherche de contenu et redémarrage restent à faire.
+
+## Étape Ajouter et favoris préparée
+
+Le run [43111424043](https://github.com/astrynome-byte/Music/actions/runs/43111424043)
+a réellement activé l'onglet puis observé **Ajouter des partitions…** actif,
+visible et focalisé : sept gestes possédés, erreurs0, fermeture propre. La capture
+a été revue : l'onglet local est sélectionné et montre la bibliothèque vide.
+
+L'option de qualification `-ExerciseAdd` utilise ensuite une copie native CC0
+du piano du corpus, vérifiée SHA avant et après copie. Seul le chemin de la
+nouvelle copie sous RUNNER_TEMP est passé au sélecteur Windows réel. Le helper
+SDK exige le titre exact du dialog, sa classe #32770, son PID/propriétaire,
+un Edit de nom de fichier unique avec ValuePattern, puis le bouton Open/Ouvrir
+ID1 avec InvokePattern. Les quatre états du dialog restent distincts dans les
+arbres ; fermeture du sélecteur et retour de la fenêtre principale sont exigés.
+Cela ne suffit pas à prouver l'ajout : Down doit ensuite focaliser **Ouvrir
+Piano : voix, accords et triolets**, puis Right/Return cible exactement son
+bouton **Ajouter aux favoris**. Aucun Return ne cible Ouvrir à cette étape.
+
+Le plafond du parcours étendu est de quinze gestes sous55s : F6≤6, Tab≤2,
+Right≤3, Down≤1, Return≤3, toujours avec les mêmes gardes de fenêtre/focus.
+Après fermeture propre exit0, le lanceur vérifie les SHA du fichier de référence
+et de sa copie, ainsi que le catalogue réel : schéma1, une entrée, chemin de
+copie, titre et compositeur exacts, `favorite=true`. Il exige à la fois les
+observations UI et ces vérifications de persistance ; réussir seulement l'onglet
+ne valide pas l'ajout. Les contrôles locaux du code de copie/validation ont
+passé neuf cas (dont erreur préalable, crash et nettoyage forcé), sans application ni UI Windows. L'étape complète reste à compiler
+et exécuter sur Windows. Recherche, réouverture après redémarrage, édition des
+notes et écoute ne sont pas validées par cet essai préparé.

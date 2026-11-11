@@ -1,6 +1,6 @@
 {
   "date": "2026-11-11",
-  "status": "observed-focused-control-labels-prepared-not-Windows-executed",
+  "status": "native-Add-favorite-driver-prepared-not-Windows-executed",
   "yaml_steps": 8,
   "powershell_scripts_and_snippets_parsed": 6,
   "native_pinvoke_declarations_compiled_on_linux": true,
@@ -12,18 +12,20 @@
   "artifact_id": 13755702885,
   "run_id": 42793810996,
   "limits": [
-    "Changed focused-node control-label mapping/client not compiled or executed on Windows.",
-    "Prior run proves native F6 and UIA GetFocusedElement work; raw tree remains limited to main toolbar.",
-    "No Add/favorites/search/restart/open UI test yet; app/source1001 unchanged."
+    "Changed Add client and native picker helper require real Windows SDK compilation and execution.",
+    "Library tab/Add focus was validated only by previous run43111424043 on unchanged app1001.",
+    "Nine local validation cases use simulated UI flags; they are not Windows UI qualification.",
+    "No search/restart/open-editor/undo/listening validation by this prepared Add step."
   ],
   "files": {
-    "README.md": "8f7cd15fc079ecd0bddbb89bdb2de21e738bff8524fc61ae034352ea2b8659f5",
+    "README.md": "dc8be9f0d8c438c02d7a6218f17f60b7d6f61e7752975ff610b84c472849234f",
     "Restore-LibraryStage.ps1": "497618b21b986d397fd8d242201fe2da7c8df51cf6eee54fcf323c8a0ca94251",
-    "Run-LibraryUiProbe.ps1": "20de18a5d93e443fa81e5308496ef270bafb24d9155ded7fbc9b19f8fff7ca58",
-    "UiaProbe.cpp": "8225f7ff8f58e303147f7ec7b4c3013529839b2c0ae7322f994eab62aa9ca14a",
-    "OwnedKeyboard.h": "fa583da5f324ad5513a29438cc33f2004548138a891e42da9c1231455a019ff2"
+    "Run-LibraryUiProbe.ps1": "cc7b40b9805ed76fbff6b3f7147623e4ea9f093a168324b98f32989d42256faf",
+    "UiaProbe.cpp": "38a202d08c373397dbd7118db76a4b18dd58dc0a71bb73000bb916f79f5a56d1",
+    "OwnedKeyboard.h": "bd8324e670aeb9e4cd85a1dc9be5e63396363e70be6f312f021c1f88fc2361a0",
+    "OwnedFileDialog.h": "d519f360a3b4c0e9bc7d1ceb6cf07f9cf84cd7c367dc464218bfe55d48da0692"
   },
-  "workflow_sha256": "63084b4eaf8437f0e6a302c9428238c260312e8a18c5ccf9af8778628160f478",
+  "workflow_sha256": "455943cad25d52747d5387603b1065c4dae53a9cccb27d6acc8ec59c4e198cc5",
   "previous_probe": {
     "run_id": 43101086728,
     "job_id": 130792444190,
@@ -46,7 +48,7 @@
     "application_executed": false
   },
   "current_launcher_executed_windows": false,
-  "library_tab_validated": false,
+  "library_tab_validated": true,
   "readiness_probe": {
     "run_id": 43103724152,
     "job_id": 130801487606,
@@ -86,10 +88,10 @@
   },
   "keyboard_policy": {
     "shortcut_source": "src/app/configs/data/shortcuts.xml:22/32/80; navigationcontroller.cpp:280-290",
-    "max_total_key_gestures": 12,
+    "max_total_key_gestures": 15,
     "max_f6": 6,
     "max_tab": 2,
-    "max_right": 2,
+    "max_right": 3,
     "return_requires": "SetFocus succeeded + UIA CompareElements exact library control + owned foreground/Win32 focus",
     "focus_guards": "live matching process handle; owned enabled main HWND; foreground and GetGUIThreadInfo focus PID; no held modifier; immediate recheck before SendInput",
     "partial_or_failed_send": "stop sequence, no retry/extra key-up",
@@ -101,7 +103,9 @@
       "Return requires successful CompareElements HRESULT and same=true",
       "failed/partial SendInput stops all later keyboard gestures",
       "total gesture attempt cap includes Return"
-    ]
+    ],
+    "max_down": 1,
+    "max_return": 3
   },
   "keyboard_compile_failure": {
     "run_id": 43107517189,
@@ -134,5 +138,41 @@
     "actual_cpp_helper_compiled": true,
     "runtime_checks_passed": 6,
     "full_windows_client_compiled": false
+  },
+  "library_tab_validation_run_id": 43111424043,
+  "active_library_probe": {
+    "run_id": 43111424043,
+    "job_id": 130828151561,
+    "ci_commit": "721072578c2d94c8dcb7eed72598a6d5911a7d2d",
+    "native_compile": "PASS",
+    "result": "library_tab_active_and_add_control_observed",
+    "key_gestures": 7,
+    "all_input_counts": 2,
+    "send_errors": 0,
+    "Add_observation": "UIA GetFocusedElement targetPID/Button/enabled/onscreen, panel label verified",
+    "visual_review": "Original after-navigation PNG shows selected local library and empty contents with Add focused",
+    "cleanup": "exit0, no forced cleanup"
+  },
+  "next_Add_favorite_driver": {
+    "requested": true,
+    "Windows_executed": false,
+    "source_app_unchanged": "76b51af495b721776945717a812e1de2394a689a build1001",
+    "fixture": "CC0 native piano copy; independent original/source/copy SHA checked",
+    "native_dialog": "#32770 exact French title/owned chain/unique filename ValuePattern and OpenID1 Invoke",
+    "score_added_proof": "Focused Open exact title after Down",
+    "favorite_action": "Focused Add to favorites exact title, compared identity then owned Return",
+    "independent_persistence_check": "After clean app exit, schema1 catalogue exactly expected copy/title/composer/favorite=true; source/copy SHA unchanged",
+    "onboarding_tested": false,
+    "notes_edited": false,
+    "search_tested": false,
+    "restart_tested": false,
+    "listening_tested": false
+  },
+  "Add_validation_unit_cases_linux": {
+    "status": "PASS",
+    "case_count": 9,
+    "actual_production_blocks": true,
+    "simulated_UI_flags": true,
+    "application_executed": false
   }
 }

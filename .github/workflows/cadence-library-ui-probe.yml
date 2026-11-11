@@ -78,7 +78,8 @@ jobs:
           & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/library-ui-probe/Run-LibraryUiProbe.ps1" `
             -StagePath "$env:RUNNER_TEMP/library-ui-stage" `
             -ProbePath "$env:RUNNER_TEMP/library-ui-probe-build/UiaProbe.exe" `
-            -OutputDirectory "$env:RUNNER_TEMP/library-ui-results/ui-probe"
+            -OutputDirectory "$env:RUNNER_TEMP/library-ui-results/ui-probe" `
+            -ExerciseAdd
 
       - name: Print bounded evidence from this exact UI inspection even if it was blocked
         if: always()
@@ -97,7 +98,7 @@ jobs:
           if (Test-Path -LiteralPath $resultRoot -PathType Container) {
             $jsonFiles = @(Get-ChildItem -LiteralPath $resultRoot -Recurse -File -Filter '*.json' |
               Where-Object { -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) } |
-              Sort-Object FullName | Select-Object -First 17)
+              Sort-Object @{ Expression = { if ($_.Name -in @('library-ui-report.json','uia-report.json','catalog-after-ui.json')) { 0 } elseif ($_.Name -eq 'stage-restoration.json') { 1 } else { 2 } } }, FullName | Select-Object -First 17)
             if ($jsonFiles.Count -gt 16) { $notes.Add('More than16 JSON files; printing only first16.') }
             foreach ($file in @($jsonFiles | Select-Object -First 16)) {
               if ($file.Length -gt $jsonBudget) { $notes.Add('Oversized JSON excluded: ' + $file.Name); continue }

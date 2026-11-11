@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "prepared_utc": "2026-11-11T21:56:04.332868+00:00",
+  "license": "CC0-1.0",
+  "purpose": "Native test data copies for future owned-library UIA steps, only after the library tab is actually observed active",
+  "application_executed_during_preparation": false,
+  "uia_executed_during_preparation": false,
+  "source": "Original Cadence regression compositions; no commercial catalogue content",
+  "reference_conversion": {
+    "application": "Official precompiled MuseScore Studio Linux x86_64",
+    "version": "4.7.6",
+    "upstream_tag": "v4.7.6",
+    "upstream_commit": "96480d58445e3b24b230a3fe7d4725d639aa2eb3",
+    "appimage_sha256": "5fcbd1f292270eca5c3867d56b767c31a173a155216a415f5caee22553f8e7a6",
+    "method": "Import a copy of MusicXML into MSCZ, then reopen MSCZ and export MSCX; existing successful reference-run results copied without modification"
+  },
+  "fixtures": [
+    {
+      "id": "piano",
+      "path": "piano-uia-copy.mscx",
+      "bytes": 10586,
+      "sha256": "10ae5eb1fae2679d9ad32aa0b721fef06119ef24b78b4f8b9bd6b770582c289f",
+      "title": "Piano : voix, accords et triolets",
+      "composer": "Cadence regression corpus",
+      "copyright": "CC0-1.0; original test composition; no commercial catalogue content",
+      "native_format_version": "4.70",
+      "license": "CC0-1.0",
+      "native_generated_source_local": "/workspace/cadence-test-runs/reference/piano-pilot/piano/reopened.mscx",
+      "source_musicxml_repository_path": "test/cadence/fixtures/piano.musicxml",
+      "source_musicxml_sha256": "1b38cc5953cc56426976345411394c24d39e0ff22dbf6c350addcb68c770a3fb",
+      "reference_conversion_report_local": "/workspace/cadence-test-runs/reference/piano-pilot/report.json",
+      "reference_conversion_started_utc": "2026-11-02T20:54:20.181130+00:00",
+      "reference_conversion_checks": [
+        {
+          "stage": "import-save-native",
+          "exit_code": 0,
+          "passed": true,
+          "command": [
+            "/workspace/cadence-reference/squashfs-root/AppRun",
+            "--test-mode",
+            "-o",
+            "/workspace/cadence-test-runs/reference/piano-pilot/piano/saved.mscz",
+            "/workspace/cadence-test-runs/reference/piano-pilot/piano/piano.musicxml"
+          ]
+        },
+        {
+          "stage": "reopen-native",
+          "exit_code": 0,
+          "passed": true,
+          "command": [
+            "/workspace/cadence-reference/squashfs-root/AppRun",
+            "--test-mode",
+            "-o",
+            "/workspace/cadence-test-runs/reference/piano-pilot/piano/reopened.mscx",
+            "/workspace/cadence-test-runs/reference/piano-pilot/piano/saved.mscz"
+          ]
+        }
+      ],
+      "original_sha256_before_copy": "10ae5eb1fae2679d9ad32aa0b721fef06119ef24b78b4f8b9bd6b770582c289f",
+      "original_sha256_after_copy": "10ae5eb1fae2679d9ad32aa0b721fef06119ef24b78b4f8b9bd6b770582c289f",
+      "copy_sha256_after_copy": "10ae5eb1fae2679d9ad32aa0b721fef06119ef24b78b4f8b9bd6b770582c289f",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    },
+    {
+      "id": "voice",
+      "path": "voice-uia-copy.mscx",
+      "bytes": 6813,
+      "sha256": "2a3e5029564fc3fd26cd27a46981a6eb8905363c4bcd078227aca0241e1a00b3",
+      "title": "Chant : un cadeau sonore",
+      "composer": "Cadence regression corpus",
+      "copyright": "CC0-1.0; original test composition; no commercial catalogue content",
+      "native_format_version": "4.70",
+      "license": "CC0-1.0",
+      "native_generated_source_local": "/workspace/cadence-test-runs/reference/other-scores/voice/reopened.mscx",
+      "source_musicxml_repository_path": "test/cadence/fixtures/voice.musicxml",
+      "source_musicxml_sha256": "8c1414cf17b420ac251a42c54d0e79ce45d79c6c435e82eb9186981b5df32576",
+      "reference_conversion_report_local": "/workspace/cadence-test-runs/reference/other-scores/report.json",
+      "reference_conversion_started_utc": "2026-11-02T20:55:10.631314+00:00",
+      "reference_conversion_checks": [
+        {
+          "stage": "import-save-native",
+          "exit_code": 0,
+          "passed": true,
+          "command": [
+            "/workspace/cadence-reference/squashfs-root/AppRun",
+            "--test-mode",
+            "-o",
+            "/workspace/cadence-test-runs/reference/other-scores/voice/saved.mscz",
+            "/workspace/cadence-test-runs/reference/other-scores/voice/voice.musicxml"
+          ]
+        },
+        {
+          "stage": "reopen-native",
+          "exit_code": 0,
+          "passed": true,
+          "command": [
+            "/workspace/cadence-reference/squashfs-root/AppRun",
+            "--test-mode",
+            "-o",
+            "/workspace/cadence-test-runs/reference/other-scores/voice/reopened.mscx",
+            "/workspace/cadence-test-runs/reference/other-scores/voice/saved.mscz"
+          ]
+        }
+      ],
+      "original_sha256_before_copy": "2a3e5029564fc3fd26cd27a46981a6eb8905363c4bcd078227aca0241e1a00b3",
+      "original_sha256_after_copy": "2a3e5029564fc3fd26cd27a46981a6eb8905363c4bcd078227aca0241e1a00b3",
+      "copy_sha256_after_copy": "2a3e5029564fc3fd26cd27a46981a6eb8905363c4bcd078227aca0241e1a00b3",
+      "original_unchanged": true,
+      "copy_byte_identical": true
+    }
+  ],
+  "execution_policy": {
+    "copy_again_to_new_runner_temp_directory": true,
+    "verify_sha256_before_and_after_ui": true,
+    "use_original_local_paths_as_ui_inputs": false,
+    "skip_ui_actions_unless_library_tab_active": true
+  }
+}

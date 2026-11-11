@@ -4,7 +4,8 @@
 param(
     [Parameter(Mandatory)][string] $StagePath,
     [Parameter(Mandatory)][string] $ProbePath,
-    [Parameter(Mandatory)][string] $OutputDirectory
+    [Parameter(Mandatory)][string] $OutputDirectory,
+    [switch] $ExerciseAdd
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -32,13 +33,15 @@ $report = [ordered]@{
     schema_version = 1; status = 'pending'; scope = 'Owned PID UIA inspection and semantic navigation, never score editing'
     executable = $executable; executable_sha256 = (Get-FileHash $executable -Algorithm SHA256).Hash.ToLowerInvariant()
     probe = $ProbePath; probe_sha256 = (Get-FileHash $ProbePath -Algorithm SHA256).Hash.ToLowerInvariant()
-    started_utc = [DateTime]::UtcNow.ToString('o'); pid = $null; probe_exit_code = $null
+    started_utc = [DateTime]::UtcNow.ToString('o'); pid = $null; probe_exit_code = $null; native_probe_status = $null
     profile_isolated_by_script = $false; hosted_disposable_profile = $true
     profile_seeded_by_script = $false; onboarding_tested = $false
     qa_precondition = 'A new Cadence-only profile with introduction already completed; this does not validate onboarding'
-    action_policy = 'Only owned Introduction may close before navigation; semantic Home/Scores/Library actions plus bounded source-backed F6/Tab/Right navigation; Return only on the exact UIA-focused library control, foreground and Win32 focus PID verified for every key'
+    action_policy = 'Owned source-backed section/panel navigation; Return only on an exact UIA-focused Library/Add/favorite control; optional native Open dialogue selects only the controlled copy; foreground and Win32 focus PID verified for every key'
     captures = @(); cleanup = [ordered]@{ forced = $false; exit_code = $null; events = @(); error = $null }
     library_content_observed = $false; score_editing_tested = $false; favorites_tested = $false
+    exercise_add_requested = $ExerciseAdd.IsPresent; fixture = $null; catalog_validation = $null
+    score_added_control_observed = $false; favorite_action_delivered = $false; favorite_remove_label_observed = $false
     probe_cleanup_forced = $false
     error = $null
 }
@@ -91,7 +94,7 @@ function Capture-OwnedWindow([string] $Name, $Process) {
         } finally { $bitmap.Dispose() }
     } catch { $report.captures += [ordered]@{ status='unavailable';error=$_.Exception.Message } }
 }
-$app = $null; $probe = $null; $stdout = $null; $stderr = $null
+$app = $null; $probe = $null; $stdout = $null; $stderr = $null; $fixtureCopyPath = $null
 try {
     # QSettings uses IniFormat and the CadenceStudio/CadenceStudio4 identity.
     # This is a test precondition on a disposable hosted profile, never a change
@@ -116,6 +119,26 @@ try {
     try { $settingsStream.Write($settingsBytes,0,$settingsBytes.Length) } finally { $settingsStream.Dispose() }
     $report.profile_seeded_by_script = $true
     $report.profile_precondition = [ordered]@{ settings_path=$settingsPath;settings_sha256=(Get-FileHash $settingsPath -Algorithm SHA256).Hash.ToLowerInvariant();settings_bytes=$settingsBytes.Length;cadence_roaming_directory_was_absent=$true;cadence_local_directory_was_absent=$true;hasCompletedFirstLaunchSetup=$true;musescore_profile_touched=$false;scope='Fresh Cadence-only settings in a disposable hosted runner user profile, not an isolated Windows user and not a first-launch test' }
+    if ($ExerciseAdd) {
+        $fixtureSourceDirectory = Join-Path $PSScriptRoot 'fixtures'
+        $manifest = Get-Content -LiteralPath (Join-Path $fixtureSourceDirectory 'manifest.json') -Raw | ConvertFrom-Json
+        $pianoEntries = @($manifest.fixtures | Where-Object { $_.id -eq 'piano' })
+        $expectedFixtureHash = '10ae5eb1fae2679d9ad32aa0b721fef06119ef24b78b4f8b9bd6b770582c289f'
+        if ($manifest.license -ne 'CC0-1.0' -or $pianoEntries.Count -ne 1) { throw 'Exactly one CC0 piano fixture is required.' }
+        $piano = $pianoEntries[0]
+        if ($piano.path -cne 'piano-uia-copy.mscx' -or $piano.sha256 -cne $expectedFixtureHash -or $piano.bytes -ne 10586 -or
+            $piano.title -cne 'Piano : voix, accords et triolets' -or $piano.composer -cne 'Cadence regression corpus') { throw 'Unexpected controlled fixture identity.' }
+        $fixtureSourcePath = Join-Path $fixtureSourceDirectory 'piano-uia-copy.mscx'
+        $sourceHash = (Get-FileHash $fixtureSourcePath -Algorithm SHA256).Hash.ToLowerInvariant()
+        if ($sourceHash -cne $expectedFixtureHash -or (Get-Item -LiteralPath $fixtureSourcePath).Length -ne 10586) { throw 'Source fixture bytes do not match the immutable reference copy.' }
+        $fixtureCopyRoot = Join-Path $OutputDirectory 'controlled-score-copies'
+        New-Item -ItemType Directory -Path $fixtureCopyRoot | Out-Null
+        $fixtureCopyPath = Join-Path $fixtureCopyRoot 'piano-uia-copy.mscx'
+        Copy-Item -LiteralPath $fixtureSourcePath -Destination $fixtureCopyPath
+        $copyHash = (Get-FileHash $fixtureCopyPath -Algorithm SHA256).Hash.ToLowerInvariant()
+        if ($copyHash -cne $expectedFixtureHash -or (Get-FileHash $fixtureSourcePath -Algorithm SHA256).Hash.ToLowerInvariant() -cne $sourceHash) { throw 'Fixture copy or unchanged-source check failed.' }
+        $report.fixture = [ordered]@{ source_path=$fixtureSourcePath;copy_root=$fixtureCopyRoot;copy_path=$fixtureCopyPath;sha256_before=$copyHash;source_sha256_before=$sourceHash;title=$piano.title;composer=$piano.composer;license='CC0-1.0';only_copy_passed_to_UI=$true;source_unchanged_after_copy=$true }
+    }
     $start=[Diagnostics.ProcessStartInfo]::new()
     $start.FileName=$executable;$start.WorkingDirectory=Split-Path -Parent $executable
     $start.UseShellExecute=$false;$start.RedirectStandardOutput=$true;$start.RedirectStandardError=$true
@@ -138,6 +161,9 @@ try {
     $probeStart=[Diagnostics.ProcessStartInfo]::new();$probeStart.FileName=$ProbePath;$probeStart.UseShellExecute=$false
     $probeStart.RedirectStandardOutput=$true;$probeStart.RedirectStandardError=$true
     foreach ($arg in @('--pid',[string]$app.Id,'--output',$treeDirectory)) { $probeStart.ArgumentList.Add($arg) }
+    if ($ExerciseAdd) {
+        foreach ($arg in @('--fixture-root',$fixtureCopyRoot,'--add-fixture',$fixtureCopyPath,'--expected-title',[string]$report.fixture.title)) { $probeStart.ArgumentList.Add($arg) }
+    }
     $probe=[Diagnostics.Process]::new();$probe.StartInfo=$probeStart
     if (-not $probe.Start()) { throw 'Native UIA inspector did not start.' }
     $probeOut=$probe.StandardOutput.ReadToEndAsync();$probeErr=$probe.StandardError.ReadToEndAsync()
@@ -150,7 +176,15 @@ try {
     $uia=Get-Content -LiteralPath $uiaPath -Raw | ConvertFrom-Json
     if ($uia.pid -ne $app.Id) { throw 'Inspector reported a different process.' }
     $report.library_content_observed=$uia.library_content_observed
+    if ($ExerciseAdd) {
+        $report.score_added_control_observed=$uia.score_added_control_observed
+        $report.favorite_action_delivered=$uia.favorite_action_delivered
+        $report.favorite_remove_label_observed=$uia.favorite_remove_label_observed
+    }
     $report.status=$uia.status
+    $report.native_probe_status=$uia.status
+    $app.Refresh()
+    if ($app.HasExited) { throw 'Application exited before the end-of-test capture and owned cleanup.' }
     Capture-OwnedWindow 'after-navigation.png' $app
     if ($probe.ExitCode -notin @(0,2)) { throw "UIA inspector failed: $($probe.ExitCode)" }
 } catch { $report.status='probe_failed';$report.error=$_.Exception.Message }
@@ -182,8 +216,37 @@ finally {
         } catch { $report.cleanup.error=$_.Exception.Message }
         finally { $app.Dispose() }
     }
+    if ($ExerciseAdd -and $report.fixture) {
+        try {
+            $report.fixture.source_sha256_after_UI=(Get-FileHash $report.fixture.source_path -Algorithm SHA256).Hash.ToLowerInvariant()
+            $report.fixture.copy_sha256_after_UI=(Get-FileHash $report.fixture.copy_path -Algorithm SHA256).Hash.ToLowerInvariant()
+            if ($report.fixture.source_sha256_after_UI -cne $report.fixture.source_sha256_before -or $report.fixture.copy_sha256_after_UI -cne $report.fixture.sha256_before) { throw 'A musical fixture changed during the UI test.' }
+            $catalogPath = Join-Path $localDataDirectory 'CadenceStudio4/local_library.json'
+            $catalogFile = Get-Item -LiteralPath $catalogPath
+            if ($catalogFile.Length -gt 262144 -or ($catalogFile.Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw 'Unexpected catalogue size or reparse point.' }
+            $catalog = [IO.File]::ReadAllText($catalogPath) | ConvertFrom-Json
+            $entries = @($catalog.entries)
+            if ($catalog.schema_version -ne 1 -or $entries.Count -ne 1) { throw 'Expected a schema1 catalogue with exactly the selected score.' }
+            $entry = $entries[0]
+            if ($entry.title -cne $report.fixture.title -or $entry.composer -cne $report.fixture.composer -or
+                -not [string]::Equals([IO.Path]::GetFullPath([string]$entry.path),[IO.Path]::GetFullPath($report.fixture.copy_path),[StringComparison]::OrdinalIgnoreCase) -or
+                $entry.favorite -isnot [bool] -or -not $entry.favorite) { throw 'Catalogue title/composer/path/favorite did not match the actual UI actions.' }
+            $catalogSnapshot = Join-Path $OutputDirectory 'catalog-after-ui.json'
+            [IO.File]::Copy($catalogPath,$catalogSnapshot,$false)
+            $report.catalog_validation = [ordered]@{ status='passed';source_path=$catalogPath;snapshot_path=$catalogSnapshot;sha256=(Get-FileHash $catalogPath -Algorithm SHA256).Hash.ToLowerInvariant();schema_version=1;entry_count=1;title=$entry.title;composer=$entry.composer;path=$entry.path;favorite=$entry.favorite;id=$entry.id;fixture_bytes_unchanged=$true }
+            $cleanFlow = -not $report.error -and -not $report.cleanup.error -and -not $report.cleanup.forced -and -not $report.probe_cleanup_forced -and $report.cleanup.exit_code -eq 0
+            $report.favorites_tested = $cleanFlow -and $report.score_added_control_observed -and $report.favorite_action_delivered
+            if ($report.favorites_tested) { $report.status='score_added_via_native_dialog_and_favorite_persisted' }
+        } catch {
+            $report.catalog_validation=[ordered]@{ status='failed';error=$_.Exception.Message }
+            if (-not $report.error) { $report.error=$_.Exception.Message }
+        }
+    }
+    if ($report.error -or $report.cleanup.error -or $report.cleanup.forced -or $report.probe_cleanup_forced -or $report.cleanup.exit_code -ne 0) { $report.status='failed_owned_UI_or_cleanup' }
     $report | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $OutputDirectory 'library-ui-report.json') -Encoding utf8
 }
-if ($report.error -or $report.cleanup.error -or $report.cleanup.forced) { throw 'Owned library inspection or cleanup failed; inspect retained reports.' }
+if ($report.error -or $report.cleanup.error -or $report.cleanup.forced -or $report.probe_cleanup_forced -or $report.cleanup.exit_code -ne 0) { throw 'Owned library inspection or clean exit0 failed; inspect retained reports.' }
 if (-not $report.library_content_observed) { Write-Warning "Library UI remains blocked/unvalidated: $($report.status). Tree and screenshots are evidence, not a pass."; exit 2 }
+if ($ExerciseAdd -and (-not $report.score_added_control_observed -or -not $report.favorite_action_delivered -or -not $report.favorites_tested)) { throw 'The actual score Add/favorite UI workflow did not pass its independent catalogue and fixture checks.' }
+if ($ExerciseAdd) { Write-Host 'Selected the controlled MSCX copy through the native dialog, observed its score control, delivered Favorite and verified the persisted catalogue; musical source/copy bytes unchanged.' }
 else { Write-Host 'Observed active library tab and its Add control through UIA. No files were added or changed.' }

@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 #include "OwnedKeyboard.h"
+#include "OwnedFileDialog.h"
 
 using Microsoft::WRL::ComPtr;
 using Clock = std::chrono::steady_clock;
@@ -23,7 +24,7 @@ static Clock::time_point deadline;
 static std::vector<std::string> actions;
 static std::vector<std::string> keyboardFrames;
 static int keyboardGestureAttempts = 0;
-static int f6GestureAttempts = 0, tabGestureAttempts = 0, rightGestureAttempts = 0;
+static int f6GestureAttempts = 0, tabGestureAttempts = 0, rightGestureAttempts = 0, downGestureAttempts = 0, returnGestureAttempts = 0;
 static bool keyboardFailure = false;
 
 static std::string utf8(const std::wstring& value)
@@ -219,16 +220,19 @@ static void retainKeyboardFrame(const std::vector<Node>& nodes, const std::strin
 }
 static bool sendNavigationKey(WORD key, const char* purpose)
 {
-    if (Clock::now() >= deadline || keyboardGestureAttempts >= 12) return false;
+    if (Clock::now() >= deadline || keyboardGestureAttempts >= 15) return false;
     if ((key == VK_F6 && f6GestureAttempts >= 6) || (key == VK_TAB && tabGestureAttempts >= 2)
-        || (key == VK_RIGHT && rightGestureAttempts >= 2)) return false;
+        || (key == VK_RIGHT && rightGestureAttempts >= 3) || (key == VK_DOWN && downGestureAttempts >= 1)
+        || (key == VK_RETURN && returnGestureAttempts >= 3)) return false;
     if (key == VK_F6) ++f6GestureAttempts;
     if (key == VK_TAB) ++tabGestureAttempts;
     if (key == VK_RIGHT) ++rightGestureAttempts;
+    if (key == VK_DOWN) ++downGestureAttempts;
+    if (key == VK_RETURN) ++returnGestureAttempts;
     ++keyboardGestureAttempts;
     const OwnedKeyResult result = SendOwnedKey(targetPid, targetProcess, mainWindow(), key);
     if (!result.sent) keyboardFailure = true;
-    const char* label = key == VK_F6 ? "F6" : key == VK_TAB ? "Tab" : key == VK_RIGHT ? "Right" : "Return";
+    const char* label = key == VK_F6 ? "F6" : key == VK_TAB ? "Tab" : key == VK_RIGHT ? "Right" : key == VK_DOWN ? "Down" : "Return";
     actions.push_back(std::string("{\"action\":\"owned_navigation_key\",\"purpose\":\"") + purpose
                       + "\",\"key\":\"" + label + "\",\"pid\":" + std::to_string(targetPid)
                       + ",\"foreground_handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(result.foreground))
@@ -313,16 +317,118 @@ static bool triggerAlreadyFocusedLibrary(IUIAutomation* automation, const Node& 
                       + ",\"focused_element_matches\":" + (same ? "true" : "false") + '}');
     return SUCCEEDED(compared) && same && sendNavigationKey(VK_RETURN, "trigger_observed_focused_library");
 }
+static bool triggerVerifiedFocusedButton(IUIAutomation* automation, const std::filesystem::path& output,
+                                       const std::wstring& expectedLabel, const char* purpose)
+{
+    const Node node = focusedNode(automation);
+    if (node.pid != static_cast<int>(targetPid) || node.type != UIA_ButtonControlTypeId || !node.enabled || node.offscreen
+        || controlLabel(node.name) != expectedLabel) return false;
+    auto nodes = snapshot(automation, output, L"tree-keyboard-before");
+    retainKeyboardFrame(nodes, std::string("before_") + purpose);
+    ComPtr<IUIAutomationElement> current;
+    BOOL same = FALSE;
+    HRESULT compared = E_NOINTERFACE;
+    if (SUCCEEDED(automation->GetFocusedElement(&current)) && current) compared = automation->CompareElements(current.Get(), node.element.Get(), &same);
+    actions.push_back("{\"action\":\"verify_focused_button_before_return\",\"purpose\":\"" + std::string(purpose)
+                      + "\",\"name\":" + jsonQuoted(node.name) + ",\"pid\":" + std::to_string(node.pid)
+                      + ",\"compare_elements_hresult\":" + std::to_string(static_cast<long>(compared))
+                      + ",\"focused_element_matches\":" + (same ? "true" : "false") + '}');
+    const bool sent = SUCCEEDED(compared) && same && sendNavigationKey(VK_RETURN, purpose);
+    Sleep(250);
+    nodes = snapshot(automation, output, L"tree-keyboard-after");
+    retainKeyboardFrame(nodes, std::string("after_") + purpose);
+    return sent;
+}
+struct AddResult {
+    bool dialogSelected = false, scoreAdded = false, favoriteRequested = false, favoriteLabelObserved = false;
+    std::string status = "blocked_add_not_started";
+};
+static AddResult exerciseAddAndFavorite(IUIAutomation* automation, const std::filesystem::path& output,
+                                       const std::wstring& fixtureRoot, const std::wstring& fixturePath,
+                                       const std::wstring& expectedTitle)
+{
+    AddResult result;
+    if (deadline - Clock::now() < std::chrono::seconds(20)) { result.status = "blocked_add_time_budget"; return result; }
+    if (!triggerVerifiedFocusedButton(automation, output, L"Ajouter des partitions\u2026", "open_add_scores_dialog")) {
+        result.status = "blocked_focused_add_button_unavailable"; return result;
+    }
+    const OwnedFileSelectionResult selection = SelectOwnedScoreFile(automation, targetPid, targetProcess, mainWindow(), fixtureRoot,
+                                                                   fixturePath, [&](const wchar_t* phase) {
+        snapshot(automation, output, phase);
+    });
+    result.dialogSelected = selection.selected;
+    actions.push_back("{\"action\":\"select_controlled_copy_in_owned_native_dialog\",\"path\":" + jsonQuoted(fixturePath)
+                      + ",\"selected\":" + (selection.selected ? "true" : "false") + ",\"error\":" + std::to_string(selection.error)
+                      + ",\"result_hresult\":" + std::to_string(static_cast<long>(selection.result))
+                      + ",\"edit_discovery_hresult\":" + std::to_string(static_cast<long>(selection.editDiscovery))
+                      + ",\"edit_name\":" + jsonQuoted(selection.editName) + ",\"edit_id\":" + jsonQuoted(selection.editAutomationId)
+                      + ",\"value_pattern_hresult\":" + std::to_string(static_cast<long>(selection.valuePattern))
+                      + ",\"set_value_hresult\":" + std::to_string(static_cast<long>(selection.setValue))
+                      + ",\"read_value_hresult\":" + std::to_string(static_cast<long>(selection.readValue))
+                      + ",\"value_verified\":" + (selection.valueVerified ? "true" : "false")
+                      + ",\"verified_path\":" + jsonQuoted(selection.verifiedPath)
+                      + ",\"button_name\":" + jsonQuoted(selection.buttonName) + ",\"button_id\":" + jsonQuoted(selection.buttonAutomationId)
+                      + ",\"invoke_hresult\":" + std::to_string(static_cast<long>(selection.invoke))
+                      + ",\"dialog_closed\":" + (selection.dialogClosed ? "true" : "false")
+                      + ",\"main_enabled\":" + (selection.mainEnabled ? "true" : "false")
+                      + ",\"diagnostic\":" + jsonQuoted(selection.diagnostic) + '}');
+    if (!selection.selected) { snapshot(automation, output, L"file-dialog-blocked"); result.status = "blocked_native_add_dialog"; return result; }
+    bool addReady = false;
+    for (int attempt = 0; attempt < 12 && Clock::now() < deadline; ++attempt) {
+        const Node node = focusedNode(automation);
+        addReady = node.pid == static_cast<int>(targetPid) && node.type == UIA_ButtonControlTypeId && node.enabled && !node.offscreen
+                   && controlLabel(node.name) == L"Ajouter des partitions\u2026";
+        if (addReady) break;
+        Sleep(250);
+    }
+    if (!addReady) { result.status = "blocked_add_focus_not_restored"; return result; }
+    auto nodes = snapshot(automation, output, L"tree-keyboard-before");
+    retainKeyboardFrame(nodes, "before_down_to_added_score");
+    const bool down = sendNavigationKey(VK_DOWN, "focus_first_added_score_open_button");
+    Sleep(300);
+    nodes = snapshot(automation, output, L"tree-keyboard-after");
+    retainKeyboardFrame(nodes, "after_down_to_added_score");
+    const Node open = focusedNode(automation);
+    result.scoreAdded = down && open.pid == static_cast<int>(targetPid) && open.type == UIA_ButtonControlTypeId
+                        && open.enabled && !open.offscreen && controlLabel(open.name) == L"Ouvrir " + expectedTitle;
+    actions.push_back("{\"action\":\"observe_added_score_open_control\",\"name\":" + jsonQuoted(open.name)
+                      + ",\"pid\":" + std::to_string(open.pid) + ",\"expected_title\":" + jsonQuoted(expectedTitle)
+                      + ",\"observed\":" + (result.scoreAdded ? "true" : "false") + '}');
+    if (!result.scoreAdded) { result.status = "blocked_added_score_control_unavailable"; return result; }
+    nodes = snapshot(automation, output, L"tree-keyboard-before");
+    retainKeyboardFrame(nodes, "before_right_to_added_score_favorite");
+    const bool right = sendNavigationKey(VK_RIGHT, "focus_added_score_favorite_button");
+    Sleep(250);
+    nodes = snapshot(automation, output, L"tree-keyboard-after");
+    retainKeyboardFrame(nodes, "after_right_to_added_score_favorite");
+    if (!right) { result.status = "blocked_favorite_navigation"; return result; }
+    result.favoriteRequested = triggerVerifiedFocusedButton(automation, output, L"Ajouter aux favoris " + expectedTitle, "favorite_added_score");
+    for (int attempt = 0; result.favoriteRequested && attempt < 8 && Clock::now() < deadline; ++attempt) {
+        const Node favorite = focusedNode(automation);
+        result.favoriteLabelObserved = favorite.pid == static_cast<int>(targetPid) && favorite.type == UIA_ButtonControlTypeId
+                                       && favorite.enabled && !favorite.offscreen && controlLabel(favorite.name) == L"Retirer des favoris " + expectedTitle;
+        if (result.favoriteLabelObserved) break;
+        Sleep(200);
+    }
+    result.status = result.favoriteRequested ? "score_added_favorite_action_delivered_requires_catalog_check" : "blocked_favorite_control_unavailable";
+    return result;
+}
 
 int wmain(int argc, wchar_t** argv)
 {
     std::filesystem::path output;
+    std::wstring fixtureRoot, fixturePath, expectedTitle;
     for (int i = 1; i + 1 < argc; i += 2) {
         if (std::wstring(argv[i]) == L"--pid") targetPid = wcstoul(argv[i + 1], nullptr, 10);
         else if (std::wstring(argv[i]) == L"--output") output = argv[i + 1];
+        else if (std::wstring(argv[i]) == L"--fixture-root") fixtureRoot = argv[i + 1];
+        else if (std::wstring(argv[i]) == L"--add-fixture") fixturePath = argv[i + 1];
+        else if (std::wstring(argv[i]) == L"--expected-title") expectedTitle = argv[i + 1];
         else return 1;
     }
     if (!targetPid || output.empty() || !std::filesystem::is_directory(output)) return 1;
+    if ((!fixturePath.empty() || !fixtureRoot.empty() || !expectedTitle.empty())
+        && (fixturePath.empty() || fixtureRoot.empty() || expectedTitle.empty())) return 1;
     targetProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION | SYNCHRONIZE, FALSE, targetPid);
     if (!alive()) return 1;
     deadline = Clock::now() + std::chrono::seconds(55);
@@ -331,6 +437,7 @@ int wmain(int argc, wchar_t** argv)
     bool contentObservedFromFocusedElement = false;
     bool navigationReady = false;
     int readinessPolls = 0;
+    AddResult addition;
     HRESULT initialized = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
     HRESULT activated = initialized;
     if (SUCCEEDED(initialized)) {
@@ -459,6 +566,10 @@ int wmain(int argc, wchar_t** argv)
             status = contentObserved ? "library_tab_active_and_add_control_observed" : "blocked_library_controls_or_semantic_action_unavailable";
             if (!contentObserved && owned(mainWindow()) && !IsWindowEnabled(mainWindow())) status = "blocked_owned_modal_remaining_after_introduction";
             if (!contentObserved && Clock::now() > deadline) status = navigationReady ? "blocked_uia_inspection_deadline" : "blocked_semantic_navigation_not_ready_before_deadline";
+            if (contentObserved && !fixturePath.empty()) {
+                addition = exerciseAddAndFavorite(automation.Get(), output, fixtureRoot, fixturePath, expectedTitle);
+                status = addition.status;
+            }
         }
         automation.Reset(); bounded.Reset(); CoUninitialize();
     }
@@ -467,6 +578,11 @@ int wmain(int argc, wchar_t** argv)
            << targetPid << ",\"status\":\"" << status << "\",\"com_activation_hresult\":" << static_cast<long>(activated)
            << ",\"library_content_observed\":" << (contentObserved ? "true" : "false")
            << ",\"library_content_observed_via_focused_UIA_element\":" << (contentObservedFromFocusedElement ? "true" : "false")
+           << ",\"add_requested\":" << (!fixturePath.empty() ? "true" : "false")
+           << ",\"owned_file_dialog_selected_copy\":" << (addition.dialogSelected ? "true" : "false")
+           << ",\"score_added_control_observed\":" << (addition.scoreAdded ? "true" : "false")
+           << ",\"favorite_action_delivered\":" << (addition.favoriteRequested ? "true" : "false")
+           << ",\"favorite_remove_label_observed\":" << (addition.favoriteLabelObserved ? "true" : "false")
            << ",\"semantic_navigation_ready\":" << (navigationReady ? "true" : "false")
            << ",\"readiness_polls\":" << readinessPolls << ",\"global_deadline_seconds\":55,\"actions\":[";
     for (size_t i = 0; i < actions.size(); ++i) { if (i) result << ','; result << actions[i]; }
@@ -484,5 +600,5 @@ int wmain(int argc, wchar_t** argv)
     }
     result << "],\"score_editing_tested\":false,\"favorites_tested\":false,\"listening_tested\":false}";
     CloseHandle(targetProcess);
-    return contentObserved ? 0 : 2;
+    return contentObserved && (fixturePath.empty() || (addition.scoreAdded && addition.favoriteRequested)) ? 0 : 2;
 }
