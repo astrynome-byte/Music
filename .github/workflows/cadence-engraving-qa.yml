@@ -1,0 +1,83 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: upstream engraving model qualification (prepared)'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/engraving-qa/**'
+      - '.github/workflows/cadence-engraving-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cadence-engraving-qa-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-engraving-model-tests:
+    runs-on: windows-2022
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Restore the exact reviewed library candidate source
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/library-source/Bootstrap.ps1" `
+            -DriverPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/library-source" `
+            -SourcePath "$env:GITHUB_WORKSPACE/cadence-engraving-src" `
+            -ResultPath "$env:RUNNER_TEMP/engraving-bootstrap.json"
+      - name: Use the native MSVC 2022 x64 toolchain
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+      - uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.2'
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          modules: 'qt5compat qtnetworkauth qtshadertools qtwebsockets'
+          cache: true
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Prepare the same fixed build tools and source dependencies
+        run: |
+          choco install cmake --version=3.31.6 --allow-downgrade --yes --installargs 'ADD_CMAKE_TO_PATH=System'
+          if ($LASTEXITCODE -ne 0) { throw 'CMake installation failed' }
+          choco install ninja --version=1.11.1 --allow-downgrade --yes
+          if ($LASTEXITCODE -ne 0) { throw 'Ninja installation failed' }
+          $env:PATH = 'C:\Program Files\CMake\bin;' + $env:PATH
+          'C:\Program Files\CMake\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+          & "$env:GITHUB_WORKSPACE/cadence-engraving-src/scripts/windows/Prepare-Dependencies.ps1" `
+            -Destination "$env:RUNNER_TEMP/engraving-deps" -WithVstSdk
+      - name: Build only engraving_tests and require eleven real upstream cases
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/engraving-qa/Run-EngravingQa.ps1" `
+            -SourcePath "$env:GITHUB_WORKSPACE/cadence-engraving-src" `
+            -BootstrapResultPath "$env:RUNNER_TEMP/engraving-bootstrap.json" `
+            -QtPath $env:QT_ROOT_DIR -DependenciesPath "$env:RUNNER_TEMP/engraving-deps" `
+            -OutputDirectory "$env:RUNNER_TEMP/engraving-qa"
+      - name: Retain model-test logs, discovery and XML for 14 days
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-engraving-qa-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/engraving-bootstrap.json
+            ${{ runner.temp }}/engraving-qa/*.log
+            ${{ runner.temp }}/engraving-qa/*.json
+            ${{ runner.temp }}/engraving-qa/*.xml
+            ${{ runner.temp }}/engraving-qa/build/CMakeCache.txt
+            ${{ runner.temp }}/engraving-qa/build/compile_commands.json
+            ${{ runner.temp }}/engraving-qa/build/Testing/Temporary/**
+            ${{ github.workspace }}/driver/.cadence-studio/engraving-qa/selection.json
+          retention-days: 14
+          if-no-files-found: warn

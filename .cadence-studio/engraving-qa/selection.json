@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "original_source_commit": "76b51af495b721776945717a812e1de2394a689a",
+  "source_tree": "59d63e6f93b3bb7e8e5291cf57f57f9c5d61a06b",
+  "tests": [
+    {"name": "Engraving_NoteTests.tpc", "file": "src/engraving/tests/note_tests.cpp", "purpose": "Hauteurs écrites et commandes de notes"},
+    {"name": "Engraving_NoteTests.tpcTranspose", "file": "src/engraving/tests/note_tests.cpp", "purpose": "Transposition et orthographe des hauteurs"},
+    {"name": "Engraving_NoteTests.noteLimits", "file": "src/engraving/tests/note_tests.cpp", "purpose": "Limites de hauteur"},
+    {"name": "Engraving_NoteTests.LongNoteAfterShort_183746", "file": "src/engraving/tests/note_tests.cpp", "purpose": "Durée longue après insertion courte et notes liées"},
+    {"name": "Engraving_ExchangevoicesTests.undoChangeVoice", "file": "src/engraving/tests/exchangevoices_tests.cpp", "purpose": "Changement de voix puis annulation"},
+    {"name": "Engraving_PartsTests.undoRedoAddBreath", "file": "src/engraving/tests/parts_tests.cpp", "purpose": "Ajout de respiration, annulation et rétablissement dans les parties"},
+    {"name": "Engraving_LinksTests.test3LinkedSameScore_99796", "file": "src/engraving/tests/links_tests.cpp", "purpose": "Portées liées, retrait, annulation et rétablissement"},
+    {"name": "Engraving_PartsTests.partVisibleTracks", "file": "src/engraving/tests/parts_tests.cpp", "purpose": "Changement de voix depuis une partie et comparaison conducteur/partie"},
+    {"name": "Engraving_PartsTests.inputFromParts", "file": "src/engraving/tests/parts_tests.cpp", "purpose": "Notes saisies depuis quatre parties et accords du conducteur"},
+    {"name": "Engraving_ReadWriteUndoResetTests.testMMRestLinksRecreateMMRest", "file": "src/engraving/tests/readwriteundoreset_tests.cpp", "purpose": "Sauvegarde, destruction et réouverture réelles du modèle"},
+    {"name": "Engraving_CopyPasteTests.copypaste06", "file": "src/engraving/tests/copypaste_tests.cpp", "purpose": "Copier-coller de mesure avec liaison de prolongation et comparaison MSCX"}
+  ]
+}
