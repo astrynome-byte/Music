@@ -1,0 +1,51 @@
+name: 'Cadence retained zlib component inspection'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/zlib-inspection/**'
+      - '.github/workflows/cadence-zlib-inspection.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect-zlib:
+    runs-on: windows-2022
+    timeout-minutes: 5
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: driver
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          architecture: x64
+      - name: Download the exact successful component artifact
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '13891238030'
+          run-id: '43101767743'
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/zlib-component-input
+      - name: Verify checksums and print the exact native manifest
+        run: |
+          python -B ./.cadence-studio/zlib-inspection/inspect_component.py `
+            --input "$env:RUNNER_TEMP/zlib-component-input" `
+            --output "$env:RUNNER_TEMP/zlib-component-inspection"
+          if ($LASTEXITCODE -ne 0) { throw 'Retained component inspection failed' }
+      - name: Retain small exact provenance files; not an application delivery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zlib-component-inspection-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/zlib-component-inspection/
+          retention-days: 14
+          if-no-files-found: warn
