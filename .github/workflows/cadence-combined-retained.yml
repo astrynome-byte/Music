@@ -1,0 +1,162 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: qualify and package unchanged combined build2002'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/combined-retained/**'
+      - '.github/workflows/cadence-combined-retained.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-combined-retained-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  unchanged-build2002:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Reconstruct the exact source tree that produced the retained executable
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-source/Bootstrap.ps1" `
+            -DriverPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-source" `
+            -SourcePath "$env:GITHUB_WORKSPACE/cadence-src" `
+            -ResultPath "$env:RUNNER_TEMP/packaging-bootstrap.json"
+      - name: Use the original Windows x64 compiler and SDK for the CPack platform probe
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Prepare the packaging tools, without installing Qt or rebuilding Cadence
+        run: |
+          choco install cmake --version=3.31.6 --allow-downgrade --yes --installargs 'ADD_CMAKE_TO_PATH=System'
+          if ($LASTEXITCODE -ne 0) { throw 'CMake installation failed' }
+          choco install ninja --version=1.11.1 --allow-downgrade --yes
+          if ($LASTEXITCODE -ne 0) { throw 'Ninja installation failed' }
+          choco install wixtoolset --version=3.14.1 --allow-downgrade --yes
+          if ($LASTEXITCODE -ne 0) { throw 'WiX installation failed' }
+          'C:\Program Files\CMake\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+          'C:\Program Files (x86)\WiX Toolset v3.14\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+      - name: Retrieve the immutable real stage and its original provenance
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '13898607081'
+          merge-multiple: true
+          run-id: 43108867145
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/original-stage
+      - name: Compile only the read-only Windows SDK UI readiness test tool
+        run: |
+          $probeSource = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-retained/UiReadyProbe.cpp"
+          if ((Get-FileHash $probeSource -Algorithm SHA256).Hash.ToLowerInvariant() -ne '64b3a594ad35c366deb442441516e521fdc0fa907eac17b487dac9a9ab1d9b1a') { throw 'Read-only SDK probe source bytes differ from reviewed source' }
+          $probeBuild = "$env:RUNNER_TEMP/combined-ui-probe"
+          if (Test-Path -LiteralPath $probeBuild) { throw 'Use a new probe build directory' }
+          New-Item -ItemType Directory -Path $probeBuild | Out-Null
+          Push-Location $probeBuild
+          try {
+            & cl.exe /nologo /std:c++17 /utf-8 /EHsc "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-retained/UiReadyProbe.cpp" /link ole32.lib oleaut32.lib user32.lib uuid.lib
+            if ($LASTEXITCODE -ne 0) { throw 'Read-only SDK readiness tool failed to compile' }
+          } finally { Pop-Location }
+
+      - name: Package the verified retained stage with the original WiX module
+        id: package
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-retained/Package-CombinedStage.ps1" `
+            -SourcePath "$env:GITHUB_WORKSPACE/cadence-src" `
+            -BootstrapResultPath "$env:RUNNER_TEMP/packaging-bootstrap.json" `
+            -StageArtifactPath "$env:RUNNER_TEMP/original-stage" `
+            -OutputPath "$env:RUNNER_TEMP/combined-delivery"
+      - name: Recheck missing video provider using new Cadence file logs, without recompiling the app
+        id: video
+        run: |
+          $stage = Get-Content "$env:RUNNER_TEMP/combined-delivery/stage-verification-result.json" -Raw | ConvertFrom-Json
+          python -I -X utf8 "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-retained/Test-VideoUnavailable.py" `
+            --executable $stage.executable --score "$env:GITHUB_WORKSPACE/cadence-src/test/cadence/fixtures/piano.musicxml" `
+            --output "$env:RUNNER_TEMP/combined-checks/video"
+          if ($LASTEXITCODE -ne 0) { throw 'Explicit unavailable-video error not verified; inspect the new runtime file logs' }
+
+      - name: Install, run without SDK search paths and uninstall this exact MSI
+        if: always() && steps.package.outcome == 'success'
+        id: msi
+        run: |
+          $msi = @(Get-ChildItem "$env:RUNNER_TEMP/combined-delivery/*.msi" -File)
+          if ($msi.Count -ne 1) { throw 'Expected one real Cadence MSI' }
+          & "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Test-MsiInstall.ps1" `
+            -MsiPath $msi[0].FullName `
+            -StageBuildResultPath "$env:RUNNER_TEMP/combined-delivery/stage-verification-result.json" `
+            -OutputDirectory "$env:RUNNER_TEMP/combined-checks/msi-qa" -ExpectedVersion '4.7.6' `
+            -GuiWrapperPath "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Run-CleanGuiProbe.ps1" `
+            -GuiProbePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-retained/Test-ReadyGui.ps1"
+      - name: Observe and close only this application's owned GUI windows
+        if: always() && steps.package.outcome == 'success'
+        id: gui
+        run: |
+          $stage = Get-Content "$env:RUNNER_TEMP/combined-delivery/stage-verification-result.json" -Raw | ConvertFrom-Json
+          & "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Run-CleanGuiProbe.ps1" `
+            -Executable $stage.executable `
+            -ProbePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-retained/Test-ReadyGui.ps1" `
+            -OutputDirectory "$env:RUNNER_TEMP/combined-checks/gui-cadence"
+      - name: Print real MSI and actual Home or Intro evidence even after failure
+        if: always()
+        run: |
+          foreach ($filename in @('msi-install-report.json','gui-report.json','video-unavailable-report.json','retained-package-manifest.json')) {
+            foreach ($report in @(Get-ChildItem "$env:RUNNER_TEMP/combined-delivery","$env:RUNNER_TEMP/combined-checks" -File -Recurse -Filter $filename -ErrorAction SilentlyContinue)) {
+              Write-Host "CADENCE_RETAINED2002_REPORT_BEGIN $filename"
+              Get-Content -LiteralPath $report.FullName | Write-Host
+              Write-Host "CADENCE_RETAINED2002_REPORT_END $filename"
+            }
+          }
+
+      - name: Retain the experimental real MSI, corresponding sources and original stage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-combined-msi-experimental-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/combined-delivery/*.msi
+            ${{ runner.temp }}/combined-delivery/*.tar.gz
+            ${{ runner.temp }}/combined-delivery/Cadence-zlib-1.3.2-corresponding-source.zip
+            ${{ runner.temp }}/combined-delivery/*.patch
+            ${{ runner.temp }}/combined-delivery/*.json
+            ${{ runner.temp }}/combined-delivery/*.md
+            ${{ runner.temp }}/combined-delivery/*.txt
+            ${{ runner.temp }}/combined-delivery/*.log
+            ${{ runner.temp }}/combined-delivery/original-stage/
+            ${{ runner.temp }}/combined-delivery/repack-recipe/
+          retention-days: 14
+          include-hidden-files: true
+          if-no-files-found: warn
+      - name: Retain all installation, GUI and CPack diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-combined-msi-qa-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/combined-checks/
+            ${{ runner.temp }}/combined-delivery/**/*.log
+            ${{ runner.temp }}/combined-delivery/**/*.wxs
+            ${{ runner.temp }}/combined-delivery/**/*.wxi
+            ${{ runner.temp }}/cadence-combined-retained-*/**/*.log
+            ${{ runner.temp }}/cadence-combined-retained-*/**/CPackConfig.cmake
+            ${{ runner.temp }}/cadence-combined-retained-*/**/*.wxs
+            ${{ runner.temp }}/cadence-combined-retained-*/**/*.wxi
+            ${{ runner.temp }}/packaging-bootstrap.json
+            ${{ github.workspace }}/driver/.cadence-studio/combined-retained/
+          retention-days: 14
+          include-hidden-files: true
+          if-no-files-found: warn
