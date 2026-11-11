@@ -34,6 +34,24 @@ jobs:
           vsversion: '2022'
           sdk: '10.0.26100.0'
 
+      - name: Compile only the UI Automation client from the driver source
+        run: |
+          $probeSource = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/library-ui-probe/UiaProbe.cpp"
+          $probeBuild = "$env:RUNNER_TEMP/library-ui-probe-build"
+          if (Test-Path -LiteralPath $probeBuild) { throw 'Probe build directory must be new.' }
+          New-Item -ItemType Directory -Path $probeBuild | Out-Null
+          Push-Location $probeBuild
+          try {
+            $previousPreference = $ErrorActionPreference
+            $ErrorActionPreference = 'Continue'
+            try {
+              & cl.exe /nologo /std:c++17 /utf-8 /EHsc $probeSource /Fe:UiaProbe.exe /link ole32.lib oleaut32.lib user32.lib uuid.lib 2>&1 |
+                Tee-Object -FilePath (Join-Path $probeBuild 'compile.log') | Out-Host
+              $compileStatus = $LASTEXITCODE
+            } finally { $ErrorActionPreference = $previousPreference }
+            if ($compileStatus -ne 0) { throw "UI Automation probe compilation failed with code $compileStatus." }
+          } finally { Pop-Location }
+
       - name: Download only the real retained library candidate artifact
         uses: actions/download-artifact@v4
         with:
@@ -54,24 +72,6 @@ jobs:
             -StagePath "$env:RUNNER_TEMP/library-ui-stage" `
             -ResultPath "$resultRoot/stage-restoration.json" *>&1 |
             Tee-Object -FilePath "$resultRoot/restore.log" | Out-Host
-
-      - name: Compile only the UI Automation client from the driver source
-        run: |
-          $probeSource = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/library-ui-probe/UiaProbe.cpp"
-          $probeBuild = "$env:RUNNER_TEMP/library-ui-probe-build"
-          if (Test-Path -LiteralPath $probeBuild) { throw 'Probe build directory must be new.' }
-          New-Item -ItemType Directory -Path $probeBuild | Out-Null
-          Push-Location $probeBuild
-          try {
-            $previousPreference = $ErrorActionPreference
-            $ErrorActionPreference = 'Continue'
-            try {
-              & cl.exe /nologo /std:c++17 /utf-8 /EHsc $probeSource /Fe:UiaProbe.exe /link ole32.lib oleaut32.lib user32.lib uuid.lib 2>&1 |
-                Tee-Object -FilePath (Join-Path $probeBuild 'compile.log') | Out-Host
-              $compileStatus = $LASTEXITCODE
-            } finally { $ErrorActionPreference = $previousPreference }
-            if ($compileStatus -ne 0) { throw "UI Automation probe compilation failed with code $compileStatus." }
-          } finally { Pop-Location }
 
       - name: Exercise only this disposable runner's retained library UI
         run: |

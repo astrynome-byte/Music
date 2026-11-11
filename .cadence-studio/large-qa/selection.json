@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "preparation_status": "prepared_not_executed_on_windows",
+  "preparation_status": "first_windows_run_failed_validator_patch_prepared",
   "current_selection": {
     "repository": "astrynome-byte/Music",
     "run_id": 42793810996,
@@ -40,5 +40,15 @@
     "copied_verbatim": true,
     "source_checkout_commit": "316bd688a7d50f654f88097dff9782bce04a4784",
     "sha256": "f701874e7a37b8d3148f0bb99477b60b96865e804ed238372d75c06598027d82"
+  },
+  "first_windows_run": {
+    "run_id": 43116435813,
+    "driver_commit": "87d60fd44c38ecfbd38bd04b9272053d1db1db33",
+    "status": "failed",
+    "artifact_id": 13897479176,
+    "artifact_zip_sha256": "172aed44473c49cd7ee36e7cebe2d5a1142f117353a0c079e56dd60ff0365b77",
+    "failure": "Validator selected score_style.mss before the real top-level .mscx score; native import/save exited zero",
+    "dependent_exports_or_parts_run": false,
+    "patched_rerun_required": true
   }
 }

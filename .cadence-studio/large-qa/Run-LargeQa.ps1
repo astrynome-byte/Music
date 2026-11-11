@@ -16,6 +16,6 @@ if (-not [OperatingSystem]::IsWindows() -or $env:OS -ne 'Windows_NT' -or -not [E
 }
 if (-not $env:RUNNER_TEMP) { throw 'RUNNER_TEMP is required.' }
 # Python is supplied by setup-python, never inherited by the Cadence process PATH.
-& python -I -B "$PSScriptRoot/run_large_qa.py" `
+& python -X utf8 -I -B "$PSScriptRoot/run_large_qa.py" `
     --stage $StagePath --restoration-record $RestorationRecordPath --output $OutputDirectory
 if ($LASTEXITCODE -ne 0) { throw "Large-score smoke failed or was blocked (Python exit $LASTEXITCODE)." }

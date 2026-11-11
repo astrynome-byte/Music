@@ -1,6 +1,6 @@
 {
   "date": "2026-11-11",
-  "status": "native-Add-favorite-driver-prepared-not-Windows-executed",
+  "status": "native-filename-BSTR-fix-prepared-not-Windows-executed",
   "yaml_steps": 8,
   "powershell_scripts_and_snippets_parsed": 6,
   "native_pinvoke_declarations_compiled_on_linux": true,
@@ -23,9 +23,9 @@
     "Run-LibraryUiProbe.ps1": "cc7b40b9805ed76fbff6b3f7147623e4ea9f093a168324b98f32989d42256faf",
     "UiaProbe.cpp": "38a202d08c373397dbd7118db76a4b18dd58dc0a71bb73000bb916f79f5a56d1",
     "OwnedKeyboard.h": "bd8324e670aeb9e4cd85a1dc9be5e63396363e70be6f312f021c1f88fc2361a0",
-    "OwnedFileDialog.h": "d519f360a3b4c0e9bc7d1ceb6cf07f9cf84cd7c367dc464218bfe55d48da0692"
+    "OwnedFileDialog.h": "4ad24654aa9dbf293b75929157c9d597e4021f8c6ca07e223e630c92eb6683e1"
   },
-  "workflow_sha256": "455943cad25d52747d5387603b1065c4dae53a9cccb27d6acc8ec59c4e198cc5",
+  "workflow_sha256": "440f8dea1968277667d4ee454a12d89fc0e35a0c7aa87c9a47c74f34f92ec180",
   "previous_probe": {
     "run_id": 43101086728,
     "job_id": 130792444190,
@@ -174,5 +174,26 @@
     "actual_production_blocks": true,
     "simulated_UI_flags": true,
     "application_executed": false
-  }
+  },
+  "Add_compile_failure": {
+    "run_id": 43116895895,
+    "job_id": 130847095567,
+    "ci_commit": "4745150f1d61a55c3c537052c226697af2ca971a",
+    "error": "C2664 OwnedFileDialog.h:320 IUIAutomationValuePattern::SetValue(BSTR) rejected const wchar_t*",
+    "application_executed": false,
+    "keys_sent": false,
+    "fix": "SysAllocStringLen checked for OOM; SetValue receives BSTR; SysFreeString after synchronous call",
+    "fixed_client_windows_compiled": false
+  },
+  "workflow_steps_order": [
+    "actions/checkout@v6",
+    "Use Windows x64 compiler for the independent UI Automation probe",
+    "Compile only the UI Automation client from the driver source",
+    "Download only the real retained library candidate artifact",
+    "Verify provenance and restore build 1001 without installing Qt or rebuilding Cadence",
+    "Exercise only this disposable runner's retained library UI",
+    "Print bounded evidence from this exact UI inspection even if it was blocked",
+    "Retain UI reports, tree dumps, captures and logs even on failure"
+  ],
+  "compile_client_before_stage_download": true
 }

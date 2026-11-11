@@ -88,6 +88,44 @@ function Assert-EffectiveRule([string] $Moment) {
     $addresses = @($rule | Get-NetFirewallAddressFilter -ErrorAction Stop)
     $ports = @($rule | Get-NetFirewallPortFilter -ErrorAction Stop)
     $interfaces = @($rule | Get-NetFirewallInterfaceTypeFilter -ErrorAction Stop)
+    # Capture returned values before deciding whether this exact rule is usable.
+    # A failed observation never establishes effective network isolation.
+    $observation=[ordered]@{
+        moment=$Moment; checked_utc=[DateTime]::UtcNow.ToString('o'); verified=$false
+        name=$rule.Name; description=$rule.Description; expected_name=$ruleName; expected_description=$ruleDescription; expected_program=$executable
+        enabled=[string]$rule.Enabled; direction=[string]$rule.Direction; action=[string]$rule.Action
+        profiles=[string]$rule.Profile; primary_status=[string]$rule.PrimaryStatus
+        enforcement_status=[string]$rule.EnforcementStatus; policy_store_source=$rule.PolicyStoreSource
+        application_filters=@($programs | ForEach-Object { [ordered]@{ program=[string]$_.Program } })
+        address_filters=@($addresses | ForEach-Object { [ordered]@{ local_address=@($_.LocalAddress); remote_address=@($_.RemoteAddress) } })
+        port_filters=@($ports | ForEach-Object { [ordered]@{ protocol=[string]$_.Protocol; local_port=@($_.LocalPort); remote_port=@($_.RemotePort) } })
+        interface_filters=@($interfaces | ForEach-Object { [ordered]@{ interface_type=[string]$_.InterfaceType } })
+        effective_profiles=@($profiles | ForEach-Object { [ordered]@{ name=[string]$_.Name; enabled=[string]$_.Enabled; allow_local_rules=[string]$_.AllowLocalFirewallRules } })
+    }
+    $report.firewall.snapshots += $observation
+    # Name each rejected field for diagnosis. These observations do not replace
+    # or relax the strict assertion below, which remains unchanged.
+    $criteria=[ordered]@{
+        name=($rule.Name -ceq $ruleName); description=($rule.Description -ceq $ruleDescription)
+        enabled=([string]$rule.Enabled -eq 'True'); direction=([string]$rule.Direction -eq 'Outbound')
+        action=([string]$rule.Action -eq 'Block'); profiles=([string]$rule.Profile -eq 'Any')
+        primary_status=([string]$rule.PrimaryStatus -eq 'OK'); enforcement_status=([string]$rule.EnforcementStatus -eq 'Full')
+        application_filter_count=($programs.Count -eq 1); address_filter_count=($addresses.Count -eq 1)
+        port_filter_count=($ports.Count -eq 1); interface_filter_count=($interfaces.Count -eq 1)
+    }
+    if ($programs.Count -eq 1) { $criteria['program']=([string]$programs[0].Program -ieq $executable) }
+    if ($addresses.Count -eq 1) {
+        $criteria['remote_address']=((@($addresses[0].RemoteAddress) -join ',') -eq 'Any')
+        $criteria['local_address']=((@($addresses[0].LocalAddress) -join ',') -eq 'Any')
+    }
+    if ($ports.Count -eq 1) {
+        $criteria['protocol']=([string]$ports[0].Protocol -in @('Any','256'))
+        $criteria['remote_port']=((@($ports[0].RemotePort) -join ',') -eq 'Any')
+        $criteria['local_port']=((@($ports[0].LocalPort) -join ',') -eq 'Any')
+    }
+    if ($interfaces.Count -eq 1) { $criteria['interface_type']=([string]$interfaces[0].InterfaceType -eq 'Any') }
+    $observation['criteria']=$criteria
+    $observation['rejected_fields']=@($criteria.GetEnumerator() | Where-Object { -not $_.Value } | ForEach-Object { $_.Key })
     if ($rule.Name -cne $ruleName -or $rule.Description -cne $ruleDescription -or
         [string]$rule.Enabled -ne 'True' -or [string]$rule.Direction -ne 'Outbound' -or
         [string]$rule.Action -ne 'Block' -or [string]$rule.Profile -ne 'Any' -or
@@ -100,14 +138,7 @@ function Assert-EffectiveRule([string] $Moment) {
         $interfaces.Count -ne 1 -or [string]$interfaces[0].InterfaceType -ne 'Any') {
         throw 'The exact executable outbound rule is not effectively Full/Block/Any in ActiveStore; no application will start.'
     }
-    $report.firewall.snapshots += [ordered]@{
-        moment=$Moment; checked_utc=[DateTime]::UtcNow.ToString('o'); name=$rule.Name
-        program=$programs[0].Program; enabled=[string]$rule.Enabled; direction=[string]$rule.Direction
-        action=[string]$rule.Action; profiles=[string]$rule.Profile; protocol=[string]$ports[0].Protocol
-        local_port=@($ports[0].LocalPort); remote_port=@($ports[0].RemotePort); interface_type=[string]$interfaces[0].InterfaceType
-        remote_address=@($addresses[0].RemoteAddress); primary_status=[string]$rule.PrimaryStatus
-        enforcement_status=[string]$rule.EnforcementStatus; policy_store_source=$rule.PolicyStoreSource
-    }
+    $observation.verified=$true
     $report.firewall.active_store_verified=$true
     } catch {
         $report.status='blocked'

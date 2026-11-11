@@ -317,7 +317,10 @@ inline OwnedFileSelectionResult SelectOwnedScoreFile(
     std::wstring currentName, currentId;
     if (!candidate(edit.Get(), expectedPid, true, currentName, currentId, candidateResult, deadline) || !contextValid())
         return fail(result, L"Blocked: filename Edit changed before SetValue.", E_ACCESSDENIED);
-    result.setValue = value->SetValue(selectedPath.c_str());
+    BSTR selectedValue = SysAllocStringLen(selectedPath.data(), static_cast<UINT>(selectedPath.size()));
+    if (!selectedValue) return fail(result, L"Blocked: cannot allocate the copied filename BSTR.", E_OUTOFMEMORY);
+    result.setValue = value->SetValue(selectedValue);
+    SysFreeString(selectedValue);
     result.valueSet = SUCCEEDED(result.setValue);
     if (!result.valueSet) return fail(result, L"Blocked: setting the copied fixture path failed.", result.setValue);
     if (!snapshot(L"file-dialog-after-set-value") || !contextValid())

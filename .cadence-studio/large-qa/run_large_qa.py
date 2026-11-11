@@ -109,19 +109,24 @@ def score_structure(root, expected_parts):
     return {"parts": expected_parts, "staffs": len(staffs), "measures_per_staff": counts, "notes": notes}
 
 
-def zipped_root(path):
+def zipped_root(path, extension):
     with zipfile.ZipFile(path) as archive:
         container = ET.fromstring(archive.read("META-INF/container.xml"))
         roots = [item.attrib.get("full-path") for item in container.iter() if item.tag.rsplit("}", 1)[-1] == "rootfile"]
-        if not roots or not roots[0] or roots[0] not in archive.namelist():
-            raise ValueError("Missing root score ZIP member")
-        return ET.fromstring(archive.read(roots[0]))
+        # MuseScore 4 lists score_style.mss first and may also declare Excerpts/
+        # scores. Its master is the one top-level .mscx, independent of order.
+        suffixes = (".mscx",) if extension == "mscz" else (".xml", ".musicxml")
+        candidates = [name for name in roots if name and name.lower().endswith(suffixes)
+                      and (extension != "mscz" or ("/" not in name and "\\" not in name))]
+        if len(candidates) != 1 or candidates[0] not in archive.namelist():
+            raise ValueError(f"Exactly one declared {extension} score ZIP member is required")
+        return ET.fromstring(archive.read(candidates[0]))
 
 
 def inspect(path, extension, harness, expected_parts=16):
     result = harness.inspect_output(path, extension)
     if extension == "mscz":
-        result["structure"] = score_structure(zipped_root(path), expected_parts)
+        result["structure"] = score_structure(zipped_root(path, "mscz"), expected_parts)
     elif extension == "mscx":
         result["structure"] = score_structure(ET.parse(path).getroot(), expected_parts)
     elif extension == "pdf":
@@ -130,7 +135,7 @@ def inspect(path, extension, harness, expected_parts=16):
             if b"%%EOF" not in source.read():
                 raise ValueError("PDF lacks final EOF marker")
     elif extension == "mxl":
-        root = zipped_root(path)
+        root = zipped_root(path, "mxl")
         parts = root.findall("part")
         counts = [len(part.findall("measure")) for part in parts]
         if root.tag != "score-partwise" or len(parts) != 16 or counts != [256] * 16:

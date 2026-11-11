@@ -1,0 +1,62 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: inspect completed combined application evidence (no execution)'
+
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/combined-evidence/**'
+      - '.github/workflows/cadence-combined-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: cadence-combined-evidence-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  inspect-completed-application-artifact:
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Download the completed combined application logs artifact
+        uses: actions/download-artifact@v4
+        with:
+          repository: astrynome-byte/Music
+          run-id: '43108867145'
+          artifact-ids: '13897984616'
+          merge-multiple: true
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/cadence-combined-run43108867145
+
+      - name: Print application reports, bounded video diagnostics and five existing AAC hashes
+        shell: pwsh
+        run: |
+          python -I -X utf8 "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-evidence/inspect.py" `
+            --root "$env:RUNNER_TEMP/cadence-combined-run43108867145" `
+            --output "$env:RUNNER_TEMP/cadence-combined-evidence-summary" `
+            --run-id 43108867145 --artifact-name cadence-combined-system-aac-logs-2-1 `
+            --artifact-id 13897984616
+          if ($LASTEXITCODE -ne 0) { throw 'Read-only report/hash inspection failed; inspect retained summary' }
+
+      - name: Retain the read-only summary for 14 days
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-combined-evidence-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cadence-combined-evidence-summary/
+          retention-days: 14
+          if-no-files-found: warn

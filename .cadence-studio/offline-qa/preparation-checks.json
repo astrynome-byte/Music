@@ -21,12 +21,12 @@
   "windows_application_executed": false,
   "firewall_rule_created": false,
   "github_published": false,
-  "final_parser_recheck_utc": "2026-11-11T22:31:20.389636+00:00",
+  "final_parser_recheck_utc": "2026-11-11T23:08:54.755027+00:00",
   "restorer_copy_identical_to_qualified_script": true,
   "workflow_uses_offline_qa_restore_copy": true,
   "soundfont_pin_bytes": 51278610,
   "soundfont_pin_sha256": "5ea2375e8bd7d8e71def1036978c1621e85b66934169b6a2744b27b9b3c2d99c",
-  "line_endings_checked_utc": "2026-11-11T22:34:44.303277+00:00",
+  "line_endings_checked_utc": "2026-11-11T23:08:54.757436+00:00",
   "namespace_gitattributes": {
     "path": ".cadence-studio/offline-qa/.gitattributes",
     "rules": [
@@ -49,13 +49,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 7364,
-      "lf_count": 35,
+      "bytes": 8484,
+      "lf_count": 37,
       "crlf_count": 0,
       "bare_cr_count": 0,
       "ends_with_lf": true,
-      "crc32": "5bf9bee9",
-      "sha256": "6a2839544fc3019dc24471471bf3a2dde3f3d982aa2a9af902f72758bd00c93d"
+      "crc32": "ba71a423",
+      "sha256": "637453c7e97a181e6b082d63c5c1bf52c5a7c450216cbc7d627bd0064c68988d"
     },
     {
       "path": "Restore-LibraryStage.ps1",
@@ -69,13 +69,13 @@
     },
     {
       "path": "Run-OfflineQa.ps1",
-      "bytes": 21709,
-      "lf_count": 289,
+      "bytes": 24192,
+      "lf_count": 320,
       "crlf_count": 0,
       "bare_cr_count": 0,
       "ends_with_lf": true,
-      "crc32": "87651a4e",
-      "sha256": "0528c06405cbde00c4ee3407dedf69459830630f2836e1b387ae2c4d90afab4c"
+      "crc32": "22273ef3",
+      "sha256": "5228279e78f6308ca9e862525a05d9ee30855216305152f7ecbb4900ddb1c4b2"
     },
     {
       "path": "WaveSignal.cs",
@@ -86,6 +86,16 @@
       "ends_with_lf": true,
       "crc32": "694b856d",
       "sha256": "a60ba9d4f67e95720504e34be0a8d64dd4866a3dbcc7bf099426b57807ab70bd"
+    },
+    {
+      "path": "evidence/run43116435656-report-from-job-log.json",
+      "bytes": 2946,
+      "lf_count": 82,
+      "crlf_count": 0,
+      "bare_cr_count": 0,
+      "ends_with_lf": true,
+      "crc32": "435f0e11",
+      "sha256": "302e8aa8acb3e4afc9e4c72bbb5c751ea2c731684481a2a1cea94313c415aae8"
     },
     {
       "path": "fixtures/LICENSE.txt",
@@ -117,5 +127,16 @@
       "crc32": "2a2198df",
       "sha256": "783d03cb3c91cdf1740b3f4d704248fcb4e48a3f5e8baec6a69b329d39e20ca3"
     }
-  ]
+  ],
+  "observability_correction": {
+    "reason": "Run 43116435656 blocked before application execution; failed composite assertion previously omitted its observed fields",
+    "strict_assertion_text_unchanged": true,
+    "snapshot_before_strict_assertion": true,
+    "named_rejected_fields_recorded": true,
+    "policy_relaxed": false,
+    "propagation_delay_added": false,
+    "windows_executed_for_this_correction": false,
+    "remote_published_by_this_correction": false,
+    "linux_guard_rechecked": true
+  }
 }

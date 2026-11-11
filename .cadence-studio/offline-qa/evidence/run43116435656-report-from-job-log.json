@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "status": "blocked",
+  "phase": "firewall-verification-initial",
+  "error": "The exact executable outbound rule is not effectively Full/Block/Any in ActiveStore; no application will start.",
+  "scope": "CLI version, import a CC0 piano copy, save MSCX, reopen saved MSCX for PDF and offline WAV export, numerical audio signal validation",
+  "started_utc": "2026-11-11T23:01:06.5728717Z",
+  "finished_utc": "2026-11-11T23:01:16.2140934Z",
+  "source_repository": "astrynome-byte/Music",
+  "source_run_id": 42793810996,
+  "source_artifact_id": 13755702885,
+  "original_source_commit": "76b51af495b721776945717a812e1de2394a689a",
+  "source_tree": "59d63e6f93b3bb7e8e5291cf57f57f9c5d61a06b",
+  "build_number": 1001,
+  "executable": "D:\\a\\_temp\\offline-stage\\bin\\CadenceStudio4.exe",
+  "executable_sha256": "0aba4ced85a18a781c76c27f0072f2a761f7dee87f73610493887790f38fdb6a",
+  "fixture_sha256": "1b38cc5953cc56426976345411394c24d39e0ff22dbf6c350addcb68c770a3fb",
+  "stage_restoration_sha256": "6522aead512a49aa7d293aca276bb8738023aa6e2aa2dc5aa985c857a8836a24",
+  "isolated_path": "D:\\a\\_temp\\offline-stage\\bin;C:\\Windows\\System32",
+  "fresh_cadence_profile_observed": true,
+  "no_account_credentials_supplied": true,
+  "application_executed": false,
+  "commands": [],
+  "outputs": [
+    {
+      "path": "piano-input.musicxml",
+      "bytes": 6481,
+      "sha256": "1b38cc5953cc56426976345411394c24d39e0ff22dbf6c350addcb68c770a3fb"
+    }
+  ],
+  "wave_signal": null,
+  "human_listening_performed": false,
+  "gui_editing_tested": false,
+  "physical_network_disconnected": false,
+  "network_scope": "Windows Defender Firewall outbound Block/Any protocol/Any remote address, exact Cadence executable path only; local IPC remains possible; runner and GitHub transport remain online",
+  "network_probe_performed": false,
+  "child_executable_network_coverage": false,
+  "profile_settings_changed": false,
+  "firewall": {
+    "rule_name": "CadenceOfflineQa-2b776fb0-8a8b-479f-8eeb-035392e472ab",
+    "creation_attempted": true,
+    "created": true,
+    "active_store_verified": false,
+    "active_profiles": [
+      {
+        "name": "Domain",
+        "enabled": "True",
+        "allow_local_rules": "True"
+      },
+      {
+        "name": "Private",
+        "enabled": "True",
+        "allow_local_rules": "True"
+      },
+      {
+        "name": "Public",
+        "enabled": "True",
+        "allow_local_rules": "True"
+      }
+    ],
+    "service_states": [
+      {
+        "name": "MpsSvc",
+        "status": "Running"
+      },
+      {
+        "name": "BFE",
+        "status": "Running"
+      }
+    ],
+    "snapshots": [],
+    "removed": true,
+    "cleanup_error": null
+  },
+  "soundfont": {
+    "path": "D:\\a\\_temp\\offline-stage\\sound\\MS Basic.sf3",
+    "bytes": 51278610,
+    "sha256": "5ea2375e8bd7d8e71def1036978c1621e85b66934169b6a2744b27b9b3c2d99c",
+    "license": "MIT",
+    "profile": "MuseScore Basic"
+  }
+}
