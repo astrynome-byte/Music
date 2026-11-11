@@ -42,6 +42,16 @@ jobs:
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/cadence-combined-run43108867145
 
+      - name: Read the immutable stage records and ZIP directory without running or extracting the application
+        uses: actions/download-artifact@v4
+        with:
+          repository: astrynome-byte/Music
+          run-id: '43108867145'
+          artifact-ids: '13898607081'
+          merge-multiple: true
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/cadence-combined-stage2002
+
       - name: Print application reports, bounded video diagnostics and five existing AAC hashes
         shell: pwsh
         run: |
@@ -49,7 +59,8 @@ jobs:
             --root "$env:RUNNER_TEMP/cadence-combined-run43108867145" `
             --output "$env:RUNNER_TEMP/cadence-combined-evidence-summary" `
             --run-id 43108867145 --artifact-name cadence-combined-system-aac-logs-2-1 `
-            --artifact-id 13897984616
+            --artifact-id 13897984616 `
+            --stage-root "$env:RUNNER_TEMP/cadence-combined-stage2002"
           if ($LASTEXITCODE -ne 0) { throw 'Read-only report/hash inspection failed; inspect retained summary' }
 
       - name: Retain the read-only summary for 14 days

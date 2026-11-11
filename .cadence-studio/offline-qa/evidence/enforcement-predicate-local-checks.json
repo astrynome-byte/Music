@@ -1,0 +1,441 @@
+{
+  "scope": "Only AST-extracted actual pure predicate executed; no top-level script, application, NetSecurity API or mocked launch",
+  "ps_parse_errors": 0,
+  "function": "Test-EffectiveEnforcement",
+  "cases": [
+    {
+      "label": "empty",
+      "values": [],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "inactive-only",
+      "values": [
+        5
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "Full",
+      "values": [
+        1
+      ],
+      "expected": true,
+      "actual": true
+    },
+    {
+      "label": "Full-plus-inactive",
+      "values": [
+        1,
+        5
+      ],
+      "expected": true,
+      "actual": true
+    },
+    {
+      "label": "inactive-plus-Full",
+      "values": [
+        5,
+        1
+      ],
+      "expected": true,
+      "actual": true
+    },
+    {
+      "label": "reject-0",
+      "values": [
+        0
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-0",
+      "values": [
+        1,
+        0
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-2",
+      "values": [
+        2
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-2",
+      "values": [
+        1,
+        2
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-3",
+      "values": [
+        3
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-3",
+      "values": [
+        1,
+        3
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-4",
+      "values": [
+        4
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-4",
+      "values": [
+        1,
+        4
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-6",
+      "values": [
+        6
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-6",
+      "values": [
+        1,
+        6
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-7",
+      "values": [
+        7
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-7",
+      "values": [
+        1,
+        7
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-8",
+      "values": [
+        8
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-8",
+      "values": [
+        1,
+        8
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-9",
+      "values": [
+        9
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-9",
+      "values": [
+        1,
+        9
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-10",
+      "values": [
+        10
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-10",
+      "values": [
+        1,
+        10
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-11",
+      "values": [
+        11
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-11",
+      "values": [
+        1,
+        11
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-12",
+      "values": [
+        12
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-12",
+      "values": [
+        1,
+        12
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-13",
+      "values": [
+        13
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-13",
+      "values": [
+        1,
+        13
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-14",
+      "values": [
+        14
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-14",
+      "values": [
+        1,
+        14
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-15",
+      "values": [
+        15
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-15",
+      "values": [
+        1,
+        15
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-16",
+      "values": [
+        16
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-16",
+      "values": [
+        1,
+        16
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-17",
+      "values": [
+        17
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-17",
+      "values": [
+        1,
+        17
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-18",
+      "values": [
+        18
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-18",
+      "values": [
+        1,
+        18
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-19",
+      "values": [
+        19
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-19",
+      "values": [
+        1,
+        19
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-20",
+      "values": [
+        20
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-20",
+      "values": [
+        1,
+        20
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-21",
+      "values": [
+        21
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-21",
+      "values": [
+        1,
+        21
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-22",
+      "values": [
+        22
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-22",
+      "values": [
+        1,
+        22
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-23",
+      "values": [
+        23
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-23",
+      "values": [
+        1,
+        23
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-99",
+      "values": [
+        99
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "label": "reject-Full-plus-99",
+      "values": [
+        1,
+        99
+      ],
+      "expected": false,
+      "actual": false
+    }
+  ],
+  "passed": true,
+  "source_sha256": "0320038c61a2fe04c9b7c88cbf550a09594d98f8ec8816d8a22388ec54f2d5d2",
+  "checked_utc": "2026-11-11T23:16:32.735887+00:00"
+}

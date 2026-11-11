@@ -75,6 +75,11 @@ function Read-ExactRule([string] $Store) {
     }
     return $rules
 }
+function Test-EffectiveEnforcement([int[]] $Values) {
+    if ($null -eq $Values) { return $false }
+    return ($Values.Count -gt 0 -and 1 -in $Values -and
+        @($Values | Where-Object { $_ -notin @(1,5) }).Count -eq 0)
+}
 function Assert-EffectiveRule([string] $Moment) {
     try {
     $profiles = @(Get-NetFirewallProfile -PolicyStore ActiveStore -ErrorAction Stop)
@@ -103,13 +108,23 @@ function Assert-EffectiveRule([string] $Moment) {
         effective_profiles=@($profiles | ForEach-Object { [ordered]@{ name=[string]$_.Name; enabled=[string]$_.Enabled; allow_local_rules=[string]$_.AllowLocalFirewallRules } })
     }
     $report.firewall.snapshots += $observation
+    # MSFT_NetFirewallRule documents uint16[]: Full=1, InactiveProfile=5.
+    # NetSecurity renders these as Enforced/ProfileInactive on this runner.
+    # Require actual enforcement, allow inactive-profile entries alongside it,
+    # and reject all other codes. Empty/inactive-only states never qualify.
+    # https://github.com/MicrosoftDocs/win32/blob/40f99e296680e6b3b6c4c52b03726e636e7096c1/desktop-src/FWP/wmi/wfascimprov/msft-netfirewallrule.md
+    $enforcementValues=@($rule.EnforcementStatus | ForEach-Object { [int]$_ })
+    $observation['enforcement_entries']=@($rule.EnforcementStatus | ForEach-Object {
+        [ordered]@{ name=[string]$_; numeric_value=[int]$_; runtime_type=$_.GetType().FullName }
+    })
+    $enforcementIsEffective=Test-EffectiveEnforcement $enforcementValues
     # Name each rejected field for diagnosis. These observations do not replace
     # or relax the strict assertion below, which remains unchanged.
     $criteria=[ordered]@{
         name=($rule.Name -ceq $ruleName); description=($rule.Description -ceq $ruleDescription)
         enabled=([string]$rule.Enabled -eq 'True'); direction=([string]$rule.Direction -eq 'Outbound')
         action=([string]$rule.Action -eq 'Block'); profiles=([string]$rule.Profile -eq 'Any')
-        primary_status=([string]$rule.PrimaryStatus -eq 'OK'); enforcement_status=([string]$rule.EnforcementStatus -eq 'Full')
+        primary_status=([string]$rule.PrimaryStatus -eq 'OK'); enforcement_status=$enforcementIsEffective
         application_filter_count=($programs.Count -eq 1); address_filter_count=($addresses.Count -eq 1)
         port_filter_count=($ports.Count -eq 1); interface_filter_count=($interfaces.Count -eq 1)
     }
@@ -129,14 +144,14 @@ function Assert-EffectiveRule([string] $Moment) {
     if ($rule.Name -cne $ruleName -or $rule.Description -cne $ruleDescription -or
         [string]$rule.Enabled -ne 'True' -or [string]$rule.Direction -ne 'Outbound' -or
         [string]$rule.Action -ne 'Block' -or [string]$rule.Profile -ne 'Any' -or
-        [string]$rule.PrimaryStatus -ne 'OK' -or [string]$rule.EnforcementStatus -ne 'Full' -or
+        [string]$rule.PrimaryStatus -ne 'OK' -or -not $enforcementIsEffective -or
         $programs.Count -ne 1 -or [string]$programs[0].Program -ine $executable -or
         $addresses.Count -ne 1 -or (@($addresses[0].RemoteAddress) -join ',') -ne 'Any' -or
         (@($addresses[0].LocalAddress) -join ',') -ne 'Any' -or
         $ports.Count -ne 1 -or [string]$ports[0].Protocol -notin @('Any','256') -or
         (@($ports[0].RemotePort) -join ',') -ne 'Any' -or (@($ports[0].LocalPort) -join ',') -ne 'Any' -or
         $interfaces.Count -ne 1 -or [string]$interfaces[0].InterfaceType -ne 'Any') {
-        throw 'The exact executable outbound rule is not effectively Full/Block/Any in ActiveStore; no application will start.'
+        throw 'The exact executable outbound rule is not effectively enforced/Block/Any in ActiveStore; no application will start.'
     }
     $observation.verified=$true
     $report.firewall.active_store_verified=$true

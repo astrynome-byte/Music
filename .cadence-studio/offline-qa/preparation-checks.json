@@ -21,12 +21,12 @@
   "windows_application_executed": false,
   "firewall_rule_created": false,
   "github_published": false,
-  "final_parser_recheck_utc": "2026-11-11T23:08:54.755027+00:00",
+  "final_parser_recheck_utc": "2026-11-11T23:16:32.736955+00:00",
   "restorer_copy_identical_to_qualified_script": true,
   "workflow_uses_offline_qa_restore_copy": true,
   "soundfont_pin_bytes": 51278610,
   "soundfont_pin_sha256": "5ea2375e8bd7d8e71def1036978c1621e85b66934169b6a2744b27b9b3c2d99c",
-  "line_endings_checked_utc": "2026-11-11T23:08:54.757436+00:00",
+  "line_endings_checked_utc": "2026-11-11T23:16:32.740185+00:00",
   "namespace_gitattributes": {
     "path": ".cadence-studio/offline-qa/.gitattributes",
     "rules": [
@@ -49,13 +49,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 8484,
-      "lf_count": 37,
+      "bytes": 9444,
+      "lf_count": 39,
       "crlf_count": 0,
       "bare_cr_count": 0,
       "ends_with_lf": true,
-      "crc32": "ba71a423",
-      "sha256": "637453c7e97a181e6b082d63c5c1bf52c5a7c450216cbc7d627bd0064c68988d"
+      "crc32": "c4348a5d",
+      "sha256": "6cac16f0ec98e3666a5f40534fb29a9b41b1183ee97a703dfd9382e86e60209c"
     },
     {
       "path": "Restore-LibraryStage.ps1",
@@ -69,13 +69,13 @@
     },
     {
       "path": "Run-OfflineQa.ps1",
-      "bytes": 24192,
-      "lf_count": 320,
+      "bytes": 25179,
+      "lf_count": 335,
       "crlf_count": 0,
       "bare_cr_count": 0,
       "ends_with_lf": true,
-      "crc32": "22273ef3",
-      "sha256": "5228279e78f6308ca9e862525a05d9ee30855216305152f7ecbb4900ddb1c4b2"
+      "crc32": "c9e2c328",
+      "sha256": "0320038c61a2fe04c9b7c88cbf550a09594d98f8ec8816d8a22388ec54f2d5d2"
     },
     {
       "path": "WaveSignal.cs",
@@ -88,6 +88,26 @@
       "sha256": "a60ba9d4f67e95720504e34be0a8d64dd4866a3dbcc7bf099426b57807ab70bd"
     },
     {
+      "path": "evidence/enforcement-predicate-local-checks.json",
+      "bytes": 7261,
+      "lf_count": 441,
+      "crlf_count": 0,
+      "bare_cr_count": 0,
+      "ends_with_lf": true,
+      "crc32": "3f0def0c",
+      "sha256": "e9bf35b688aa8bde739f395366f40618476825c84dfe12e27d195f53eb676bb3"
+    },
+    {
+      "path": "evidence/enforcement-status-microsoft-proof.json",
+      "bytes": 4978,
+      "lf_count": 14,
+      "crlf_count": 0,
+      "bare_cr_count": 0,
+      "ends_with_lf": true,
+      "crc32": "a63fc737",
+      "sha256": "c75ae7987af58d0c4e84910a1324c63b9be946ec51e2cf90bdf092ed8133c675"
+    },
+    {
       "path": "evidence/run43116435656-report-from-job-log.json",
       "bytes": 2946,
       "lf_count": 82,
@@ -96,6 +116,16 @@
       "ends_with_lf": true,
       "crc32": "435f0e11",
       "sha256": "302e8aa8acb3e4afc9e4c72bbb5c751ea2c731684481a2a1cea94313c415aae8"
+    },
+    {
+      "path": "evidence/run43118117757-report-from-job-log.json",
+      "bytes": 5633,
+      "lf_count": 172,
+      "crlf_count": 0,
+      "bare_cr_count": 0,
+      "ends_with_lf": true,
+      "crc32": "9ebd7379",
+      "sha256": "b6e8e5f9ebec963659a8aff697ad134c0b18ec15de4d75c498a286912d7d0442"
     },
     {
       "path": "fixtures/LICENSE.txt",
@@ -138,5 +168,15 @@
     "windows_executed_for_this_correction": false,
     "remote_published_by_this_correction": false,
     "linux_guard_rechecked": true
+  },
+  "enforcement_array_correction": {
+    "reason": "Actual run 43118117757 returned ProfileInactive Enforced; Microsoft schema defines uint16[] with Full=1 and InactiveProfile=5",
+    "documentation_commit": "40f99e296680e6b3b6c4c52b03726e636e7096c1",
+    "requires_numeric_full_1": true,
+    "only_additional_code_allowed": 5,
+    "all_other_rule_invariants_unchanged": true,
+    "actual_predicate_cases_passed": 51,
+    "windows_executed_for_this_correction": false,
+    "remote_published_by_this_correction": false
   }
 }
