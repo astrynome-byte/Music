@@ -1,26 +1,26 @@
 {
   "date": "2026-11-11",
-  "status": "splash-readiness-fix-prepared-not-executed",
+  "status": "fresh-Cadence-profile-precondition-prepared-not-Windows-executed",
   "yaml_steps": 8,
   "powershell_scripts_and_snippets_parsed": 6,
   "native_pinvoke_declarations_compiled_on_linux": true,
-  "cpp_sdk_compiled": false,
-  "windows_ui_automation_executed": false,
+  "cpp_sdk_compiled": true,
+  "windows_ui_automation_executed": true,
   "real_application_rebuilt": false,
   "restored_source_commit": "76b51af495b721776945717a812e1de2394a689a",
   "restored_source_tree": "59d63e6f93b3bb7e8e5291cf57f57f9c5d61a06b",
   "artifact_id": 13755702885,
   "run_id": 42793810996,
   "limits": [
-    "Changed probe not yet compiled or executed on Windows.",
-    "Initial version compiled on Windows but inspected the splash too early.",
-    "No library tab/add/favorites/score opening has been validated by UIA."
+    "Current launcher precondition not yet executed on Windows.",
+    "Current native readiness probe compiled and ran in43103724152 but stopped at Introduction confirmation.",
+    "Library tab/add/favorites/score opening remain unvalidated by UIA; onboarding is explicitly outside this QA profile precondition."
   ],
   "files": {
-    "README.md": "eab596288da4d814d2a2ee6c29f7470aff13fabdd1c02622524ab109973611cb",
+    "README.md": "afd03bc104ffec9e87bab0fb2a7b24ffd90e4aba6a45aa07a18a5aaf47c0a388",
     "Restore-LibraryStage.ps1": "497618b21b986d397fd8d242201fe2da7c8df51cf6eee54fcf323c8a0ca94251",
     "UiaProbe.cpp": "d1e530a862abaa6f78884c9cbf34972b465e8f11750bfff525910f2ad3027cd7",
-    "Run-LibraryUiProbe.ps1": "c7f7c1bc41a2e9e863d32ef57153938c664527f8ebd896d890dc147f78bb4af1"
+    "Run-LibraryUiProbe.ps1": "85e37680a41cd905811f59a1e0c1c3f6dfe5d9b24704faf5f3a057a9db4fe311"
   },
   "workflow_sha256": "63084b4eaf8437f0e6a302c9428238c260312e8a18c5ccf9af8778628160f478",
   "previous_probe": {
@@ -41,6 +41,32 @@
     "fixture_cases": [
       "two JSON envelopes and PNG exact current run id",
       "oversized JSON and base64 PNG excluded"
+    ],
+    "application_executed": false
+  },
+  "current_launcher_executed_windows": false,
+  "library_tab_validated": false,
+  "readiness_probe": {
+    "run_id": 43103724152,
+    "job_id": 130801487606,
+    "cpp_compilation": "PASS Windows MSVC/SDK",
+    "status": "blocked_uia_inspection_deadline",
+    "semantic_navigation_ready": true,
+    "readiness_polls": 5,
+    "home_action": "SelectionItem_already_selected S_OK",
+    "library_tab_validated": false,
+    "confirmation_modal": "Cancel Introduction confirmation observed in PNG; no dialog button invoked",
+    "cleanup_exit_code": 0,
+    "cleanup_forced": false
+  },
+  "profile_precondition_tests_linux": {
+    "production_block_executed": true,
+    "standard_folder_discovery_mocked": true,
+    "passed": [
+      "new profile exact INI bytes",
+      "existing roaming profile refused preserved",
+      "existing local profile refused preserved",
+      "outside user root refused"
     ],
     "application_executed": false
   }

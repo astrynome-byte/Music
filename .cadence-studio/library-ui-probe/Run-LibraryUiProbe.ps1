@@ -34,6 +34,8 @@ $report = [ordered]@{
     probe = $ProbePath; probe_sha256 = (Get-FileHash $ProbePath -Algorithm SHA256).Hash.ToLowerInvariant()
     started_utc = [DateTime]::UtcNow.ToString('o'); pid = $null; probe_exit_code = $null
     profile_isolated_by_script = $false; hosted_disposable_profile = $true
+    profile_seeded_by_script = $false; onboarding_tested = $false
+    qa_precondition = 'A new Cadence-only profile with introduction already completed; this does not validate onboarding'
     action_policy = 'Only Introduction owned modal may close before navigation; only exact Home/Scores/Local library semantic names may invoke'
     captures = @(); cleanup = [ordered]@{ forced = $false; exit_code = $null; events = @(); error = $null }
     library_content_observed = $false; score_editing_tested = $false; favorites_tested = $false
@@ -91,6 +93,29 @@ function Capture-OwnedWindow([string] $Name, $Process) {
 }
 $app = $null; $probe = $null; $stdout = $null; $stderr = $null
 try {
+    # QSettings uses IniFormat and the CadenceStudio/CadenceStudio4 identity.
+    # This is a test precondition on a disposable hosted profile, never a change
+    # to MuseScore settings or a claim that the first-launch wizard was tested.
+    $roamingBase = [Environment]::GetFolderPath([Environment+SpecialFolder]::ApplicationData)
+    $localBase = [Environment]::GetFolderPath([Environment+SpecialFolder]::LocalApplicationData)
+    $userRoot = [IO.Path]::GetFullPath([Environment]::GetFolderPath([Environment+SpecialFolder]::UserProfile)).TrimEnd('\','/') + [IO.Path]::DirectorySeparatorChar
+    foreach ($base in @($roamingBase, $localBase)) {
+        if (-not [IO.Path]::IsPathFullyQualified($base) -or -not ([IO.Path]::GetFullPath($base) + [IO.Path]::DirectorySeparatorChar).StartsWith($userRoot,[StringComparison]::OrdinalIgnoreCase)) {
+            throw 'Standard profile folders must belong to the disposable runner user.'
+        }
+    }
+    $configurationDirectory = Join-Path $roamingBase 'CadenceStudio'
+    $localDataDirectory = Join-Path $localBase 'CadenceStudio'
+    $settingsPath = Join-Path $configurationDirectory 'CadenceStudio4.ini'
+    if ((Test-Path -LiteralPath $configurationDirectory) -or (Test-Path -LiteralPath $localDataDirectory) -or (Test-Path -LiteralPath $settingsPath)) {
+        throw 'A Cadence profile or settings file already exists; it was left unchanged and no application was started.'
+    }
+    New-Item -ItemType Directory -Path $configurationDirectory | Out-Null
+    $settingsBytes = [Text.UTF8Encoding]::new($false).GetBytes("[application]`r`nhasCompletedFirstLaunchSetup=true`r`n")
+    $settingsStream = [IO.File]::Open($settingsPath,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+    try { $settingsStream.Write($settingsBytes,0,$settingsBytes.Length) } finally { $settingsStream.Dispose() }
+    $report.profile_seeded_by_script = $true
+    $report.profile_precondition = [ordered]@{ settings_path=$settingsPath;settings_sha256=(Get-FileHash $settingsPath -Algorithm SHA256).Hash.ToLowerInvariant();settings_bytes=$settingsBytes.Length;cadence_roaming_directory_was_absent=$true;cadence_local_directory_was_absent=$true;hasCompletedFirstLaunchSetup=$true;musescore_profile_touched=$false;scope='Fresh Cadence-only settings in a disposable hosted runner user profile, not an isolated Windows user and not a first-launch test' }
     $start=[Diagnostics.ProcessStartInfo]::new()
     $start.FileName=$executable;$start.WorkingDirectory=Split-Path -Parent $executable
     $start.UseShellExecute=$false;$start.RedirectStandardOutput=$true;$start.RedirectStandardError=$true

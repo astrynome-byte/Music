@@ -88,3 +88,21 @@ Les rapports `stage-restoration.json`, `library-ui-report.json`, `uia-report.jso
 arbres `tree-*.json`, captures avant/après, sorties de l'application et log de
 compilation sont retenus14jours. Les captures exigent une inspection humaine.
 Il ne s'agit pas d'une release publique ni d'un lien de cadeau destiné à l'ami.
+
+## Précondition du prochain essai : profil Cadence neuf après introduction
+
+Le correctif d'attente a compilé et exécuté dans le run
+[43103724152](https://github.com/astrynome-byte/Music/actions/runs/43103724152).
+Il a observé la navigation réelle (Accueil), puis la fermeture de l'Introduction
+a ouvert sa confirmation d'annulation. Le résultat est resté bloqué, avec
+nettoyage propre : ni bibliothèque ni favoris n'ont été validés.
+
+La préparation actuelle ajoute une **précondition de qualification après
+introduction** : sur le seul runner Windows hébergé jetable, refuser tout
+répertoire Cadence préexistant puis créer exclusivement
+`%APPDATA%/CadenceStudio/CadenceStudio4.ini` avec
+`application/hasCompletedFirstLaunchSetup=true`. Le dossier local Cadence doit
+également être absent. L'INI est créé avec `CreateNew`, et son chemin, contenu
+annoncé et SHA sont enregistrés. Aucun profil MuseScore n'est touché. Cette
+précondition ne valide pas l'assistant du premier lancement et ne modifie pas
+le produit1001. Ce nouvel essai de bibliothèque reste à exécuter.
