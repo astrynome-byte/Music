@@ -12,7 +12,7 @@ permissions:
   actions: read
 jobs:
   read-existing-ui-evidence:
-    runs-on: ubuntu-24.04
+    runs-on: windows-2022
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
@@ -34,15 +34,17 @@ jobs:
           path: ${{ runner.temp }}/existing-library-ui-evidence
       - name: Print bounded reports, trees, log tails and small captures without executing UI
         id: inspect
-        shell: bash
+        shell: pwsh
         run: |
-          python -I "$GITHUB_WORKSPACE/driver/.cadence-studio/library-ui-evidence-reader/read_evidence.py" \
-            --root "$RUNNER_TEMP/existing-library-ui-evidence" \
-            --output "$RUNNER_TEMP/library-ui-evidence-reader-summary"
+          $reader = Join-Path $env:GITHUB_WORKSPACE 'driver/.cadence-studio/library-ui-evidence-reader/read_evidence.py'
+          $inputRoot = Join-Path $env:RUNNER_TEMP 'existing-library-ui-evidence'
+          $outputRoot = Join-Path $env:RUNNER_TEMP 'library-ui-evidence-reader-summary'
+          & python -I $reader --root $inputRoot --output $outputRoot
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: 'Original UI status: ${{ steps.inspect.outputs.source_status }}'
         if: always()
-        shell: bash
-        run: echo 'Reading evidence does not rerun or certify the application UI.'
+        shell: pwsh
+        run: Write-Host 'Reading evidence does not rerun or certify the application UI.'
       - name: Retain the reader summary for 14 days
         if: always()
         uses: actions/upload-artifact@v4
