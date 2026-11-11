@@ -1,0 +1,35 @@
+# Test préparé du cœur hors ligne de Cadence Studio
+
+État : préparation locale uniquement. Aucun lancement Windows, aucune règle de pare-feu créée et aucun résultat de réussite de Cadence ne sont produits par cette préparation. Le workflow court est indépendant de la compilation et de l’installation MSI. Les fichiers sont prêts à copier sous `.cadence-studio/offline-qa/`, et `../cadence-offline-qa.yml` sous `.github/workflows/cadence-offline-qa.yml`. Le restore déjà qualifié est copié à l’identique dans `offline-qa/Restore-LibraryStage.ps1` ; ses sources authentifiées `../library-source/` restent inchangées.
+
+La sélection exécutable est strictement le stage 1001 existant : dépôt `astrynome-byte/Music`, run `42793810996`, artifact `13755702885`, source `76b51af495b721776945717a812e1de2394a689a`, arbre `59d63e6f93b3bb7e8e5291cf57f57f9c5d61a06b`, SHA-256 de `bin/CadenceStudio4.exe` `0aba4ced85a18a781c76c27f0072f2a761f7dee87f73610493887790f38fdb6a`. `Restore-LibraryStage.ps1` vérifie provenance, manifeste, ZIP et membres avant toute exécution ; ce nouveau pilote exige aussi le digest exécutable connu. Son artifact d’origine indique une expiration le 24 novembre 2026 : une indisponibilité bloquera le téléchargement, sans substitution automatique.
+
+Le candidat `0e05d04acbeee32f1b561f24493d7ef41c322081` est suivi dans `selection.json` avec son run de compilation `43108867145`. Ses identifiant d’artifact et SHA exécutable restent `null` tant que le véritable stage ne les fournit pas. Le workflow n’accepte aucun input permettant de substituer ce candidat au stage 1001. Une adaptation nécessite les vraies preuves du stage terminé, un restore authentifiant ce stage et la mise à jour explicite des pins du workflow, du pilote et de `selection.json`, suivie des contrôles locaux.
+
+Le push doit viser seulement les chemins `.cadence-studio/offline-qa/**` et `.github/workflows/cadence-offline-qa.yml` sur `cadence-studio/windows-build` ; ce sont les deux seuls filtres du déclencheur. `workflow_dispatch` reste disponible si GitHub reconnaît déjà ce workflow. Les permissions GitHub sont `contents: read` et `actions: read` ; aucune écriture de source, release ou publication n’est demandée. L’upload conserve seulement les preuves du run dans son artifact de CI.
+
+## Séquence et critères
+
+1. Restaurer le stage authentifié exclusivement sous `RUNNER_TEMP`, sans reconstruire Cadence ni installer de SDK/Qt. Le pilote refuse Linux, ARM64, les runners auto-hébergés, les liens/reparse points, les chemins hors `RUNNER_TEMP` et tout dossier de sortie existant. Il exige un profil Cadence absent dans les vrais dossiers Windows du compte jetable ; aucun compte Cadence, token ou réglage préexistant n’est fourni ou modifié.
+2. Copier le piano MusicXML original CC0 du corpus local. La copie et l’original ont le SHA-256 `1b38cc5953cc56426976345411394c24d39e0ff22dbf6c350addcb68c770a3fb`. Aucun original n’est ouvert par Cadence. Le stage contient déjà `MS Basic.sf3` (51 278 610 octets, MIT), dont le SHA-256 `5ea2375e8bd7d8e71def1036978c1621e85b66934169b6a2744b27b9b3c2d99c` et la taille sont exigés avant l’essai et l’intégrité revérifiée après.
+3. Vérifier les droits administrateur, les API NetSecurity, les services BFE/MpsSvc déjà démarrés et les trois profils effectifs déjà activés. Créer une seule nouvelle règle UUID `Outbound / Block / Any` portant sur le chemin complet exact de cet exécutable dans `RUNNER_TEMP`. Vérifier le même nom dans `ActiveStore`, `Enabled=True`, `PrimaryStatus=OK`, `EnforcementStatus=Full`, le programme exact, tous profils, protocole et adresses distantes `Any`, avant et après chaque commande. En cas de droits, API ou efficacité insuffisants : rapport `blocked`, sans changement de profil, démarrage de service, élévation ou contournement.
+4. Exécuter réellement `--long-version` (30 s), importer la copie par `-o piano-saved.mscx piano-input.musicxml` (90 s), puis rouvrir ce MSCX pour produire un PDF (90 s) et un WAV avec `--sound-profile "MuseScore Basic"` (180 s). Chaque processus reçoit uniquement `stage/bin;System32` dans son `PATH` ; les variables SDK, Qt/QML, proxys et credentials usuels sont retirées de son environnement. Aucun téléchargement par Cadence ne peut satisfaire un export manquant.
+5. Vérifier le code retour de chaque commande, la version 4.7.6, le MSCX XML à deux portées et notes présentes, et le PDF avec en-tête et fin de document. `WaveSignal.cs` inspecte tous les échantillons WAV : RIFF complet, PCM 16/24/32 bits ou float 32/64 bits, 1 à 8 canaux, 8–192 kHz, durée 0,25–120 s, aucun NaN/Inf, aucun échantillon au rail PCM ou à une amplitude absolue ≥ 1, signal non nul, pic > 10⁻⁵ et RMS > 10⁻⁶. C’est un contrôle numérique de silence, valeurs finies et saturation pleine échelle ; ce n’est pas une écoute humaine ou une preuve de fidélité musicale.
+6. Dans `finally`, stopper seulement les processus détenus si nécessaire et supprimer uniquement le nom UUID réservé par ce run après vérification de sa propriété. Vérifier son absence dans `PersistentStore` et `ActiveStore`. Une erreur de suppression donne `cleanup_failed` et fait échouer le job. Aucune règle préexistante n’est modifiée. La destruction du runner jetable reste une protection supplémentaire, sans remplacer cette suppression.
+
+La règle couvre les connexions Internet directes sortantes de ce seul exécutable, sans exception d’adresse distante. Windows peut conserver l’IPC local (par exemple des named pipes ou le loopback local) ; aucune exception Internet n’est ajoutée. Le pilote supprime les variables de proxy mais n’atteste pas les communications d’un autre exécutable, d’un relais local, ni une coupure physique du réseau. Le runner, le téléchargement GitHub et l’upload de preuves restent connectés. La vérification porte sur la politique effective, sans prétendre avoir déclenché une requête réseau de contrôle depuis Cadence.
+
+Les preuves UTF-8 sans BOM sont `offline-qa-report.json`, `SHA256SUMS.txt`, les logs stdout/stderr de chaque commande et les trois exports ; le rapport est aussi imprimé dans le log du job. Il contient les SHA, arguments réels, PID, limites, codes retour, snapshots du pare-feu, métriques audio et le résultat de nettoyage. Un `passed` exige toute la séquence, les contrôles d’intégrité et le retrait de la règle. L’ouverture GUI, les gestes d’édition, la création d’un compte, le premier lancement interactif, le routage audio temps réel et l’écoute humaine restent hors de cet essai CLI.
+
+## Invocation Windows concrète
+
+Le workflow fournit déjà les trois paramètres sans placeholder :
+
+```powershell
+& "$env:GITHUB_WORKSPACE/driver/.cadence-studio/offline-qa/Run-OfflineQa.ps1" `
+  -StagePath "$env:RUNNER_TEMP/offline-stage" `
+  -RestorationRecordPath "$env:RUNNER_TEMP/offline-qa-results/stage-restoration.json" `
+  -OutputDirectory "$env:RUNNER_TEMP/offline-qa-results/smoke"
+```
+
+Les contrôles locaux consignés dans `preparation-checks.json` se limitent au parseur PowerShell, à la compilation du lecteur WAV, au chargement des fichiers UTF-8/JSON/YAML et au refus du pilote sur Linux avant écriture. Ils ne qualifient aucun exécutable Windows.

@@ -1,0 +1,79 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: retained large-score CLI smoke'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/large-qa/**'
+      - '.github/workflows/cadence-large-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-large-qa-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  retained-large-score:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Guard native disposable Windows x64 before checkout or download
+        run: |
+          if (-not [OperatingSystem]::IsWindows() -or $env:OS -ne 'Windows_NT' -or -not [Environment]::Is64BitProcess -or
+              [Runtime.InteropServices.RuntimeInformation]::OSArchitecture -ne 'X64' -or
+              $env:GITHUB_ACTIONS -ne 'true' -or $env:CI -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') {
+            throw 'Only disposable native Windows x64 GitHub-hosted runners are permitted.'
+          }
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          architecture: x64
+      - name: Download only the authenticated retained build 1001 artifact
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '13755702885'
+          run-id: 42793810996
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/large-original-stage
+      - name: Restore and authenticate retained build 1001 without rebuilding or installing Cadence
+        run: |
+          $results = Join-Path $env:RUNNER_TEMP 'large-qa-results'
+          if (Test-Path -LiteralPath $results) { throw 'Large-score results must be new.' }
+          New-Item -ItemType Directory -Path $results | Out-Null
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/library-ui-probe/Restore-LibraryStage.ps1" `
+            -ArtifactDirectory "$env:RUNNER_TEMP/large-original-stage" `
+            -StagePath "$env:RUNNER_TEMP/large-stage" `
+            -ResultPath "$results/stage-restoration.json" *>&1 |
+            Tee-Object -FilePath "$results/restore.log" | Out-Host
+      - name: Exercise large-score copies, native save/reopen, PDF MIDI MXL, and all sixteen native parts
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/large-qa/Run-LargeQa.ps1" `
+            -StagePath "$env:RUNNER_TEMP/large-stage" `
+            -RestorationRecordPath "$env:RUNNER_TEMP/large-qa-results/stage-restoration.json" `
+            -OutputDirectory "$env:RUNNER_TEMP/large-qa-results/smoke" *>&1 |
+            Tee-Object -FilePath "$env:RUNNER_TEMP/large-qa-results/smoke.log" | Out-Host
+      - name: Retain real reports, outputs, hashes, process metrics and logs even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-large-qa-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/large-qa-results/**
+            ${{ runner.temp }}/large-original-stage/stage-manifest.json
+            ${{ runner.temp }}/large-original-stage/cadence-build-result.json
+            ${{ runner.temp }}/large-original-stage/SHA256SUMS.txt
+            ${{ github.workspace }}/driver/.cadence-studio/large-qa/README.md
+            ${{ github.workspace }}/driver/.cadence-studio/large-qa/selection.json
+          retention-days: 14
+          if-no-files-found: warn

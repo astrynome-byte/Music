@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "preparation_status": "prepared_not_executed_on_windows",
+  "current_selection": {
+    "repository": "astrynome-byte/Music",
+    "run_id": 42793810996,
+    "artifact_id": 13755702885,
+    "build_number": 1001,
+    "original_source_commit": "76b51af495b721776945717a812e1de2394a689a",
+    "source_tree": "59d63e6f93b3bb7e8e5291cf57f57f9c5d61a06b",
+    "executable_relative_path": "bin/CadenceStudio4.exe",
+    "executable_sha256": "0aba4ced85a18a781c76c27f0072f2a761f7dee87f73610493887790f38fdb6a",
+    "restore_script": "Restore-LibraryStage.ps1",
+    "soundfont": {
+      "name": "MS Basic.sf3",
+      "bytes": 51278610,
+      "sha256": "5ea2375e8bd7d8e71def1036978c1621e85b66934169b6a2744b27b9b3c2d99c",
+      "license": "MIT"
+    }
+  },
+  "fixture": {
+    "path": "fixtures/large.musicxml",
+    "copied_from": "test/cadence/fixtures/large.musicxml",
+    "license": "CC0-1.0",
+    "sha256": "9086e86d9f59334c4aa691ea3b30b63c1d04676e96aa58993fc53178e3ec500d",
+    "parts": 16,
+    "measures_per_part": 256
+  },
+  "pending_candidate": {
+    "source_commit": "0e05d04acbeee32f1b561f24493d7ef41c322081",
+    "build_run_id": 43108867145,
+    "artifact_id": null,
+    "executable_sha256": null,
+    "eligible_for_this_smoke": false,
+    "note": "Await the real completed stage and authenticated provenance. No artifact id or executable digest is inferred from a running build."
+  },
+  "upstream_harness": {
+    "path": "upstream_run_exports.py",
+    "copied_from": "test/cadence/run_exports.py",
+    "copied_verbatim": true,
+    "source_checkout_commit": "316bd688a7d50f654f88097dff9782bce04a4784",
+    "sha256": "f701874e7a37b8d3148f0bb99477b60b96865e804ed238372d75c06598027d82"
+  }
+}

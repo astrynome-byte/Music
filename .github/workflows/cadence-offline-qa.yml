@@ -1,0 +1,72 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: retained offline core smoke'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/offline-qa/**'
+      - '.github/workflows/cadence-offline-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-offline-qa-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  offline-retained-core:
+    runs-on: windows-2022
+    timeout-minutes: 12
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Download only the authenticated retained build 1001 artifact
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '13755702885'
+          run-id: 42793810996
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/offline-original-stage
+
+      - name: Restore and authenticate build 1001 without rebuilding or installing Cadence
+        run: |
+          $results = Join-Path $env:RUNNER_TEMP 'offline-qa-results'
+          if (Test-Path -LiteralPath $results) { throw 'Offline results must be new.' }
+          New-Item -ItemType Directory -Path $results | Out-Null
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/offline-qa/Restore-LibraryStage.ps1" `
+            -ArtifactDirectory "$env:RUNNER_TEMP/offline-original-stage" `
+            -StagePath "$env:RUNNER_TEMP/offline-stage" `
+            -ResultPath "$results/stage-restoration.json" *>&1 |
+            Tee-Object -FilePath "$results/restore.log" | Out-Host
+
+      - name: Verify an exact-path outbound block then import, save and export the local piano copy
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/offline-qa/Run-OfflineQa.ps1" `
+            -StagePath "$env:RUNNER_TEMP/offline-stage" `
+            -RestorationRecordPath "$env:RUNNER_TEMP/offline-qa-results/stage-restoration.json" `
+            -OutputDirectory "$env:RUNNER_TEMP/offline-qa-results/smoke" *>&1 |
+            Tee-Object -FilePath "$env:RUNNER_TEMP/offline-qa-results/smoke.log" | Out-Host
+
+      - name: Retain the exact report, exports, SHA-256 and logs even when blocked
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-offline-qa-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/offline-qa-results/**
+            ${{ runner.temp }}/offline-original-stage/stage-manifest.json
+            ${{ runner.temp }}/offline-original-stage/cadence-build-result.json
+            ${{ runner.temp }}/offline-original-stage/SHA256SUMS.txt
+            ${{ github.workspace }}/driver/.cadence-studio/offline-qa/README.md
+            ${{ github.workspace }}/driver/.cadence-studio/offline-qa/selection.json
+          retention-days: 14
+          if-no-files-found: warn

@@ -1,0 +1,10 @@
+070d85961b822bdd74d75df23cd1e98c760c541697bb865c5c74001e9426737c  .cadence-studio/offline-qa/.gitattributes
+6a2839544fc3019dc24471471bf3a2dde3f3d982aa2a9af902f72758bd00c93d  .cadence-studio/offline-qa/README.md
+497618b21b986d397fd8d242201fe2da7c8df51cf6eee54fcf323c8a0ca94251  .cadence-studio/offline-qa/Restore-LibraryStage.ps1
+0528c06405cbde00c4ee3407dedf69459830630f2836e1b387ae2c4d90afab4c  .cadence-studio/offline-qa/Run-OfflineQa.ps1
+a60ba9d4f67e95720504e34be0a8d64dd4866a3dbcc7bf099426b57807ab70bd  .cadence-studio/offline-qa/WaveSignal.cs
+506fdeacbf34a01edf36e2775f777889b93cfe0af8b471991b2e02b80bcee246  .cadence-studio/offline-qa/fixtures/LICENSE.txt
+1b38cc5953cc56426976345411394c24d39e0ff22dbf6c350addcb68c770a3fb  .cadence-studio/offline-qa/fixtures/piano.musicxml
+42866e7e37716fee58d7b556e0e3341830008d125cb5a915bf73c34fb9258814  .cadence-studio/offline-qa/preparation-checks.json
+783d03cb3c91cdf1740b3f4d704248fcb4e48a3f5e8baec6a69b329d39e20ca3  .cadence-studio/offline-qa/selection.json
+dc7b7c56c7716d50645f012758e1408d5ec57d7f1507c6d7f0e08989ce9a87e4  .github/workflows/cadence-offline-qa.yml

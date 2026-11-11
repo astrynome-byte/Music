@@ -1,0 +1,121 @@
+{
+  "ps_parser_files": [
+    "/workspace/cadence-ci-driver/offline-qa/Run-OfflineQa.ps1",
+    "/workspace/cadence-ci-driver/offline-qa/Restore-LibraryStage.ps1"
+  ],
+  "ps_parse_errors": 0,
+  "wave_reader_compiled": true,
+  "powershell_version": "7.6.9",
+  "schema_version": 1,
+  "checked_utc": "2026-11-11T22:26:57.343538+00:00",
+  "scope": "Local preparation checks only; no Windows/application execution or firewall operations",
+  "linux_host_guard_rejected": true,
+  "linux_guard_exit_code": 1,
+  "linux_guard_output_directory_created": false,
+  "linux_guard_rejected_spoofed_windows_environment": true,
+  "yaml_parsed": true,
+  "workflow_read_only_github_permissions": true,
+  "workflow_push_paths_checked": true,
+  "fixture_sha256_verified": "1b38cc5953cc56426976345411394c24d39e0ff22dbf6c350addcb68c770a3fb",
+  "utf8_without_bom_verified": true,
+  "windows_application_executed": false,
+  "firewall_rule_created": false,
+  "github_published": false,
+  "final_parser_recheck_utc": "2026-11-11T22:31:20.389636+00:00",
+  "restorer_copy_identical_to_qualified_script": true,
+  "workflow_uses_offline_qa_restore_copy": true,
+  "soundfont_pin_bytes": 51278610,
+  "soundfont_pin_sha256": "5ea2375e8bd7d8e71def1036978c1621e85b66934169b6a2744b27b9b3c2d99c",
+  "line_endings_checked_utc": "2026-11-11T22:34:44.303277+00:00",
+  "namespace_gitattributes": {
+    "path": ".cadence-studio/offline-qa/.gitattributes",
+    "rules": [
+      "* text eol=lf",
+      "fixtures/*.musicxml -text"
+    ],
+    "fixture_raw_bytes_equal_source": true,
+    "scope": "Offline QA namespace only; local raw byte LF/CRLF/CRC32 inspection, no Windows execution"
+  },
+  "line_endings_audit": [
+    {
+      "path": ".gitattributes",
+      "bytes": 40,
+      "lf_count": 2,
+      "crlf_count": 0,
+      "bare_cr_count": 0,
+      "ends_with_lf": true,
+      "crc32": "bcde4d77",
+      "sha256": "070d85961b822bdd74d75df23cd1e98c760c541697bb865c5c74001e9426737c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7364,
+      "lf_count": 35,
+      "crlf_count": 0,
+      "bare_cr_count": 0,
+      "ends_with_lf": true,
+      "crc32": "5bf9bee9",
+      "sha256": "6a2839544fc3019dc24471471bf3a2dde3f3d982aa2a9af902f72758bd00c93d"
+    },
+    {
+      "path": "Restore-LibraryStage.ps1",
+      "bytes": 13313,
+      "lf_count": 195,
+      "crlf_count": 0,
+      "bare_cr_count": 0,
+      "ends_with_lf": true,
+      "crc32": "ce075124",
+      "sha256": "497618b21b986d397fd8d242201fe2da7c8df51cf6eee54fcf323c8a0ca94251"
+    },
+    {
+      "path": "Run-OfflineQa.ps1",
+      "bytes": 21709,
+      "lf_count": 289,
+      "crlf_count": 0,
+      "bare_cr_count": 0,
+      "ends_with_lf": true,
+      "crc32": "87651a4e",
+      "sha256": "0528c06405cbde00c4ee3407dedf69459830630f2836e1b387ae2c4d90afab4c"
+    },
+    {
+      "path": "WaveSignal.cs",
+      "bytes": 6592,
+      "lf_count": 126,
+      "crlf_count": 0,
+      "bare_cr_count": 0,
+      "ends_with_lf": true,
+      "crc32": "694b856d",
+      "sha256": "a60ba9d4f67e95720504e34be0a8d64dd4866a3dbcc7bf099426b57807ab70bd"
+    },
+    {
+      "path": "fixtures/LICENSE.txt",
+      "bytes": 578,
+      "lf_count": 12,
+      "crlf_count": 0,
+      "bare_cr_count": 0,
+      "ends_with_lf": true,
+      "crc32": "98b56ad7",
+      "sha256": "506fdeacbf34a01edf36e2775f777889b93cfe0af8b471991b2e02b80bcee246"
+    },
+    {
+      "path": "fixtures/piano.musicxml",
+      "bytes": 6481,
+      "lf_count": 257,
+      "crlf_count": 0,
+      "bare_cr_count": 0,
+      "ends_with_lf": false,
+      "crc32": "a640af8e",
+      "sha256": "1b38cc5953cc56426976345411394c24d39e0ff22dbf6c350addcb68c770a3fb"
+    },
+    {
+      "path": "selection.json",
+      "bytes": 1360,
+      "lf_count": 35,
+      "crlf_count": 0,
+      "bare_cr_count": 0,
+      "ends_with_lf": true,
+      "crc32": "2a2198df",
+      "sha256": "783d03cb3c91cdf1740b3f4d704248fcb4e48a3f5e8baec6a69b329d39e20ca3"
+    }
+  ]
+}

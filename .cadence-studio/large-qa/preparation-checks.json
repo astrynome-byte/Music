@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "checked_utc": "2026-11-11",
+  "scope": "Local preparation only; no Windows application execution, remote calls, push, or publication",
+  "windows_application_executed": false,
+  "github_published": false,
+  "python_syntax": "passed",
+  "harness_copied_verbatim": true,
+  "fixture_copied_verbatim": true,
+  "license_copied_verbatim": true,
+  "upstream_fixture_validation": [
+    {
+      "id": "large",
+      "path": "large.musicxml",
+      "parts": 16,
+      "measures_per_part": 256,
+      "manual_objectives": [
+        "ouverture et mise en page volumineuses",
+        "mémoire et latence",
+        "sauvegarde et récupération"
+      ],
+      "slow": true,
+      "bytes": 897459,
+      "sha256": "9086e86d9f59334c4aa691ea3b30b63c1d04676e96aa58993fc53178e3ec500d",
+      "notes": 4096,
+      "structure": "passed",
+      "runtime": "not_run"
+    }
+  ],
+  "yaml_parsed": true,
+  "workflow_push_paths_checked": true,
+  "workflow_read_only_github_permissions": true,
+  "workflow_guard_first_step": true,
+  "ps_parser_files": [
+    "/workspace/cadence-ci-driver/large-qa/Run-LargeQa.ps1",
+    "/workspace/cadence-ci-driver/library-ui-probe/Restore-LibraryStage.ps1"
+  ],
+  "ps_parse_errors": 0,
+  "powershell_version": "7.6.9",
+  "python_linux_guard": {
+    "exit_code": 1,
+    "output_created": false,
+    "reason": "BLOCKED before runtime output: Only disposable native Windows x64 GitHub-hosted runners are permitted.",
+    "windows_env_spoof_rejected": true
+  },
+  "powershell_linux_guard": {
+    "exit_code": 1,
+    "output_created": false,
+    "windows_env_spoof_rejected": true
+  },
+  "namespace_gitattributes_lf_and_raw_musicxml_verified": true,
+  "utf8_without_bom_verified": true
+}
