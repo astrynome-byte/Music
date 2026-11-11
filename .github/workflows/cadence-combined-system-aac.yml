@@ -1,0 +1,371 @@
+name: 'Cadence Studio: combined library and system AAC Windows qualification'
+
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/combined-source/**'
+      - '.github/workflows/cadence-combined-system-aac.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: cadence-combined-system-aac-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  combined-candidate:
+    runs-on: windows-2022
+    timeout-minutes: 360
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: ${{ github.workspace }}/cadence-src
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Reconstruct the exact Cadence source tree from pinned upstream
+        working-directory: ${{ github.workspace }}
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-source/Bootstrap.ps1" `
+            -DriverPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-source" `
+            -SourcePath "$env:GITHUB_WORKSPACE/cadence-src" `
+            -ResultPath "$env:RUNNER_TEMP/cadence-bootstrap.json"
+
+      - name: Use MSVC x64
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+
+      - name: Install the Qt kit used by the pinned upstream CI
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.2'
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          modules: 'qt5compat qtnetworkauth qtshadertools qtwebsockets'
+          cache: true
+
+      - name: Prepare build tools
+        run: |
+          choco install cmake --version=3.31.6 --allow-downgrade --yes --installargs 'ADD_CMAKE_TO_PATH=System'
+          if ($LASTEXITCODE -ne 0) { throw 'CMake installation failed' }
+          choco install ninja --version=1.11.1 --allow-downgrade --yes
+          if ($LASTEXITCODE -ne 0) { throw 'Ninja installation failed' }
+          choco install wixtoolset --version=3.14.1 --allow-downgrade --yes
+          if ($LASTEXITCODE -ne 0) { throw 'WiX installation failed' }
+          'C:\Program Files\CMake\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+          'C:\Program Files (x86)\WiX Toolset v3.14\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Use Python for the regression harness
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Retrieve the exact validated source-built zlib component
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '13891238030'
+          run-id: '43101767743'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/cadence-zlib-transport
+          merge-multiple: true
+
+      - name: Prepare and verify the pinned zlib package without overwriting files
+        run: |
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-source/prepare_zlib_package.py" `
+            --input "$env:RUNNER_TEMP/cadence-zlib-transport" `
+            --output "$env:RUNNER_TEMP/qa-zlib-package" `
+            --prepared-package "$env:RUNNER_TEMP/cadence-zlib-prepared"
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned zlib package verification/reconstruction failed' }
+          . ./scripts/windows/Common.ps1
+          Push-Location "$env:RUNNER_TEMP/cadence-zlib-prepared"
+          try {
+              Invoke-CheckedNative cmake @('-E', 'tar', 'cf', "$env:RUNNER_TEMP/Cadence-zlib-1.3.2-corresponding-source.zip", '--format=zip', '--', '.') "$env:RUNNER_TEMP/qa-zlib-package/source-archive.log"
+          } finally { Pop-Location }
+
+      - name: Validate the original corpus and regression harness
+        env:
+          CXX: g++
+          CMAKE_GENERATOR: Ninja
+          ZLIB_TEST_SOURCE_ARCHIVE: ${{ runner.temp }}/cadence-zlib-prepared/sources/zlib-1.3.2.tar.gz
+        run: |
+          $gxx = @(Get-Command g++ -CommandType Application -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source -Unique)
+          if ($gxx.Count -eq 0) { throw 'The portable C++ harness requires the runner GNU compiler; native production stream has a separate MSVC qualification' }
+          & $gxx[0] --version
+          if ($LASTEXITCODE -ne 0) { throw 'GNU compiler query failed' }
+          python --version
+          python test/cadence/run_exports.py --validate-only
+          if ($LASTEXITCODE -ne 0) { throw 'Corpus validation failed' }
+          python -m unittest discover -s test/cadence -v *> "$env:RUNNER_TEMP/combined-unit-tests.log"
+          $unitStatus = $LASTEXITCODE
+          Get-Content "$env:RUNNER_TEMP/combined-unit-tests.log" | Write-Host
+          if ($unitStatus -ne 0) { throw 'Regression harness tests failed' }
+
+      - name: Make FFmpeg available only for external audio validation
+        run: |
+          $decoder = @(Get-Command ffmpeg -CommandType Application -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source -Unique)
+          if ($decoder.Count -eq 0) {
+              choco install ffmpeg --yes --no-progress
+              if ($LASTEXITCODE -ne 0) { throw 'FFmpeg validation-tool installation failed' }
+              $env:PATH = 'C:\ProgramData\chocolatey\bin;' + $env:PATH
+              'C:\ProgramData\chocolatey\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+              $decoder = @(Get-Command ffmpeg -CommandType Application -ErrorAction Stop | Select-Object -ExpandProperty Source -Unique)
+          }
+          if ($decoder.Count -eq 0) { throw 'FFmpeg remains unavailable' }
+          & $decoder[0] -version
+          if ($LASTEXITCODE -ne 0) { throw 'FFmpeg version query failed' }
+
+      - name: Check wrappers and Windows prerequisites
+        run: |
+          ./scripts/windows/Test-Scripts.ps1
+          ./scripts/windows/Doctor.ps1 -QtPath $env:QT_ROOT_DIR -Packaging
+
+      - name: Compile and run the eight production storage and XML scenarios
+        run: |
+          . ./scripts/windows/Common.ps1
+          $cadenceSource = Get-CadenceRoot
+          $qtKit = (Resolve-Path -LiteralPath $env:QT_ROOT_DIR).Path
+          $storeBuild = Join-Path $env:RUNNER_TEMP 'library-store-tests'
+          if (Test-Path -LiteralPath $storeBuild) { throw 'Use a new store-test build directory' }
+          New-Item -ItemType Directory -Path $storeBuild | Out-Null
+          $env:PATH = (Join-Path $qtKit 'bin') + ';' + $env:PATH
+          Invoke-CheckedNative cmake @('-S', "$cadenceSource/test/cadence/local_library_store", '-B', $storeBuild, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_COMPILER=cl.exe', "-DCMAKE_PREFIX_PATH=$qtKit", '-DCMAKE_CXX_FLAGS_INIT=/utf-8') (Join-Path $storeBuild 'configure.log')
+          Invoke-CheckedNative cmake @('--build', $storeBuild, '--parallel', '2') (Join-Path $storeBuild 'build.log')
+          Invoke-CheckedNative ctest @('--test-dir', $storeBuild, '-C', 'Release', '--output-on-failure', '--verbose', '--timeout', '45', '--output-junit', (Join-Path $storeBuild 'ctest-results.xml')) (Join-Path $storeBuild 'ctest.log')
+
+      - name: Fetch pinned dependencies
+        run: ./scripts/windows/Prepare-Dependencies.ps1 -Destination "$env:RUNNER_TEMP/cadence-deps" -WithVstSdk
+
+      - name: Compile and stage the complete Cadence library and system AAC candidate
+        run: |
+          $buildNumber = 2000 + [int]$env:GITHUB_RUN_NUMBER
+          if ($buildNumber -gt 65535) { throw 'Build-number space exhausted; choose a new reviewed version without reusing an MSI identity' }
+          $sdks = Get-Content "$env:RUNNER_TEMP/cadence-deps/prepared-sdks.json" -Raw | ConvertFrom-Json
+          ./scripts/windows/Configure.ps1 -Variant Cadence -QtPath $env:QT_ROOT_DIR `
+            -WinDepsPath "$env:RUNNER_TEMP/cadence-deps/win-deps" `
+            -VstSdkPath "$env:RUNNER_TEMP/cadence-deps/vst3sdk" `
+            -AsioSdkPath $sdks.asio_sdk_path `
+            -BuildPath "$env:RUNNER_TEMP/build-cadence" -InstallPath "$env:RUNNER_TEMP/stage-cadence" `
+            -BuildNumber $buildNumber -UseWindowsSystemAac `
+            -OpenSourceZlibPath "$env:RUNNER_TEMP/cadence-zlib-prepared"
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-source/check_backend.py" `
+            --build "$env:RUNNER_TEMP/build-cadence" --output "$env:RUNNER_TEMP/qa-system-aac-graph/report.json"
+          if ($LASTEXITCODE -ne 0) { throw 'System AAC graph selection failed; no full application build will be attempted' }
+          ./scripts/windows/Build.ps1 -BuildPath "$env:RUNNER_TEMP/build-cadence" -Jobs 2
+
+      - name: Preserve the actual combined candidate stage before CLI, GUI and MSI testing
+        run: |
+          . ./scripts/windows/Common.ps1
+          $lock = Get-CadenceLock
+          $build = "$env:RUNNER_TEMP/build-cadence"
+          $stage = "$env:RUNNER_TEMP/stage-cadence"
+          $bundle = "$env:RUNNER_TEMP/cadence-stage-delivery"
+          New-Item -ItemType Directory -Path $bundle | Out-Null
+          $state = Get-Content "$build/cadence-build.json" -Raw | ConvertFrom-Json
+          $result = Get-Content "$build/cadence-build-result.json" -Raw | ConvertFrom-Json
+          if ($state.variant -ne 'Cadence' -or $state.windows_system_aac -ne $true -or $state.open_source_zlib.pinned_ci_verified -ne $true -or $state.source_commit -ne $result.source_commit) { throw 'Build result and configured variant/source do not match' }
+          if ($state.source_dirty_at_configure -or $result.source_dirty_at_build -or (Get-GitText $state.source_path @('status', '--porcelain', '--untracked-files=all'))) { throw 'Source must be clean at configuration, build and archive time' }
+          if ((Get-GitText $state.source_path @('rev-parse', 'HEAD')) -ne $state.source_commit) { throw 'Source commit changed after build' }
+          $sourceTree = Get-GitText $state.source_path @('rev-parse', 'HEAD^{tree}')
+          $bootstrap = Get-Content "$env:RUNNER_TEMP/cadence-bootstrap.json" -Raw | ConvertFrom-Json
+          if ($state.source_commit -ne $bootstrap.ci_source_commit -or $sourceTree -ne $bootstrap.source_tree) { throw 'Cadence source does not match the reconstructed source tree' }
+          if ((Resolve-CadencePath $state.install_path) -ne (Resolve-CadencePath $stage)) { throw 'Stage does not match the configured installation path' }
+          if ((Resolve-CadencePath $result.executable) -ne (Resolve-CadencePath "$stage/bin/CadenceStudio4.exe")) { throw 'Verified executable is outside the archived stage' }
+          $executableHash = (Get-FileHash -LiteralPath $result.executable -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($executableHash -ne $result.executable_sha256) { throw 'Executable changed after build' }
+          $archive = "CadenceStudio-$($lock.upstream.tag)-combined-system-aac-stage-build-$($state.build_number)-attempt-$env:GITHUB_RUN_ATTEMPT-x64.zip"
+          Push-Location $stage
+          try {
+              Invoke-CheckedNative cmake @('-E', 'tar', 'cf', "$bundle/$archive", '--format=zip', '--', '.') "$bundle/archive.log"
+          } finally { Pop-Location }
+          Copy-Item "$build/cadence-build.json", "$build/cadence-build-result.json" -Destination $bundle
+          Copy-Item ./scripts/config/dependencies.lock.json -Destination "$bundle/dependencies.lock.json"
+          Copy-Item ./scripts/config/zlib-source-profile.lock.json -Destination "$bundle/zlib-source-profile.lock.json"
+          Copy-Item "$env:RUNNER_TEMP/Cadence-zlib-1.3.2-corresponding-source.zip" -Destination $bundle
+          @(
+              (Get-Content "$build/configure.log" -TotalCount 1),
+              "cmake --build `"$build`" --config $($state.configuration) --parallel 2",
+              "cmake --install `"$build`" --config $($state.configuration)"
+          ) | Set-Content "$bundle/BUILD-COMMANDS.txt" -Encoding UTF8
+          $manifest = [ordered]@{
+              schema_version = 1; status = 'experimental-stage-before-qa'; variant = $state.variant
+              upstream_tag = $lock.upstream.tag; upstream_commit = $lock.upstream.commit
+              source_commit = $state.source_commit; source_tree = $sourceTree
+              original_source_commit = $bootstrap.original_source_commit
+              executable_sha256 = $executableHash; stage_archive = $archive
+              stage_archive_sha256 = (Get-FileHash "$bundle/$archive" -Algorithm SHA256).Hash.ToLowerInvariant()
+              qt_version = $state.qt_version; configuration = $state.configuration; build_number = $state.build_number
+              windows_installation_tested = $false; visual_and_listening_validation_completed = $false
+              cli_qa_completed_before_archive = $false; is_portable_distribution = $false
+              run_number = [int]$env:GITHUB_RUN_NUMBER; run_attempt = [int]$env:GITHUB_RUN_ATTEMPT
+              retention_days = 14; durable_local_download_required = $true
+              windows_system_aac = $state.windows_system_aac
+              open_source_zlib = $state.open_source_zlib
+              zlib_sources_archive = 'Cadence-zlib-1.3.2-corresponding-source.zip'
+              zlib_sources_archive_sha256 = (Get-FileHash "$bundle/Cadence-zlib-1.3.2-corresponding-source.zip" -Algorithm SHA256).Hash.ToLowerInvariant()
+              purpose = 'Retain the combined library and system AAC candidate for QA; not a qualified portable package or gift installer'
+          }
+          Write-CadenceJson $manifest "$bundle/stage-manifest.json"
+          Get-ChildItem -LiteralPath $bundle -File | Where-Object Name -ne 'SHA256SUMS.txt' | Sort-Object Name | ForEach-Object {
+              '{0}  {1}' -f (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name
+          } | Set-Content "$bundle/SHA256SUMS.txt" -Encoding ASCII
+
+      - name: Retain the experimental Cadence stage (download before expiry)
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-combined-system-aac-stage-experimental-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cadence-stage-delivery/*
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Run all 57 full-application CLI checks and the musical roundtrip audit
+        run: |
+          python test/cadence/run_exports.py `
+            --executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
+            --output "$env:RUNNER_TEMP/qa-cadence" `
+            --timeout 180
+          if ($LASTEXITCODE -ne 0) { throw 'Cadence export regression failed; packaging is blocked' }
+          $cliReport = Get-Content "$env:RUNNER_TEMP/qa-cadence/report.json" -Raw | ConvertFrom-Json
+          if (@($cliReport.checks).Count -ne 57 -or @($cliReport.checks | Where-Object { -not $_.passed }).Count -ne 0) { throw 'Expected all 57 native/score/audio export checks to pass' }
+          python test/cadence/audit_roundtrip.py `
+            --executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
+            --output "$env:RUNNER_TEMP/qa-roundtrip-cadence" --timeout 180
+          if ($LASTEXITCODE -ne 0) { throw 'cadence musical roundtrip audit failed; inspect semantic comparisons' }
+
+      - name: Compare 35 stable output hashes against the retained Windows reference
+        run: |
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-source/compare_reference.py" `
+            --expected "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-source/expected-reference.json" `
+            --candidate-report "$env:RUNNER_TEMP/qa-cadence/report.json" `
+            --output "$env:RUNNER_TEMP/qa-combined-reference-bytes/report.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed-reference byte differences require review; inspect the report before packaging' }
+
+      - name: Export and externally decode five musical AAC files and require a clear missing-video-encoder error
+        id: qualify_aac
+        run: |
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-source/check_app_aac.py" `
+            --executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
+            --candidate-report "$env:RUNNER_TEMP/qa-cadence/report.json" `
+            --source-root "$env:GITHUB_WORKSPACE/cadence-src" `
+            --output "$env:RUNNER_TEMP/qa-system-aac-music" --timeout 240
+          if ($LASTEXITCODE -ne 0) { throw 'Actual application AAC/Unicode/decode or missing-video-encoder check failed; inspect outputs and logs' }
+          $aacReport = Get-Content "$env:RUNNER_TEMP/qa-system-aac-music/report.json" -Raw | ConvertFrom-Json
+          if (-not $aacReport.passed -or @($aacReport.cases).Count -ne 5 -or @($aacReport.cases | Where-Object { -not $_.passed }).Count -ne 0) { throw 'Five verified musical AAC cases are required' }
+          Write-Host 'CADENCE_APPLICATION_AAC_REPORT_BEGIN'
+          $aacReport | ConvertTo-Json -Depth 20 -Compress | Write-Host
+          Write-Host 'CADENCE_APPLICATION_AAC_REPORT_END'
+          $receipts = @($aacReport.cases | ForEach-Object { "$($_.fixture):$($_.adts.bytes):$($_.adts.sha256)" })
+          "receipt_one=$($receipts[0..2] -join ' ')" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding UTF8
+          "receipt_two=$($receipts[3..4] -join ' ')" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding UTF8
+
+      - name: 'Verified application AAC SHA256 (1/2): ${{ steps.qualify_aac.outputs.receipt_one }}'
+        run: Write-Host 'Three AAC receipts are retained in this completed step name and the JSON report.'
+
+      - name: 'Verified application AAC SHA256 (2/2): ${{ steps.qualify_aac.outputs.receipt_two }}'
+        run: Write-Host 'Two AAC receipts are retained in this completed step name and the JSON report; missing-video CLI error also passed.'
+
+      - name: Observe the actual Cadence GUI without SDK search paths
+        run: |
+          & "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Run-CleanGuiProbe.ps1" `
+            -Executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
+            -ProbePath "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Test-GuiLaunch.ps1" `
+            -OutputDirectory "$env:RUNNER_TEMP/gui-cadence"
+
+      - name: Package experimental installer and source archive
+        run: |
+          ./scripts/windows/Package.ps1 -BuildPath "$env:RUNNER_TEMP/build-cadence" `
+            -OutputPath "$env:RUNNER_TEMP/cadence-delivery" -IncludeStagedZip
+          Copy-Item "$env:RUNNER_TEMP/Cadence-zlib-1.3.2-corresponding-source.zip" -Destination "$env:RUNNER_TEMP/cadence-delivery"
+          Copy-Item ./scripts/config/zlib-source-profile.lock.json -Destination "$env:RUNNER_TEMP/cadence-delivery/zlib-source-profile.lock.json"
+          $zlibSupplement = [ordered]@{
+              schema_version = 1; component = 'zlib'; version = '1.3.2'; experimental = $true
+              producer_run_id = 43101767743; producer_artifact_id = 13891238030
+              archive = 'Cadence-zlib-1.3.2-corresponding-source.zip'
+              archive_sha256 = (Get-FileHash "$env:RUNNER_TEMP/cadence-delivery/Cadence-zlib-1.3.2-corresponding-source.zip" -Algorithm SHA256).Hash.ToLowerInvariant()
+              archive_includes = 'Complete prepared component: original archive, unchanged extracted sources including repaired hidden source, notices, build recipe, native manifest and stage'
+          }
+          $zlibSupplement | ConvertTo-Json -Depth 5 | Set-Content "$env:RUNNER_TEMP/cadence-delivery/zlib-source-supplement.json" -Encoding UTF8
+
+      - name: Test the real MSI, installed GUI observation and exact-product uninstall
+        run: |
+          $msi = @(Get-ChildItem "$env:RUNNER_TEMP/cadence-delivery/*.msi" -File)
+          if ($msi.Count -ne 1) { throw 'Expected one real Cadence MSI' }
+          & "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Test-MsiInstall.ps1" `
+            -MsiPath $msi[0].FullName `
+            -StageBuildResultPath "$env:RUNNER_TEMP/build-cadence/cadence-build-result.json" `
+            -OutputDirectory "$env:RUNNER_TEMP/msi-qa" -ExpectedVersion '4.7.6' `
+            -GuiWrapperPath "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Run-CleanGuiProbe.ps1" `
+            -GuiProbePath "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Test-GuiLaunch.ps1"
+
+      - name: Retain experimental build artifacts (requires GitHub access, expires)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-combined-system-aac-experimental-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/cadence-delivery/*.msi
+            ${{ runner.temp }}/cadence-delivery/*.zip
+            ${{ runner.temp }}/cadence-delivery/*.tar.gz
+            ${{ runner.temp }}/cadence-delivery/*.patch
+            ${{ runner.temp }}/cadence-delivery/*.json
+            ${{ runner.temp }}/cadence-delivery/*.txt
+            ${{ runner.temp }}/cadence-delivery/*.md
+            ${{ runner.temp }}/cadence-bootstrap.json
+            ${{ github.workspace }}/driver/.cadence-studio/combined-source/README.md
+            ${{ github.workspace }}/driver/.cadence-studio/combined-source/prepare_zlib_package.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-source/check_backend.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-source/check_app_aac.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-source/source.json
+            ${{ github.workspace }}/driver/.cadence-studio/combined-source/expected-reference.json
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Retain logs even if construction fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-combined-system-aac-logs-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/build-cadence/*.log
+            ${{ runner.temp }}/build-cadence/*.json
+            ${{ runner.temp }}/build-cadence/CPackConfig.cmake
+            ${{ runner.temp }}/build-cadence/CPackSourceConfig.cmake
+            ${{ runner.temp }}/cadence-delivery/**/*.log
+            ${{ runner.temp }}/cadence-delivery/**/*.wxs
+            ${{ runner.temp }}/cadence-delivery/**/*.wxi
+            ${{ runner.temp }}/qa-cadence/report.json
+            ${{ runner.temp }}/qa-cadence/**/*.log
+            ${{ runner.temp }}/qa-roundtrip-cadence/**
+            ${{ runner.temp }}/gui-cadence/**
+            ${{ runner.temp }}/msi-qa/**
+            ${{ runner.temp }}/cadence-bootstrap.json
+            ${{ runner.temp }}/combined-unit-tests.log
+            ${{ runner.temp }}/library-store-tests/*.log
+            ${{ runner.temp }}/library-store-tests/*.xml
+            ${{ runner.temp }}/library-store-tests/Testing/Temporary/**
+            ${{ runner.temp }}/qa-combined-reference-bytes/**
+            ${{ runner.temp }}/qa-system-aac-graph/**
+            ${{ runner.temp }}/qa-zlib-package/**
+            ${{ runner.temp }}/Cadence-zlib-1.3.2-corresponding-source.zip
+            ${{ runner.temp }}/qa-system-aac-music/report.json
+            ${{ runner.temp }}/qa-system-aac-music/**/*.log
+            ${{ runner.temp }}/qa-system-aac-music/**/*.aac
+            ${{ runner.temp }}/qa-system-aac-music/aac-jobs.json
+            ${{ github.workspace }}/driver/.cadence-studio/combined-source/prepare_zlib_package.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-source/check_backend.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-source/check_app_aac.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-source/source.json
+            ${{ github.workspace }}/driver/.cadence-studio/combined-source/expected-reference.json
+          retention-days: 14
+          if-no-files-found: warn

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "prepared_only": true,
+  "source_commit": "92cd66c3ec485fab2bf49d371da0d82e18551748",
+  "source_tree": "748723b866de3b89774e7a59d45b0d1cd02f5746",
+  "upstream_commit": "96480d58445e3b24b230a3fe7d4725d639aa2eb3",
+  "compressed_patch_sha256": "9ec10e601e6601b22597ec268760ffa89b5a39793cbc3cd36112fc5a8445679a",
+  "compressed_patch_bytes": 570103,
+  "expanded_patch_bytes": 2827146,
+  "isolated_index_restored_exact_tree": true,
+  "windows_full_application_built": false,
+  "human_listening": false,
+  "mp4_qualified": false,
+  "gift_release": false,
+  "retention_days": 14,
+  "legacy_namespaces_modified": false,
+  "local_checks_report": "/workspace/cadence-evidence/combined-driver-local-checks.json"
+}

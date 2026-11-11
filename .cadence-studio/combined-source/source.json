@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "upstream": {
+    "repository": "https://github.com/musescore/MuseScore.git",
+    "tag": "v4.7.6",
+    "commit": "96480d58445e3b24b230a3fe7d4725d639aa2eb3"
+  },
+  "source": {
+    "commit": "92cd66c3ec485fab2bf49d371da0d82e18551748",
+    "tree": "748723b866de3b89774e7a59d45b0d1cd02f5746"
+  },
+  "patch": {
+    "file": "changes.patch.gz",
+    "sha256": "9ec10e601e6601b22597ec268760ffa89b5a39793cbc3cd36112fc5a8445679a"
+  }
+}
