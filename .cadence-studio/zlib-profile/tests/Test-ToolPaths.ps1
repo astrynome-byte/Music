@@ -20,6 +20,8 @@ $WorkPath = Join-Path ([IO.Path]::GetTempPath()) ('zlib tool path regression ' +
 $first = Join-Path $WorkPath 'first CMake installation'
 $second = Join-Path $WorkPath 'second CMake installation'
 $previousPath = $env:PATH
+$callerExitVariable = Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue
+$callerExitValue = if ($null -ne $callerExitVariable) { $callerExitVariable.Value } else { $null }
 New-Item -ItemType Directory -Path $WorkPath, $first, $second | Out-Null
 try {
     if ($env:OS -eq 'Windows_NT') {
@@ -70,5 +72,13 @@ exit 0
     Write-Host 'This is a tool-resolution regression test; it does not compile zlib or validate Windows.'
 } finally {
     $env:PATH = $previousPath
-    Remove-Item -LiteralPath $WorkPath -Recurse -Force
+    try { Remove-Item -LiteralPath $WorkPath -Recurse -Force }
+    finally {
+        # Expected failing native commands must not poison the enclosing Actions
+        # step, whose pwsh wrapper propagates LASTEXITCODE after this script.
+        # Restore caller state rather than exit 0: real assertion failures remain
+        # terminating errors and must still fail the surrounding step.
+        if ($null -ne $callerExitVariable) { $global:LASTEXITCODE = $callerExitValue }
+        else { Remove-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue }
+    }
 }

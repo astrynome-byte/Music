@@ -1,0 +1,20 @@
+{
+  "checked_utc": "2026-11-11",
+  "diagnosis": "Expected failing native regression command left LASTEXITCODE nonzero in caller; GitHub pwsh shell propagated it after PASS",
+  "reproduction_before_fix": {
+    "github_style_shell_exit": 1,
+    "caller_native_exit": 9,
+    "all_guard_assertions_reported_pass": true
+  },
+  "fix": "Save and restore caller LASTEXITCODE in test finally; no unconditional exit 0",
+  "tests_after_fix": {
+    "source_integrity_guards": 2,
+    "ci_exit_regressions": 2,
+    "passed": 4,
+    "failed": 0,
+    "real_wrong_tool_guard_still_fatal": true
+  },
+  "production_build_script_modified": false,
+  "windows_component_rebuild_executed": false,
+  "requires_windows_ci_rerun": true
+}

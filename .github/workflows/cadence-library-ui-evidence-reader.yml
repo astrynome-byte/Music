@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: read the existing retained-library UI evidence'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/library-ui-evidence-reader/**'
+      - '.github/workflows/cadence-library-ui-evidence-reader.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  read-existing-ui-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Download only the already completed UIA evidence artifact
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '13891631675'
+          run-id: 43101086728
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/existing-library-ui-evidence
+      - name: Print bounded reports, trees, log tails and small captures without executing UI
+        id: inspect
+        shell: bash
+        run: |
+          python -I "$GITHUB_WORKSPACE/driver/.cadence-studio/library-ui-evidence-reader/read_evidence.py" \
+            --root "$RUNNER_TEMP/existing-library-ui-evidence" \
+            --output "$RUNNER_TEMP/library-ui-evidence-reader-summary"
+      - name: 'Original UI status: ${{ steps.inspect.outputs.source_status }}'
+        if: always()
+        shell: bash
+        run: echo 'Reading evidence does not rerun or certify the application UI.'
+      - name: Retain the reader summary for 14 days
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-library-ui-evidence-reader-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/library-ui-evidence-reader-summary/
+          retention-days: 14
+          if-no-files-found: warn

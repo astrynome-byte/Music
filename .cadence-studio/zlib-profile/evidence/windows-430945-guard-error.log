@@ -1,0 +1,12 @@
+Run 43094504840; job 130779749675; selected guard-step evidence only (environment dump omitted).
+2026-11-11T20:14:16.4369218Z test_existing_directory_is_preserved (test_fetch.SourceIntegrityTests.test_existing_directory_is_preserved) ... ok
+2026-11-11T20:14:16.4837413Z test_tampered_archive_never_creates_source_directory (test_fetch.SourceIntegrityTests.test_tampered_archive_never_creates_source_directory) ... ok
+2026-11-11T20:14:16.4837917Z 
+2026-11-11T20:14:16.4838083Z ----------------------------------------------------------------------
+2026-11-11T20:14:16.4838392Z Ran 2 tests in 0.479s
+2026-11-11T20:14:16.4838497Z 
+2026-11-11T20:14:16.4838567Z OK
+2026-11-11T20:14:16.7760698Z PRIMARY_CMAKE_SHIM
+2026-11-11T20:14:16.9722671Z PASS: actual Native/ToolPath AST, two CMake installations in spaced paths, first-tool selection, exact arguments, nonzero status and missing-tool rejection.
+2026-11-11T20:14:16.9726839Z This is a tool-resolution regression test; it does not compile zlib or validate Windows.
+2026-11-11T20:14:17.0202976Z ##[error]Process completed with exit code 1.

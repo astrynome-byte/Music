@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_utc": "2026-11-10",
+  "updated_utc": "2026-11-11",
   "component": "zlib archive engine",
   "retained_stage7": {
     "version": "1.2.8",
@@ -16,7 +16,7 @@
     "integration": "Prepared optional patch; not applied to the application",
     "linux_upstream_tests": "16/16 passed",
     "linux_installed_api_probe": "1/1 passed",
-    "windows_build": "Prepared; not executed by this task",
+    "windows_build": "Run 43094504840 stopped after passing guards because their negative test leaked LASTEXITCODE; local regression fix passed, component build rerun pending",
     "cadence_link_and_compatibility": "Pending"
   },
   "unchanged_separate_copy": {

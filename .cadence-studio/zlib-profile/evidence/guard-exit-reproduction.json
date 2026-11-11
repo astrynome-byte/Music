@@ -1,0 +1,12 @@
+{
+  "actual_windows_run": 43094504840,
+  "actual_windows_job": 130779749675,
+  "local_shell": "pwsh -command dot-source step, then GitHub-style LASTEXITCODE propagation",
+  "local_reproduced": true,
+  "exit_code": 1,
+  "stdout": "PRIMARY_CMAKE_SHIM\nPASS: actual Native/ToolPath AST, two CMake installations in spaced paths, first-tool selection, exact arguments, nonzero status and missing-tool rejection.\nThis is a tool-resolution regression test; it does not compile zlib or validate Windows.\nPERSISTENT_NATIVE_EXIT=9\n",
+  "stderr": "",
+  "windows_failure_observation": "All guard assertions report PASS, but surrounding CI step exits nonzero before component build",
+  "diagnosis": "Caught expected negative native-command test leaves LASTEXITCODE nonzero in caller scope",
+  "windows_build_executed_by_repro": false
+}

@@ -141,3 +141,13 @@ annoncés par les résultats Linux.
 `ToolPath` du script, puis utilise deux commandes CMake homonymes dans des
 chemins avec espaces. Il vérifie le choix du premier outil, les arguments,
 les erreurs natives et les outils absents, sans exécuter la construction Windows.
+
+Le run Windows `43094504840` a effectivement réussi ces gardes, puis son étape
+a échoué avant construction : le test négatif laissait `LASTEXITCODE=9`, propagé
+par l'enveloppe PowerShell de GitHub Actions malgré le message PASS. Le test
+préserve maintenant l'état de sortie natif de l'appelant dans son `finally`.
+Il ne force pas `exit 0`. `tests/test_ci_exit.py` reproduit l'enveloppe Actions
+réelle et vérifie aussi qu'une vraie mauvaise sélection d'outil reste fatale.
+Ces quatre tests locaux passent ; la compilation Windows du composant doit être
+relancée pour qualifier cette correction. Les preuves ciblées sont dans
+`evidence/guard-exit-reproduction.json` et `evidence/guard-exit-fix.json`.
