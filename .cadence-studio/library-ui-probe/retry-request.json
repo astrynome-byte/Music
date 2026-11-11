@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "purpose": "Request a fresh push event for the unchanged retained-stage UIA workflow, pending root review",
+  "prepared_utc": "2026-11-11 21:09:43 UTC",
+  "previous_queued_run_id": 43096474468,
+  "previous_commit": "00a043101e69eeb9393c2239f43faeea0fae2ab4",
+  "observed_previous_job_count": 0,
+  "application_source_commit": "76b51af495b721776945717a812e1de2394a689a",
+  "application_source_tree": "59d63e6f93b3bb7e8e5291cf57f57f9c5d61a06b",
+  "retained_stage_artifact_id": 13755702885,
+  "retained_stage_run_id": 42793810996,
+  "workflow_source_changes": false,
+  "probe_source_changes": false,
+  "application_source_changes": false,
+  "reason": "Earlier commit cohort remains queued with no jobs returned; the scheduling cause is not exposed. This is a diagnostic retry event, not a demonstrated fix.",
+  "uia_execution_previously_observed": false
+}
