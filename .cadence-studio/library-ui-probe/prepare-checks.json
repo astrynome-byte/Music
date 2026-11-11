@@ -1,8 +1,8 @@
 {
   "date": "2026-11-11",
-  "status": "prepared-not-uploaded-not-executed",
-  "yaml_steps": 7,
-  "powershell_scripts_and_snippets_parsed": 5,
+  "status": "splash-readiness-fix-prepared-not-executed",
+  "yaml_steps": 8,
+  "powershell_scripts_and_snippets_parsed": 6,
   "native_pinvoke_declarations_compiled_on_linux": true,
   "cpp_sdk_compiled": false,
   "windows_ui_automation_executed": false,
@@ -12,14 +12,36 @@
   "artifact_id": 13755702885,
   "run_id": 42793810996,
   "limits": [
-    "UIA SDK compilation requires the proposed Windows job.",
-    "No active tab, capture or native accessibility result has yet been obtained by this probe."
+    "Changed probe not yet compiled or executed on Windows.",
+    "Initial version compiled on Windows but inspected the splash too early.",
+    "No library tab/add/favorites/score opening has been validated by UIA."
   ],
   "files": {
-    "README.md": "6b3c0d8140465c3be86f7ac97d48979d1c929eaa479da30d56668e1365df22d2",
+    "README.md": "eab596288da4d814d2a2ee6c29f7470aff13fabdd1c02622524ab109973611cb",
     "Restore-LibraryStage.ps1": "497618b21b986d397fd8d242201fe2da7c8df51cf6eee54fcf323c8a0ca94251",
-    "UiaProbe.cpp": "670a5ee50097f9ebbabda9a2f5025bf252166f087de9812da3b4df1d8f74d9a5",
+    "UiaProbe.cpp": "d1e530a862abaa6f78884c9cbf34972b465e8f11750bfff525910f2ad3027cd7",
     "Run-LibraryUiProbe.ps1": "c7f7c1bc41a2e9e863d32ef57153938c664527f8ebd896d890dc147f78bb4af1"
   },
-  "workflow_sha256": "646c58c255b30447f4a68623c9fafedf4887aff29728d0dc39cf7b035ce9206a"
+  "workflow_sha256": "63084b4eaf8437f0e6a302c9428238c260312e8a18c5ccf9af8778628160f478",
+  "previous_probe": {
+    "run_id": 43101086728,
+    "job_id": 130792444190,
+    "sdk_compilation": "PASS MSVC14.44.35207 SDK10.0.26100.0",
+    "status": "blocked_library_controls_or_semantic_action_unavailable",
+    "captures": "Both original PNGs SHA e99b60bc36c6964fea044bb5eb3fd02e41d9dcec3049b35d85a5d755dd58d9bb show splash800x380 only",
+    "uia_nodes": 0,
+    "actions": 0,
+    "cleanup_exit_code": 0,
+    "cleanup_forced": false,
+    "artifact_id": 13891631675,
+    "reader_run_id": 43102505362
+  },
+  "powershell_readback_runtime_on_linux": {
+    "status": "PASS diagnostic only",
+    "fixture_cases": [
+      "two JSON envelopes and PNG exact current run id",
+      "oversized JSON and base64 PNG excluded"
+    ],
+    "application_executed": false
+  }
 }

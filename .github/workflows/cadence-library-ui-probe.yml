@@ -80,6 +80,52 @@ jobs:
             -ProbePath "$env:RUNNER_TEMP/library-ui-probe-build/UiaProbe.exe" `
             -OutputDirectory "$env:RUNNER_TEMP/library-ui-results/ui-probe"
 
+      - name: Print bounded evidence from this exact UI inspection even if it was blocked
+        if: always()
+        run: |
+          $resultRoot = Join-Path $env:RUNNER_TEMP 'library-ui-results'
+          $jsonBudget = 1000000L
+          $pngBudget = 2000000L
+          $jsonPrinted = 0L
+          $pngPrinted = 0L
+          $notes = [Collections.Generic.List[string]]::new()
+          function Write-Evidence([string] $Kind, $Document) {
+            Write-Host ('CADENCE_UI_EVIDENCE_' + $Kind + '_BEGIN')
+            Write-Host ($Document | ConvertTo-Json -Depth 40 -Compress)
+            Write-Host ('CADENCE_UI_EVIDENCE_' + $Kind + '_END')
+          }
+          if (Test-Path -LiteralPath $resultRoot -PathType Container) {
+            $jsonFiles = @(Get-ChildItem -LiteralPath $resultRoot -Recurse -File -Filter '*.json' |
+              Where-Object { -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) } |
+              Sort-Object FullName | Select-Object -First 17)
+            if ($jsonFiles.Count -gt 16) { $notes.Add('More than16 JSON files; printing only first16.') }
+            foreach ($file in @($jsonFiles | Select-Object -First 16)) {
+              if ($file.Length -gt $jsonBudget) { $notes.Add('Oversized JSON excluded: ' + $file.Name); continue }
+              try {
+                $raw = [IO.File]::ReadAllBytes($file.FullName)
+                $document = [Text.Encoding]::UTF8.GetString($raw).TrimStart([char]0xfeff) | ConvertFrom-Json -AsHashtable
+                $envelope = [ordered]@{ source_run_id=[long]$env:GITHUB_RUN_ID;path=[IO.Path]::GetRelativePath($resultRoot,$file.FullName).Replace('\','/');bytes=$raw.Length;sha256=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($raw)).ToLowerInvariant();report=$document }
+                $encoded = $envelope | ConvertTo-Json -Depth 40 -Compress
+                $size = [Text.Encoding]::UTF8.GetByteCount($encoded)
+                if ($jsonPrinted + $size -gt $jsonBudget) { $notes.Add('JSON aggregate budget reached: ' + $file.Name); continue }
+                Write-Evidence 'JSON' $envelope
+                $jsonPrinted += $size
+              } catch { $notes.Add('Unreadable JSON: ' + $file.Name + ': ' + $_.Exception.Message) }
+            }
+            $pngFiles = @(Get-ChildItem -LiteralPath $resultRoot -Recurse -File -Filter '*.png' |
+              Where-Object { -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) } |
+              Sort-Object FullName | Select-Object -First 3)
+            if ($pngFiles.Count -gt 2) { $notes.Add('More than2 PNG captures; printing only first2.') }
+            foreach ($file in @($pngFiles | Select-Object -First 2)) {
+              if (4L * [long][Math]::Ceiling($file.Length / 3.0) + $pngPrinted -gt $pngBudget) { $notes.Add('PNG base64 aggregate budget reached: ' + $file.Name); continue }
+              $raw = [IO.File]::ReadAllBytes($file.FullName)
+              $base64 = [Convert]::ToBase64String($raw)
+              Write-Evidence 'PNG' ([ordered]@{ source_run_id=[long]$env:GITHUB_RUN_ID;path=[IO.Path]::GetRelativePath($resultRoot,$file.FullName).Replace('\','/');bytes=$raw.Length;sha256=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($raw)).ToLowerInvariant();base64=$base64 })
+              $pngPrinted += $base64.Length
+            }
+          } else { $notes.Add('No result directory exists; UI evidence unavailable.') }
+          Write-Evidence 'SUMMARY' ([ordered]@{ schema_version=1;source_run_id=[long]$env:GITHUB_RUN_ID;scope='Read back existing results from this exact workflow only';reader_only=$true;application_executed=$false;ui_validation_inferred_from_reading=$false;json_printed_bytes=$jsonPrinted;png_base64_printed_bytes=$pngPrinted;notes=@($notes.ToArray()) })
+
       - name: Retain UI reports, tree dumps, captures and logs even on failure
         if: always()
         uses: actions/upload-artifact@v4

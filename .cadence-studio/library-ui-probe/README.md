@@ -1,9 +1,22 @@
 # Inspection active du véritable onglet Bibliothèque locale
 
-Préparation du 11 novembre 2026, **sans publication ni lancement Windows**.
-Le probe n'a pas encore été compilé avec le SDK Windows ; ce sera la première
-étape native à vérifier dans ce workflow court. Aucun succès UIA n'est déduit
-des tests de compilation/installation antérieurs de l'application.
+Correction préparée le 11 novembre 2026, **pas encore exécutée**. La probe
+initiale a réellement compilé avec MSVC/SDK puis inspecté le stage dans le
+run [43101086728](https://github.com/astrynome-byte/Music/actions/runs/43101086728).
+Son résultat reste bloqué : trois arbres vides, aucune action, captures avant
+et après identiques montrant uniquement l'écran de démarrage 800 × 380.
+Le nettoyage a fermé proprement le processus (exit0, aucun arrêt forcé).
+Les preuves ont été relues, sans réexécuter l'application, par le run
+[43102505362](https://github.com/astrynome-byte/Music/actions/runs/43102505362).
+
+Le lanceur attendait seulement le premier HWND visible ; la probe demandait
+immédiatement l'onglet puis abandonnait si celui-ci était absent. La correction
+attend désormais les contrôles sémantiques exacts Accueil/Partitions/Bibliothèque
+et réessaie leur apparition sous la même limite globale de 55 secondes.
+Les snapshots ajoutent HWND, titre, propriétaire, état et HRESULT de
+`ElementFromHandle` afin de documenter un éventuel bridge inaccessible. Aucun
+rôle ni nom de contrôle n'est élargi. L'onglet, les favoris et l'ouverture de
+partitions restent **non validés** jusqu'à un nouveau résultat Windows réel.
 
 ## Application observée et restauration
 
