@@ -172,3 +172,19 @@ ne valide pas l'ajout. Les contrôles locaux du code de copie/validation ont
 passé neuf cas (dont erreur préalable, crash et nettoyage forcé), sans application ni UI Windows. L'étape complète reste à compiler
 et exécuter sur Windows. Recherche, réouverture après redémarrage, édition des
 notes et écoute ne sont pas validées par cet essai préparé.
+
+Le run [43118117744](https://github.com/astrynome-byte/Music/actions/runs/43118117744)
+a maintenant réellement sélectionné la copie dans le sélecteur Windows :
+ValuePattern sur File name:/ID1148 et Invoke Open/ID1 réussis, chemin relu exact,
+dialog fermé et main réactivé. La capture a été revue : une partition apparaît
+avec le titre/compositeur attendus ; source et copie restent identiques SHA.
+Le favori n'a pas été tenté car Down n'a pas retrouvé le contrôle Ouvrir après
+retour du dialog. L'essai global est resté en échec, sans arrêt forcé.
+
+La correction préparée reprend explicitement la navigation par F6 vers le
+premier panneau de la section Partitions, puis Tab vers l'onglet local courant
+et Tab vers Ajouter. Les noms/PID/rôles sont revérifiés après chaque geste avant
+Down. Le plafond est désormais17 gestes (F6≤6, Tab≤4, Right≤3, Down≤1, Return≤3),
+sous le même délai55s. Le catalogue brut est conservé même lorsque l'assertion
+favorite=true échoue. Ce correctif de qualification reste à exécuter ; il ne
+modifie pas l'application et ne valide pas encore favoris/recherche/redémarrage.

@@ -21,12 +21,12 @@
   "windows_application_executed": false,
   "firewall_rule_created": false,
   "github_published": false,
-  "final_parser_recheck_utc": "2026-11-11T23:16:32.736955+00:00",
+  "final_parser_recheck_utc": "2026-11-11T23:30:46.849195+00:00",
   "restorer_copy_identical_to_qualified_script": true,
   "workflow_uses_offline_qa_restore_copy": true,
   "soundfont_pin_bytes": 51278610,
   "soundfont_pin_sha256": "5ea2375e8bd7d8e71def1036978c1621e85b66934169b6a2744b27b9b3c2d99c",
-  "line_endings_checked_utc": "2026-11-11T23:16:32.740185+00:00",
+  "line_endings_checked_utc": "2026-11-11T23:30:46.852702+00:00",
   "namespace_gitattributes": {
     "path": ".cadence-studio/offline-qa/.gitattributes",
     "rules": [
@@ -49,13 +49,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 9444,
+      "bytes": 10271,
       "lf_count": 39,
       "crlf_count": 0,
       "bare_cr_count": 0,
       "ends_with_lf": true,
-      "crc32": "c4348a5d",
-      "sha256": "6cac16f0ec98e3666a5f40534fb29a9b41b1183ee97a703dfd9382e86e60209c"
+      "crc32": "d02c1830",
+      "sha256": "d25a83f8b23bb0e3bc42fc96819f1fc4521332d0cbb16112a6f52b5558309c09"
     },
     {
       "path": "Restore-LibraryStage.ps1",
@@ -69,13 +69,13 @@
     },
     {
       "path": "Run-OfflineQa.ps1",
-      "bytes": 25179,
-      "lf_count": 335,
+      "bytes": 31299,
+      "lf_count": 417,
       "crlf_count": 0,
       "bare_cr_count": 0,
       "ends_with_lf": true,
-      "crc32": "c9e2c328",
-      "sha256": "0320038c61a2fe04c9b7c88cbf550a09594d98f8ec8816d8a22388ec54f2d5d2"
+      "crc32": "8663157d",
+      "sha256": "0d05de562e0838b09408410d8f28a25e4628dd43537a1816eab4985e0f5eec52"
     },
     {
       "path": "WaveSignal.cs",
@@ -94,8 +94,8 @@
       "crlf_count": 0,
       "bare_cr_count": 0,
       "ends_with_lf": true,
-      "crc32": "3f0def0c",
-      "sha256": "e9bf35b688aa8bde739f395366f40618476825c84dfe12e27d195f53eb676bb3"
+      "crc32": "e69fe6c3",
+      "sha256": "6a5e8c7e8a7c174054f87b7d870313ba5b4d97490c5212373efac66e614f4cd3"
     },
     {
       "path": "evidence/enforcement-status-microsoft-proof.json",
@@ -126,6 +126,16 @@
       "ends_with_lf": true,
       "crc32": "9ebd7379",
       "sha256": "b6e8e5f9ebec963659a8aff697ad134c0b18ec15de4d75c498a286912d7d0442"
+    },
+    {
+      "path": "evidence/run43119684358-report-from-job-log.json",
+      "bytes": 4942,
+      "lf_count": 148,
+      "crlf_count": 0,
+      "bare_cr_count": 0,
+      "ends_with_lf": true,
+      "crc32": "b269bc82",
+      "sha256": "51495a8565a2e273ea8749087697b03bf307d67895970b462fdf43f862f0ac8b"
     },
     {
       "path": "fixtures/LICENSE.txt",
@@ -176,6 +186,22 @@
     "only_additional_code_allowed": 5,
     "all_other_rule_invariants_unchanged": true,
     "actual_predicate_cases_passed": 51,
+    "windows_executed_for_this_correction": false,
+    "remote_published_by_this_correction": false
+  },
+  "enforcement_representation_correction": {
+    "reason": "Run 43119684358 returned adapted labels; direct integer conversion blocked before application execution",
+    "display_and_raw_types_captured_before_conversion": true,
+    "preferred_source": "Native CIM UInt16Array",
+    "fallback_source": "Installed Microsoft NetSecurity CDXML with exact Enforced=1/ProfileInactive=5 enum pairs; module manifest version/SHA and matched CDXML SHA recorded",
+    "fallback_bounds": {
+      "max_files": 64,
+      "max_file_bytes": 2097152,
+      "max_total_bytes": 16777216
+    },
+    "numeric_predicate_unchanged": true,
+    "actual_predicate_cases_passed": 51,
+    "linux_guard_rechecked": true,
     "windows_executed_for_this_correction": false,
     "remote_published_by_this_correction": false
   }

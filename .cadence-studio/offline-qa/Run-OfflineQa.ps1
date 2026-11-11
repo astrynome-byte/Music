@@ -80,6 +80,91 @@ function Test-EffectiveEnforcement([int[]] $Values) {
     return ($Values.Count -gt 0 -and 1 -in $Values -and
         @($Values | Where-Object { $_ -notin @(1,5) }).Count -eq 0)
 }
+function Resolve-EnforcementValues($Rule, $Observation) {
+    # Capture the adapted representation before trying any numeric conversion.
+    $displayValues=@($Rule.EnforcementStatus)
+    $Observation['enforcement_display_entries']=@($displayValues | ForEach-Object {
+        [ordered]@{ value=[string]$_; runtime_type=if ($null -eq $_) { 'null' } else { $_.GetType().FullName } }
+    })
+    $rawRecord=[ordered]@{ available=$false; property_type=$null; entries=@(); error=$null; used=$false }
+    $Observation['enforcement_raw_cim']=$rawRecord
+    try {
+        if ($Rule -is [Microsoft.Management.Infrastructure.CimInstance]) {
+            $property=$Rule.CimInstanceProperties['EnforcementStatus']
+            if ($null -ne $property) {
+                $rawRecord.available=$true; $rawRecord.property_type=[string]$property.CimType
+                $rawValues=@($property.Value)
+                $rawRecord.entries=@($rawValues | ForEach-Object {
+                    [ordered]@{ value=[string]$_; runtime_type=if ($null -eq $_) { 'null' } else { $_.GetType().FullName } }
+                })
+                if ([string]$property.CimType -eq 'UInt16Array' -and
+                    @($rawValues | Where-Object { $_ -isnot [UInt16] }).Count -eq 0) {
+                    $numeric=@($rawValues | ForEach-Object { [int]$_ })
+                    $rawRecord.used=$true; $Observation['enforcement_numeric_source']='raw MSFT_NetFirewallRule.CimInstanceProperties UInt16Array'
+                    $Observation['enforcement_entries']=@($rawValues | ForEach-Object {
+                        [ordered]@{ name=[string]$_; numeric_value=[int]$_; runtime_type=$_.GetType().FullName; source='raw_cim' }
+                    })
+                    return $numeric
+                }
+            }
+        }
+    } catch { $rawRecord.error=$_.Exception.Message }
+
+    # Some PowerShell adapters expose only labels. Resolve only the two
+    # documented codes, and only after verifying their names/values against the
+    # installed Microsoft NetSecurity CDXML metadata. Missing metadata blocks.
+    $moduleRoot=Full-Path (Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/Modules/NetSecurity')
+    Assert-NoReparse $moduleRoot
+    $manifestPath=Join-Path $moduleRoot 'NetSecurity.psd1'
+    Assert-NoReparse $manifestPath
+    if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf) -or (Get-Item -LiteralPath $manifestPath).Length -gt 1048576) { throw 'Installed NetSecurity manifest unavailable or oversized; label mapping blocked.' }
+    $manifest=Import-PowerShellDataFile -LiteralPath $manifestPath -ErrorAction Stop
+    $moduleRecord=[ordered]@{
+        manifest_path=$manifestPath; manifest_sha256=Hash $manifestPath; module_version=[string]$manifest.ModuleVersion
+        company_name=[string]$manifest.CompanyName; files_examined=@(); verified_enums=@()
+    }
+    $Observation['enforcement_module_metadata']=$moduleRecord
+    if ([string]$manifest.CompanyName -notmatch '^Microsoft(?:\s|$)' -or [string]::IsNullOrWhiteSpace([string]$manifest.ModuleVersion)) { throw 'Installed NetSecurity module metadata does not identify Microsoft and a version.' }
+    $command=Get-Command Get-NetFirewallRule -ErrorAction Stop
+    $moduleRecord['loaded_command_module']=$command.ModuleName
+    $moduleRecord['loaded_command_version']=[string]$command.Version
+    if ($command.ModuleName -cne 'NetSecurity') { throw 'Firewall command is not supplied by the NetSecurity module.' }
+    $files=@(Get-ChildItem -LiteralPath $moduleRoot -File -Filter '*.cdxml' -ErrorAction Stop)
+    if ($files.Count -lt 1 -or $files.Count -gt 64) { throw 'Installed NetSecurity CDXML file count outside inspection bounds.' }
+    [long]$totalBytes=0
+    foreach ($file in $files) {
+        Assert-NoReparse $file.FullName
+        $totalBytes+=$file.Length
+        if ($file.Length -gt 2097152 -or $totalBytes -gt 16777216) { throw 'Installed NetSecurity CDXML metadata exceeds inspection bounds.' }
+        $moduleRecord.files_examined+=$file.Name
+        $settings=[Xml.XmlReaderSettings]::new(); $settings.DtdProcessing=[Xml.DtdProcessing]::Prohibit; $settings.XmlResolver=$null
+        $reader=[Xml.XmlReader]::Create($file.FullName,$settings)
+        try { $document=[Xml.XmlDocument]::new(); $document.XmlResolver=$null; $document.Load($reader) } finally { $reader.Dispose() }
+        foreach ($enum in $document.SelectNodes('//*[local-name()="Enum"]')) {
+            $enumName=$enum.GetAttribute('EnumName')
+            if ($enumName -cne 'EnforcementStatus' -and -not $enumName.EndsWith('.EnforcementStatus',[StringComparison]::Ordinal)) { continue }
+            $pairs=@($enum.SelectNodes('.//*[local-name()="EnumValue"]') | ForEach-Object { [ordered]@{ name=$_.GetAttribute('Name'); value=$_.GetAttribute('Value') } })
+            $enforced=@($pairs | Where-Object { $_.name -ceq 'Enforced' })
+            $inactive=@($pairs | Where-Object { $_.name -ceq 'ProfileInactive' })
+            if ($enforced.Count -ne 1 -or $inactive.Count -ne 1 -or $enforced[0].value -cne '1' -or $inactive[0].value -cne '5') { throw 'Installed EnforcementStatus enum does not verify Enforced=1 and ProfileInactive=5.' }
+            $moduleRecord.verified_enums += [ordered]@{ path=$file.FullName; sha256=Hash $file.FullName; enum_name=$enumName; enforced_value=1; profile_inactive_value=5 }
+        }
+    }
+    if ($moduleRecord.verified_enums.Count -lt 1) { throw 'Installed Microsoft CDXML EnforcementStatus mapping was not found; labels remain untrusted.' }
+    $resolved=[Collections.Generic.List[int]]::new()
+    $entries=[Collections.Generic.List[object]]::new()
+    foreach ($value in $displayValues) {
+        $name=[string]$value
+        if ($name -ceq 'Enforced') { $number=1 }
+        elseif ($name -ceq 'ProfileInactive') { $number=5 }
+        else { throw 'Unexpected enforcement label; only metadata-verified Enforced/ProfileInactive can be normalized.' }
+        $resolved.Add($number)
+        $entries.Add([ordered]@{ name=$name; numeric_value=$number; runtime_type=$value.GetType().FullName; source='verified_installed_cdxml' })
+    }
+    $Observation['enforcement_numeric_source']='installed Microsoft NetSecurity CDXML Enforced=1/ProfileInactive=5'
+    $Observation['enforcement_entries']=@($entries.ToArray())
+    return $resolved.ToArray()
+}
 function Assert-EffectiveRule([string] $Moment) {
     try {
     $profiles = @(Get-NetFirewallProfile -PolicyStore ActiveStore -ErrorAction Stop)
@@ -113,10 +198,7 @@ function Assert-EffectiveRule([string] $Moment) {
     # Require actual enforcement, allow inactive-profile entries alongside it,
     # and reject all other codes. Empty/inactive-only states never qualify.
     # https://github.com/MicrosoftDocs/win32/blob/40f99e296680e6b3b6c4c52b03726e636e7096c1/desktop-src/FWP/wmi/wfascimprov/msft-netfirewallrule.md
-    $enforcementValues=@($rule.EnforcementStatus | ForEach-Object { [int]$_ })
-    $observation['enforcement_entries']=@($rule.EnforcementStatus | ForEach-Object {
-        [ordered]@{ name=[string]$_; numeric_value=[int]$_; runtime_type=$_.GetType().FullName }
-    })
+    $enforcementValues=@(Resolve-EnforcementValues $rule $observation)
     $enforcementIsEffective=Test-EffectiveEnforcement $enforcementValues
     # Name each rejected field for diagnosis. These observations do not replace
     # or relax the strict assertion below, which remains unchanged.

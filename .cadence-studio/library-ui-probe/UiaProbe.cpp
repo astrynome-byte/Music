@@ -220,8 +220,8 @@ static void retainKeyboardFrame(const std::vector<Node>& nodes, const std::strin
 }
 static bool sendNavigationKey(WORD key, const char* purpose)
 {
-    if (Clock::now() >= deadline || keyboardGestureAttempts >= 15) return false;
-    if ((key == VK_F6 && f6GestureAttempts >= 6) || (key == VK_TAB && tabGestureAttempts >= 2)
+    if (Clock::now() >= deadline || keyboardGestureAttempts >= 17) return false;
+    if ((key == VK_F6 && f6GestureAttempts >= 6) || (key == VK_TAB && tabGestureAttempts >= 4)
         || (key == VK_RIGHT && rightGestureAttempts >= 3) || (key == VK_DOWN && downGestureAttempts >= 1)
         || (key == VK_RETURN && returnGestureAttempts >= 3)) return false;
     if (key == VK_F6) ++f6GestureAttempts;
@@ -343,6 +343,47 @@ struct AddResult {
     bool dialogSelected = false, scoreAdded = false, favoriteRequested = false, favoriteLabelObserved = false;
     std::string status = "blocked_add_not_started";
 };
+static bool restoreLocalPanelAfterNativeDialog(IUIAutomation* automation, const std::filesystem::path& output)
+{
+    bool searchFocused = false;
+    for (int attempt = 0; attempt < 4 && Clock::now() < deadline; ++attempt) {
+        auto nodes = snapshot(automation, output, L"tree-keyboard-before");
+        retainKeyboardFrame(nodes, "before_restore_section_after_native_dialog_" + std::to_string(attempt));
+        const bool sent = sendNavigationKey(VK_F6, "restore_native_navigation_section_after_file_dialog");
+        Sleep(300);
+        nodes = snapshot(automation, output, L"tree-keyboard-after");
+        retainKeyboardFrame(nodes, "after_restore_section_after_native_dialog_" + std::to_string(attempt));
+        const Node node = focusedNode(automation);
+        const std::wstring label = controlLabel(node.name);
+        actions.push_back("{\"action\":\"observe_restored_navigation_focus\",\"name\":" + jsonQuoted(node.name)
+                          + ",\"control_label\":" + jsonQuoted(label) + ",\"pid\":" + std::to_string(node.pid)
+                          + ",\"control_type\":" + std::to_string(node.type) + '}');
+        if (!sent || node.pid != static_cast<int>(targetPid)) return false;
+        searchFocused = node.type == UIA_EditControlTypeId && node.enabled && !node.offscreen
+                        && (label == L"Rechercher par titre, compositeur ou fichier" || label == L"Search recent scores"
+                            || label == L"Rechercher les partitions r\u00e9centes");
+        if (searchFocused) break;
+    }
+    if (!searchFocused) return false;
+    for (int step = 0; step < 2; ++step) {
+        auto nodes = snapshot(automation, output, L"tree-keyboard-before");
+        retainKeyboardFrame(nodes, "before_restore_local_panel_tab_" + std::to_string(step));
+        const bool sent = sendNavigationKey(VK_TAB, "restore_selected_library_tab_and_content_panel");
+        Sleep(300);
+        nodes = snapshot(automation, output, L"tree-keyboard-after");
+        retainKeyboardFrame(nodes, "after_restore_local_panel_tab_" + std::to_string(step));
+        const Node node = focusedNode(automation);
+        const std::wstring label = controlLabel(node.name);
+        const bool expected = step == 0
+                              ? ((node.type == UIA_RadioButtonControlTypeId || node.type == UIA_TabItemControlTypeId)
+                                 && (label == L"Biblioth\u00e8que locale" || label == L"Local library"))
+                              : (node.type == UIA_ButtonControlTypeId && label == L"Ajouter des partitions\u2026");
+        actions.push_back("{\"action\":\"verify_restored_local_panel_focus\",\"name\":" + jsonQuoted(node.name)
+                          + ",\"step\":" + std::to_string(step) + ",\"expected\":" + (expected ? "true" : "false") + '}');
+        if (!sent || !expected || node.pid != static_cast<int>(targetPid) || !node.enabled || node.offscreen) return false;
+    }
+    return true;
+}
 static AddResult exerciseAddAndFavorite(IUIAutomation* automation, const std::filesystem::path& output,
                                        const std::wstring& fixtureRoot, const std::wstring& fixturePath,
                                        const std::wstring& expectedTitle)
@@ -382,6 +423,7 @@ static AddResult exerciseAddAndFavorite(IUIAutomation* automation, const std::fi
         Sleep(250);
     }
     if (!addReady) { result.status = "blocked_add_focus_not_restored"; return result; }
+    if (!restoreLocalPanelAfterNativeDialog(automation, output)) { result.status = "blocked_native_dialog_navigation_restore"; return result; }
     auto nodes = snapshot(automation, output, L"tree-keyboard-before");
     retainKeyboardFrame(nodes, "before_down_to_added_score");
     const bool down = sendNavigationKey(VK_DOWN, "focus_first_added_score_open_button");

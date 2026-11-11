@@ -1,6 +1,6 @@
 {
   "date": "2026-11-11",
-  "status": "native-filename-BSTR-fix-prepared-not-Windows-executed",
+  "status": "native-dialog-navigation-resume-prepared-not-Windows-executed",
   "yaml_steps": 8,
   "powershell_scripts_and_snippets_parsed": 6,
   "native_pinvoke_declarations_compiled_on_linux": true,
@@ -18,10 +18,10 @@
     "No search/restart/open-editor/undo/listening validation by this prepared Add step."
   ],
   "files": {
-    "README.md": "dc8be9f0d8c438c02d7a6218f17f60b7d6f61e7752975ff610b84c472849234f",
+    "README.md": "7bf8882e5116d6d25626600ad9162d7470a656bd7593e31b6ee725a07e1df78d",
     "Restore-LibraryStage.ps1": "497618b21b986d397fd8d242201fe2da7c8df51cf6eee54fcf323c8a0ca94251",
-    "Run-LibraryUiProbe.ps1": "cc7b40b9805ed76fbff6b3f7147623e4ea9f093a168324b98f32989d42256faf",
-    "UiaProbe.cpp": "38a202d08c373397dbd7118db76a4b18dd58dc0a71bb73000bb916f79f5a56d1",
+    "Run-LibraryUiProbe.ps1": "2bcdc0284b2f0651afae1a3c22fcfae3ee7f265ff219bb6e145423ba0db6ec7f",
+    "UiaProbe.cpp": "b723ea31dd8116caf2a5d3fc833f89677b6e58de40a18cfc3f64faa1e97e0e66",
     "OwnedKeyboard.h": "bd8324e670aeb9e4cd85a1dc9be5e63396363e70be6f312f021c1f88fc2361a0",
     "OwnedFileDialog.h": "4ad24654aa9dbf293b75929157c9d597e4021f8c6ca07e223e630c92eb6683e1"
   },
@@ -88,9 +88,9 @@
   },
   "keyboard_policy": {
     "shortcut_source": "src/app/configs/data/shortcuts.xml:22/32/80; navigationcontroller.cpp:280-290",
-    "max_total_key_gestures": 15,
+    "max_total_key_gestures": 17,
     "max_f6": 6,
-    "max_tab": 2,
+    "max_tab": 4,
     "max_right": 3,
     "return_requires": "SetFocus succeeded + UIA CompareElements exact library control + owned foreground/Win32 focus",
     "focus_guards": "live matching process handle; owned enabled main HWND; foreground and GetGUIThreadInfo focus PID; no held modifier; immediate recheck before SendInput",
@@ -195,5 +195,26 @@
     "Print bounded evidence from this exact UI inspection even if it was blocked",
     "Retain UI reports, tree dumps, captures and logs even on failure"
   ],
-  "compile_client_before_stage_download": true
+  "compile_client_before_stage_download": true,
+  "native_Add_runtime": {
+    "run_id": 43118117744,
+    "job_id": 130851276350,
+    "ci_commit": "a46682a6ecd33a45287709b53fc20a15feada481",
+    "sdk_compilation": "PASS",
+    "native_dialog_selected_copy": true,
+    "edit": "File name:/1148 ValuePattern, set/read HRESULT0",
+    "open": "Open/1 Invoke HRESULT0",
+    "dialog_closed_main_enabled": true,
+    "source_copy_sha_unchanged": true,
+    "visible_score_row": "1 partition with expected piano title/composer/path visually reviewed",
+    "overall_result": "failed; Down did not observe the Open control, so Favorite was never attempted",
+    "cleanup": "exit0, no forced cleanup"
+  },
+  "next_navigation_resume": {
+    "source": "NavigationController::doActivateSection selects first enabled panel",
+    "bounded_restore": "F6 at most4 polls until exact local search, Tab verify current Library radio, Tab verify Add button, then Down",
+    "product_changed": false,
+    "raw_catalog_snapshot_before_assertions": true,
+    "Windows_executed": false
+  }
 }

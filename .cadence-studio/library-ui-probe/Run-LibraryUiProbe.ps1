@@ -40,7 +40,7 @@ $report = [ordered]@{
     action_policy = 'Owned source-backed section/panel navigation; Return only on an exact UIA-focused Library/Add/favorite control; optional native Open dialogue selects only the controlled copy; foreground and Win32 focus PID verified for every key'
     captures = @(); cleanup = [ordered]@{ forced = $false; exit_code = $null; events = @(); error = $null }
     library_content_observed = $false; score_editing_tested = $false; favorites_tested = $false
-    exercise_add_requested = $ExerciseAdd.IsPresent; fixture = $null; catalog_validation = $null
+    exercise_add_requested = $ExerciseAdd.IsPresent; fixture = $null; catalog_validation = $null; catalog_actual_snapshot_path = $null
     score_added_control_observed = $false; favorite_action_delivered = $false; favorite_remove_label_observed = $false
     probe_cleanup_forced = $false
     error = $null
@@ -224,6 +224,9 @@ finally {
             $catalogPath = Join-Path $localDataDirectory 'CadenceStudio4/local_library.json'
             $catalogFile = Get-Item -LiteralPath $catalogPath
             if ($catalogFile.Length -gt 262144 -or ($catalogFile.Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw 'Unexpected catalogue size or reparse point.' }
+            $catalogSnapshot = Join-Path $OutputDirectory 'catalog-after-ui.json'
+            [IO.File]::Copy($catalogPath,$catalogSnapshot,$false)
+            $report.catalog_actual_snapshot_path=$catalogSnapshot
             $catalog = [IO.File]::ReadAllText($catalogPath) | ConvertFrom-Json
             $entries = @($catalog.entries)
             if ($catalog.schema_version -ne 1 -or $entries.Count -ne 1) { throw 'Expected a schema1 catalogue with exactly the selected score.' }
@@ -231,8 +234,6 @@ finally {
             if ($entry.title -cne $report.fixture.title -or $entry.composer -cne $report.fixture.composer -or
                 -not [string]::Equals([IO.Path]::GetFullPath([string]$entry.path),[IO.Path]::GetFullPath($report.fixture.copy_path),[StringComparison]::OrdinalIgnoreCase) -or
                 $entry.favorite -isnot [bool] -or -not $entry.favorite) { throw 'Catalogue title/composer/path/favorite did not match the actual UI actions.' }
-            $catalogSnapshot = Join-Path $OutputDirectory 'catalog-after-ui.json'
-            [IO.File]::Copy($catalogPath,$catalogSnapshot,$false)
             $report.catalog_validation = [ordered]@{ status='passed';source_path=$catalogPath;snapshot_path=$catalogSnapshot;sha256=(Get-FileHash $catalogPath -Algorithm SHA256).Hash.ToLowerInvariant();schema_version=1;entry_count=1;title=$entry.title;composer=$entry.composer;path=$entry.path;favorite=$entry.favorite;id=$entry.id;fixture_bytes_unchanged=$true }
             $cleanFlow = -not $report.error -and -not $report.cleanup.error -and -not $report.cleanup.forced -and -not $report.probe_cleanup_forced -and $report.cleanup.exit_code -eq 0
             $report.favorites_tested = $cleanFlow -and $report.score_added_control_observed -and $report.favorite_action_delivered
