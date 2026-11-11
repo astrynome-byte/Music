@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "source_original_commit": "0feb75b7abc54c4b239fd7313b90ba0fa020d930",
+  "source_original_tree": "1744f82e9a05de784f9ea6bb6a185d418ce4eb0b",
+  "sources_are_exact_git_blobs": true,
+  "files": [
+    {
+      "path": "source/src/framework/audio/engine/internal/export/windowsaacstream.cpp",
+      "original_path": "src/framework/audio/engine/internal/export/windowsaacstream.cpp",
+      "git_blob": "7f32475dad09652bba260d9c328870ae18a74aa5",
+      "size_bytes": 19143,
+      "sha256": "025a848d75224a2371dfd5e52f17209468ab7dcaac8a65c47028533387d610e2"
+    },
+    {
+      "path": "source/src/framework/audio/engine/internal/export/windowsaacstream.h",
+      "original_path": "src/framework/audio/engine/internal/export/windowsaacstream.h",
+      "git_blob": "7785da8f1cec52cf0361459a7c638e273a94b701",
+      "size_bytes": 1427,
+      "sha256": "275389b73ece21cd7ec77ede515b3478e59bf0ee63adfa690ee0367d682832fa"
+    },
+    {
+      "path": "source/src/framework/audio/engine/internal/export/aacpcm16.h",
+      "original_path": "src/framework/audio/engine/internal/export/aacpcm16.h",
+      "git_blob": "d3ac699754d983860d08e73b5411ce4f7cd6dcd5",
+      "size_bytes": 2571,
+      "sha256": "b0fc2ae1edd50120498988f1168a43a6860daa1fbcfcc7c5be29d50e03ed2420"
+    },
+    {
+      "path": "source/src/framework/audio/engine/internal/export/abstractaudioencoder.h",
+      "original_path": "src/framework/audio/engine/internal/export/abstractaudioencoder.h",
+      "git_blob": "add29d5de2e1d8311d8a22ed7d6121a1414b734f",
+      "size_bytes": 3467,
+      "sha256": "8c38d64f31f936ad85ede03bd6376073eea091201b7b6cc3273d5fc1857c05d6"
+    },
+    {
+      "path": "source/src/framework/global/types/ret.h",
+      "original_path": "src/framework/global/types/ret.h",
+      "git_blob": "0878009ad2e998f7ca149c78e93df5acb4a11a3d",
+      "size_bytes": 5178,
+      "sha256": "fdb817e0d770e685ec1e27b32c81980bdcf4495c353bee9789c940dc2fedf29d"
+    },
+    {
+      "path": "source/src/framework/global/types/ret.cpp",
+      "original_path": "src/framework/global/types/ret.cpp",
+      "git_blob": "45258f3d19466057916f9efa3533c78fca5406dd",
+      "size_bytes": 1597,
+      "sha256": "88e480726a35a2833b9712e14e3663dffc8a260b9318a7b5f9528299c663d829"
+    },
+    {
+      "path": "source/test/cadence/system_aac_native/CMakeLists.txt",
+      "original_path": "test/cadence/system_aac_native/CMakeLists.txt",
+      "git_blob": "9aa6f8e404bc17dc74c736a5dd9f700fd3a127e9",
+      "size_bytes": 1344,
+      "sha256": "bbe643fbee0b2afebd8616ce54e1e009fa4236574ccda0a2aae25947f3aa285f"
+    },
+    {
+      "path": "source/test/cadence/system_aac_native/native.cpp",
+      "original_path": "test/cadence/system_aac_native/native.cpp",
+      "git_blob": "23bdbb08bfc4b5e3c70b7350e612801625d47ca6",
+      "size_bytes": 5679,
+      "sha256": "fd4f2e49c48051a19495ea62a427915fbece8ed563b0b17d9e9994a7fbad0daa"
+    },
+    {
+      "path": "source/test/cadence/test_aac_pcm16.py",
+      "original_path": "test/cadence/test_aac_pcm16.py",
+      "git_blob": "54858b2d87db0561a47d6e64d202d434b8dd5859",
+      "size_bytes": 7877,
+      "sha256": "e274577349c3556afa05010b9afa8344767ee773dc17af6b7d76c663fa1c3b63"
+    },
+    {
+      "path": "source/test/cadence/test_audio_encoder_finalization.py",
+      "original_path": "test/cadence/test_audio_encoder_finalization.py",
+      "git_blob": "c800abf273727f37ea18036c7cac85a9edb95808",
+      "size_bytes": 3730,
+      "sha256": "3606feb0acf13d22dd80c5f524a0cc9d71e2d8217aae652112c8d299e06620f8"
+    },
+    {
+      "path": "source/LICENSE.txt",
+      "original_path": "LICENSE.txt",
+      "git_blob": "6d802f72be583b9df9102f85815f5c1e6cac2222",
+      "size_bytes": 36493,
+      "sha256": "73e75f61f0dfce4fd83ad1f3f45d1d6f9ea8cdfd21a92d7a9216d47e5b3bbb88"
+    }
+  ],
+  "decoder": {
+    "path": "decoder/verify_adts.py",
+    "original_repository": "astrynome-byte/Music",
+    "original_commit": "ee77a77af16f3bfe83b953e1cff9f6cf5d93d834",
+    "original_path": ".cadence-studio/mf-aac-probe/tests/verify_adts.py",
+    "size_bytes": 12613,
+    "sha256": "85acce1b152581342e7c8e8118fceedaff50c7b8a503058634b4fd61d645bb48"
+  },
+  "scope": "Production WindowsAacStream/PCM helper and AbstractAudioEncoder finalization contract; not Qt adapter, full application, MP4 or listening",
+  "system_dlls_redistributed": false
+}

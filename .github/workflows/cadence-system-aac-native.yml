@@ -1,0 +1,151 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: qualify production system AAC stream (no Qt application)'
+
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/system-aac-native/**'
+      - '.github/workflows/cadence-system-aac-native.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cadence-system-aac-native-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  production-stream-and-contracts:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Use MSVC 2022 x64 and the Windows SDK
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Prepare tools and require the external test decoder
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $false
+          $evidence = "$env:RUNNER_TEMP/system-aac-evidence/tooling"
+          New-Item -ItemType Directory -Path $evidence -Force | Out-Null
+          function Read-VersionLine([string] $Executable, [string[]] $NativeArguments) {
+            $lines = @(& $Executable @NativeArguments 2>&1)
+            $code = $LASTEXITCODE
+            if ($code -ne 0 -or -not $lines.Count) { throw "Version query failed: $Executable (exit $code)" }
+            return $lines[0].ToString()
+          }
+          $cmake = Get-Command cmake -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $cmake -or (Read-VersionLine $cmake.Source @('--version')) -ne 'cmake version 3.31.6') {
+            choco install cmake --version=3.31.6 --allow-downgrade --yes --no-progress --installargs 'ADD_CMAKE_TO_PATH=System' 2>&1 | Tee-Object "$evidence/cmake-install.log"
+            if ($LASTEXITCODE -ne 0) { throw 'CMake installation failed' }
+          }
+          $env:PATH = 'C:\Program Files\CMake\bin;' + $env:PATH
+          'C:\Program Files\CMake\bin' | Out-File $env:GITHUB_PATH -Append
+          $ninja = Get-Command ninja -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $ninja -or (Read-VersionLine $ninja.Source @('--version')) -ne '1.11.1') {
+            choco install ninja --version=1.11.1 --allow-downgrade --yes --no-progress 2>&1 | Tee-Object "$evidence/ninja-install.log"
+            if ($LASTEXITCODE -ne 0) { throw 'Ninja installation failed' }
+          }
+          if (-not (Get-Command ffmpeg -CommandType Application -ErrorAction SilentlyContinue)) {
+            choco install ffmpeg --yes --no-progress 2>&1 | Tee-Object "$evidence/ffmpeg-install.log"
+            if ($LASTEXITCODE -ne 0) { throw 'Required external decoder installation failed' }
+          }
+          $chocoBin = Join-Path $env:ProgramData 'chocolatey/bin'
+          $env:PATH = $chocoBin + ';' + $env:PATH
+          $chocoBin | Out-File $env:GITHUB_PATH -Append
+          if ((Read-VersionLine cmake @('--version')) -ne 'cmake version 3.31.6') { throw 'Selected CMake differs from required version' }
+          if ((Read-VersionLine ninja @('--version')) -ne '1.11.1') { throw 'Selected Ninja differs from required version' }
+          & ffmpeg -version 2>&1 | Tee-Object "$evidence/ffmpeg-version.log"
+          if ($LASTEXITCODE -ne 0) { throw 'Required decoder unavailable' }
+          & python --version 2>&1 | Tee-Object "$evidence/python-version.log"
+          if ($LASTEXITCODE -ne 0) { throw 'Python unavailable' }
+          & cl.exe 2>&1 | Out-File "$evidence/msvc-version.log"
+          [ordered]@{
+            os = [Runtime.InteropServices.RuntimeInformation]::OSDescription
+            architecture = [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()
+            windows_sdk = $env:WindowsSDKVersion
+            compiler = (Get-Command cl.exe -CommandType Application | Select-Object -First 1).Source
+            cmake = Read-VersionLine cmake @('--version')
+            ninja = Read-VersionLine ninja @('--version')
+            decoder = (Get-Command ffmpeg -CommandType Application | Select-Object -First 1).Source
+            note = 'Decoder is a runner-only test tool; actual production WindowsAacStream performs encoding.'
+          } | ConvertTo-Json | Set-Content "$evidence/tooling.json" -Encoding utf8
+          exit 0
+
+      - name: Verify exact production source hashes and generate committed test harnesses
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          $namespace = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/system-aac-native"
+          python "$namespace/qualify.py" prepare --root $namespace `
+            --generated "$env:RUNNER_TEMP/system-aac-generated" --summary "$env:RUNNER_TEMP/system-aac-evidence"
+          if ($LASTEXITCODE -ne 0) { throw 'Production source verification or harness preparation failed' }
+
+      - name: Compile exact production stream x64 Release MD and run ten tests
+        run: |
+          $namespace = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/system-aac-native"
+          $build = "$env:RUNNER_TEMP/system-aac-build"
+          $evidence = "$env:RUNNER_TEMP/system-aac-evidence"
+          cmake -S $namespace -B $build -G Ninja -DCMAKE_BUILD_TYPE=Release `
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON "-DCADENCE_NATIVE_GENERATED=$env:RUNNER_TEMP/system-aac-generated" `
+            2>&1 | Tee-Object "$evidence/configure.log"
+          if ($LASTEXITCODE -ne 0) { throw 'Production native configuration failed' }
+          cmake --build $build --parallel 2 2>&1 | Tee-Object "$evidence/build.log"
+          if ($LASTEXITCODE -ne 0) { throw 'Production stream or contract compilation failed' }
+          ctest --test-dir $build -C Release -V --output-junit "$evidence/ctest.xml" --output-log "$evidence/ctest.log"
+          if ($LASTEXITCODE -ne 0) { throw 'A native, PCM16 or finalization contract test failed' }
+
+      - name: Check MD x64 ABI, decode two real AAC files and print compact JSON evidence
+        id: production_inspect
+        if: always()
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          $namespace = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/system-aac-native"
+          python "$namespace/qualify.py" inspect --root $namespace `
+            --build "$env:RUNNER_TEMP/system-aac-build" --summary "$env:RUNNER_TEMP/system-aac-evidence"
+          if ($LASTEXITCODE -ne 0) { throw 'Production AAC native/decode qualification failed; see emitted JSON' }
+
+      - name: "${{ steps.production_inspect.outputs.report_step_name || 'Stream qualification not successful' }}"
+        if: always()
+        run: Write-Host 'Exact measurements and limits are in the preceding compact JSON reports and retained artifact.'
+
+      - name: Retain tiny AAC results, reports, exact sources and recipe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-system-aac-native-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/system-aac-evidence/
+            ${{ runner.temp }}/system-aac-build/production-native/native-results/**/*.aac
+            ${{ runner.temp }}/system-aac-build/production-native/native-results/**/native.json
+            ${{ runner.temp }}/system-aac-build/qualification-abi.json
+            ${{ runner.temp }}/system-aac-build/compile_commands.json
+            ${{ runner.temp }}/system-aac-build/CMakeCache.txt
+            ${{ github.workspace }}/driver/.cadence-studio/system-aac-native/
+          include-hidden-files: true
+          retention-days: 14
+          if-no-files-found: warn
