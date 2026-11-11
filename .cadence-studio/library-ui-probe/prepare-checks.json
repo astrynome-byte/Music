@@ -1,6 +1,6 @@
 {
   "date": "2026-11-11",
-  "status": "keyboard-client-JSON-helper-ADL-fix-prepared-not-Windows-executed",
+  "status": "observed-focused-control-labels-prepared-not-Windows-executed",
   "yaml_steps": 8,
   "powershell_scripts_and_snippets_parsed": 6,
   "native_pinvoke_declarations_compiled_on_linux": true,
@@ -12,15 +12,15 @@
   "artifact_id": 13755702885,
   "run_id": 42793810996,
   "limits": [
-    "Changed C++ keyboard client/header not compiled or executed on Windows.",
-    "Previous fresh-profile run43105216308 showed visible library tab but UIA exposed only main toolbar, without activation.",
+    "Changed focused-node control-label mapping/client not compiled or executed on Windows.",
+    "Prior run proves native F6 and UIA GetFocusedElement work; raw tree remains limited to main toolbar.",
     "No Add/favorites/search/restart/open UI test yet; app/source1001 unchanged."
   ],
   "files": {
-    "README.md": "11b2f81f36d4fa1aec4f1b8c63d1337efd9e040dc3734285f9e69126cd01b238",
+    "README.md": "8f7cd15fc079ecd0bddbb89bdb2de21e738bff8524fc61ae034352ea2b8659f5",
     "Restore-LibraryStage.ps1": "497618b21b986d397fd8d242201fe2da7c8df51cf6eee54fcf323c8a0ca94251",
     "Run-LibraryUiProbe.ps1": "20de18a5d93e443fa81e5308496ef270bafb24d9155ded7fbc9b19f8fff7ca58",
-    "UiaProbe.cpp": "b5a33f29f4c60c5c8702b53b752b3fb0baf05817287e05cba698f2b295da23a2",
+    "UiaProbe.cpp": "8225f7ff8f58e303147f7ec7b4c3013529839b2c0ae7322f994eab62aa9ca14a",
     "OwnedKeyboard.h": "fa583da5f324ad5513a29438cc33f2004548138a891e42da9c1231455a019ff2"
   },
   "workflow_sha256": "63084b4eaf8437f0e6a302c9428238c260312e8a18c5ccf9af8778628160f478",
@@ -112,5 +112,27 @@
     "keys_sent": false,
     "fix": "Rename JSON helper and calls to unique jsonQuoted",
     "adl_reproducer_linux_gcc": "PASS old overload fails; renamed helper compiles; not a Windows SDK probe build"
+  },
+  "native_keyboard_probe": {
+    "run_id": 43108867149,
+    "job_id": 130819265917,
+    "sdk_compile": "PASS",
+    "status": "blocked_library_controls_or_semantic_action_unavailable",
+    "f6_sent": 6,
+    "all_input_counts": 2,
+    "all_send_errors": 0,
+    "owned_foreground_and_focus": true,
+    "observed_focus_names": [
+      "Accueil",
+      "Panneau Menu Accueil la direction est verticale, Mes comptes",
+      "Panneau Partitions, Rechercher les partitions r\u00e9centes"
+    ],
+    "reason_for_next_patch": "Search predicate did not accept the observed panel prefix and actual Search recent scores label; F6 continued instead of Tab",
+    "cleanup": "clean exit0"
+  },
+  "focused_control_label_tests_linux": {
+    "actual_cpp_helper_compiled": true,
+    "runtime_checks_passed": 6,
+    "full_windows_client_compiled": false
   }
 }

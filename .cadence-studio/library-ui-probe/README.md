@@ -127,3 +127,19 @@ Return exige que l'élément UIA au focus soit exactement celui de Bibliothèque
 locale. Le succès exige toujours l'observation de son bouton Ajouter ; un
 envoi de touche seul ne vaut pas validation. Cette version reste à compiler
 et à exécuter sur Windows, sans reconstruction de l'application1001.
+
+Le run [43108867149](https://github.com/astrynome-byte/Music/actions/runs/43108867149)
+a depuis compilé le client et envoyé six F6 avec `input_count=2`, `error=0`,
+foreground et focus du PID détenu. `UIAutomation.GetFocusedElement` a observé
+successivement Accueil, Mes comptes puis **Panneau Partitions, Rechercher les
+partitions récentes**. Le prédicat de recherche attendait un nom différent,
+donc il a continué F6 au lieu de Tab. Le résultat est resté bloqué et l'app
+s'est fermée proprement.
+
+La préparation actuelle normalise exclusivement les préfixes de panneaux
+connus du code/traductions amont et reconnaît le vrai nom de recherche. Elle
+utilise aussi l'élément focalisé UIA, qui fonctionne malgré l'arbre partiel,
+pour vérifier l'onglet avant Return puis le bouton Ajouter après Tab.
+Le rapport distingue explicitement ce canal d'observation de l'arbre global.
+Elle reste à compiler et exécuter sur Windows. Aucun fichier n'est ajouté par
+cette seule étape ; favoris, recherche de contenu et redémarrage restent à faire.

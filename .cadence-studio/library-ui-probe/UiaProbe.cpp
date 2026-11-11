@@ -23,6 +23,7 @@ static Clock::time_point deadline;
 static std::vector<std::string> actions;
 static std::vector<std::string> keyboardFrames;
 static int keyboardGestureAttempts = 0;
+static int f6GestureAttempts = 0, tabGestureAttempts = 0, rightGestureAttempts = 0;
 static bool keyboardFailure = false;
 
 static std::string utf8(const std::wstring& value)
@@ -112,6 +113,30 @@ struct Node {
     int pid = 0, type = 0, depth = 0;
     BOOL enabled = FALSE, offscreen = TRUE, focused = FALSE;
 };
+static std::wstring controlLabel(const std::wstring& name)
+{
+    // MuseScore's accessible Name prepends the current panel to its focused
+    // control (AccessibleItemInterface::text). Strip only known source labels.
+    const std::vector<std::wstring> prefixes {
+        L"Panneau Partitions, ", L"Scores panel, ",
+        L"Panneau Barre d'onglets des partitions, ", L"Scores tab bar panel, ",
+        L"Panneau Biblioth\u00e8que locale, ", L"Biblioth\u00e8que locale panel, ", L"Local library panel, "
+    };
+    for (const auto& prefix : prefixes) if (name.rfind(prefix, 0) == 0) return name.substr(prefix.size());
+    return name;
+}
+static Node focusedNode(IUIAutomation* automation)
+{
+    Node node;
+    if (SUCCEEDED(automation->GetFocusedElement(&node.element)) && node.element) {
+        BSTR name = nullptr;
+        node.element->get_CurrentName(&name); node.name = text(name);
+        node.element->get_CurrentProcessId(&node.pid); node.element->get_CurrentControlType(&node.type);
+        node.element->get_CurrentIsEnabled(&node.enabled); node.element->get_CurrentIsOffscreen(&node.offscreen);
+        node.element->get_CurrentHasKeyboardFocus(&node.focused);
+    }
+    return node;
+}
 static void walk(IUIAutomationTreeWalker* walker, IUIAutomationElement* element, int depth, std::vector<Node>& nodes)
 {
     if (!element || nodes.size() >= 1200 || depth > 18 || Clock::now() > deadline || !alive()) return;
@@ -195,6 +220,11 @@ static void retainKeyboardFrame(const std::vector<Node>& nodes, const std::strin
 static bool sendNavigationKey(WORD key, const char* purpose)
 {
     if (Clock::now() >= deadline || keyboardGestureAttempts >= 12) return false;
+    if ((key == VK_F6 && f6GestureAttempts >= 6) || (key == VK_TAB && tabGestureAttempts >= 2)
+        || (key == VK_RIGHT && rightGestureAttempts >= 2)) return false;
+    if (key == VK_F6) ++f6GestureAttempts;
+    if (key == VK_TAB) ++tabGestureAttempts;
+    if (key == VK_RIGHT) ++rightGestureAttempts;
     ++keyboardGestureAttempts;
     const OwnedKeyResult result = SendOwnedKey(targetPid, targetProcess, mainWindow(), key);
     if (!result.sent) keyboardFailure = true;
@@ -267,6 +297,22 @@ static bool focusAndTriggerLibrary(IUIAutomation* automation, const Node* node)
                       + ",\"focused_element_matches\":" + (same ? "true" : "false") + '}');
     return SUCCEEDED(focused) && SUCCEEDED(compared) && same && sendNavigationKey(VK_RETURN, "trigger_exact_focused_library");
 }
+static bool triggerAlreadyFocusedLibrary(IUIAutomation* automation, const Node& node)
+{
+    const std::wstring label = controlLabel(node.name);
+    if (node.pid != static_cast<int>(targetPid) || !node.enabled || node.offscreen
+        || (node.type != UIA_RadioButtonControlTypeId && node.type != UIA_TabItemControlTypeId)
+        || (label != L"Biblioth\u00e8que locale" && label != L"Local library")) return false;
+    ComPtr<IUIAutomationElement> current;
+    BOOL same = FALSE;
+    HRESULT compared = E_NOINTERFACE;
+    if (SUCCEEDED(automation->GetFocusedElement(&current)) && current) compared = automation->CompareElements(current.Get(), node.element.Get(), &same);
+    actions.push_back("{\"action\":\"verify_already_focused_library\",\"name\":" + jsonQuoted(node.name)
+                      + ",\"control_label\":" + jsonQuoted(label) + ",\"pid\":" + std::to_string(node.pid)
+                      + ",\"compare_elements_hresult\":" + std::to_string(static_cast<long>(compared))
+                      + ",\"focused_element_matches\":" + (same ? "true" : "false") + '}');
+    return SUCCEEDED(compared) && same && sendNavigationKey(VK_RETURN, "trigger_observed_focused_library");
+}
 
 int wmain(int argc, wchar_t** argv)
 {
@@ -282,6 +328,7 @@ int wmain(int argc, wchar_t** argv)
     deadline = Clock::now() + std::chrono::seconds(55);
     std::string status = "blocked_uia_unavailable";
     bool contentObserved = false;
+    bool contentObservedFromFocusedElement = false;
     bool navigationReady = false;
     int readinessPolls = 0;
     HRESULT initialized = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
@@ -333,23 +380,31 @@ int wmain(int argc, wchar_t** argv)
                     nodes = snapshot(automation.Get(), output, L"tree-after-scores");
                 }
                 if (keyboardFailure || keySteps >= 12 || keyboardGestureAttempts >= 12) break;
-                ComPtr<IUIAutomationElement> focused;
-                std::wstring focusedName;
-                int focusedType = 0, focusedPid = 0;
-                if (SUCCEEDED(automation->GetFocusedElement(&focused)) && focused) {
-                    BSTR name = nullptr; focused->get_CurrentName(&name); focusedName = text(name);
-                    focused->get_CurrentControlType(&focusedType); focused->get_CurrentProcessId(&focusedPid);
-                }
+                const Node focused = focusedNode(automation.Get());
+                const std::wstring focusedName = controlLabel(focused.name);
+                const int focusedType = focused.type, focusedPid = focused.pid;
                 actions.push_back("{\"action\":\"observe_navigation_focus\",\"name\":" + jsonQuoted(focusedName)
+                                  + ",\"original_name\":" + jsonQuoted(focused.name)
                                   + ",\"control_type\":" + std::to_string(focusedType) + ",\"pid\":" + std::to_string(focusedPid) + '}');
                 // F6 needs an owned Win32 focus (checked by SendOwnedKey), not
                 // an already exposed UIA child. Other-process UIA focus stops
                 // all keys; an unavailable UIA focus permits only F6 discovery.
                 if (focusedPid != 0 && focusedPid != static_cast<int>(targetPid)) break;
+                if (focusedPid == static_cast<int>(targetPid)
+                    && (focusedName == L"Biblioth\u00e8que locale" || focusedName == L"Local library")) {
+                    nodes = snapshot(automation.Get(), output, L"tree-keyboard-before");
+                    retainKeyboardFrame(nodes, "before_observed_focused_library_return");
+                    activatedLibrary = triggerAlreadyFocusedLibrary(automation.Get(), focused);
+                    Sleep(300);
+                    nodes = snapshot(automation.Get(), output, L"tree-keyboard-after");
+                    retainKeyboardFrame(nodes, "after_observed_focused_library_return");
+                    break;
+                }
                 WORD key = VK_F6;
                 if (focusedPid == static_cast<int>(targetPid) && focusedType == UIA_EditControlTypeId
                     && (focusedName == L"Rechercher" || focusedName == L"Search"
-                        || focusedName == L"Rechercher par titre, compositeur ou fichier")) {
+                        || focusedName == L"Rechercher par titre, compositeur ou fichier"
+                        || focusedName == L"Rechercher les partitions r\u00e9centes" || focusedName == L"Search recent scores")) {
                     if (panelKeys++ >= 2) break;
                     key = VK_TAB;
                 } else if (focusedPid == static_cast<int>(targetPid)
@@ -369,10 +424,35 @@ int wmain(int argc, wchar_t** argv)
                 if (!sent) break;
             }
             if (activatedLibrary) Sleep(750);
+            bool movedToLibraryPanel = false;
             for (int attempt = 0; attempt < 8 && Clock::now() < deadline; ++attempt) {
                 nodes = snapshot(automation.Get(), output, L"tree-final");
                 const Node* add = find(nodes, { L"Ajouter des partitions\u2026", L"Ajouter des partitions...", L"Add scores\u2026" });
-                contentObserved = activatedLibrary && add != nullptr;
+                const Node focused = focusedNode(automation.Get());
+                const std::wstring label = controlLabel(focused.name);
+                const bool focusedAdd = focused.pid == static_cast<int>(targetPid) && focused.enabled && !focused.offscreen
+                                        && focused.type == UIA_ButtonControlTypeId
+                                        && (label == L"Ajouter des partitions\u2026" || label == L"Ajouter des partitions..." || label == L"Add scores\u2026");
+                contentObservedFromFocusedElement = activatedLibrary && focusedAdd;
+                contentObserved = activatedLibrary && (add != nullptr || focusedAdd);
+                if (!contentObserved && activatedLibrary && !movedToLibraryPanel
+                    && focused.pid == static_cast<int>(targetPid) && focused.enabled && !focused.offscreen
+                    && (label == L"Biblioth\u00e8que locale" || label == L"Local library")
+                    && (focused.type == UIA_RadioButtonControlTypeId || focused.type == UIA_TabItemControlTypeId)) {
+                    retainKeyboardFrame(nodes, "before_tab_to_local_library_panel");
+                    const bool sent = sendNavigationKey(VK_TAB, "navigate_from_selected_library_tab_to_its_panel");
+                    movedToLibraryPanel = true;
+                    Sleep(300);
+                    nodes = snapshot(automation.Get(), output, L"tree-keyboard-after");
+                    retainKeyboardFrame(nodes, "after_tab_to_local_library_panel");
+                    if (!sent) break;
+                    continue;
+                }
+                actions.push_back("{\"action\":\"observe_library_content_focus\",\"name\":" + jsonQuoted(focused.name)
+                                  + ",\"control_label\":" + jsonQuoted(label) + ",\"pid\":" + std::to_string(focused.pid)
+                                  + ",\"control_type\":" + std::to_string(focused.type) + ",\"enabled\":" + (focused.enabled ? "true" : "false")
+                                  + ",\"offscreen\":" + (focused.offscreen ? "true" : "false")
+                                  + ",\"add_button_observed\":" + (focusedAdd ? "true" : "false") + '}');
                 if (contentObserved || !activatedLibrary) break;
                 Sleep(400);
             }
@@ -386,6 +466,7 @@ int wmain(int argc, wchar_t** argv)
     result << "{\"scope\":\"Owned PID accessibility inspection and semantic navigation only; no score opened or changed\",\"pid\":"
            << targetPid << ",\"status\":\"" << status << "\",\"com_activation_hresult\":" << static_cast<long>(activated)
            << ",\"library_content_observed\":" << (contentObserved ? "true" : "false")
+           << ",\"library_content_observed_via_focused_UIA_element\":" << (contentObservedFromFocusedElement ? "true" : "false")
            << ",\"semantic_navigation_ready\":" << (navigationReady ? "true" : "false")
            << ",\"readiness_polls\":" << readinessPolls << ",\"global_deadline_seconds\":55,\"actions\":[";
     for (size_t i = 0; i < actions.size(); ++i) { if (i) result << ','; result << actions[i]; }
