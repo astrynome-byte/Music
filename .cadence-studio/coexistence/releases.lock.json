@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "official": {
+    "repository": "musescore/MuseScore",
+    "tag": "v4.7.6",
+    "release_id": 424340551,
+    "release_url": "https://github.com/musescore/MuseScore/releases/tag/v4.7.6",
+    "filename": "MuseScore-Studio-4.7.6.261022093-x86_64.msi",
+    "asset_id": 678389193,
+    "url": "https://github.com/musescore/MuseScore/releases/download/v4.7.6/MuseScore-Studio-4.7.6.261022093-x86_64.msi",
+    "bytes": 135020544,
+    "sha256": "41c9ca34fbf0b720f229ed3b0c4ff923b5d41a8c24ad9262e1fce390cd5c34e5",
+    "checksums_url": "https://github.com/musescore/MuseScore/releases/download/v4.7.6/checksums.sha256.txt",
+    "checksums_sha256": "4ee62d3be3004e7d48d3a1f409fa58b5b57cde825b9374b2d8a690bad8084b80",
+    "hash_verified_from": "GitHub release asset digest and the independently downloaded release checksums.sha256.txt agree",
+    "verified_utc": "2026-11-10"
+  },
+  "cadence": {
+    "repository": "astrynome-byte/Music",
+    "run_id": 42721049351,
+    "artifact_id": 13720861986,
+    "artifact_name": "cadence-retained-msi-experimental-2-1",
+    "filename": "CadenceStudio-4.7.6-cadence.7-x86_64.msi",
+    "sha256": "9314306b8520d7480bdb57a270152c6329a8c39bb72e1070c9c14c1b8767a6aa",
+    "executable_sha256": "62987537161d89d9d0f2da6b9915b7f421a9718e288d7aa84a6b3f7dacfc0a34",
+    "upgrade_code": "{319B992F-470A-465B-9A79-6B0CBFC7D6C7}",
+    "artifact_retention_days": 14
+  }
+}

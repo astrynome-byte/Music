@@ -1,0 +1,38 @@
+Internal ctest changing into directory: /workspace/cadence-zlib-source-profile/.local/build
+Test project /workspace/cadence-zlib-source-profile/.local/build
+      Start  1: zlib_static_example
+ 1/16 Test  #1: zlib_static_example ............................   Passed    0.00 sec
+      Start  2: zlib_coverage
+ 2/16 Test  #2: zlib_coverage ..................................   Passed    0.00 sec
+      Start  3: zlib_coverage-summary
+ 3/16 Test  #3: zlib_coverage-summary ..........................   Passed    0.00 sec
+      Start  4: zlib_static_example64
+ 4/16 Test  #4: zlib_static_example64 ..........................   Passed    0.00 sec
+      Start  5: zlib_install
+ 5/16 Test  #5: zlib_install ...................................   Passed    0.01 sec
+      Start  6: zlib_find_package_configure
+ 6/16 Test  #6: zlib_find_package_configure ....................   Passed    0.12 sec
+      Start  7: zlib_find_package_build
+ 7/16 Test  #7: zlib_find_package_build ........................   Passed    0.11 sec
+      Start  8: zlib_find_package_test
+ 8/16 Test  #8: zlib_find_package_test .........................   Passed    0.01 sec
+      Start  9: zlib_find_package_no_components_configure
+ 9/16 Test  #9: zlib_find_package_no_components_configure ......   Passed    0.12 sec
+      Start 10: zlib_find_package_wrong_components_configure
+10/16 Test #10: zlib_find_package_wrong_components_configure ...   Passed    0.12 sec
+      Start 11: zlib_add_subdirectory_configure
+11/16 Test #11: zlib_add_subdirectory_configure ................   Passed    0.13 sec
+      Start 12: zlib_add_subdirectory_build
+12/16 Test #12: zlib_add_subdirectory_build ....................   Passed    0.12 sec
+      Start 13: zlib_add_subdirectory_test
+13/16 Test #13: zlib_add_subdirectory_test .....................   Passed    0.01 sec
+      Start 14: zlib_add_subdirectory_exclude_configure
+14/16 Test #14: zlib_add_subdirectory_exclude_configure ........   Passed    0.13 sec
+      Start 15: zlib_add_subdirectory_exclude_build
+15/16 Test #15: zlib_add_subdirectory_exclude_build ............   Passed    0.11 sec
+      Start 16: zlib_add_subdirectory_exclude_test
+16/16 Test #16: zlib_add_subdirectory_exclude_test .............   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 16
+
+Total Test time (real) =   1.00 sec

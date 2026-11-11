@@ -1,0 +1,24 @@
+[1/24] Building C object CMakeFiles/zlibstatic.dir/compress.c.o
+[2/24] Building C object CMakeFiles/zlibstatic.dir/adler32.c.o
+[3/24] Building C object CMakeFiles/zlibstatic.dir/crc32.c.o
+[4/24] Building C object CMakeFiles/zlibstatic.dir/gzclose.c.o
+[5/24] Building C object CMakeFiles/zlibstatic.dir/gzlib.c.o
+[6/24] Building C object CMakeFiles/zlibstatic.dir/gzread.c.o
+[7/24] Building C object CMakeFiles/zlibstatic.dir/gzwrite.c.o
+[8/24] Building C object CMakeFiles/zlibstatic.dir/deflate.c.o
+[9/24] Building C object CMakeFiles/zlibstatic.dir/infback.c.o
+[10/24] Building C object CMakeFiles/zlibstatic.dir/inftrees.c.o
+[11/24] Building C object CMakeFiles/zlibstatic.dir/inffast.c.o
+[12/24] Building C object CMakeFiles/zlibstatic.dir/inflate.c.o
+[13/24] Building C object CMakeFiles/zlibstatic.dir/uncompr.c.o
+[14/24] Building C object CMakeFiles/zlibstatic.dir/zutil.c.o
+[15/24] Building C object test/CMakeFiles/zlib_static_example.dir/example.c.o
+[16/24] Building C object test/CMakeFiles/static_minigzip.dir/minigzip.c.o
+[17/24] Building C object CMakeFiles/zlibstatic.dir/trees.c.o
+[18/24] Linking C static library libz.a
+[19/24] Linking C executable test/zlib_static_example
+[20/24] Linking C executable test/static_minigzip
+[21/24] Building C object test/CMakeFiles/infcover.dir/infcover.c.o
+[22/24] Linking C executable test/infcover
+[23/24] Building C object test/CMakeFiles/zlib_static_example64.dir/example.c.o
+[24/24] Linking C executable test/zlib_static_example64

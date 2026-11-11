@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="(empty)"
+	tests="16"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname=""
+	time="0"
+	timestamp="2026-11-10T09:43:13"
+	>
+	<testcase name="zlib_static_example" classname="zlib_static_example" time="0.00129175" status="run">
+		<properties/>
+		<system-out>zlib version 1.3.2 = 0x1320, compile flags = 0xa9
+uncompress(): hello, hello!
+gzread(): hello, hello!
+gzgets() after gzseek:  hello!
+inflate(): hello, hello!
+large_inflate(): OK
+after inflateSync(): hello, hello!
+inflate with dictionary: hello, hello!
+</system-out>
+	</testcase>
+	<testcase name="zlib_coverage" classname="zlib_coverage" time="0.00117158" status="run">
+		<properties/>
+		<system-out>1.3.2
+inflate init: 7160 allocated
+prime: 7160 high water mark
+force window allocation: 79856 high water mark
+force window replacement: 14832 high water mark
+force split window update: 14832 high water mark
+use fixed blocks: 7160 high water mark
+bad window size: 7160 high water mark
+wrong version: 0 high water mark
+inflate built-in memory routines
+inflate bad parameters
+bad gzip method: 7160 high water mark
+bad gzip flags: 7160 high water mark
+bad zlib method: 7160 high water mark
+set window size from header: 14320 high water mark
+bad zlib window size: 7160 high water mark
+check adler32: 7160 high water mark
+bad header crc: 7160 high water mark
+check gzip length: 7160 high water mark
+bad zlib header check: 7160 high water mark
+need dictionary: 14832 high water mark
+compute adler32: 79856 high water mark
+miscellaneous, force memory errors: 14576 high water mark
+inflateBack bad parameters
+inflateBack bad state: 7160 high water mark
+inflateBack built-in memory routines
+invalid stored block lengths-late: 7160 hig...
+[This part of the test output was removed since it exceeds the threshold of 1024 bytes.]
+</system-out>
+	</testcase>
+	<testcase name="zlib_coverage-summary" classname="zlib_coverage-summary" time="0.00208465" status="run">
+		<properties/>
+		<system-out>File '/workspace/cadence-zlib-source-profile/.local/sources/unmodified/zlib-1.3.2/test/infcover.c'
+Lines executed:93.79% of 322
+Creating 'infcover.c.gcov'
+
+Lines executed:93.79% of 322
+</system-out>
+	</testcase>
+	<testcase name="zlib_static_example64" classname="zlib_static_example64" time="0.0013882" status="run">
+		<properties/>
+		<system-out>zlib version 1.3.2 = 0x1320, compile flags = 0xa9
+uncompress(): hello, hello!
+gzread(): hello, hello!
+gzgets() after gzseek:  hello!
+inflate(): hello, hello!
+large_inflate(): OK
+after inflateSync(): hello, hello!
+inflate with dictionary: hello, hello!
+</system-out>
+	</testcase>
+	<testcase name="zlib_install" classname="zlib_install" time="0.00557764" status="run">
+		<properties/>
+		<system-out>-- Installing: /workspace/cadence-zlib-source-profile/.local/build/test/test_install/lib/libz.a
+-- Installing: /workspace/cadence-zlib-source-profile/.local/build/test/test_install/lib/cmake/zlib/ZLIB-static.cmake
+-- Installing: /workspace/cadence-zlib-source-profile/.local/build/test/test_install/lib/cmake/zlib/ZLIB-static-release.cmake
+-- Installing: /workspace/cadence-zlib-source-profile/.local/build/test/test_install/lib/cmake/zlib/ZLIBConfig.cmake
+-- Installing: /workspace/cadence-zlib-source-profile/.local/build/test/test_install/lib/cmake/zlib/ZLIBConfigVersion.cmake
+-- Installing: /workspace/cadence-zlib-source-profile/.local/build/test/test_install/include/zconf.h
+-- Installing: /workspace/cadence-zlib-source-profile/.local/build/test/test_install/include/zlib.h
+-- Installing: /workspace/cadence-zlib-source-profile/.local/build/test/test_install/share/man/man3/zlib.3
+-- Installing: /workspace/cadence-zlib-source-profile/.local/build/test/test_install/share/doc/zlib/zlib/LICENSE
+-- Installing: /worksp...
+[This part of the test output was removed since it exceeds the threshold of 1024 bytes.]
+</system-out>
+	</testcase>
+	<testcase name="zlib_find_package_configure" classname="zlib_find_package_configure" time="0.123119" status="run">
+		<properties/>
+		<system-out>-- The C compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /workspace/cadence-zlib-source-profile/.local/build/test/findpackage_test_build
+</system-out>
+	</testcase>
+	<testcase name="zlib_find_package_build" classname="zlib_find_package_build" time="0.112418" status="run">
+		<properties/>
+		<system-out>[1/2] Building C object CMakeFiles/test_example_static.dir/workspace/cadence-zlib-source-profile/.local/sources/unmodified/zlib-1.3.2/test/example.c.o
+[2/2] Linking C executable test_example_static
+</system-out>
+	</testcase>
+	<testcase name="zlib_find_package_test" classname="zlib_find_package_test" time="0.00523369" status="run">
+		<properties/>
+		<system-out>Test project /workspace/cadence-zlib-source-profile/.local/build/test/findpackage_test_build
+    Start 1: zlib_test_example_static
+1/1 Test #1: zlib_test_example_static .........   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.00 sec
+</system-out>
+	</testcase>
+	<testcase name="zlib_find_package_no_components_configure" classname="zlib_find_package_no_components_configure" time="0.123141" status="run">
+		<properties/>
+		<system-out>-- The C compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+CMake Error at /workspace/cadence-zlib-source-profile/.local/build/test/test_install/lib/cmake/zlib/ZLIBConfig.cmake:40 (include):
+  include could not find requested file:
+
+    /workspace/cadence-zlib-source-profile/.local/build/test/test_install/lib/cmake/zlib/ZLIB-shared.cmake
+Call Stack (most recent call first):
+  CMakeLists.txt:12 (find_package)
+
+
+-- Configuring incomplete, errors occurred!
+</system-out>
+	</testcase>
+	<testcase name="zlib_find_package_wrong_components_configure" classname="zlib_find_package_wrong_components_configure" time="0.11567" status="run">
+		<properties/>
+		<system-out>-- The C compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+CMake Error at /workspace/cadence-zlib-source-profile/.local/build/test/test_install/lib/cmake/zlib/ZLIBConfig.cmake:36 (include):
+  include could not find requested file:
+
+    /workspace/cadence-zlib-source-profile/.local/build/test/test_install/lib/cmake/zlib/ZLIB-wrong.cmake
+Call Stack (most recent call first):
+  CMakeLists.txt:12 (find_package)
+
+
+CMake Error at CMakeLists.txt:12 (find_package):
+  Found package configuration file:
+
+    /workspace/cadence-zlib-source-profile/.local/build/test/test_install/lib/cmake/zlib/ZLIBConfig.cmake
+
+  but it set ZLIB_FOUND to FALSE so package "ZLIB" is considered to be NOT
+  FOUND.  Reason given by package:
+
+  Unsupported component: wrong
+
+
+
+-- Configuring incomplete, errors occurred!
+</system-out>
+	</testcase>
+	<testcase name="zlib_add_subdirectory_configure" classname="zlib_add_subdirectory_configure" time="0.129646" status="run">
+		<properties/>
+		<system-out>-- The C compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /workspace/cadence-zlib-source-profile/.local/build/test/add_subdirectory_test_build
+</system-out>
+	</testcase>
+	<testcase name="zlib_add_subdirectory_build" classname="zlib_add_subdirectory_build" time="0.115876" status="run">
+		<properties/>
+		<system-out>[1/2] Building C object CMakeFiles/test_example_static.dir/workspace/cadence-zlib-source-profile/.local/sources/unmodified/zlib-1.3.2/test/example.c.o
+[2/2] Linking C executable test_example_static
+</system-out>
+	</testcase>
+	<testcase name="zlib_add_subdirectory_test" classname="zlib_add_subdirectory_test" time="0.00597434" status="run">
+		<properties/>
+		<system-out>Test project /workspace/cadence-zlib-source-profile/.local/build/test/add_subdirectory_test_build
+    Start 1: zlib_test_example_static
+1/1 Test #1: zlib_test_example_static .........   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.00 sec
+</system-out>
+	</testcase>
+	<testcase name="zlib_add_subdirectory_exclude_configure" classname="zlib_add_subdirectory_exclude_configure" time="0.13081" status="run">
+		<properties/>
+		<system-out>-- The C compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /workspace/cadence-zlib-source-profile/.local/build/test/add_subdirectory_exclude_test_build
+</system-out>
+	</testcase>
+	<testcase name="zlib_add_subdirectory_exclude_build" classname="zlib_add_subdirectory_exclude_build" time="0.113899" status="run">
+		<properties/>
+		<system-out>[1/2] Building C object CMakeFiles/test_example_static.dir/workspace/cadence-zlib-source-profile/.local/sources/unmodified/zlib-1.3.2/test/example.c.o
+[2/2] Linking C executable test_example_static
+</system-out>
+	</testcase>
+	<testcase name="zlib_add_subdirectory_exclude_test" classname="zlib_add_subdirectory_exclude_test" time="0.00782363" status="run">
+		<properties/>
+		<system-out>Test project /workspace/cadence-zlib-source-profile/.local/build/test/add_subdirectory_exclude_test_build
+    Start 1: zlib_test_example_static
+1/1 Test #1: zlib_test_example_static .........   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.00 sec
+</system-out>
+	</testcase>
+</testsuite>

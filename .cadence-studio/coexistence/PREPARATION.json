@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "status": "prepared-not-executed-on-Windows",
+  "prepared_utc": "2026-11-10T09:56:14.128611+00:00",
+  "files_sha256": {
+    "MsiReadOnly.ps1": "6ae6d07c84a9bc3121cd7bb2cae613fef03f6f816458ac4df4f6b10962cb62b0",
+    "README.md": "bd5875d5900631e9562b4cc74bde82c116dee83326098c21bd7066538b9f6967",
+    "Run-CleanGuiProbe.ps1": "8a5f7d237c4ebf452ca347fab7c5dfc612bc7b457036e541cbd5df635902c68d",
+    "Test-Coexistence.ps1": "5846ba26333289d2196c195bb3b7b78a745aa1160b0fa8ca0939f868286a6c91",
+    "Test-GuiLaunch.ps1": "1cc4ea0a980e8f6b2bc5efc20b85561143144388a80583d6b7a3df85041022c6",
+    "cadence-coexistence.yml": "993e4868eedaf3f18ae001e37f21a8680638a80c1eb777c000ad4bbeb4509a41",
+    "official-release-checksums.sha256.txt": "4ee62d3be3004e7d48d3a1f409fa58b5b57cde825b9374b2d8a690bad8084b80",
+    "releases.lock.json": "32a30cad7cd791d2f6a2480b828a5e56b6aa970289e77dbd2a07f2482daacfdc"
+  },
+  "official_msi_provenance": "Official GitHub release API digest agrees with exact downloaded checksums file; MSI bytes will be downloaded and verified in hosted Windows CI",
+  "official_msi_sha256": "41c9ca34fbf0b720f229ed3b0c4ff923b5d41a8c24ad9262e1fce390cd5c34e5",
+  "official_msi_downloaded_locally": false,
+  "cadence_msi_run_id": 42721049351,
+  "cadence_msi_sha256": "9314306b8520d7480bdb57a270152c6329a8c39bb72e1070c9c14c1b8767a6aa",
+  "tests": {
+    "yaml_parse": "passed",
+    "powershell_parse": "passed",
+    "linux_guard_before_output_or_COM": "passed",
+    "readonly_helpers_equal_qualified_MSI_functions": "passed",
+    "independent_source_and_safety_review": "passed",
+    "windows_installation": "not-run",
+    "gui": "not-run",
+    "standalone_helper_paths_and_hashes": "passed"
+  },
+  "scope": {
+    "new_installations_only": true,
+    "existing_products_profiles_userchoice_refused": true,
+    "only_new_exact_ProductCodes_uninstalled": true,
+    "default_mscz_mscx_and_official_classes_snapshotted": true,
+    "official_INI_data_documents_hashed": true,
+    "new_Cadence_OpenWith_verified": true,
+    "versions_without_SDK_search_paths": true,
+    "GUI": "optional sequential; requested GUI must close cleanly and expose separate INI/local profiles",
+    "registry_view": "64-bit",
+    "IPC_simultaneous": false,
+    "musical_editing_or_listening": false
+  },
+  "limits": [
+    "Disposable GitHub-hosted Windows x64 runner only",
+    "Existing user profiles and existing Windows UserChoice are refused, not migrated or modified",
+    "Incoming Cadence artifact requires GitHub access and expires after its 14-day retention",
+    "Codes0/3010 are accepted; reboot is not tested",
+    "No 32-bit association-client qualification",
+    "No source-main edits or remote mutation/publication occurred"
+  ],
+  "workflow_estimated_minutes": 10,
+  "workflow_timeout_minutes": 20,
+  "standalone_GUI_helpers": {
+    "Run-CleanGuiProbe.ps1": "8a5f7d237c4ebf452ca347fab7c5dfc612bc7b457036e541cbd5df635902c68d",
+    "Test-GuiLaunch.ps1": "1cc4ea0a980e8f6b2bc5efc20b85561143144388a80583d6b7a3df85041022c6"
+  }
+}

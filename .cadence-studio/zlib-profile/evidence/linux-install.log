@@ -1,0 +1,17 @@
+-- Install configuration: "Release"
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/lib/libz.a
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/lib/cmake/zlib/ZLIB-static.cmake
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/lib/cmake/zlib/ZLIB-static-release.cmake
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/lib/cmake/zlib/ZLIBConfig.cmake
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/lib/cmake/zlib/ZLIBConfigVersion.cmake
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/include/zconf.h
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/include/zlib.h
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/share/man/man3/zlib.3
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/share/doc/zlib/zlib/LICENSE
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/share/doc/zlib/zlib/algorithm.txt
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/share/doc/zlib/zlib/crc-doc.1.0.pdf
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/share/doc/zlib/zlib/rfc1950.txt
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/share/doc/zlib/zlib/rfc1951.txt
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/share/doc/zlib/zlib/rfc1952.txt
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/share/doc/zlib/zlib/txtvsbin.txt
+-- Installing: /workspace/cadence-zlib-source-profile/.local/stage/lib/pkgconfig/zlib.pc

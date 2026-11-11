@@ -1,0 +1,8 @@
+Internal ctest changing into directory: /workspace/cadence-zlib-source-profile/.local/probe
+Test project /workspace/cadence-zlib-source-profile/.local/probe
+    Start 1: cadence_zlib_archive_api
+1/1 Test #1: cadence_zlib_archive_api .........   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.00 sec

@@ -1,0 +1,16 @@
+{
+  "checked_utc": "2026-11-10",
+  "checks": {
+    "workflow_yaml": true,
+    "runner": "windows-2022",
+    "visual_studio": "2022",
+    "windows_sdk": "10.0.26100.0",
+    "python": "3.12",
+    "checkout": "v6",
+    "native_ast_duplicate_cmake_paths": "passed on Linux",
+    "powershell_syntax": "passed",
+    "source_fetcher_path_has_newline": false,
+    "source_path_trim": "enabled defensively"
+  },
+  "windows_profile_build_executed": false
+}

@@ -1,0 +1,46 @@
+--- a/buildscripts/cmake/FindZlibStatic.cmake
++++ b/buildscripts/cmake/FindZlibStatic.cmake
+@@ -1,3 +1,28 @@
+-add_library(zlibstat STATIC IMPORTED)	
+-set_target_properties(zlibstat PROPERTIES IMPORTED_LOCATION ${DEPENDENCIES_LIB_DIR}/zlibstat.lib)
+-    
++# Optional source-built zlib profile; leave the audited reference import intact by default.
++set(CADENCE_ZLIB_SOURCE_PREFIX "" CACHE PATH "Verified zlib 1.3.2 /MD Release install prefix")
++if(CADENCE_ZLIB_SOURCE_PREFIX)
++    if(NOT CADENCE_BUILD)
++        message(FATAL_ERROR "The zlib source profile is restricted to the Cadence derivative")
++    endif()
++    if(CMAKE_CONFIGURATION_TYPES OR NOT CMAKE_BUILD_TYPE MATCHES "^(Release|RelWithDebInfo)$")
++        message(FATAL_ERROR "Use a single-configuration Release or RelWithDebInfo /MD build")
++    endif()
++    foreach(relative IN ITEMS lib/zs.lib include/zlib.h include/zconf.h)
++        if(NOT EXISTS "${CADENCE_ZLIB_SOURCE_PREFIX}/${relative}")
++            message(FATAL_ERROR "Incomplete source-built zlib prefix: ${relative}")
++        endif()
++    endforeach()
++    file(STRINGS "${CADENCE_ZLIB_SOURCE_PREFIX}/include/zlib.h" cadence_zlib_version
++        REGEX "^#define ZLIB_VERSION ")
++    if(NOT cadence_zlib_version STREQUAL "#define ZLIB_VERSION \"1.3.2\"")
++        message(FATAL_ERROR "This source profile requires matching zlib 1.3.2 headers and library")
++    endif()
++    add_library(zlibstat STATIC IMPORTED)
++    set_target_properties(zlibstat PROPERTIES
++        IMPORTED_LOCATION "${CADENCE_ZLIB_SOURCE_PREFIX}/lib/zs.lib"
++        INTERFACE_INCLUDE_DIRECTORIES "${CADENCE_ZLIB_SOURCE_PREFIX}/include")
++else()
++    add_library(zlibstat STATIC IMPORTED)
++    set_target_properties(zlibstat PROPERTIES IMPORTED_LOCATION ${DEPENDENCIES_LIB_DIR}/zlibstat.lib)
++
++endif()
+--- a/src/framework/global/CMakeLists.txt
++++ b/src/framework/global/CMakeLists.txt
+@@ -281,7 +281,9 @@
+ if (CC_IS_MSVC)
+     include(FindZlibStatic)
+     target_link_libraries(muse_global PRIVATE zlibstat)
++    if(NOT CADENCE_ZLIB_SOURCE_PREFIX)
+     target_include_directories(muse_global PRIVATE ${DEPENDENCIES_INC}/zlib)
++    endif()
+ elseif (CC_IS_EMCC)
+     #zlib included in main linker
+ else ()

@@ -1,0 +1,92 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: disposable Windows coexistence with official MuseScore'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/coexistence/**'
+      - '.github/workflows/cadence-coexistence.yml'
+  workflow_dispatch:
+    inputs:
+      run_gui:
+        description: 'Observe the two GUI/profile initializations sequentially'
+        type: boolean
+        default: true
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-coexistence-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  coexistence:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Download the qualified actual Cadence MSI artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: cadence-retained-msi-experimental-2-1
+          run-id: 42721049351
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/cadence-release
+      - name: Download and authenticate the standalone official MuseScore release
+        run: |
+          $root = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/coexistence"
+          $lock = Get-Content "$root/releases.lock.json" -Raw | ConvertFrom-Json
+          $downloads = "$env:RUNNER_TEMP/coexistence-downloads"
+          if (Test-Path -LiteralPath $downloads) { throw 'Download directory must be new' }
+          New-Item -ItemType Directory -Path $downloads | Out-Null
+          Invoke-WebRequest -Uri $lock.official.checksums_url -OutFile "$downloads/checksums.sha256.txt"
+          if ((Get-FileHash "$downloads/checksums.sha256.txt" -Algorithm SHA256).Hash.ToLowerInvariant() -ne $lock.official.checksums_sha256) { throw 'Official checksum file changed' }
+          $line = @(Get-Content "$downloads/checksums.sha256.txt" | Where-Object { $_ -match ('^[a-f0-9]{64}  ' + [regex]::Escape($lock.official.filename) + '$') })
+          if ($line.Count -ne 1 -or $line[0].Substring(0, 64) -ne $lock.official.sha256) { throw 'Pinned MSI does not match the official release checksum list' }
+          Invoke-WebRequest -Uri $lock.official.url -OutFile (Join-Path $downloads $lock.official.filename)
+          if ((Get-FileHash (Join-Path $downloads $lock.official.filename) -Algorithm SHA256).Hash.ToLowerInvariant() -ne $lock.official.sha256) { throw 'Official MSI bytes do not match the release' }
+          Copy-Item "$root/releases.lock.json" -Destination "$downloads/releases.lock.json"
+      - name: Verify sequential coexistence, settings, associations and exact cleanup
+        env:
+          COEXISTENCE_RUN_GUI: ${{ github.event_name != 'workflow_dispatch' || inputs.run_gui }}
+        run: |
+          $root = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/coexistence"
+          $lock = Get-Content "$root/releases.lock.json" -Raw | ConvertFrom-Json
+          $parameters = @{
+            OfficialMsiPath = (Join-Path "$env:RUNNER_TEMP/coexistence-downloads" $lock.official.filename)
+            CadenceMsiPath = (Join-Path "$env:RUNNER_TEMP/cadence-release" $lock.cadence.filename)
+            OutputDirectory = "$env:RUNNER_TEMP/coexistence-qa"
+          }
+          if ($env:COEXISTENCE_RUN_GUI -eq 'true') {
+            $parameters.EnableGui = $true
+            $parameters.GuiWrapperPath = "$root/Run-CleanGuiProbe.ps1"
+            $parameters.GuiProbePath = "$root/Test-GuiLaunch.ps1"
+          }
+          & "$root/Test-Coexistence.ps1" @parameters
+      - name: Print exact results and retain evidence even after failure
+        if: always()
+        run: |
+          $report = "$env:RUNNER_TEMP/coexistence-qa/coexistence-report.json"
+          if (Test-Path -LiteralPath $report) {
+            Write-Host 'CADENCE_COEXISTENCE_REPORT_BEGIN'
+            Get-Content -LiteralPath $report | Out-Host
+            Write-Host 'CADENCE_COEXISTENCE_REPORT_END'
+          }
+      - name: Retain coexistence evidence; not a product delivery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-coexistence-qa-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/coexistence-qa/
+            ${{ runner.temp }}/coexistence-downloads/*.txt
+            ${{ runner.temp }}/coexistence-downloads/*.json
+          retention-days: 14
+          if-no-files-found: warn

@@ -1,0 +1,57 @@
+name: 'Cadence isolated zlib source profile'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/zlib-profile/**'
+      - '.github/workflows/cadence-zlib-windows.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  zlib-source:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          architecture: x64
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+      - name: Pin CMake
+        run: |
+          choco install cmake --version=3.31.6 --allow-downgrade --yes --installargs 'ADD_CMAKE_TO_PATH=System'
+          if ($LASTEXITCODE -ne 0) { throw 'CMake setup failed' }
+          choco install ninja --version=1.11.1 --allow-downgrade --yes
+          if ($LASTEXITCODE -ne 0) { throw 'Ninja setup failed' }
+          'C:\Program Files\CMake\bin' | Out-File $env:GITHUB_PATH -Append
+      - name: Check source-integrity guards without network
+        run: |
+          python -B -m unittest discover -s ./.cadence-studio/zlib-profile/tests -p 'test_*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Source integrity guard tests failed' }
+          ./.cadence-studio/zlib-profile/tests/Test-ToolPaths.ps1
+      - name: Build and test only zlib from verified source
+        run: ./.cadence-studio/zlib-profile/Build-Windows.ps1 -WorkPath "$env:RUNNER_TEMP/zlib-source-profile"
+      - name: Preserve component evidence and matching unmodified sources
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zlib-source-profile-${{ github.run_number }}
+          path: |
+            ${{ runner.temp }}/zlib-source-profile/stage/**
+            ${{ runner.temp }}/zlib-source-profile/sources/**
+            ${{ runner.temp }}/zlib-source-profile/profile-recipe/**
+            ${{ runner.temp }}/zlib-source-profile/*.log
+            ${{ runner.temp }}/zlib-source-profile/*.json
+            ${{ runner.temp }}/zlib-source-profile/*.xml
+            ${{ runner.temp }}/zlib-source-profile/*.txt
+          retention-days: 14
+          if-no-files-found: error

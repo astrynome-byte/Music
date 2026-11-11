@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: GPL-3.0-only
+cmake_minimum_required(VERSION 3.22)
+project(CadenceZlibArchiveApi LANGUAGES C)
+if(NOT ZLIB_PROFILE_PREFIX)
+    message(FATAL_ERROR "ZLIB_PROFILE_PREFIX must identify the just-installed source build")
+endif()
+find_package(ZLIB 1.3.2 EXACT CONFIG REQUIRED COMPONENTS static
+    PATHS "${ZLIB_PROFILE_PREFIX}/lib/cmake/zlib" NO_DEFAULT_PATH)
+if(NOT TARGET ZLIB::ZLIBSTATIC)
+    message(FATAL_ERROR "The profile must expose its static zlib target")
+endif()
+enable_testing()
+add_executable(cadence_zlib_archive_api archive_api.c)
+target_link_libraries(cadence_zlib_archive_api PRIVATE ZLIB::ZLIBSTATIC)
+add_test(NAME cadence_zlib_archive_api COMMAND cadence_zlib_archive_api)
