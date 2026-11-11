@@ -24,7 +24,7 @@ static Clock::time_point deadline;
 static std::vector<std::string> actions;
 static std::vector<std::string> keyboardFrames;
 static int keyboardGestureAttempts = 0;
-static int f6GestureAttempts = 0, tabGestureAttempts = 0, rightGestureAttempts = 0, downGestureAttempts = 0, returnGestureAttempts = 0;
+static int f6GestureAttempts = 0, tabGestureAttempts = 0, rightGestureAttempts = 0, leftGestureAttempts = 0, downGestureAttempts = 0, returnGestureAttempts = 0;
 static bool keyboardFailure = false;
 
 static std::string utf8(const std::wstring& value)
@@ -223,16 +223,18 @@ static bool sendNavigationKey(WORD key, const char* purpose)
     if (Clock::now() >= deadline || keyboardGestureAttempts >= 17) return false;
     if ((key == VK_F6 && f6GestureAttempts >= 6) || (key == VK_TAB && tabGestureAttempts >= 4)
         || (key == VK_RIGHT && rightGestureAttempts >= 3) || (key == VK_DOWN && downGestureAttempts >= 1)
+        || (key == VK_LEFT && leftGestureAttempts >= 1)
         || (key == VK_RETURN && returnGestureAttempts >= 3)) return false;
     if (key == VK_F6) ++f6GestureAttempts;
     if (key == VK_TAB) ++tabGestureAttempts;
     if (key == VK_RIGHT) ++rightGestureAttempts;
+    if (key == VK_LEFT) ++leftGestureAttempts;
     if (key == VK_DOWN) ++downGestureAttempts;
     if (key == VK_RETURN) ++returnGestureAttempts;
     ++keyboardGestureAttempts;
     const OwnedKeyResult result = SendOwnedKey(targetPid, targetProcess, mainWindow(), key);
     if (!result.sent) keyboardFailure = true;
-    const char* label = key == VK_F6 ? "F6" : key == VK_TAB ? "Tab" : key == VK_RIGHT ? "Right" : key == VK_DOWN ? "Down" : "Return";
+    const char* label = key == VK_F6 ? "F6" : key == VK_TAB ? "Tab" : key == VK_RIGHT ? "Right" : key == VK_LEFT ? "Left" : key == VK_DOWN ? "Down" : "Return";
     actions.push_back(std::string("{\"action\":\"owned_navigation_key\",\"purpose\":\"") + purpose
                       + "\",\"key\":\"" + label + "\",\"pid\":" + std::to_string(targetPid)
                       + ",\"foreground_handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(result.foreground))
@@ -456,15 +458,19 @@ static AddResult exerciseAddAndFavorite(IUIAutomation* automation, const std::fi
     return result;
 }
 
+#include "VerifyExistingScore.inc"
+
 int wmain(int argc, wchar_t** argv)
 {
     std::filesystem::path output;
     std::wstring fixtureRoot, fixturePath, expectedTitle;
+    bool verifyExisting = false;
     for (int i = 1; i + 1 < argc; i += 2) {
         if (std::wstring(argv[i]) == L"--pid") targetPid = wcstoul(argv[i + 1], nullptr, 10);
         else if (std::wstring(argv[i]) == L"--output") output = argv[i + 1];
         else if (std::wstring(argv[i]) == L"--fixture-root") fixtureRoot = argv[i + 1];
-        else if (std::wstring(argv[i]) == L"--add-fixture") fixturePath = argv[i + 1];
+        else if (std::wstring(argv[i]) == L"--add-fixture") { if (!fixturePath.empty()) return 1; fixturePath = argv[i + 1]; }
+        else if (std::wstring(argv[i]) == L"--verify-fixture") { if (!fixturePath.empty()) return 1; fixturePath = argv[i + 1]; verifyExisting = true; }
         else if (std::wstring(argv[i]) == L"--expected-title") expectedTitle = argv[i + 1];
         else return 1;
     }
@@ -480,6 +486,7 @@ int wmain(int argc, wchar_t** argv)
     bool navigationReady = false;
     int readinessPolls = 0;
     AddResult addition;
+    ExistingScoreResult existing;
     HRESULT initialized = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
     HRESULT activated = initialized;
     if (SUCCEEDED(initialized)) {
@@ -608,7 +615,10 @@ int wmain(int argc, wchar_t** argv)
             status = contentObserved ? "library_tab_active_and_add_control_observed" : "blocked_library_controls_or_semantic_action_unavailable";
             if (!contentObserved && owned(mainWindow()) && !IsWindowEnabled(mainWindow())) status = "blocked_owned_modal_remaining_after_introduction";
             if (!contentObserved && Clock::now() > deadline) status = navigationReady ? "blocked_uia_inspection_deadline" : "blocked_semantic_navigation_not_ready_before_deadline";
-            if (contentObserved && !fixturePath.empty()) {
+            if (contentObserved && verifyExisting) {
+                existing = VerifyFavoriteAndOpen(automation.Get(), output, expectedTitle, fixturePath);
+                status = existing.status;
+            } else if (contentObserved && !fixturePath.empty()) {
                 addition = exerciseAddAndFavorite(automation.Get(), output, fixtureRoot, fixturePath, expectedTitle);
                 status = addition.status;
             }
@@ -616,11 +626,18 @@ int wmain(int argc, wchar_t** argv)
         automation.Reset(); bounded.Reset(); CoUninitialize();
     }
     std::ofstream result(output / L"uia-report.json", std::ios::binary);
-    result << "{\"scope\":\"Owned PID accessibility inspection and semantic navigation only; no score opened or changed\",\"pid\":"
+    result << "{\"scope\":" << jsonQuoted(verifyExisting
+              ? L"Owned PID library replay and opening of the controlled score copy; no note editing or musical file writes"
+              : L"Owned PID library navigation and optional controlled-copy Add/favorite; no score editor opened or musical file writes") << ",\"pid\":"
            << targetPid << ",\"status\":\"" << status << "\",\"com_activation_hresult\":" << static_cast<long>(activated)
            << ",\"library_content_observed\":" << (contentObserved ? "true" : "false")
            << ",\"library_content_observed_via_focused_UIA_element\":" << (contentObservedFromFocusedElement ? "true" : "false")
-           << ",\"add_requested\":" << (!fixturePath.empty() ? "true" : "false")
+           << ",\"add_requested\":" << (!fixturePath.empty() && !verifyExisting ? "true" : "false")
+           << ",\"verify_existing_requested\":" << (verifyExisting ? "true" : "false")
+           << ",\"favorite_restored_control_observed\":" << (existing.favoriteRestored ? "true" : "false")
+           << ",\"score_open_requested\":" << (existing.openRequested ? "true" : "false")
+           << ",\"score_editor_title_observed\":" << (existing.editorTitleObserved ? "true" : "false")
+           << ",\"score_editor_title\":" << jsonQuoted(existing.observedTitle)
            << ",\"owned_file_dialog_selected_copy\":" << (addition.dialogSelected ? "true" : "false")
            << ",\"score_added_control_observed\":" << (addition.scoreAdded ? "true" : "false")
            << ",\"favorite_action_delivered\":" << (addition.favoriteRequested ? "true" : "false")
@@ -642,5 +659,6 @@ int wmain(int argc, wchar_t** argv)
     }
     result << "],\"score_editing_tested\":false,\"favorites_tested\":false,\"listening_tested\":false}";
     CloseHandle(targetProcess);
-    return contentObserved && (fixturePath.empty() || (addition.scoreAdded && addition.favoriteRequested)) ? 0 : 2;
+    return contentObserved && (verifyExisting ? (existing.favoriteRestored && existing.openRequested && existing.editorTitleObserved)
+                              : (fixturePath.empty() || (addition.scoreAdded && addition.favoriteRequested))) ? 0 : 2;
 }

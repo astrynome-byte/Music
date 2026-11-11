@@ -79,7 +79,7 @@ jobs:
             -StagePath "$env:RUNNER_TEMP/library-ui-stage" `
             -ProbePath "$env:RUNNER_TEMP/library-ui-probe-build/UiaProbe.exe" `
             -OutputDirectory "$env:RUNNER_TEMP/library-ui-results/ui-probe" `
-            -ExerciseAdd
+            -ExerciseAdd -VerifyRestartOpen
 
       - name: Print bounded evidence from this exact UI inspection even if it was blocked
         if: always()
@@ -98,7 +98,7 @@ jobs:
           if (Test-Path -LiteralPath $resultRoot -PathType Container) {
             $jsonFiles = @(Get-ChildItem -LiteralPath $resultRoot -Recurse -File -Filter '*.json' |
               Where-Object { -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) } |
-              Sort-Object @{ Expression = { if ($_.Name -in @('library-ui-report.json','uia-report.json','catalog-after-ui.json')) { 0 } elseif ($_.Name -eq 'stage-restoration.json') { 1 } else { 2 } } }, FullName | Select-Object -First 17)
+              Sort-Object @{ Expression = { if ($_.Name -in @('library-ui-report.json','library-restart-report.json','uia-report.json','catalog-after-ui.json')) { 0 } elseif ($_.Name -eq 'stage-restoration.json') { 1 } else { 2 } } }, FullName | Select-Object -First 17)
             if ($jsonFiles.Count -gt 16) { $notes.Add('More than16 JSON files; printing only first16.') }
             foreach ($file in @($jsonFiles | Select-Object -First 16)) {
               if ($file.Length -gt $jsonBudget) { $notes.Add('Oversized JSON excluded: ' + $file.Name); continue }
@@ -115,7 +115,7 @@ jobs:
             }
             $pngFiles = @(Get-ChildItem -LiteralPath $resultRoot -Recurse -File -Filter '*.png' |
               Where-Object { -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) } |
-              Sort-Object FullName | Select-Object -First 3)
+              Sort-Object @{ Expression = { if ($_.Name -eq 'after-restart-open.png') { 0 } elseif ($_.Name -eq 'after-navigation.png') { 1 } else { 2 } } }, FullName | Select-Object -First 3)
             if ($pngFiles.Count -gt 2) { $notes.Add('More than2 PNG captures; printing only first2.') }
             foreach ($file in @($pngFiles | Select-Object -First 2)) {
               if (4L * [long][Math]::Ceiling($file.Length / 3.0) + $pngPrinted -gt $pngBudget) { $notes.Add('PNG base64 aggregate budget reached: ' + $file.Name); continue }

@@ -1,6 +1,6 @@
 {
   "date": "2026-11-11",
-  "status": "native-dialog-navigation-resume-prepared-not-Windows-executed",
+  "status": "same-profile-restart-favorite-and-score-open-prepared-not-Windows-executed",
   "yaml_steps": 8,
   "powershell_scripts_and_snippets_parsed": 6,
   "native_pinvoke_declarations_compiled_on_linux": true,
@@ -12,20 +12,21 @@
   "artifact_id": 13755702885,
   "run_id": 42793810996,
   "limits": [
-    "Changed Add client and native picker helper require real Windows SDK compilation and execution.",
-    "Library tab/Add focus was validated only by previous run43111424043 on unchanged app1001.",
-    "Nine local validation cases use simulated UI flags; they are not Windows UI qualification.",
-    "No search/restart/open-editor/undo/listening validation by this prepared Add step."
+    "New replay client/wrapper has not compiled or run on Windows.",
+    "Actual Add/favorite is qualified by previous run43120667999 on unchanged app1001.",
+    "Caption observation is not note/content/undo/audio validation; inspect after-restart-open PNG.",
+    "Search remains to be qualified."
   ],
   "files": {
-    "README.md": "7bf8882e5116d6d25626600ad9162d7470a656bd7593e31b6ee725a07e1df78d",
+    "README.md": "04735dd447b00a1cbe1b60f7ddecd7dd794f777978e9a46941a15977dca9da5d",
     "Restore-LibraryStage.ps1": "497618b21b986d397fd8d242201fe2da7c8df51cf6eee54fcf323c8a0ca94251",
-    "Run-LibraryUiProbe.ps1": "2bcdc0284b2f0651afae1a3c22fcfae3ee7f265ff219bb6e145423ba0db6ec7f",
-    "UiaProbe.cpp": "b723ea31dd8116caf2a5d3fc833f89677b6e58de40a18cfc3f64faa1e97e0e66",
-    "OwnedKeyboard.h": "bd8324e670aeb9e4cd85a1dc9be5e63396363e70be6f312f021c1f88fc2361a0",
-    "OwnedFileDialog.h": "4ad24654aa9dbf293b75929157c9d597e4021f8c6ca07e223e630c92eb6683e1"
+    "Run-LibraryUiProbe.ps1": "01c9cdd71701ccdfeefa4e6a21222856959dc128b3e38f868044aad8f2e59b7e",
+    "UiaProbe.cpp": "0db9ccb4e38a04b6c08fde6da0a6dfdb9ba9982dba8bdafedab0286928ecc538",
+    "OwnedKeyboard.h": "3890e634075f9a42e5d5572d35c06b1ec7931ecf13e09b72524d1527c9a2ca07",
+    "OwnedFileDialog.h": "4ad24654aa9dbf293b75929157c9d597e4021f8c6ca07e223e630c92eb6683e1",
+    "VerifyExistingScore.inc": "b13b440b96721c417ac9270a1801a9717c8180fa904a390d7e321059a9e2965e"
   },
-  "workflow_sha256": "440f8dea1968277667d4ee454a12d89fc0e35a0c7aa87c9a47c74f34f92ec180",
+  "workflow_sha256": "e92da7a982caaebf6084cee0e71035a8ee976fe9f7bd27a0b398be08a4ac9880",
   "previous_probe": {
     "run_id": 43101086728,
     "job_id": 130792444190,
@@ -216,5 +217,44 @@
     "product_changed": false,
     "raw_catalog_snapshot_before_assertions": true,
     "Windows_executed": false
+  },
+  "actual_Add_favorite_success": {
+    "run_id": 43120667999,
+    "job_id": 130860005006,
+    "ci_commit": "2fcbd1b6bb063e79c261444e255867335fbcb450",
+    "SDK_compile": "PASS",
+    "workflow_result": "SUCCESS",
+    "native_selection": true,
+    "Open_score_control_observed": true,
+    "favorite_action_delivered": true,
+    "catalog_favorite_after_clean_close": true,
+    "favorite_remove_label_observed_after_model_reset": false,
+    "key_gestures": 16,
+    "source_and_copy_sha256": "10ae5eb1fae2679d9ad32aa0b721fef06119ef24b78b4f8b9bd6b770582c289f",
+    "visual_review": "Piano row visible, favorite button has accent",
+    "cleanup": "exit0 no force"
+  },
+  "next_restart_open": {
+    "requested": true,
+    "Windows_executed": false,
+    "same_executable_profile_copy": true,
+    "new_PID_and_new_client_process": true,
+    "preconditions": "First Add/favorite flow passed, no score processes, catalogue/copy SHA unchanged",
+    "observations": "Library loaded, exact Remove favorite label, Left then exact Open button Return, owned visible enabled main caption contains title or fixture stem",
+    "postconditions": "Clean exit0 and source/copy/catalogue SHA unchanged",
+    "Left_limit": 1,
+    "note_editing_tested": false,
+    "musical_contents_visual_review_required": true,
+    "search_tested": false
+  },
+  "restart_precondition_runtime_linux": {
+    "actual_production_function": true,
+    "simulated_first_report": true,
+    "application_executed": false,
+    "passed": [
+      "first-phase-not-passed",
+      "catalogue-hash-mismatch",
+      "existing-process"
+    ]
   }
 }

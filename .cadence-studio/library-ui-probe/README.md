@@ -188,3 +188,31 @@ Down. Le plafond est désormais17 gestes (F6≤6, Tab≤4, Right≤3, Down≤1, 
 sous le même délai55s. Le catalogue brut est conservé même lorsque l'assertion
 favorite=true échoue. Ce correctif de qualification reste à exécuter ; il ne
 modifie pas l'application et ne valide pas encore favoris/recherche/redémarrage.
+
+## Reprise et ouverture après le succès Ajouter/favori
+
+Le run [43120667999](https://github.com/astrynome-byte/Music/actions/runs/43120667999)
+a maintenant réussi le parcours réel :16 gestes possédés, sélection native,
+contrôle Ouvrir au titre attendu, action Ajouter aux favoris et catalogue après
+fermeture0 avec `favorite=true`. Les deux SHA de la référence et de sa copie
+restent identiques. La capture a été revue : le piano est visible et son bouton
+étoile a l'accent du favori. Le libellé Retirer n'a pas été observé après le reset
+du modèle ; cette limite UIA reste consignée plutôt que déduite du catalogue.
+
+La préparation `-VerifyRestartOpen` exige ce premier succès dans la même
+invocation et refuse tout autre processus de partition avant de relancer le
+même exécutable, profil et copie. Un nouveau client/PID réobserve la bibliothèque,
+Down/Ouvrir puis Right/**Retirer des favoris**. Aucun toggle favori n'est déclenché.
+Left (limité à1) revient à Ouvrir ; Return ne s'envoie qu'après nouvelle validation
+du nom/type/PID/visibilité et de l'identité du focus. Le titre de la fenêtre de
+l'éditeur doit ensuite contenir le titre ou le nom de la copie contrôlée.
+
+Après la seconde fermeture propre0, les SHA de la source, de la copie et du
+catalogue doivent être inchangés. Les rapports distinguent le favori rechargé,
+la demande d'ouverture et le titre observé : **le contenu musical visible doit
+encore être contrôlé sur le PNG**, aucune édition de notes/annulation/écoute
+n'est affirmée. Les rapports finaux des deux phases et les deux captures après
+action sont prioritaires dans le readback borné. Cette reprise reste à compiler
+et exécuter sur Windows ; les trois refus de préconditions ont été testés sur
+la vraie fonction PowerShell sous Linux, avec rapport initial simulé et sans app.
+La recherche reste une étape suivante.

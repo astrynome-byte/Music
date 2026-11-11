@@ -5,10 +5,12 @@ param(
     [Parameter(Mandatory)][string] $StagePath,
     [Parameter(Mandatory)][string] $ProbePath,
     [Parameter(Mandatory)][string] $OutputDirectory,
-    [switch] $ExerciseAdd
+    [switch] $ExerciseAdd,
+    [switch] $VerifyRestartOpen
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+if ($VerifyRestartOpen -and -not $ExerciseAdd) { throw 'Restart verification requires the same invocation to create and validate its controlled fixture first.' }
 if ($env:OS -ne 'Windows_NT' -or -not [Environment]::Is64BitProcess -or
     $env:GITHUB_ACTIONS -ne 'true' -or $env:CI -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') {
     throw 'Library UI inspection is restricted to disposable hosted Windows x64 CI.'
@@ -37,7 +39,7 @@ $report = [ordered]@{
     profile_isolated_by_script = $false; hosted_disposable_profile = $true
     profile_seeded_by_script = $false; onboarding_tested = $false
     qa_precondition = 'A new Cadence-only profile with introduction already completed; this does not validate onboarding'
-    action_policy = 'Owned source-backed section/panel navigation; Return only on an exact UIA-focused Library/Add/favorite control; optional native Open dialogue selects only the controlled copy; foreground and Win32 focus PID verified for every key'
+    action_policy = 'Owned source-backed section/panel navigation; Return only on an exact UIA-focused Library/Add/favorite/Open control; optional native file dialogue selects only the controlled copy; foreground and Win32 focus PID verified for every key'
     captures = @(); cleanup = [ordered]@{ forced = $false; exit_code = $null; events = @(); error = $null }
     library_content_observed = $false; score_editing_tested = $false; favorites_tested = $false
     exercise_add_requested = $ExerciseAdd.IsPresent; fixture = $null; catalog_validation = $null; catalog_actual_snapshot_path = $null
@@ -67,7 +69,7 @@ public static class CadenceLibraryWindowNative {
  }
 }
 '@
-function Capture-OwnedWindow([string] $Name, $Process) {
+function Capture-OwnedWindow([string] $Name, $Process, [string] $CaptureDirectory = $OutputDirectory, $CaptureReport = $report) {
     try {
         $Process.Refresh()
         if ($Process.HasExited) { throw 'Owned process has exited.' }
@@ -88,11 +90,92 @@ function Capture-OwnedWindow([string] $Name, $Process) {
         try {
             $graphics=[Drawing.Graphics]::FromImage($bitmap)
             try { $graphics.CopyFromScreen($rect.Left,$rect.Top,0,0,$bitmap.Size) } finally { $graphics.Dispose() }
-            $path=Join-Path $OutputDirectory $Name
+            $path=Join-Path $CaptureDirectory $Name
             $bitmap.Save($path,[Drawing.Imaging.ImageFormat]::Png)
-            $report.captures += [ordered]@{ status='saved_requires_visual_review';path=$path;sha256=(Get-FileHash $path -Algorithm SHA256).Hash.ToLowerInvariant();pid=$Process.Id;method='desktop_pixels_cropped_to_owned_window' }
+            $CaptureReport.captures += [ordered]@{ status='saved_requires_visual_review';path=$path;sha256=(Get-FileHash $path -Algorithm SHA256).Hash.ToLowerInvariant();pid=$Process.Id;method='desktop_pixels_cropped_to_owned_window' }
         } finally { $bitmap.Dispose() }
-    } catch { $report.captures += [ordered]@{ status='unavailable';error=$_.Exception.Message } }
+    } catch { $CaptureReport.captures += [ordered]@{ status='unavailable';error=$_.Exception.Message } }
+}
+function Test-OwnedRestartAndOpen($StartInformation, $FirstReport, [string] $CataloguePath) {
+    $restartDirectory=Join-Path $OutputDirectory 'restart-check'
+    $restartTree=Join-Path $restartDirectory 'uia'
+    if (Test-Path -LiteralPath $restartDirectory) { throw 'Restart evidence directory must be new.' }
+    New-Item -ItemType Directory -Path $restartTree | Out-Null
+    $result=[ordered]@{ schema_version=1;status='pending';scope='Restart the same owned disposable Cadence profile and open only its controlled copy';pid=$null;probe_exit_code=$null;native_probe_status=$null;captures=@();cleanup=[ordered]@{forced=$false;exit_code=$null;error=$null;events=@()};probe_cleanup_forced=$false;favorite_restored_control_observed=$false;score_open_requested=$false;score_editor_title_observed=$false;score_editor_title=$null;catalogue_unchanged=$false;fixture_unchanged=$false;source_unchanged=$false;score_editing_tested=$false;musical_content_visual_review_required=$true;error=$null }
+    $ownedApp=$null;$ownedProbe=$null;$appOut=$null;$appErr=$null
+    try {
+        if (@(Get-Process | Where-Object { $_.ProcessName -in $known }).Count) { throw 'A score process exists before the owned restart; nothing else was closed.' }
+        if (-not $FirstReport.favorites_tested -or $FirstReport.catalog_validation.status -ne 'passed' -or
+            (Get-FileHash $CataloguePath -Algorithm SHA256).Hash.ToLowerInvariant() -cne $FirstReport.catalog_validation.sha256 -or
+            (Get-FileHash $FirstReport.fixture.copy_path -Algorithm SHA256).Hash.ToLowerInvariant() -cne $FirstReport.fixture.sha256_before) { throw 'First-phase catalogue/copy preconditions changed before restart.' }
+        $ownedApp=[Diagnostics.Process]::new();$ownedApp.StartInfo=$StartInformation
+        if (-not $ownedApp.Start()) { throw 'Owned restart process did not start.' }
+        $result.pid=$ownedApp.Id;$appOut=$ownedApp.StandardOutput.ReadToEndAsync();$appErr=$ownedApp.StandardError.ReadToEndAsync()
+        $clock=[Diagnostics.Stopwatch]::StartNew()
+        while ($clock.Elapsed.TotalSeconds -lt 35) {
+            $ownedApp.Refresh();if($ownedApp.HasExited){throw 'Restarted application exited before inspection.'}
+            if(@([CadenceLibraryWindowNative]::Windows($ownedApp.Id)).Count){break}
+            Start-Sleep -Milliseconds 200
+        }
+        $probeInfo=[Diagnostics.ProcessStartInfo]::new();$probeInfo.FileName=$ProbePath;$probeInfo.UseShellExecute=$false
+        $probeInfo.RedirectStandardOutput=$true;$probeInfo.RedirectStandardError=$true
+        foreach($argument in @('--pid',[string]$ownedApp.Id,'--output',$restartTree,'--fixture-root',[string]$FirstReport.fixture.copy_root,'--verify-fixture',[string]$FirstReport.fixture.copy_path,'--expected-title',[string]$FirstReport.fixture.title)){$probeInfo.ArgumentList.Add($argument)}
+        $ownedProbe=[Diagnostics.Process]::new();$ownedProbe.StartInfo=$probeInfo
+        if(-not $ownedProbe.Start()){throw 'Restart UIA client did not start.'}
+        $probeOut=$ownedProbe.StandardOutput.ReadToEndAsync();$probeErr=$ownedProbe.StandardError.ReadToEndAsync()
+        if(-not $ownedProbe.WaitForExit(90000)){$ownedProbe.Kill($true);$ownedProbe.WaitForExit();throw 'Restart UIA client timed out.'}
+        $result.probe_exit_code=$ownedProbe.ExitCode
+        [IO.File]::WriteAllText((Join-Path $restartDirectory 'probe.stdout.log'),$probeOut.GetAwaiter().GetResult())
+        [IO.File]::WriteAllText((Join-Path $restartDirectory 'probe.stderr.log'),$probeErr.GetAwaiter().GetResult())
+        $native=Get-Content -LiteralPath (Join-Path $restartTree 'uia-report.json') -Raw|ConvertFrom-Json
+        if($native.pid -ne $ownedApp.Id){throw 'Restart client inspected a different PID.'}
+        $result.native_probe_status=$native.status
+        $result.favorite_restored_control_observed=$native.favorite_restored_control_observed
+        $result.score_open_requested=$native.score_open_requested
+        $result.score_editor_title_observed=$native.score_editor_title_observed
+        $result.score_editor_title=$native.score_editor_title
+        $ownedApp.Refresh();if($ownedApp.HasExited){throw 'Restarted app exited before its score capture.'}
+        Start-Sleep -Milliseconds 500
+        Capture-OwnedWindow 'after-restart-open.png' $ownedApp $restartDirectory $result
+        if($ownedProbe.ExitCode -ne 0 -or -not $result.favorite_restored_control_observed -or -not $result.score_open_requested -or -not $result.score_editor_title_observed){throw 'Restart/favorite/Open did not satisfy the actual UI criteria.'}
+    } catch { $result.error=$_.Exception.Message }
+    finally {
+        if($null -ne $ownedProbe){
+            try{$ownedProbe.Refresh();if(-not $ownedProbe.HasExited){$result.probe_cleanup_forced=$true;$ownedProbe.Kill($true);[void]$ownedProbe.WaitForExit(5000)}}catch{if(-not $result.error){$result.error=$_.Exception.Message}}
+            finally{$ownedProbe.Dispose()}
+        }
+        if($null -ne $ownedApp){
+            try{
+                $closing=[Diagnostics.Stopwatch]::StartNew()
+                while($closing.Elapsed.TotalSeconds -lt 12){
+                    $ownedApp.Refresh();if($ownedApp.HasExited){break}
+                    foreach($window in @([CadenceLibraryWindowNative]::Windows($ownedApp.Id))){
+                        $ownedApp.Refresh();if($ownedApp.HasExited){break}
+                        $posted=[CadenceLibraryWindowNative]::CloseOwned($window,$ownedApp.Id)
+                        $result.cleanup.events += [ordered]@{pid=$ownedApp.Id;handle=$window.ToInt64();posted=$posted}
+                    }
+                    if($ownedApp.WaitForExit(250)){break}
+                }
+                $ownedApp.Refresh()
+                if(-not $ownedApp.HasExited){$result.cleanup.forced=$true;$ownedApp.Kill($true);[void]$ownedApp.WaitForExit(5000)}
+                $result.cleanup.exit_code=$ownedApp.ExitCode
+                [IO.File]::WriteAllText((Join-Path $restartDirectory 'application.stdout.log'),$appOut.GetAwaiter().GetResult())
+                [IO.File]::WriteAllText((Join-Path $restartDirectory 'application.stderr.log'),$appErr.GetAwaiter().GetResult())
+            }catch{$result.cleanup.error=$_.Exception.Message}
+            finally{$ownedApp.Dispose()}
+        }
+        try{
+            $result.fixture_unchanged=(Get-FileHash $FirstReport.fixture.copy_path -Algorithm SHA256).Hash.ToLowerInvariant() -ceq $FirstReport.fixture.sha256_before
+            $result.source_unchanged=(Get-FileHash $FirstReport.fixture.source_path -Algorithm SHA256).Hash.ToLowerInvariant() -ceq $FirstReport.fixture.source_sha256_before
+            $result.catalogue_unchanged=(Get-FileHash $CataloguePath -Algorithm SHA256).Hash.ToLowerInvariant() -ceq $FirstReport.catalog_validation.sha256
+            [IO.File]::Copy($CataloguePath,(Join-Path $restartDirectory 'catalog-after-ui.json'),$false)
+            if(-not $result.fixture_unchanged -or -not $result.source_unchanged -or -not $result.catalogue_unchanged){throw 'Source, musical copy or favourite catalogue changed across restart/Open.'}
+        }catch{if(-not $result.error){$result.error=$_.Exception.Message}}
+        $clean= -not $result.error -and -not $result.cleanup.error -and -not $result.cleanup.forced -and -not $result.probe_cleanup_forced -and $result.cleanup.exit_code -eq 0
+        $result.status=if($clean -and $result.favorite_restored_control_observed -and $result.score_open_requested -and $result.score_editor_title_observed){'favorite_restored_and_editor_title_observed_after_open'}else{'failed_restart_or_open_validation'}
+        $result|ConvertTo-Json -Depth 12|Set-Content -LiteralPath (Join-Path $restartDirectory 'library-restart-report.json') -Encoding utf8
+    }
+    return $result
 }
 $app = $null; $probe = $null; $stdout = $null; $stderr = $null; $fixtureCopyPath = $null
 try {
@@ -249,5 +332,11 @@ finally {
 if ($report.error -or $report.cleanup.error -or $report.cleanup.forced -or $report.probe_cleanup_forced -or $report.cleanup.exit_code -ne 0) { throw 'Owned library inspection or clean exit0 failed; inspect retained reports.' }
 if (-not $report.library_content_observed) { Write-Warning "Library UI remains blocked/unvalidated: $($report.status). Tree and screenshots are evidence, not a pass."; exit 2 }
 if ($ExerciseAdd -and (-not $report.score_added_control_observed -or -not $report.favorite_action_delivered -or -not $report.favorites_tested)) { throw 'The actual score Add/favorite UI workflow did not pass its independent catalogue and fixture checks.' }
+if ($VerifyRestartOpen) {
+    $report.restart=Test-OwnedRestartAndOpen $start $report $report.catalog_validation.source_path
+    if($report.restart.status -eq 'favorite_restored_and_editor_title_observed_after_open'){$report.status='add_favorite_restart_and_editor_title_observed'}else{$report.status='failed_restart_or_open_validation'}
+    $report|ConvertTo-Json -Depth 16|Set-Content -LiteralPath (Join-Path $OutputDirectory 'library-ui-report.json') -Encoding utf8
+    if($report.restart.status -ne 'favorite_restored_and_editor_title_observed_after_open'){throw 'Owned restart/favorite/Open did not pass; original scores were not used.'}
+}
 if ($ExerciseAdd) { Write-Host 'Selected the controlled MSCX copy through the native dialog, observed its score control, delivered Favorite and verified the persisted catalogue; musical source/copy bytes unchanged.' }
 else { Write-Host 'Observed active library tab and its Add control through UIA. No files were added or changed.' }
