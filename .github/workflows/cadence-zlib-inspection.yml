@@ -37,6 +37,9 @@ jobs:
           path: ${{ runner.temp }}/zlib-component-input
       - name: Verify checksums and print the exact native manifest
         run: |
+          $env:ZLIB_TEST_SOURCE_ARCHIVE = "$env:RUNNER_TEMP/zlib-component-input/sources/zlib-1.3.2.tar.gz"
+          python -B -m unittest discover -s ./.cadence-studio/zlib-inspection -p 'test_*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Source transport reader regression failed' }
           python -B ./.cadence-studio/zlib-inspection/inspect_component.py `
             --input "$env:RUNNER_TEMP/zlib-component-input" `
             --output "$env:RUNNER_TEMP/zlib-component-inspection"
