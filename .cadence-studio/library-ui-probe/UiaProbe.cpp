@@ -33,7 +33,7 @@ static std::string utf8(const std::wstring& value)
     WideCharToMultiByte(CP_UTF8, 0, value.data(), static_cast<int>(value.size()), out.data(), n, nullptr, nullptr);
     return out;
 }
-static std::string quoted(const std::wstring& value)
+static std::string jsonQuoted(const std::wstring& value)
 {
     std::string out = "\"";
     for (unsigned char c : utf8(value)) {
@@ -99,7 +99,7 @@ static bool closeIntroductionOnly()
         if (title.find(L"Introduction") == std::wstring::npos || !owned(owner) || IsWindowEnabled(owner)) continue;
         // Recheck the exact process immediately before the only posted message.
         bool ok = owned(window) && owned(owner) && PostMessageW(window, WM_CLOSE, 0, 0);
-        actions.push_back("{\"action\":\"close_owned_introduction_only\",\"title\":" + quoted(title)
+        actions.push_back("{\"action\":\"close_owned_introduction_only\",\"title\":" + jsonQuoted(title)
                           + ",\"pid\":" + std::to_string(targetPid) + ",\"posted\":" + (ok ? "true" : "false") + "}");
         posted = posted || ok;
     }
@@ -146,7 +146,7 @@ static std::vector<Node> snapshot(IUIAutomation* automation, const std::filesyst
             if (!owned(window)) continue;
             const HRESULT elementResult = automation->ElementFromHandle(window, &element);
             inspectedWindows.push_back("{\"handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(window))
-                                       + ",\"title\":" + quoted(windowTitle(window))
+                                       + ",\"title\":" + jsonQuoted(windowTitle(window))
                                        + ",\"pid\":" + std::to_string(targetPid)
                                        + ",\"enabled\":" + (IsWindowEnabled(window) ? "true" : "false")
                                        + ",\"owner_handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(GetWindow(window, GW_OWNER)))
@@ -161,7 +161,7 @@ static std::vector<Node> snapshot(IUIAutomation* automation, const std::filesyst
     for (const Node& node : nodes) {
         if (!first) file << ',';
         first = false;
-        file << "{\"name\":" << quoted(node.name) << ",\"automation_id\":" << quoted(node.id)
+        file << "{\"name\":" << jsonQuoted(node.name) << ",\"automation_id\":" << jsonQuoted(node.id)
              << ",\"control_type\":" << node.type << ",\"pid\":" << node.pid << ",\"depth\":" << node.depth
              << ",\"enabled\":" << (node.enabled ? "true" : "false") << ",\"offscreen\":" << (node.offscreen ? "true" : "false")
              << ",\"keyboard_focus\":" << (node.focused ? "true" : "false") << '}';
@@ -179,13 +179,13 @@ static bool interactiveType(int type)
 static void retainKeyboardFrame(const std::vector<Node>& nodes, const std::string& phase)
 {
     if (keyboardFrames.size() >= 48) return;
-    std::string frame = "{\"phase\":" + quoted(std::wstring(phase.begin(), phase.end())) + ",\"nodes\":[";
+    std::string frame = "{\"phase\":" + jsonQuoted(std::wstring(phase.begin(), phase.end())) + ",\"nodes\":[";
     size_t retained = 0;
     for (const Node& node : nodes) {
         if (retained >= 80) break;
         if (node.pid != static_cast<int>(targetPid) || node.name.empty()) continue;
         if (retained++) frame += ',';
-        frame += "{\"name\":" + quoted(node.name) + ",\"control_type\":" + std::to_string(node.type)
+        frame += "{\"name\":" + jsonQuoted(node.name) + ",\"control_type\":" + std::to_string(node.type)
                  + ",\"pid\":" + std::to_string(node.pid) + ",\"enabled\":" + (node.enabled ? "true" : "false")
                  + ",\"offscreen\":" + (node.offscreen ? "true" : "false")
                  + ",\"keyboard_focus\":" + (node.focused ? "true" : "false") + '}';
@@ -245,7 +245,7 @@ static bool invokeSemantic(const Node* node, const char* purpose)
     } else if (SUCCEEDED(node->element->GetCurrentPatternAs(UIA_LegacyIAccessiblePatternId, IID_PPV_ARGS(&legacy)))) {
         result = ownershipRechecked() ? legacy->DoDefaultAction() : E_ACCESSDENIED; pattern = "LegacyIAccessible_default_action";
     }
-    actions.push_back(std::string("{\"action\":\"") + purpose + "\",\"name\":" + quoted(node->name)
+    actions.push_back(std::string("{\"action\":\"") + purpose + "\",\"name\":" + jsonQuoted(node->name)
                       + ",\"pid\":" + std::to_string(pid) + ",\"pattern\":\"" + pattern
                       + "\",\"hresult\":" + std::to_string(static_cast<long>(result)) + '}');
     return SUCCEEDED(result);
@@ -261,7 +261,7 @@ static bool focusAndTriggerLibrary(IUIAutomation* automation, const Node* node)
     BOOL same = FALSE;
     HRESULT compared = E_NOINTERFACE;
     if (SUCCEEDED(automation->GetFocusedElement(&current)) && current) compared = automation->CompareElements(current.Get(), node->element.Get(), &same);
-    actions.push_back("{\"action\":\"focus_exact_library_for_keyboard\",\"name\":" + quoted(node->name)
+    actions.push_back("{\"action\":\"focus_exact_library_for_keyboard\",\"name\":" + jsonQuoted(node->name)
                       + ",\"hresult\":" + std::to_string(static_cast<long>(focused))
                       + ",\"compare_elements_hresult\":" + std::to_string(static_cast<long>(compared))
                       + ",\"focused_element_matches\":" + (same ? "true" : "false") + '}');
@@ -340,7 +340,7 @@ int wmain(int argc, wchar_t** argv)
                     BSTR name = nullptr; focused->get_CurrentName(&name); focusedName = text(name);
                     focused->get_CurrentControlType(&focusedType); focused->get_CurrentProcessId(&focusedPid);
                 }
-                actions.push_back("{\"action\":\"observe_navigation_focus\",\"name\":" + quoted(focusedName)
+                actions.push_back("{\"action\":\"observe_navigation_focus\",\"name\":" + jsonQuoted(focusedName)
                                   + ",\"control_type\":" + std::to_string(focusedType) + ",\"pid\":" + std::to_string(focusedPid) + '}');
                 // F6 needs an owned Win32 focus (checked by SendOwnedKey), not
                 // an already exposed UIA child. Other-process UIA focus stops
@@ -397,7 +397,7 @@ int wmain(int argc, wchar_t** argv)
     for (HWND window : windows()) {
         if (!firstWindow) result << ',';
         firstWindow = false;
-        result << "{\"handle\":" << reinterpret_cast<std::uintptr_t>(window) << ",\"title\":" << quoted(windowTitle(window))
+        result << "{\"handle\":" << reinterpret_cast<std::uintptr_t>(window) << ",\"title\":" << jsonQuoted(windowTitle(window))
                << ",\"owner_handle\":" << reinterpret_cast<std::uintptr_t>(GetWindow(window, GW_OWNER))
                << ",\"pid\":" << targetPid << ",\"enabled\":" << (IsWindowEnabled(window) ? "true" : "false") << '}';
     }

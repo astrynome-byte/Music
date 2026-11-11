@@ -1,6 +1,6 @@
 {
   "date": "2026-11-11",
-  "status": "owned-keyboard-navigation-prepared-not-Windows-executed",
+  "status": "keyboard-client-JSON-helper-ADL-fix-prepared-not-Windows-executed",
   "yaml_steps": 8,
   "powershell_scripts_and_snippets_parsed": 6,
   "native_pinvoke_declarations_compiled_on_linux": true,
@@ -20,7 +20,7 @@
     "README.md": "11b2f81f36d4fa1aec4f1b8c63d1337efd9e040dc3734285f9e69126cd01b238",
     "Restore-LibraryStage.ps1": "497618b21b986d397fd8d242201fe2da7c8df51cf6eee54fcf323c8a0ca94251",
     "Run-LibraryUiProbe.ps1": "20de18a5d93e443fa81e5308496ef270bafb24d9155ded7fbc9b19f8fff7ca58",
-    "UiaProbe.cpp": "65dbb4f05af55a3a7ebcd5f6cb602847f4502c347d97fc17d2038fba2785f31d",
+    "UiaProbe.cpp": "b5a33f29f4c60c5c8702b53b752b3fb0baf05817287e05cba698f2b295da23a2",
     "OwnedKeyboard.h": "fa583da5f324ad5513a29438cc33f2004548138a891e42da9c1231455a019ff2"
   },
   "workflow_sha256": "63084b4eaf8437f0e6a302c9428238c260312e8a18c5ccf9af8778628160f478",
@@ -102,5 +102,15 @@
       "failed/partial SendInput stops all later keyboard gestures",
       "total gesture attempt cap includes Return"
     ]
+  },
+  "keyboard_compile_failure": {
+    "run_id": 43107517189,
+    "job_id": 130814611184,
+    "compiler": "MSVC Windows SDK",
+    "error": "C2678 UiaProbe.cpp:343 unqualified quoted(non-const std::wstring) resolves std::quoted via ADL",
+    "application_executed": false,
+    "keys_sent": false,
+    "fix": "Rename JSON helper and calls to unique jsonQuoted",
+    "adl_reproducer_linux_gcc": "PASS old overload fails; renamed helper compiles; not a Windows SDK probe build"
   }
 }
