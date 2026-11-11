@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-11",
+  "status": "prepared-not-uploaded-not-executed",
+  "yaml_steps": 7,
+  "powershell_scripts_and_snippets_parsed": 5,
+  "native_pinvoke_declarations_compiled_on_linux": true,
+  "cpp_sdk_compiled": false,
+  "windows_ui_automation_executed": false,
+  "real_application_rebuilt": false,
+  "restored_source_commit": "76b51af495b721776945717a812e1de2394a689a",
+  "restored_source_tree": "59d63e6f93b3bb7e8e5291cf57f57f9c5d61a06b",
+  "artifact_id": 13755702885,
+  "run_id": 42793810996,
+  "limits": [
+    "UIA SDK compilation requires the proposed Windows job.",
+    "No active tab, capture or native accessibility result has yet been obtained by this probe."
+  ],
+  "files": {
+    "README.md": "6b3c0d8140465c3be86f7ac97d48979d1c929eaa479da30d56668e1365df22d2",
+    "Restore-LibraryStage.ps1": "497618b21b986d397fd8d242201fe2da7c8df51cf6eee54fcf323c8a0ca94251",
+    "UiaProbe.cpp": "670a5ee50097f9ebbabda9a2f5025bf252166f087de9812da3b4df1d8f74d9a5",
+    "Run-LibraryUiProbe.ps1": "c7f7c1bc41a2e9e863d32ef57153938c664527f8ebd896d890dc147f78bb4af1"
+  },
+  "workflow_sha256": "646c58c255b30447f4a68623c9fafedf4887aff29728d0dc39cf7b035ce9206a"
+}

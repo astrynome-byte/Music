@@ -1,0 +1,71 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: inspect existing coexistence and zlib evidence'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/ci-evidence-reader/**'
+      - '.github/workflows/cadence-ci-evidence-reader.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect-existing-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Download the existing completed coexistence artifact
+        id: coexistence
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          repository: astrynome-byte/Music
+          run-id: '43094504811'
+          name: cadence-coexistence-qa-1-1
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/ci-evidence-input/coexistence
+      - name: Read the existing zlib job log through GitHub CLI
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/ci-evidence-input"
+          if gh api --method GET repos/astrynome-byte/Music/actions/jobs/130779749675/logs > "$RUNNER_TEMP/ci-evidence-input/zlib-job.log" 2> "$RUNNER_TEMP/ci-evidence-input/zlib-fetch.stderr"; then
+            printf 'success\n' > "$RUNNER_TEMP/ci-evidence-input/zlib-fetch-status.txt"
+          else
+            printf 'failed\n' > "$RUNNER_TEMP/ci-evidence-input/zlib-fetch-status.txt"
+            echo 'Existing zlib log unavailable; diagnostic will state that limitation.'
+          fi
+      - name: Inspect bounded existing reports and traceback excerpts
+        id: inspect
+        if: always()
+        shell: bash
+        run: |
+          python -I "$GITHUB_WORKSPACE/driver/.cadence-studio/ci-evidence-reader/inspect.py" \
+            --root "$RUNNER_TEMP/ci-evidence-input/coexistence" \
+            --zlib-log "$RUNNER_TEMP/ci-evidence-input/zlib-job.log" \
+            --zlib-fetch-status "$RUNNER_TEMP/ci-evidence-input/zlib-fetch-status.txt" \
+            --output "$RUNNER_TEMP/ci-evidence-summary"
+      - name: 'Observed: ${{ steps.inspect.outputs.summary }}'
+        if: always()
+        shell: bash
+        run: echo 'Diagnostic only; inspect retained summary.json for exact source results and limitations.'
+      - name: Retain the read-only diagnostic for 14 days
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-ci-evidence-reader-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/ci-evidence-summary/
+          retention-days: 14
+          if-no-files-found: warn
