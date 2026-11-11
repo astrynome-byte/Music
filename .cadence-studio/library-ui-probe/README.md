@@ -61,7 +61,7 @@ Partitions/Scores et Bibliothèque locale/Local library, via `SelectionItem`,
 `Invoke` ou l'action par défaut `LegacyIAccessible` du bridge Qt. Un contrôle
 ambigu, non visible, non activé ou attribué à un autre PID n'est pas invoqué.
 La propriété du processus et de sa fenêtre principale est revérifiée immédiatement
-avant chaque action. Aucune coordonnée souris, touche ou séquence aveugle n'est
+avant chaque action. Aucune coordonnée souris ni séquence aveugle n'est
 injectée. Les captures lisent les pixels du rectangle d'une fenêtre propriétaire,
 sans simuler de clic.
 
@@ -106,3 +106,24 @@ répertoire Cadence préexistant puis créer exclusivement
 annoncé et SHA sont enregistrés. Aucun profil MuseScore n'est touché. Cette
 précondition ne valide pas l'assistant du premier lancement et ne modifie pas
 le produit1001. Ce nouvel essai de bibliothèque reste à exécuter.
+
+## Navigation clavier préparée après le résultat du profil neuf
+
+Le run [43105216308](https://github.com/astrynome-byte/Music/actions/runs/43105216308)
+a réellement appliqué la précondition sans Introduction. Sa capture montre
+l'accueil complet et l'onglet Bibliothèque locale, mais son arbre UIA ne contient
+que les douze nœuds de fenêtre/barre principale. Le seul résultat d'action est
+Accueil déjà sélectionné ; le test est resté bloqué, avec fermeture propre.
+
+La préparation actuelle conserve le bridge et ajoute des gestes de navigation
+issus de `src/app/configs/data/shortcuts.xml` (F6, Tab, flèches et Return).
+Avant chaque touche, la fenêtre active ET le focus Win32 doivent appartenir
+au processus lancé encore vivant ; une touche modificatrice déjà enfoncée
+interdit l'envoi. Chaque geste conserve un arbre avant/après et des cadres
+bornés dans le rapport. Au plus douze étapes, six F6, deux Tab et deux flèches
+droites sont permises, sous le même délai global55s. Tab n'est utilisé que
+depuis le champ de recherche identifié, les flèches depuis les onglets connus.
+Return exige que l'élément UIA au focus soit exactement celui de Bibliothèque
+locale. Le succès exige toujours l'observation de son bouton Ajouter ; un
+envoi de touche seul ne vaut pas validation. Cette version reste à compiler
+et à exécuter sur Windows, sans reconstruction de l'application1001.

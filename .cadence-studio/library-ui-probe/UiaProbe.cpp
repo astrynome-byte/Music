@@ -13,6 +13,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "OwnedKeyboard.h"
 
 using Microsoft::WRL::ComPtr;
 using Clock = std::chrono::steady_clock;
@@ -20,6 +21,9 @@ static DWORD targetPid = 0;
 static HANDLE targetProcess = nullptr;
 static Clock::time_point deadline;
 static std::vector<std::string> actions;
+static std::vector<std::string> keyboardFrames;
+static int keyboardGestureAttempts = 0;
+static bool keyboardFailure = false;
 
 static std::string utf8(const std::wstring& value)
 {
@@ -106,7 +110,7 @@ struct Node {
     ComPtr<IUIAutomationElement> element;
     std::wstring name, id;
     int pid = 0, type = 0, depth = 0;
-    BOOL enabled = FALSE, offscreen = TRUE;
+    BOOL enabled = FALSE, offscreen = TRUE, focused = FALSE;
 };
 static void walk(IUIAutomationTreeWalker* walker, IUIAutomationElement* element, int depth, std::vector<Node>& nodes)
 {
@@ -118,6 +122,7 @@ static void walk(IUIAutomationTreeWalker* walker, IUIAutomationElement* element,
     element->get_CurrentAutomationId(&id); node.id = text(id);
     element->get_CurrentProcessId(&node.pid); element->get_CurrentControlType(&node.type);
     element->get_CurrentIsEnabled(&node.enabled); element->get_CurrentIsOffscreen(&node.offscreen);
+    element->get_CurrentHasKeyboardFocus(&node.focused);
     nodes.push_back(node);
     if (node.pid != static_cast<int>(targetPid) && node.pid != 0) return;
     ComPtr<IUIAutomationElement> child;
@@ -158,7 +163,8 @@ static std::vector<Node> snapshot(IUIAutomation* automation, const std::filesyst
         first = false;
         file << "{\"name\":" << quoted(node.name) << ",\"automation_id\":" << quoted(node.id)
              << ",\"control_type\":" << node.type << ",\"pid\":" << node.pid << ",\"depth\":" << node.depth
-             << ",\"enabled\":" << (node.enabled ? "true" : "false") << ",\"offscreen\":" << (node.offscreen ? "true" : "false") << '}';
+             << ",\"enabled\":" << (node.enabled ? "true" : "false") << ",\"offscreen\":" << (node.offscreen ? "true" : "false")
+             << ",\"keyboard_focus\":" << (node.focused ? "true" : "false") << '}';
     }
     file << "],\"walker_hresult\":" << static_cast<long>(walkerResult) << ",\"inspected_windows\":[";
     for (size_t i = 0; i < inspectedWindows.size(); ++i) { if (i) file << ','; file << inspectedWindows[i]; }
@@ -169,6 +175,37 @@ static bool interactiveType(int type)
 {
     return type == UIA_ButtonControlTypeId || type == UIA_TabItemControlTypeId || type == UIA_RadioButtonControlTypeId
            || type == UIA_ListItemControlTypeId || type == UIA_TreeItemControlTypeId;
+}
+static void retainKeyboardFrame(const std::vector<Node>& nodes, const std::string& phase)
+{
+    if (keyboardFrames.size() >= 48) return;
+    std::string frame = "{\"phase\":" + quoted(std::wstring(phase.begin(), phase.end())) + ",\"nodes\":[";
+    size_t retained = 0;
+    for (const Node& node : nodes) {
+        if (retained >= 80) break;
+        if (node.pid != static_cast<int>(targetPid) || node.name.empty()) continue;
+        if (retained++) frame += ',';
+        frame += "{\"name\":" + quoted(node.name) + ",\"control_type\":" + std::to_string(node.type)
+                 + ",\"pid\":" + std::to_string(node.pid) + ",\"enabled\":" + (node.enabled ? "true" : "false")
+                 + ",\"offscreen\":" + (node.offscreen ? "true" : "false")
+                 + ",\"keyboard_focus\":" + (node.focused ? "true" : "false") + '}';
+    }
+    keyboardFrames.push_back(frame + "],\"retained_limit\":80}");
+}
+static bool sendNavigationKey(WORD key, const char* purpose)
+{
+    if (Clock::now() >= deadline || keyboardGestureAttempts >= 12) return false;
+    ++keyboardGestureAttempts;
+    const OwnedKeyResult result = SendOwnedKey(targetPid, targetProcess, mainWindow(), key);
+    if (!result.sent) keyboardFailure = true;
+    const char* label = key == VK_F6 ? "F6" : key == VK_TAB ? "Tab" : key == VK_RIGHT ? "Right" : "Return";
+    actions.push_back(std::string("{\"action\":\"owned_navigation_key\",\"purpose\":\"") + purpose
+                      + "\",\"key\":\"" + label + "\",\"pid\":" + std::to_string(targetPid)
+                      + ",\"foreground_handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(result.foreground))
+                      + ",\"focus_handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(result.focus))
+                      + ",\"input_count\":" + std::to_string(result.inputCount) + ",\"error\":" + std::to_string(result.error)
+                      + ",\"sent\":" + (result.sent ? "true" : "false") + '}');
+    return result.sent;
 }
 static const Node* find(const std::vector<Node>& nodes, const std::vector<std::wstring>& names)
 {
@@ -212,6 +249,23 @@ static bool invokeSemantic(const Node* node, const char* purpose)
                       + ",\"pid\":" + std::to_string(pid) + ",\"pattern\":\"" + pattern
                       + "\",\"hresult\":" + std::to_string(static_cast<long>(result)) + '}');
     return SUCCEEDED(result);
+}
+static bool focusAndTriggerLibrary(IUIAutomation* automation, const Node* node)
+{
+    if (!node || !alive() || Clock::now() >= deadline || !owned(mainWindow()) || !IsWindowEnabled(mainWindow())) return false;
+    int pid = 0;
+    if (FAILED(node->element->get_CurrentProcessId(&pid)) || pid != static_cast<int>(targetPid)) return false;
+    const HRESULT focused = node->element->SetFocus();
+    Sleep(100);
+    ComPtr<IUIAutomationElement> current;
+    BOOL same = FALSE;
+    HRESULT compared = E_NOINTERFACE;
+    if (SUCCEEDED(automation->GetFocusedElement(&current)) && current) compared = automation->CompareElements(current.Get(), node->element.Get(), &same);
+    actions.push_back("{\"action\":\"focus_exact_library_for_keyboard\",\"name\":" + quoted(node->name)
+                      + ",\"hresult\":" + std::to_string(static_cast<long>(focused))
+                      + ",\"compare_elements_hresult\":" + std::to_string(static_cast<long>(compared))
+                      + ",\"focused_element_matches\":" + (same ? "true" : "false") + '}');
+    return SUCCEEDED(focused) && SUCCEEDED(compared) && same && sendNavigationKey(VK_RETURN, "trigger_exact_focused_library");
 }
 
 int wmain(int argc, wchar_t** argv)
@@ -260,17 +314,59 @@ int wmain(int argc, wchar_t** argv)
             }
             bool activatedLibrary = false;
             bool activatedScores = false;
+            int keySteps = 0, sectionKeys = 0, panelKeys = 0, rightKeys = 0;
             while (navigationReady && alive() && Clock::now() < deadline) {
                 if (closeIntroductionOnly()) Sleep(400);
                 nodes = snapshot(automation.Get(), output, L"tree-navigation-ready");
                 if (const Node* library = find(nodes, libraryNames)) {
                     activatedLibrary = invokeSemantic(library, "activate_local_library");
+                    if (!activatedLibrary && keySteps < 12) {
+                        retainKeyboardFrame(nodes, "before_exact_library_focus");
+                        activatedLibrary = focusAndTriggerLibrary(automation.Get(), library);
+                        Sleep(250);
+                        nodes = snapshot(automation.Get(), output, L"tree-keyboard-after");
+                        retainKeyboardFrame(nodes, "after_exact_library_focus");
+                    }
                     if (activatedLibrary) break;
                 } else if (!activatedScores && invokeSemantic(find(nodes, scoreNames), "activate_scores")) {
                     activatedScores = true;
                     nodes = snapshot(automation.Get(), output, L"tree-after-scores");
                 }
-                Sleep(400);
+                if (keyboardFailure || keySteps >= 12 || keyboardGestureAttempts >= 12) break;
+                ComPtr<IUIAutomationElement> focused;
+                std::wstring focusedName;
+                int focusedType = 0, focusedPid = 0;
+                if (SUCCEEDED(automation->GetFocusedElement(&focused)) && focused) {
+                    BSTR name = nullptr; focused->get_CurrentName(&name); focusedName = text(name);
+                    focused->get_CurrentControlType(&focusedType); focused->get_CurrentProcessId(&focusedPid);
+                }
+                actions.push_back("{\"action\":\"observe_navigation_focus\",\"name\":" + quoted(focusedName)
+                                  + ",\"control_type\":" + std::to_string(focusedType) + ",\"pid\":" + std::to_string(focusedPid) + '}');
+                // F6 needs an owned Win32 focus (checked by SendOwnedKey), not
+                // an already exposed UIA child. Other-process UIA focus stops
+                // all keys; an unavailable UIA focus permits only F6 discovery.
+                if (focusedPid != 0 && focusedPid != static_cast<int>(targetPid)) break;
+                WORD key = VK_F6;
+                if (focusedPid == static_cast<int>(targetPid) && focusedType == UIA_EditControlTypeId
+                    && (focusedName == L"Rechercher" || focusedName == L"Search"
+                        || focusedName == L"Rechercher par titre, compositeur ou fichier")) {
+                    if (panelKeys++ >= 2) break;
+                    key = VK_TAB;
+                } else if (focusedPid == static_cast<int>(targetPid)
+                           && (focusedType == UIA_TabItemControlTypeId || focusedType == UIA_RadioButtonControlTypeId)
+                           && (focusedName == L"Nouvelle et r\u00e9cente" || focusedName == L"New & recent"
+                               || focusedName == L"Mes partitions en ligne" || focusedName == L"My online scores")) {
+                    if (rightKeys++ >= 2) break;
+                    key = VK_RIGHT;
+                } else if (sectionKeys++ >= 6) break;
+                nodes = snapshot(automation.Get(), output, L"tree-keyboard-before");
+                retainKeyboardFrame(nodes, "before_navigation_key_" + std::to_string(keySteps));
+                const bool sent = sendNavigationKey(key, "navigate_native_musescore_sections_or_panels");
+                ++keySteps;
+                Sleep(300);
+                nodes = snapshot(automation.Get(), output, L"tree-keyboard-after");
+                retainKeyboardFrame(nodes, "after_navigation_key_" + std::to_string(keySteps));
+                if (!sent) break;
             }
             if (activatedLibrary) Sleep(750);
             for (int attempt = 0; attempt < 8 && Clock::now() < deadline; ++attempt) {
@@ -293,6 +389,9 @@ int wmain(int argc, wchar_t** argv)
            << ",\"semantic_navigation_ready\":" << (navigationReady ? "true" : "false")
            << ",\"readiness_polls\":" << readinessPolls << ",\"global_deadline_seconds\":55,\"actions\":[";
     for (size_t i = 0; i < actions.size(); ++i) { if (i) result << ','; result << actions[i]; }
+    result << "],\"keyboard_gestures_allowed\":true,\"keyboard_gesture_attempts\":" << keyboardGestureAttempts
+           << ",\"keyboard_failure_stops_sequence\":" << (keyboardFailure ? "true" : "false") << ",\"keyboard_frames\":[";
+    for (size_t i = 0; i < keyboardFrames.size(); ++i) { if (i) result << ','; result << keyboardFrames[i]; }
     result << "],\"windows\":[";
     bool firstWindow = true;
     for (HWND window : windows()) {

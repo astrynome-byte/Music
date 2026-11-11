@@ -36,7 +36,7 @@ $report = [ordered]@{
     profile_isolated_by_script = $false; hosted_disposable_profile = $true
     profile_seeded_by_script = $false; onboarding_tested = $false
     qa_precondition = 'A new Cadence-only profile with introduction already completed; this does not validate onboarding'
-    action_policy = 'Only Introduction owned modal may close before navigation; only exact Home/Scores/Local library semantic names may invoke'
+    action_policy = 'Only owned Introduction may close before navigation; semantic Home/Scores/Library actions plus bounded source-backed F6/Tab/Right navigation; Return only on the exact UIA-focused library control, foreground and Win32 focus PID verified for every key'
     captures = @(); cleanup = [ordered]@{ forced = $false; exit_code = $null; events = @(); error = $null }
     library_content_observed = $false; score_editing_tested = $false; favorites_tested = $false
     probe_cleanup_forced = $false

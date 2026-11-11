@@ -1,26 +1,27 @@
 {
   "date": "2026-11-11",
-  "status": "fresh-Cadence-profile-precondition-prepared-not-Windows-executed",
+  "status": "owned-keyboard-navigation-prepared-not-Windows-executed",
   "yaml_steps": 8,
   "powershell_scripts_and_snippets_parsed": 6,
   "native_pinvoke_declarations_compiled_on_linux": true,
-  "cpp_sdk_compiled": true,
-  "windows_ui_automation_executed": true,
+  "cpp_sdk_compiled": false,
+  "windows_ui_automation_executed": false,
   "real_application_rebuilt": false,
   "restored_source_commit": "76b51af495b721776945717a812e1de2394a689a",
   "restored_source_tree": "59d63e6f93b3bb7e8e5291cf57f57f9c5d61a06b",
   "artifact_id": 13755702885,
   "run_id": 42793810996,
   "limits": [
-    "Current launcher precondition not yet executed on Windows.",
-    "Current native readiness probe compiled and ran in43103724152 but stopped at Introduction confirmation.",
-    "Library tab/add/favorites/score opening remain unvalidated by UIA; onboarding is explicitly outside this QA profile precondition."
+    "Changed C++ keyboard client/header not compiled or executed on Windows.",
+    "Previous fresh-profile run43105216308 showed visible library tab but UIA exposed only main toolbar, without activation.",
+    "No Add/favorites/search/restart/open UI test yet; app/source1001 unchanged."
   ],
   "files": {
-    "README.md": "afd03bc104ffec9e87bab0fb2a7b24ffd90e4aba6a45aa07a18a5aaf47c0a388",
+    "README.md": "11b2f81f36d4fa1aec4f1b8c63d1337efd9e040dc3734285f9e69126cd01b238",
     "Restore-LibraryStage.ps1": "497618b21b986d397fd8d242201fe2da7c8df51cf6eee54fcf323c8a0ca94251",
-    "UiaProbe.cpp": "d1e530a862abaa6f78884c9cbf34972b465e8f11750bfff525910f2ad3027cd7",
-    "Run-LibraryUiProbe.ps1": "85e37680a41cd905811f59a1e0c1c3f6dfe5d9b24704faf5f3a057a9db4fe311"
+    "Run-LibraryUiProbe.ps1": "20de18a5d93e443fa81e5308496ef270bafb24d9155ded7fbc9b19f8fff7ca58",
+    "UiaProbe.cpp": "65dbb4f05af55a3a7ebcd5f6cb602847f4502c347d97fc17d2038fba2785f31d",
+    "OwnedKeyboard.h": "fa583da5f324ad5513a29438cc33f2004548138a891e42da9c1231455a019ff2"
   },
   "workflow_sha256": "63084b4eaf8437f0e6a302c9428238c260312e8a18c5ccf9af8778628160f478",
   "previous_probe": {
@@ -69,5 +70,37 @@
       "outside user root refused"
     ],
     "application_executed": false
+  },
+  "fresh_profile_probe": {
+    "run_id": 43105216308,
+    "job_id": 130806661056,
+    "native_compile": "PASS",
+    "profile_precondition_applied": true,
+    "onboarding_tested": false,
+    "status": "blocked_uia_inspection_deadline",
+    "uia_nodes": 12,
+    "visible_capture": "Home Scores page with Local library tab visible",
+    "library_tab_activated": false,
+    "cleanup_exit_code": 0,
+    "cleanup_forced": false
+  },
+  "keyboard_policy": {
+    "shortcut_source": "src/app/configs/data/shortcuts.xml:22/32/80; navigationcontroller.cpp:280-290",
+    "max_total_key_gestures": 12,
+    "max_f6": 6,
+    "max_tab": 2,
+    "max_right": 2,
+    "return_requires": "SetFocus succeeded + UIA CompareElements exact library control + owned foreground/Win32 focus",
+    "focus_guards": "live matching process handle; owned enabled main HWND; foreground and GetGUIThreadInfo focus PID; no held modifier; immediate recheck before SendInput",
+    "partial_or_failed_send": "stop sequence, no retry/extra key-up",
+    "before_after_frames_retained": 48,
+    "frame_node_limit": 80,
+    "window_sdk_compilation": "NOT_DONE",
+    "review_corrections": [
+      "PID0 permits F6 only; Tab/Right require current target UIA PID",
+      "Return requires successful CompareElements HRESULT and same=true",
+      "failed/partial SendInput stops all later keyboard gestures",
+      "total gesture attempt cap includes Return"
+    ]
   }
 }
