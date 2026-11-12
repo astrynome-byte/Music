@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "prepared_not_network_executed": true,
+  "fixed_inspector_commit": "8004e8d1ff9d5e0ff8761a482e563624c7427b6d",
+  "fixed_producer_run_id": 43266732201,
+  "fixed_producer_job_id": 131352164369,
+  "fixed_original_source_commit": "5058d29dad67e6131ee46ee617258ccfed8ba4b0",
+  "fixed_source_tree": "58d06a1c89e99173b0473587245187df5bc3b3cf",
+  "helper_inputs_sha256": {
+    "Inspect-DeliveryDataOnly.ps1": "e5251c5401b4b645f71dcbc531f89df2db77bbad4343468477c03b323a643dd8",
+    "inspect_delivery.py": "2793de9ae4265058539874ccb6ceb727ea532cfec86de1a07b2e3d6ac1548df1",
+    "acquire_originals.py": "5b7cfdaac47f72541e538c81f75a1389dbf23f6cae6878e5699e96d35575295c",
+    "windows_publication.py": "6f64f40a82564ad1e8d56b23359a811e8fb1a5c348f623236e1c1a25540eb0fe",
+    "GUIDE-FR.txt": "623d1cbb270a0d71376f259aee1f577c7b307f89f901e09a5dbd7ed1a756f267",
+    "target.json.template": "1f28ac586888b9d8a781dbaf61964f96964e437c64a6cbb6a4fff0253fcb6d10"
+  },
+  "actual_PowerShell_blocks_parsed": 3,
+  "workflow_permissions": {
+    "contents": "read",
+    "actions": "read"
+  },
+  "explicit_upload_JSON_paths": 12,
+  "binary_upload_paths": 0,
+  "active_target_added": false,
+  "actual_artifacts_downloaded_by_author": false,
+  "application_or_MSI_executed_by_author": false,
+  "github_tag_release_or_write_performed": false
+}
