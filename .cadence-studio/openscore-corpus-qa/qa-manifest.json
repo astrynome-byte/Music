@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "content_pack_sha256": "00906d5d4bc85eabb931e9afebb4c2b9c5a452ef2a6a6b28916dbaa867016d03",
+  "stage_executable_sha256": "c29d7c8c76b213b79d7390acd65cbabc6fb940f06e3e7f86c0ce60be7e9b9520",
+  "files": [
+    {
+      "path": "Read-ProducedTarget.ps1",
+      "bytes": 6586,
+      "sha256": "9a6c45debe253f47bfffee0a891d955334b6852b970a422e032e626c594585e7"
+    },
+    {
+      "path": "Restore-NextStage.ps1",
+      "bytes": 10820,
+      "sha256": "61bd6bcf7495e768bcd774211b6bc87ade844e5958c2c7ebbf0224e8cc41a11d"
+    },
+    {
+      "path": "target.json",
+      "bytes": 1780,
+      "sha256": "70b7f883642b219b45833e81d80745ed7211f8fba5d9ff83ebc35eb32fa6e071"
+    },
+    {
+      "path": "data-authentication.json",
+      "bytes": 5043,
+      "sha256": "3ddf8d61b2a2223c23e836b7d063e218418c7f9013895741c83bdd17bc28e4cd"
+    },
+    {
+      "path": "CadenceProfileScope.py",
+      "bytes": 34344,
+      "sha256": "60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c"
+    },
+    {
+      "path": "OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    },
+    {
+      "path": "corpus_run_exports.py",
+      "bytes": 16535,
+      "sha256": "f701874e7a37b8d3148f0bb99477b60b96865e804ed238372d75c06598027d82"
+    },
+    {
+      "path": "score-pack.zip.base64",
+      "bytes": 838856,
+      "sha256": "881d24034aab1ec31707407bffdcfd5347743cee542e702245d7a31063fb0d73"
+    },
+    {
+      "path": "package-receipt.json",
+      "bytes": 8191,
+      "sha256": "1dbb572a67f7a0075e48504ad694f41ca7fc02d8dff57c117deb5fa7b9668f7a"
+    },
+    {
+      "path": "Run-OpenScoreCorpus.py",
+      "bytes": 18594,
+      "sha256": "514b13128f93c14ff5f2b82f40a3a9c49eb48802db487b92791e73167a8ec511"
+    }
+  ]
+}

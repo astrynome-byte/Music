@@ -1,0 +1,99 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: ten authorized OpenScore editions on retained2006'
+on:
+  workflow_dispatch:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/openscore-corpus-qa/**'
+      - '.github/workflows/cadence-openscore-corpus.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-openscore-corpus-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  ten-native-editions:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Require the independently authenticated actual stage2006 target
+        id: target
+        run: |
+          $helper="$env:GITHUB_WORKSPACE/driver/.cadence-studio/openscore-corpus-qa"
+          . "$helper/Read-ProducedTarget.ps1"
+          $target=Get-NextGuiTarget "$helper/target.json" "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2006-source"
+          "producer_run_id=$($target.producer_run_id)"|Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "artifact_id=$($target.artifact_id)"|Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - name: Retrieve only the reviewed original stage2006 artifact
+        uses: actions/download-artifact@v4
+        with:
+          repository: astrynome-byte/Music
+          run-id: ${{ steps.target.outputs.producer_run_id }}
+          artifact-ids: ${{ steps.target.outputs.artifact_id }}
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/openscore-original-stage-artifact
+      - name: Authenticate source, companion checksums, exact ZIP and executable before restoration
+        run: |
+          $result="$env:RUNNER_TEMP/openscore-stage-evidence"
+          if(Test-Path -LiteralPath $result){throw 'New restoration result directory required.'}
+          [void][IO.Directory]::CreateDirectory($result)
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/openscore-corpus-qa/Restore-NextStage.ps1" `
+            -TargetPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/openscore-corpus-qa/target.json" `
+            -ArtifactDirectory "$env:RUNNER_TEMP/openscore-original-stage-artifact" `
+            -StagePath "$env:RUNNER_TEMP/openscore-retained2006-stage" `
+            -ResultPath "$result/stage-restoration.json" *>&1|Tee-Object -FilePath "$result/restore.log"|Out-Host
+      - name: Open, export PDF, save native, reopen and render all ten exact editions in an owned native Job
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/openscore-corpus-qa/Invoke-OpenScoreCorpus.ps1" `
+            -StagePath "$env:RUNNER_TEMP/openscore-retained2006-stage" `
+            -RestorationRecord "$env:RUNNER_TEMP/openscore-stage-evidence/stage-restoration.json" `
+            -OutputDirectory "$env:RUNNER_TEMP/openscore-corpus-qa"
+      - name: Print bounded actual JSON evidence even when qualification fails
+        if: always()
+        run: |
+          $roots=@("$env:RUNNER_TEMP/openscore-corpus-qa","$env:RUNNER_TEMP/openscore-stage-evidence")
+          $budget=1572864L;$printed=0L
+          foreach($root in $roots){
+            if(-not(Test-Path -LiteralPath $root -PathType Container)){continue}
+            $files=@(Get-ChildItem -LiteralPath $root -File -Recurse -Filter '*.json'|
+              Where-Object{($_.Name -in @('result.json','openscore-native-report.json','stage-restoration.json','case-report.json','profile-scope.json')) -and -not($_.Attributes -band [IO.FileAttributes]::ReparsePoint)}|
+              Sort-Object @{Expression={if($_.Name -eq 'result.json'){0}elseif($_.Name -eq 'openscore-native-report.json'){1}else{2}}},FullName|Select-Object -First 16)
+            foreach($file in $files){
+              if($file.Length -gt 524288 -or $printed+$file.Length -gt $budget){continue}
+              $raw=[IO.File]::ReadAllBytes($file.FullName)
+              $envelope=[ordered]@{run_id=$env:GITHUB_RUN_ID;path=[IO.Path]::GetRelativePath($root,$file.FullName).Replace('\','/');bytes=$raw.Length;sha256=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($raw)).ToLowerInvariant();text=[Text.Encoding]::UTF8.GetString($raw);projection=$false}
+              Write-Host 'CADENCE_OPENSCORE_EVIDENCE_BEGIN';Write-Host ($envelope|ConvertTo-Json -Depth 6 -Compress);Write-Host 'CADENCE_OPENSCORE_EVIDENCE_END'
+              $printed+=$raw.Length
+            }
+          }
+          Write-Host ('Actual JSON evidence bytes printed: '+$printed)
+      - name: Retain actual PDFs, saved scores, WAVs, source manifest and bounded logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-openscore-corpus-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/openscore-corpus-qa/result.json
+            ${{ runner.temp }}/openscore-corpus-qa/*.log
+            ${{ runner.temp }}/openscore-corpus-qa/profile-scope.json
+            ${{ runner.temp }}/openscore-corpus-qa/native-evidence/**
+            ${{ runner.temp }}/openscore-stage-evidence/**
+            ${{ github.workspace }}/driver/.cadence-studio/openscore-corpus-qa/qa-manifest.json
+            ${{ github.workspace }}/driver/.cadence-studio/openscore-corpus-qa/package-receipt.json
+            ${{ github.workspace }}/driver/.cadence-studio/openscore-corpus-qa/README.md
+          if-no-files-found: warn
+          retention-days: 14

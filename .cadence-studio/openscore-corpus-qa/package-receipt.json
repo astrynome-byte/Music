@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "status": "source-pack-verified-not-published-not-Windows-qualified",
+  "file": "Cadence-OpenScore-Dix-Chants-0.1.1-candidate.zip",
+  "bytes": 622656,
+  "sha256": "00906d5d4bc85eabb931e9afebb4c2b9c5a452ef2a6a6b28916dbaa867016d03",
+  "members": 39,
+  "score_count": 10,
+  "original_score_bytes": 2032368,
+  "all_originals_and_working_copies_byte_identical": true,
+  "source_commit": "38c5db510224d9facdc4b08d741fc788cfb58ea8",
+  "manifest_sha256": "8a93136fb13c3910fbc287204eb83bcf42c5ba9e4b2a60799d80a14aa84ba697",
+  "optional_outside_frozen_MSI_2007": true,
+  "application_included": false,
+  "application_executed": false,
+  "Windows_tested": false,
+  "layout_checked": false,
+  "human_listening": false,
+  "public_download_url": null,
+  "files": [
+    {
+      "path": "IMPORT-PLAN.md",
+      "bytes": 2812,
+      "sha256": "899bc29e265359b49f97a32c42210fdfae85811b4bada7adf63170c8e781cb13"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3416,
+      "sha256": "7f575d255adec65bdaad66a1fff9d693cbd2022e79af16c34606aaf5bcf59355"
+    },
+    {
+      "path": "collection-index.csv",
+      "bytes": 2227,
+      "sha256": "bc4c4dedfe44778154c6045c1fe1569d2c8420ed7394b0865939223bafad81b0"
+    },
+    {
+      "path": "collection-manifest.json",
+      "bytes": 85178,
+      "sha256": "8a93136fb13c3910fbc287204eb83bcf42c5ba9e4b2a60799d80a14aa84ba697"
+    },
+    {
+      "path": "evidence/rights-and-repository-audit.json",
+      "bytes": 7071,
+      "sha256": "823fd1eb39178c2e391d7a19b7c2ad007c252987c45ca3b8ee78fc33a591b19d"
+    },
+    {
+      "path": "notices/LICENSE-OpenScore-CC0.txt",
+      "bytes": 7048,
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+    },
+    {
+      "path": "notices/NOTICE-FR.md",
+      "bytes": 7362,
+      "sha256": "648e79b63892ca6e07494151525631c89a7d8741b30a916ebe3385f29e6cf86d"
+    },
+    {
+      "path": "notices/README-OpenScore-Lieder.md",
+      "bytes": 9046,
+      "sha256": "e747f52bad805fc2044fda17d529d9d3668b5a28cad11f780286172ce5e38794"
+    },
+    {
+      "path": "originals/scores/Fauré,_Gabriel/3_Songs,_Op.7/1_Après_un_rêve/README.md",
+      "bytes": 675,
+      "sha256": "bf2183eb898dce2e87d7bb96255aa888212605ddd61f712a52755f06f031826e"
+    },
+    {
+      "path": "originals/scores/Fauré,_Gabriel/3_Songs,_Op.7/1_Après_un_rêve/lc6810863.mscx",
+      "bytes": 356616,
+      "sha256": "67720d2f82a2ea89e7afaf4e67c00f4e7a94fbab73f338b88e1945cf85a7f7c7"
+    },
+    {
+      "path": "originals/scores/Fauré,_Gabriel/Op.4/2_Lydia/README.md",
+      "bytes": 656,
+      "sha256": "9944969c642fd8a3746db3486e16016cfb0f20b59f7e870b7f0491b674f7819d"
+    },
+    {
+      "path": "originals/scores/Fauré,_Gabriel/Op.4/2_Lydia/lc30299786.mscz",
+      "bytes": 94117,
+      "sha256": "25a5b3246688bbb792563667c1b525593eee2d4a4cc6203a2ebdbaf3eac10c4b"
+    },
+    {
+      "path": "originals/scores/Hensel,_Fanny/6_Lieder,_Op.1/3_Warum_sind_denn_die_Rosen_so_blass/README.md",
+      "bytes": 698,
+      "sha256": "2b620fb64b44e0a633ede22f49283284201f5e9d760e245ba701b2aa62a02b42"
+    },
+    {
+      "path": "originals/scores/Hensel,_Fanny/6_Lieder,_Op.1/3_Warum_sind_denn_die_Rosen_so_blass/lc5004640.mscx",
+      "bytes": 259007,
+      "sha256": "90da2b96d68a09d90cf947f042867c948f4d5a47b0020c15902d2b26ca633334"
+    },
+    {
+      "path": "originals/scores/Mendelssohn,_Felix/6_Duets,_Op.63/1_Ich_wollt’,_meine_Lieb’_ergösse_sich,_MWV_J_5/README.md",
+      "bytes": 715,
+      "sha256": "72a1072e610adb1594c4bde351ed3940eb04b858e85924e62cb2d04b58dd9dfe"
+    },
+    {
+      "path": "originals/scores/Mendelssohn,_Felix/6_Duets,_Op.63/1_Ich_wollt’,_meine_Lieb’_ergösse_sich,_MWV_J_5/lc7074684.mscx",
+      "bytes": 476869,
+      "sha256": "d5ab957b25374192cd1e3cf497812493b2e5412baf5dc5e560dd333a90708807"
+    },
+    {
+      "path": "originals/scores/Schubert,_Franz/Op.3/3_Heidenröslein,_D.257/README.md",
+      "bytes": 672,
+      "sha256": "05b0d7529a817ef801097ac5881b9e17e04ce4720a83aa3921cda28ebb77e910"
+    },
+    {
+      "path": "originals/scores/Schubert,_Franz/Op.3/3_Heidenröslein,_D.257/lc30321236.mscz",
+      "bytes": 53807,
+      "sha256": "116335e8014277a4d1a77f8b3a2731fee62741f02e237999e1b48dffe0f37ee1"
+    },
+    {
+      "path": "originals/scores/Schubert,_Franz/_/An_die_Musik,_D.547/README.md",
+      "bytes": 675,
+      "sha256": "2270d058da9ba4b46fbc55779fbcb8e5860ca4f01fb64256ba54b846f69e1594"
+    },
+    {
+      "path": "originals/scores/Schubert,_Franz/_/An_die_Musik,_D.547/lc6180725.mscx",
+      "bytes": 161812,
+      "sha256": "4c83578fece90e1f12ae9960db7689e6132c8f901d189d5f7571dcf51c302443"
+    },
+    {
+      "path": "originals/scores/Schumann,_Clara/Lieder,_Op.12/04_Liebst_du_um_Schönheit/README.md",
+      "bytes": 681,
+      "sha256": "4c18b0d0f23d6f46c611a43d99bdcf9fa817355366ecf29c4336367262c4522a"
+    },
+    {
+      "path": "originals/scores/Schumann,_Clara/Lieder,_Op.12/04_Liebst_du_um_Schönheit/lc5000397.mscx",
+      "bytes": 262121,
+      "sha256": "e1100541ab1b4643530088be1b38c9a93f21eea1dc0a740066475f02aa754673"
+    },
+    {
+      "path": "originals/scores/Schumann,_Robert/Dichterliebe,_Op.48/01_Im_wunderschönen_Monat_Mai/README.md",
+      "bytes": 692,
+      "sha256": "d219e8d92dda39dcee6133fd10cd52edb0a9018d9421aaa634865b17a539a18c"
+    },
+    {
+      "path": "originals/scores/Schumann,_Robert/Dichterliebe,_Op.48/01_Im_wunderschönen_Monat_Mai/lc4976777.mscz",
+      "bytes": 75677,
+      "sha256": "9a9a67de4179940e748db3e825b9b71f1af7edb0dfbc2755fb820d233c2dbff7"
+    },
+    {
+      "path": "originals/scores/Schumann,_Robert/Dichterliebe,_Op.48/02_Aus_meinen_Tränen_sprießen/README.md",
+      "bytes": 695,
+      "sha256": "02f4de3875b2dfefc64d168e44096c8dabad2d5fa29202eece510ec9cb10fc18"
+    },
+    {
+      "path": "originals/scores/Schumann,_Robert/Dichterliebe,_Op.48/02_Aus_meinen_Tränen_sprießen/lc4976769.mscx",
+      "bytes": 108753,
+      "sha256": "de4ff109ea9d0a2dd0b2c5fbeb7762ba0a698a0133969c49c831f8057b82e2ca"
+    },
+    {
+      "path": "originals/scores/Schumann,_Robert/Myrthen,_Op.25/07_Die_Lotosblume/README.md",
+      "bytes": 677,
+      "sha256": "a4e872c828eba16bcdf67ad33cb7a2323e96ec0b3441202fc779c3b8e3d56e63"
+    },
+    {
+      "path": "originals/scores/Schumann,_Robert/Myrthen,_Op.25/07_Die_Lotosblume/lc6909797.mscx",
+      "bytes": 183589,
+      "sha256": "4d9f8de8786ac7b960a1af01a56f0ed08785b4c968563e48fe2108a69da55f25"
+    },
+    {
+      "path": "working/openscore-lieder-30299786.mscz",
+      "bytes": 94117,
+      "sha256": "25a5b3246688bbb792563667c1b525593eee2d4a4cc6203a2ebdbaf3eac10c4b"
+    },
+    {
+      "path": "working/openscore-lieder-30321236.mscz",
+      "bytes": 53807,
+      "sha256": "116335e8014277a4d1a77f8b3a2731fee62741f02e237999e1b48dffe0f37ee1"
+    },
+    {
+      "path": "working/openscore-lieder-4976769.mscx",
+      "bytes": 108753,
+      "sha256": "de4ff109ea9d0a2dd0b2c5fbeb7762ba0a698a0133969c49c831f8057b82e2ca"
+    },
+    {
+      "path": "working/openscore-lieder-4976777.mscz",
+      "bytes": 75677,
+      "sha256": "9a9a67de4179940e748db3e825b9b71f1af7edb0dfbc2755fb820d233c2dbff7"
+    },
+    {
+      "path": "working/openscore-lieder-5000397.mscx",
+      "bytes": 262121,
+      "sha256": "e1100541ab1b4643530088be1b38c9a93f21eea1dc0a740066475f02aa754673"
+    },
+    {
+      "path": "working/openscore-lieder-5004640.mscx",
+      "bytes": 259007,
+      "sha256": "90da2b96d68a09d90cf947f042867c948f4d5a47b0020c15902d2b26ca633334"
+    },
+    {
+      "path": "working/openscore-lieder-6180725.mscx",
+      "bytes": 161812,
+      "sha256": "4c83578fece90e1f12ae9960db7689e6132c8f901d189d5f7571dcf51c302443"
+    },
+    {
+      "path": "working/openscore-lieder-6810863.mscx",
+      "bytes": 356616,
+      "sha256": "67720d2f82a2ea89e7afaf4e67c00f4e7a94fbab73f338b88e1945cf85a7f7c7"
+    },
+    {
+      "path": "working/openscore-lieder-6909797.mscx",
+      "bytes": 183589,
+      "sha256": "4d9f8de8786ac7b960a1af01a56f0ed08785b4c968563e48fe2108a69da55f25"
+    },
+    {
+      "path": "working/openscore-lieder-7074684.mscx",
+      "bytes": 476869,
+      "sha256": "d5ab957b25374192cd1e3cf497812493b2e5412baf5dc5e560dd333a90708807"
+    }
+  ]
+}

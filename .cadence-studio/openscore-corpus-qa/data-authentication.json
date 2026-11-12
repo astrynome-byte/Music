@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "status": "authenticated-actual-2006-stage-and-delivery-as-data",
+  "producer_run_id": 43233124321,
+  "driver_commit": "5d9cd789149de212c2fe9cf51ea3dddd2d48867c",
+  "original_source_commit": "ac9a24933f78f22ea630570910848201baad3d3b",
+  "source_tree": "a94a09974229c47e7b90b593a7649c29d6a6d190",
+  "build_number": 2006,
+  "source_json_sha256": "0d6c5944374cfa2b58ee8f81a3912b36585ed263ed79ffb3ff1968f2bd07ca1b",
+  "source_patch_sha256": "cba5d10112b8cd7ce470577e07cc70fb8d1cd849ec412b652c0a6b71bf4e3ce7",
+  "application_executed": false,
+  "installer_executed": false,
+  "application_rebuilt": false,
+  "registry_or_product_state_queried": false,
+  "new_installation_test_performed": false,
+  "distribution_compliance_closed": false,
+  "error": null,
+  "acquisition": {
+    "schema_version": 1,
+    "producer_run_id": 43233124321,
+    "driver_commit": "5d9cd789149de212c2fe9cf51ea3dddd2d48867c",
+    "artifacts": {
+      "stage": {
+        "id": 13955301913,
+        "name": "cadence-combined-system-aac-stage-experimental-6-1",
+        "bytes": 306492266,
+        "sha256": "c93aa9eb68a5a7e21b80c19b150d9d9731532e91d2abb778f87342317417443b",
+        "original_outer_zip_digest_recomputed": true,
+        "path": "D:\\a\\_temp\\retained-2006-original-zip-data\\stage.zip",
+        "expires_at": "2026-11-26T14:57:16Z"
+      },
+      "delivery": {
+        "id": 13955727693,
+        "name": "cadence-combined-system-aac-experimental-6-1",
+        "bytes": 590890698,
+        "sha256": "ea13e382583ed31368c768916aec83ff282f61d325408aa6b0e734dc51591081",
+        "original_outer_zip_digest_recomputed": true,
+        "path": "D:\\a\\_temp\\retained-2006-original-zip-data\\delivery.zip",
+        "expires_at": "2026-11-26T15:04:33Z"
+      },
+      "logs": {
+        "id": 13956760224,
+        "name": "cadence-combined-system-aac-logs-6-1",
+        "bytes": 11719909,
+        "sha256": "d7fa379070f0f2275dbbe5244764e6bb5815f73413dd347056f6f5cf897048bf",
+        "original_outer_zip_digest_recomputed": true,
+        "path": "D:\\a\\_temp\\retained-2006-original-zip-data\\logs.zip",
+        "expires_at": "2026-11-26T15:04:56Z"
+      }
+    },
+    "redirect_authorization_forwarded": false,
+    "application_or_msi_executed": false
+  },
+  "delivery_archive_root": "_temp/cadence-delivery/",
+  "source_commit": "536d13cf1caba07197deccefc9f880d8a77902e0",
+  "msi": {
+    "name": "CadenceStudio-4.7.6-cadence.2006-x86_64.msi",
+    "bytes": 120701360,
+    "sha256": "47e93cedd47d76baa7f91542cc937ea1ee3797e45d47d3532b327b90879fe5e9",
+    "readonly_database": {
+      "status": "read-actual-Property-table",
+      "database_opened_readonly": true,
+      "open_mode": 0,
+      "properties": {
+        "ProductVersion": "4.7.6.2006",
+        "ProductName": "Cadence Studio 4",
+        "ProductCode": "{04918C5F-763E-5FB3-A487-CD362CA3AA41}",
+        "UpgradeCode": "{319B992F-470A-465B-9A79-6B0CBFC7D6C7}",
+        "Manufacturer": "Cadence Studio contributors",
+        "ProductLanguage": "1033"
+      },
+      "summary_template": "x64;1033",
+      "summary_template_raw_type": "bytes",
+      "summary_template_raw_hex": "7836343b31303333",
+      "version_matches_expected_family": true,
+      "upgrade_matches_cadence_identity": true,
+      "installer_executed": false
+    }
+  },
+  "historical_msi_report": {
+    "found": true,
+    "member_path": "_temp/msi-qa/msi-install-report.json",
+    "bytes": 70195,
+    "sha256": "2df3d683e2f8d34924fe3c3bb8d1f36246cb290d01f7aba095b6c641ab688854",
+    "status": "passed",
+    "product_name": "Cadence Studio 4",
+    "product_code": "{04918C5F-763E-5FB3-A487-CD362CA3AA41}",
+    "product_version": "4.7.6.2006",
+    "upgrade_code": "{319B992F-470A-465B-9A79-6B0CBFC7D6C7}",
+    "summary_template": "x64;1033",
+    "install_exit_code": 0,
+    "install_reboot_required": false,
+    "cli_exit_code": 0,
+    "cli_version_matched": true,
+    "uninstall_exit_code": 0,
+    "uninstall_reboot_required": false,
+    "product_removed": true,
+    "gui_tested": true,
+    "gui_status": "startup_observed_closed_cleanly",
+    "gui_exit_status": 0,
+    "gui_startup_observed": true,
+    "clean_exit_observed": true,
+    "notice_verification_requested": true,
+    "installed_notices_verified": 330,
+    "error": null,
+    "cleanup_error": null
+  },
+  "executable": {
+    "bytes": 80068096,
+    "sha256": "c29d7c8c76b213b79d7390acd65cbabc6fb940f06e3e7f86c0ce60be7e9b9520"
+  },
+  "stage_archive": {
+    "name": "CadenceStudio-v4.7.6-combined-system-aac-stage-build-2006-attempt-1-x64.zip",
+    "bytes": 148007535,
+    "sha256": "b6b6bb9160250282879543b44e1ca8217494285e86c47fb2003f8b24dd93954c"
+  },
+  "delivery_stage_archive": {
+    "name": "CadenceStudio-4.7.6-cadence.2006-x86_64-staged.zip",
+    "bytes": 148007535,
+    "sha256": "b6b6bb9160250282879543b44e1ca8217494285e86c47fb2003f8b24dd93954c"
+  },
+  "inner_stage_files_equal": true,
+  "inner_stage_files_hashed": 2705,
+  "original_stage_members_hashed": 290,
+  "original_delivery_members_hashed": 348,
+  "delivery_subtree_members_hashed": 341
+}
