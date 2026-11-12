@@ -41,7 +41,10 @@ function Invoke-OwnedCommand([string]$Name,[string]$Program,[string[]]$Arguments
 try{
     $expected=@('src/framework/audio/common/cadencefxparams.h','src/framework/audio/engine/internal/dsp/nativeeffects.cpp','src/framework/audio/engine/internal/dsp/nativeeffects.h','test/cadence/native_fx/CMakeLists.txt','test/cadence/native_fx/allocationtracker.cpp','test/cadence/native_fx/allocationtracker.h','test/cadence/native_fx/config_codec_tests.cpp','test/cadence/native_fx/native_fx_dsp_tests.cpp')
     if($manifest.schema_version -ne 1 -or @($manifest.source_files).Count -ne 8 -or $manifest.patch_sha256 -cnotmatch '^[0-9a-f]{64}$'){throw 'Invalid standalone source manifest.'}
-    if((@($manifest.source_files.path|Sort-Object) -join "`n") -cne ($expected -join "`n")){throw 'The source inventory differs from the exact two-target closure.'}
+    [string[]]$actualPaths=@($manifest.source_files.path)
+    [Array]::Sort($actualPaths,[StringComparer]::Ordinal)
+    [Array]::Sort($expected,[StringComparer]::Ordinal)
+    if(($actualPaths -join "`n") -cne ($expected -join "`n")){throw 'The source inventory differs from the exact two-target closure.'}
     foreach($entry in $manifest.source_files){
         $file=Get-Item -LiteralPath (Join-Path $source $entry.path)
         if($file.LinkType -or $file.PSIsContainer -or $file.Length -ne $entry.bytes -or (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant() -cne $entry.sha256){throw ('Source manifest mismatch: '+$entry.path)}
@@ -56,7 +59,9 @@ try{
     Invoke-OwnedCommand 'ctest' $ctest @('--test-dir',$build,'-C','Release','--verbose','--no-tests=error','--tests-regex','^(native_fx_dsp_tests|native_fx_config_tests)$','--output-on-failure','--output-junit',(Join-Path $OutputDirectory 'ctest-junit.xml')) 120
     [xml]$junit=Get-Content -LiteralPath (Join-Path $OutputDirectory 'ctest-junit.xml') -Raw
     $cases=@($junit.testsuite.testcase)
-    if($cases.Count -ne 2 -or (@($cases.name|Sort-Object) -join ',') -cne 'native_fx_config_tests,native_fx_dsp_tests' -or @($cases|Where-Object{$_.status -cne 'run'}).Count){throw 'CTest did not report both exact standalone tests as executed.'}
+    [string[]]$caseNames=@($cases.name)
+    [Array]::Sort($caseNames,[StringComparer]::Ordinal)
+    if($cases.Count -ne 2 -or ($caseNames -join ',') -cne 'native_fx_config_tests,native_fx_dsp_tests' -or @($cases|Where-Object{$_.status -cne 'run'}).Count){throw 'CTest did not report both exact standalone tests as executed.'}
     foreach($name in $report.expected_ctest_targets){
         $exe=Get-Item -LiteralPath (Join-Path $build ('Release/'+$name+'.exe'))
         $report.test_binaries+=@{name=$exe.Name;bytes=$exe.Length;sha256=(Get-FileHash -LiteralPath $exe.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}

@@ -18,5 +18,15 @@
     "Execute the actual prepared Windows MSVC x64 Release job.",
     "Read compiler and CTest results before claiming Windows qualification.",
     "Full application, Qt/GUI, MSCZ round-trip, audio export/listening and installer remain separate."
-  ]
+  ],
+  "retry2": {
+    "blocked_prior_run": 43225735271,
+    "ordinal_sort_explicit": true,
+    "native_probe_bytes_preserved_with_scoped_gitattributes": true,
+    "actual_powershell_guard_checks_passed": 12,
+    "guard_receipt_sha256": "1b549f614e6c3beb26d4e84fb3e67c428c9f9a99b8ea5642c713471d7c638e3f",
+    "actual_git_crlf_mode_checkout_guard_passed": true,
+    "source_files_changed": false,
+    "native_windows_retry_executed": false
+  }
 }

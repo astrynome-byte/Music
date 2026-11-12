@@ -1,0 +1,2 @@
+# Preserve the exact pinned UTF-8/LF probe, source and manifest bytes on Windows.
+* -text
