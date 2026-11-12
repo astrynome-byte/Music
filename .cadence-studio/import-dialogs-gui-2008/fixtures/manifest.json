@@ -1,0 +1,15 @@
+{
+  "license": "CC0-1.0",
+  "origin": "Original generated sine-wave fixture, no commercial recording or existing melody",
+  "pcm_format": "PCM16 mono16000Hz",
+  "notes_MIDI": [
+    64,
+    67,
+    69
+  ],
+  "tone_seconds": 0.5,
+  "gap_seconds": 0.2,
+  "expected_bytes": 67244,
+  "expected_sha256": "5a22fae83408a4fce97cd79943527c72e4f022ce7aa854a98f41c9f0be081c23",
+  "encoded_sha256": "317892eca3570062d5f597279ae1945a7f70c017fcd82aab376f3f847d1cb6e4"
+}

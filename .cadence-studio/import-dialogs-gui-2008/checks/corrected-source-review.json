@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "status": "reviewed-corrected-source-and-known-replacement-producer-preparation-only",
+  "source_commit": "49272b75a4107c97130b8a46727af6a8c95d1c9a",
+  "source_tree": "fae79e265b3a21431388cd432a853228ffd7676b",
+  "source_patch_sha256": "c7654d9a8fa18adf9bcce0b6198c1ef907a2e5886a19339a08ed8ccb80f7b70d",
+  "previous_run": {
+    "run_id": 43319506534,
+    "conclusion": "failure",
+    "stage_produced": false,
+    "GUI_eligible": false
+  },
+  "replacement_producer_run_id": 43322336613,
+  "replacement_producer_driver_commit": "d685753476a30b8dc29e1fab979bb355263a4fd6",
+  "BuildNumber": 2008,
+  "build_number_is_explicit_and_independent_of_run_number": true,
+  "unchanged_GUI_navigation_inputs": {
+    "paths": [
+      "src/framework/ui/internal/navigationcontroller.cpp",
+      "src/project/qml/MuseScore/Project/LocalAudioTranscriptionDialog.qml",
+      "src/project/qml/MuseScore/Project/LocalOmrDialog.qml",
+      "src/framework/ui/inavigation.h",
+      "src/framework/ui/qml/Muse/Ui/abstractnavigation.cpp",
+      "src/app/configs/data/shortcuts.xml"
+    ],
+    "git_diff_exit_code": 0,
+    "diff": "",
+    "stderr": ""
+  },
+  "GUI_executed": false,
+  "stage_downloaded": false,
+  "Windows_CPP_compiled": false,
+  "source_restore_inputs": [
+    {
+      "path": "Restore-Binaries.ps1",
+      "sha256": "6e2a891297db146587ec8a49134a4ddb04a491bf8a42ce6882aec3608066bed5"
+    },
+    {
+      "path": "binary-parts.json",
+      "sha256": "14f67df7a7b326154eef1942260074a19bfe92813982b75b254073f729350c84"
+    }
+  ],
+  "replacement_producer_job_id": 131545929459,
+  "replacement_run_number": 10,
+  "replacement_run_attempt": 1,
+  "actual_stage": null,
+  "actual_executable": null,
+  "target_json_exists": false,
+  "rejected_prior_producer_run_ids": [
+    43319506534,
+    43321209033
+  ]
+}

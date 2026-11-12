@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "status": "private-restoration-preparation-data-fragments-checked",
+  "scope": "Read-only adaptation review and Linux PowerShell AST/data fragment execution only; no stage downloaded, restored, or application executed",
+  "derived_from": {
+    "path": "/workspace/cadence-ci-driver/retained-2006-notes-gui/Restore-NextStage.ps1",
+    "sha256": "61bd6bcf7495e768bcd774211b6bc87ade844e5958c2c7ebbf0224e8cc41a11d"
+  },
+  "producer_inspected": {
+    "path": "/workspace/cadence-ci-driver/cadence-combined-system-aac-2008.prepared.yml",
+    "sha256": "75a792e18ea6abc5c51d17c79a8c0d721540175b614605774ec8e6de6f949803",
+    "known_parent_run_id": 43319506534,
+    "run_number_not_hardcoded": true,
+    "actual_artifact_identity": null,
+    "actual_stage_identity": null,
+    "actual_executable_identity": null
+  },
+  "restore_script": {
+    "path": "/workspace/cadence-ci-driver/omr-next/gui-2008-private/Restore-ActualImportStage.ps1",
+    "bytes": 15814,
+    "sha256": "5eb379154c61979a658b434365f09bf3609c0ebf400f097507fb53085fb1a4fe"
+  },
+  "data_fragment_checks": {
+    "exit_code": 0,
+    "stdout": "[\n  {\n    \"stage_created\": false,\n    \"case\": \"safe\",\n    \"rejected\": false\n  },\n  {\n    \"stage_created\": false,\n    \"case\": \"traversal\",\n    \"rejected\": true\n  },\n  {\n    \"stage_created\": false,\n    \"case\": \"absolute\",\n    \"rejected\": true\n  },\n  {\n    \"stage_created\": false,\n    \"case\": \"case-duplicate\",\n    \"rejected\": true\n  },\n  {\n    \"stage_created\": false,\n    \"case\": \"dos-device\",\n    \"rejected\": true\n  },\n  {\n    \"stage_created\": false,\n    \"case\": \"trailing-dot\",\n    \"rejected\": true\n  },\n  {\n    \"stage_created\": false,\n    \"case\": \"no-executable\",\n    \"rejected\": true\n  },\n  {\n    \"stage_created\": false,\n    \"case\": \"wrong-executable-bytes\",\n    \"rejected\": true\n  },\n  {\n    \"stage_created\": false,\n    \"case\": \"symlink\",\n    \"rejected\": true\n  },\n  {\n    \"case\": \"bounded-stream-exact\",\n    \"rejected\": false\n  },\n  {\n    \"case\": \"bounded-stream-underflow\",\n    \"rejected\": true\n  },\n  {\n    \"case\": \"bounded-stream-overflow\",\n    \"rejected\": true\n  },\n  {\n    \"case\": \"bounded-stream-empty-exact\",\n    \"rejected\": false\n  },\n  {\n    \"case\": \"bounded-stream-empty-overflow\",\n    \"rejected\": true\n  }\n]\n",
+    "stderr": "",
+    "synthetic_zip_bytes_never_executed": true,
+    "stage_directories_created": false,
+    "fragment_sha256": {
+      "preflight": "0032a2e5a6b14d32edb6eee47bf2477aa9aac695936d921c52d13123009cbba1",
+      "bounded_copy": "6a5af7e0bdd836b00c83fa5b585d74432b9b4df825c12c3745522026f8b6b91f"
+    },
+    "harness_path": "/tmp/cadence-restore-adaptation-ppdwc52d/Test-RestorationDataFragments.ps1",
+    "harness_sha256": "30967decb62ece06b8bc36c7563a0d9a24333ab60fc9454cfc63c5cffb7f7339",
+    "cases": [
+      {
+        "stage_created": false,
+        "case": "safe",
+        "rejected": false
+      },
+      {
+        "stage_created": false,
+        "case": "traversal",
+        "rejected": true
+      },
+      {
+        "stage_created": false,
+        "case": "absolute",
+        "rejected": true
+      },
+      {
+        "stage_created": false,
+        "case": "case-duplicate",
+        "rejected": true
+      },
+      {
+        "stage_created": false,
+        "case": "dos-device",
+        "rejected": true
+      },
+      {
+        "stage_created": false,
+        "case": "trailing-dot",
+        "rejected": true
+      },
+      {
+        "stage_created": false,
+        "case": "no-executable",
+        "rejected": true
+      },
+      {
+        "stage_created": false,
+        "case": "wrong-executable-bytes",
+        "rejected": true
+      },
+      {
+        "stage_created": false,
+        "case": "symlink",
+        "rejected": true
+      },
+      {
+        "case": "bounded-stream-exact",
+        "rejected": false
+      },
+      {
+        "case": "bounded-stream-underflow",
+        "rejected": true
+      },
+      {
+        "case": "bounded-stream-overflow",
+        "rejected": true
+      },
+      {
+        "case": "bounded-stream-empty-exact",
+        "rejected": false
+      },
+      {
+        "case": "bounded-stream-empty-overflow",
+        "rejected": true
+      }
+    ]
+  },
+  "required_target_fields": {
+    "existing": [
+      "producer_run_id",
+      "artifact_id",
+      "run_number",
+      "run_attempt",
+      "artifact_digest_from_github_metadata",
+      "artifact_expires_utc",
+      "source.original_commit",
+      "source.ci_commit",
+      "source.tree",
+      "source.source_json_sha256",
+      "source.patch_sha256",
+      "stage.archive",
+      "stage.archive_bytes",
+      "stage.archive_sha256",
+      "stage.executable_bytes",
+      "stage.executable_sha256"
+    ],
+    "artifact_files_map": {
+      "SHA256SUMS.txt": {
+        "sha256": "measured after production",
+        "bytes": "measured after production"
+      },
+      "stage-manifest.json": {
+        "sha256": "measured after production",
+        "bytes": "measured after production"
+      },
+      "cadence-build.json": {
+        "sha256": "measured after production",
+        "bytes": "measured after production"
+      },
+      "cadence-build-result.json": {
+        "sha256": "measured after production",
+        "bytes": "measured after production"
+      }
+    }
+  },
+  "restoration_receipt_contract": {
+    "status": "retained-actual2008-stage-restored-and-sha256-verified",
+    "build_number": 2008,
+    "source_run_and_archive_values": "Read exclusively from authenticated actual target; no future identity invented",
+    "application_executed_by_restore": false,
+    "raw_outer_archive_digest_verified_by_this_script": false
+  },
+  "bounds": {
+    "zip_entries": 100000,
+    "expanded_bytes": 5368709120,
+    "copy_buffer_bytes": 65536,
+    "original_checksum_entries": 10000,
+    "original_artifact_items": 20000
+  },
+  "limitations": [
+    "Complete restoration cannot run here; hosted Windows artifact, original companion files and real target do not exist yet.",
+    "Synthetic Linux tests execute exact extracted data-processing fragments; they do not establish Windows filesystem, native UI or restored-runtime correctness.",
+    "Raw outer artifact digest is carried as authenticated GitHub metadata and explicitly not recomputed by this restoration script."
+  ],
+  "PowerShell_AST": {
+    "exit_code": 0,
+    "stdout": "PASS restoration PowerShell AST",
+    "stderr": ""
+  },
+  "non_Windows_host_guard": {
+    "exit_code": 0,
+    "stdout": "PASS non-Windows host rejected before target/artifact reads or stage/result writes\n",
+    "stderr": "",
+    "native_APIs_called": false,
+    "target_or_artifact_read": false,
+    "stage_or_receipt_written": false
+  },
+  "receipt_launcher_compatibility": {
+    "required_status": "retained-actual2008-stage-restored-and-sha256-verified",
+    "build_number": 2008,
+    "same_fields": [
+      "producer_run_id",
+      "artifact_id",
+      "original_source_commit",
+      "source_commit",
+      "source_tree",
+      "executable_sha256",
+      "stage_archive_sha256",
+      "target_sha256",
+      "source_json_sha256",
+      "source_patch_sha256",
+      "stage_path",
+      "application_executed_by_restore"
+    ],
+    "all_emitted": true
+  },
+  "run_number_policy": "manifest.run_number and receipt.original_run_number use only target.run_number measured from producer; no value8 is assumed"
+}

@@ -1,0 +1,12 @@
+{
+  "architecture": "Derivative of proven Notes6 UiaProbe, OwnedKeyboard, OwnedFileDialog; existing owned Job and independent KnownFolder profile reused",
+  "native_base": "/workspace/cadence-ci-driver/retained-2006-notes-save-focus-fix/files/native/UiaProbe.cpp",
+  "native_base_sha256": "e4a311f4345c11b0e37bdf1a6090f4ef4f01f72d43bb220552455a8f57ecec54",
+  "changes": [
+    "Keep existing UIA snapshot/process ownership primitives; replace private-note flow with import dialogs phases",
+    "Allow only one complete Alt tap per open phase under unchanged live PID/focus/modifier guards; allow guarded Home/PageDown navigation for source-defined WAV control columns",
+    "Retain each bounded before/after key snapshot under a unique phase-local number",
+    "File dialog helper changes only fixed file extension/title to WAV/import choosers; local absolute path, handles, reparse, exact Value/Invoke guards remain",
+    "No source/build/executable/stage target identities filled before actual production"
+  ]
+}

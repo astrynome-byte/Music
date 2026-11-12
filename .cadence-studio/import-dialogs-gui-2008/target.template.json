@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "status": "pending-actual-build-2008",
+  "build_number": 2008,
+  "producer_run_id": null,
+  "artifact_id": null,
+  "run_attempt": null,
+  "source": {
+    "original_commit": null,
+    "ci_commit": null,
+    "tree": null,
+    "source_json_sha256": null,
+    "patch_sha256": null
+  },
+  "stage": {
+    "archive": null,
+    "archive_bytes": null,
+    "archive_sha256": null,
+    "executable_bytes": null,
+    "executable_sha256": null
+  },
+  "producer_driver_commit": null,
+  "run_number": null,
+  "artifact_name": null,
+  "artifact_digest_from_github_metadata": null,
+  "artifact_expires_utc": null,
+  "artifact_files": {
+    "SHA256SUMS.txt": {
+      "bytes": null,
+      "sha256": null
+    },
+    "stage-manifest.json": {
+      "bytes": null,
+      "sha256": null
+    },
+    "cadence-build.json": {
+      "bytes": null,
+      "sha256": null
+    },
+    "cadence-build-result.json": {
+      "bytes": null,
+      "sha256": null
+    }
+  }
+}

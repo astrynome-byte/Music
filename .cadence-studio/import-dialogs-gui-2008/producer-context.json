@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "status": "reviewed-launched-producer",
+  "repository": "astrynome-byte/Music",
+  "producer_run_id": 43322336613,
+  "producer_job_id": 131545929459,
+  "producer_driver_commit": "d685753476a30b8dc29e1fab979bb355263a4fd6",
+  "producer_run_number": 10,
+  "producer_run_attempt": 1,
+  "expected_build_number": 2008,
+  "source_original_commit": "49272b75a4107c97130b8a46727af6a8c95d1c9a",
+  "source_tree": "fae79e265b3a21431388cd432a853228ffd7676b",
+  "actual_artifact_id": null,
+  "actual_archive_sha256": null,
+  "actual_executable_sha256": null,
+  "application_executed_by_this_preparation": false,
+  "previous_failed_producer": {
+    "run_id": 43319506534,
+    "job_id": 131536158950,
+    "driver_commit": "0e39c1b08fe5e70e76b5f279b2203fa9513f526b",
+    "conclusion": "failure",
+    "reason": "A Python SQLite test kept its connection open on Windows; compilation had not started.",
+    "stage_produced": false,
+    "eligible_for_GUI": false
+  },
+  "source_patch_sha256": "c7654d9a8fa18adf9bcce0b6198c1ef907a2e5886a19339a08ed8ccb80f7b70d",
+  "rejected_prior_producers": [
+    {
+      "run_id": 43319506534,
+      "job_id": 131536158950,
+      "driver_commit": "0e39c1b08fe5e70e76b5f279b2203fa9513f526b",
+      "conclusion": "failure",
+      "reason": "A Python SQLite test kept its connection open on Windows; compilation had not started.",
+      "stage_produced": false,
+      "eligible_for_GUI": false
+    },
+    {
+      "run_id": 43321209033,
+      "job_id": 131542020159,
+      "driver_commit": "2348940f7927e8bb25bc91dce6f0eb4e2c397011",
+      "run_number": 9,
+      "run_attempt": 1,
+      "conclusion": "failure",
+      "eligible_for_GUI": false,
+      "reason": "Failure reported by root; the diagnostic cause is retained separately."
+    }
+  ],
+  "producer_observation": "Root observed the complete application compilation after the first23 steps succeeded; no stage identity measured by this preparation.",
+  "producer_selection_policy": "Only the exact current producer identity is accepted. Earlier failed runs are retained for diagnosis and never substituted."
+}

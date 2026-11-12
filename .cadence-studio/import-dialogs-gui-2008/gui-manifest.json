@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "status": "private-preparation-not-executed",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "CadenceProfileScope.py",
+      "bytes": 34344,
+      "sha256": "60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c"
+    },
+    {
+      "path": "OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    },
+    {
+      "path": "Owned-WindowEvidence.ps1",
+      "bytes": 8859,
+      "sha256": "df3932ef9cc58674bf770ff886264d337d2fce3bb0eec3291a8ef27ffcc0742c"
+    },
+    {
+      "path": "PUBLISHING-PREPARATION.md",
+      "bytes": 5986,
+      "sha256": "fb2a61f62718e588e4389c34ca121cd6d84b9c918210143dd82c0553065f71cf"
+    },
+    {
+      "path": "Prepare-OriginalWave.py",
+      "bytes": 1167,
+      "sha256": "a66cf88a688f4a0f5ecba707005db3e582c4f896fe91e995380bf9de2072bf2d"
+    },
+    {
+      "path": "Print-ImportGuiEvidence.ps1",
+      "bytes": 2703,
+      "sha256": "22efe6c0957d81d6c57f4bcbbbe6417e41edef623a1cb46d7c3d1b2eb74de170"
+    },
+    {
+      "path": "README.md",
+      "bytes": 8483,
+      "sha256": "f28fc92519bca26ed586270ed0fc64f5940b2bcae3cc8e79e6c783ec1384dc19"
+    },
+    {
+      "path": "Read-ActualImportTarget.ps1",
+      "bytes": 5130,
+      "sha256": "1a3c33f03123a13997de2ef8f5617bd219fc7764a3d56e100bbab46873c9c888"
+    },
+    {
+      "path": "Restore-ActualImportStage.ps1",
+      "bytes": 15814,
+      "sha256": "5eb379154c61979a658b434365f09bf3609c0ebf400f097507fb53085fb1a4fe"
+    },
+    {
+      "path": "Run-ImportDialogsGui.ps1",
+      "bytes": 15159,
+      "sha256": "e8a7390f933d1bc9f56f5d596f502ddcd4a17a8375d31c5492c7ded30b8c6360"
+    },
+    {
+      "path": "fixtures/LICENSE.txt",
+      "bytes": 219,
+      "sha256": "5f586edc6a74fd9467a1129e840a7eb54c4dd8badb97f67b3a6dfa2e30515c48"
+    },
+    {
+      "path": "fixtures/manifest.json",
+      "bytes": 455,
+      "sha256": "62e0fefb19d595e7222f1749eff827ca3294fd1edbbcd4b4a4849442526a88b2"
+    },
+    {
+      "path": "fixtures/original-three-notes.wav.zlib.b64",
+      "bytes": 41140,
+      "sha256": "317892eca3570062d5f597279ae1945a7f70c017fcd82aab376f3f847d1cb6e4"
+    },
+    {
+      "path": "native/ImportDialogsFlow.inc",
+      "bytes": 19249,
+      "sha256": "7ee66dc47810ab10635fbe596fccbc5ae63da9e6ab95d6b769c8d958c24f168d"
+    },
+    {
+      "path": "native/OwnedKeyboard.h",
+      "bytes": 9043,
+      "sha256": "27431ad585fbf10627573db63f432743d4423011cff009bedd00361fd60ddfc3"
+    },
+    {
+      "path": "native/OwnedWaveFileDialog.h",
+      "bytes": 19981,
+      "sha256": "de0ab816b3d27cffd85966d3d4b98e807fe3ac4a0d2d3bb86b0aa4c918496036"
+    },
+    {
+      "path": "native/README.md",
+      "bytes": 1087,
+      "sha256": "10d6d3556e91b23f3a211bf9f40853cb5f9d800c3c29d2985af4ef41a66c931d"
+    },
+    {
+      "path": "native/SHA256SUMS.txt",
+      "bytes": 413,
+      "sha256": "618254463bf1e80e5bd3065c45a444b8f8cff5ebf92d9e99ed4a743ada1b9287"
+    },
+    {
+      "path": "native/UiaProbe.cpp",
+      "bytes": 19203,
+      "sha256": "7acb74c2f4ea4cc77b68c7e8874be402b3b7f5033b9a3db82dc97ccb2a3310d8"
+    },
+    {
+      "path": "prepare-tree-elements.py",
+      "bytes": 1595,
+      "sha256": "350f02a0f0d6998706fd13deadd72a06f21b29ffd20ac9f8d7e2c8c7018c6f6d"
+    },
+    {
+      "path": "producer-context.json",
+      "bytes": 2102,
+      "sha256": "c8b474f6e00d17ee18a1d67026f628b0bdc93693352e144ca8fbff843536127d"
+    },
+    {
+      "path": "profile-source-contract.json",
+      "bytes": 3310,
+      "sha256": "0023f8d7510c89429dea85cda35d803175b3434532cf14aecaf793ded5663a9e"
+    },
+    {
+      "path": "reuse.json",
+      "bytes": 1013,
+      "sha256": "c812b5ba0dd5b7ca9cc9eb86b7dd18488eaf4e6b2dbaf03d30ea3841e1e40754"
+    },
+    {
+      "path": "workflow-fragment.yml",
+      "bytes": 4212,
+      "sha256": "a07c7fdab623a4220247f885459155c278cf52033ea1e89ee0a2bf33c3118d98"
+    }
+  ]
+}

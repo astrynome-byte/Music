@@ -1,0 +1,162 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# PRIVATE PREPARATION. Root alone publishes and activates this workflow.
+# Inert until a reviewed target.json from the actual original stage exists.
+name: 'Cadence Studio: actual2008 OMR and WAV dialogs smoke'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths: ['.cadence-studio/import-dialogs-gui-2008/target.json']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-import-dialogs-gui-2008-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  actual2008-import-dialogs:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Check out only the selected private driver revision
+        uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Require reviewed actual-stage metadata before any restoration
+        id: target
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/import-dialogs-gui-2008"
+          . "$helper/Read-ActualImportTarget.ps1"
+          $target = Read-ActualImportTarget "$helper/target.json" "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source" -MetadataOnly
+          $manifest = Get-Content -LiteralPath "$helper/gui-manifest.json" -Raw -Encoding UTF8 | ConvertFrom-Json
+          foreach ($entry in $manifest.files) {
+            if ($entry.path -cnotmatch '^[A-Za-z0-9_.\-/]+$' -or $entry.path.Contains('..')) { throw 'Unsafe helper source path' }
+            $file = Get-Item -LiteralPath (Join-Path $helper $entry.path) -Force
+            if ($file.PSIsContainer -or ($file.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
+                $file.Length -ne $entry.bytes -or (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant() -cne $entry.sha256) { throw 'Private helper source bytes differ before restoration' }
+          }
+          "producer_run_id=$($target.producer_run_id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding UTF8
+          "artifact_id=$($target.artifact_id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding UTF8
+
+      - name: Restore and authenticate the exact frozen binary source inputs as data
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/import-dialogs-gui-2008"
+          $selection = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source"
+          $pins = @{
+            'Restore-Binaries.ps1' = '6e2a891297db146587ec8a49134a4ddb04a491bf8a42ce6882aec3608066bed5'
+            'binary-parts.json' = '14f67df7a7b326154eef1942260074a19bfe92813982b75b254073f729350c84'
+          }
+          foreach ($name in $pins.Keys) {
+            $file = Get-Item -LiteralPath (Join-Path $selection $name) -Force
+            if ($file.PSIsContainer -or ($file.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
+                (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant() -cne $pins[$name]) { throw 'Pinned source binary restoration inputs differ' }
+          }
+          & "$selection/Restore-Binaries.ps1" -Root $selection
+          . "$helper/Read-ActualImportTarget.ps1"
+          [void](Read-ActualImportTarget "$helper/target.json" $selection)
+
+      - name: Download only the selected original stage artifact from its actual producer
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.target.outputs.artifact_id }}
+          run-id: ${{ steps.target.outputs.producer_run_id }}
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/import-dialogs-original-stage
+
+      - name: Authenticate external and original records then restore the bounded stage
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/import-dialogs-gui-2008"
+          $restore = "$env:RUNNER_TEMP/import-dialogs-restoration"
+          if (Test-Path -LiteralPath $restore) { throw 'Restoration evidence must be new' }
+          New-Item -ItemType Directory -Path $restore | Out-Null
+          & "$helper/Restore-ActualImportStage.ps1" `
+            -TargetPath "$helper/target.json" `
+            -SourceSelectionDirectory "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source" `
+            -ArtifactDirectory "$env:RUNNER_TEMP/import-dialogs-original-stage" `
+            -StagePath "$env:RUNNER_TEMP/import-dialogs-stage" `
+            -ResultPath "$env:RUNNER_TEMP/import-dialogs-stage-restoration.json" *>&1 | Tee-Object -FilePath "$restore/restore.log" | Out-Host
+
+      - name: Use the Windows compiler only for the independent UI Automation client
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+
+      - name: Use Python only for independent owned-profile lifecycle helpers
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Compile the independent owned UI Automation probe
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/import-dialogs-gui-2008"
+          $manifest = Get-Content -LiteralPath "$helper/gui-manifest.json" -Raw -Encoding UTF8 | ConvertFrom-Json
+          foreach ($entry in @($manifest.files | Where-Object { $_.path.StartsWith('native/') })) {
+            if ($entry.path -cnotmatch '^native/[A-Za-z0-9_.-]+$') { throw 'Unsafe native source path' }
+            $file = Get-Item -LiteralPath (Join-Path $helper $entry.path)
+            if ($file.PSIsContainer -or ($file.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
+                $file.Length -ne $entry.bytes -or (Get-FileHash $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant() -cne $entry.sha256) { throw 'Native probe source bytes differ before compilation' }
+          }
+          $build = "$env:RUNNER_TEMP/import-dialogs-gui-probe-build"
+          if (Test-Path -LiteralPath $build) { throw 'Use a fresh probe build directory' }
+          New-Item -ItemType Directory -Path $build | Out-Null
+          Push-Location $build
+          try {
+            $previousPreference = $ErrorActionPreference
+            $ErrorActionPreference = 'Continue'
+            try {
+              & cl.exe /nologo /std:c++17 /utf-8 /EHsc "$helper/native/UiaProbe.cpp" /Fe:UiaProbe.exe /link ole32.lib oleaut32.lib user32.lib uuid.lib 2>&1 | Tee-Object compile.log | Out-Host
+              $status = $LASTEXITCODE
+            } finally { $ErrorActionPreference = $previousPreference }
+            if ($status -ne 0) { throw 'Native owned UI Automation client did not compile' }
+          } finally { Pop-Location }
+
+      - name: Require new import dialogs in the actually produced stage2008
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/import-dialogs-gui-2008"
+          & "$helper/Run-ImportDialogsGui.ps1" `
+            -TargetPath "$helper/target.json" `
+            -SourceSelectionDirectory "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source" `
+            -StagePath "$env:RUNNER_TEMP/import-dialogs-stage" `
+            -RestorationPath "$env:RUNNER_TEMP/import-dialogs-stage-restoration.json" `
+            -ProbePath "$env:RUNNER_TEMP/import-dialogs-gui-probe-build/UiaProbe.exe" `
+            -OutputDirectory "$env:RUNNER_TEMP/import-dialogs-gui-results"
+# Run smoke only first. Once that exact real GUI is stable, the same reviewed
+# launcher accepts -AnalyzeFixture to add actual analysis of the original WAV.
+# Always retain import-dialogs-gui-results/** and the probe compile.log.
+# Images are original owned-window crops, requiring visual review; no claim
+# about the new GUI or any SHA/source target is made by this preparation.
+
+      - name: Read back existing bounded GUI evidence even on failure
+        if: always()
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/import-dialogs-gui-2008/Print-ImportGuiEvidence.ps1" `
+            -ResultPath "$env:RUNNER_TEMP/import-dialogs-gui-results"
+
+      - name: Retain original import GUI evidence and compiler diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-import-dialogs-gui-2008-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/import-dialogs-gui-results/**
+            ${{ runner.temp }}/import-dialogs-gui-probe-build/compile.log
+            ${{ runner.temp }}/import-dialogs-restoration/**
+            ${{ runner.temp }}/import-dialogs-stage-restoration.json
+            ${{ runner.temp }}/import-dialogs-original-stage/stage-manifest.json
+            ${{ runner.temp }}/import-dialogs-original-stage/cadence-build.json
+            ${{ runner.temp }}/import-dialogs-original-stage/cadence-build-result.json
+            ${{ runner.temp }}/import-dialogs-original-stage/SHA256SUMS.txt
+            ${{ github.workspace }}/driver/.cadence-studio/import-dialogs-gui-2008/target.json
+            ${{ github.workspace }}/driver/.cadence-studio/import-dialogs-gui-2008/gui-manifest.json
+          if-no-files-found: warn
+          retention-days: 7

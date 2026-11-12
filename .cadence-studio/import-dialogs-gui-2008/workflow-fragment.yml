@@ -1,0 +1,66 @@
+# PRIVATE PREPARATION. Do not publish/run against target.template.json.
+# After an actual stage2008 exists, authenticate its original artifact using
+# the retained2006 restoration architecture adapted to that measured target.
+# Required inputs: a reviewed target.json and original stage-restoration.json.
+      - name: Reject unproduced targets before compilation or native work
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/import-dialogs-gui-2008"
+          . "$helper/Read-ActualImportTarget.ps1"
+          [void](Read-ActualImportTarget "$helper/target.json" "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source")
+
+      - name: Compile the independent owned UI Automation probe
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/import-dialogs-gui-2008"
+          $manifest = Get-Content -LiteralPath "$helper/gui-manifest.json" -Raw -Encoding UTF8 | ConvertFrom-Json
+          foreach ($entry in @($manifest.files | Where-Object { $_.path.StartsWith('native/') })) {
+            if ($entry.path -cnotmatch '^native/[A-Za-z0-9_.-]+$') { throw 'Unsafe native source path' }
+            $file = Get-Item -LiteralPath (Join-Path $helper $entry.path)
+            if ($file.PSIsContainer -or ($file.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
+                $file.Length -ne $entry.bytes -or (Get-FileHash $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant() -cne $entry.sha256) { throw 'Native probe source bytes differ before compilation' }
+          }
+          $build = "$env:RUNNER_TEMP/import-dialogs-gui-probe-build"
+          if (Test-Path -LiteralPath $build) { throw 'Use a fresh probe build directory' }
+          New-Item -ItemType Directory -Path $build | Out-Null
+          Push-Location $build
+          try {
+            $previousPreference = $ErrorActionPreference
+            $ErrorActionPreference = 'Continue'
+            try {
+              & cl.exe /nologo /std:c++17 /utf-8 /EHsc "$helper/native/UiaProbe.cpp" /Fe:UiaProbe.exe /link ole32.lib oleaut32.lib user32.lib uuid.lib 2>&1 | Tee-Object compile.log | Out-Host
+              $status = $LASTEXITCODE
+            } finally { $ErrorActionPreference = $previousPreference }
+            if ($status -ne 0) { throw 'Native owned UI Automation client did not compile' }
+          } finally { Pop-Location }
+
+      - name: Require new import dialogs in the actually produced stage2008
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/import-dialogs-gui-2008"
+          & "$helper/Run-ImportDialogsGui.ps1" `
+            -TargetPath "$helper/target.json" `
+            -SourceSelectionDirectory "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source" `
+            -StagePath "$env:RUNNER_TEMP/import-dialogs-stage" `
+            -RestorationPath "$env:RUNNER_TEMP/import-dialogs-stage-restoration.json" `
+            -ProbePath "$env:RUNNER_TEMP/import-dialogs-gui-probe-build/UiaProbe.exe" `
+            -OutputDirectory "$env:RUNNER_TEMP/import-dialogs-gui-results"
+# Run smoke only first. Once that exact real GUI is stable, the same reviewed
+# launcher accepts -AnalyzeFixture to add actual analysis of the original WAV.
+# Always retain import-dialogs-gui-results/** and the probe compile.log.
+# Images are original owned-window crops, requiring visual review; no claim
+# about the new GUI or any SHA/source target is made by this preparation.
+
+      - name: Read back existing bounded GUI evidence even on failure
+        if: always()
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/import-dialogs-gui-2008/Print-ImportGuiEvidence.ps1" `
+            -ResultPath "$env:RUNNER_TEMP/import-dialogs-gui-results"
+
+      - name: Retain original import GUI evidence and compiler diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-import-dialogs-gui-2008-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/import-dialogs-gui-results/**
+            ${{ runner.temp }}/import-dialogs-gui-probe-build/compile.log
+          if-no-files-found: warn
+          retention-days: 7

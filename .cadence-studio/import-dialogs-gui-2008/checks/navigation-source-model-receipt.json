@@ -1,0 +1,77 @@
+{
+  "scope": "Linux source-algorithm model only; no Qt/Win32/UIA/QML runtime execution",
+  "compile_command": [
+    "g++",
+    "-std=c++17",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "/tmp/cadence-navigation-source-model-kojr7yt0/navigation-source-model.cpp",
+    "-o",
+    "/tmp/cadence-navigation-source-model-kojr7yt0/navigation-source-model"
+  ],
+  "compile_exit_code": 0,
+  "compile_stderr": "",
+  "run_exit_code": 0,
+  "run_stdout": "PASS 100000 source-algorithm transitions across 10000 deterministic control-order shuffles; GUI_executed=false\n",
+  "seed": 2008,
+  "shuffles": 10000,
+  "transitions_per_shuffle": 10,
+  "template_extraction": {
+    "source_path": "/workspace/cadence/src/framework/ui/internal/navigationcontroller.cpp",
+    "source_start_line": 60,
+    "sha256": "0deead78774443e19853ddbdf80adc7d4952f2ccdd04b3f288b875add5bdc07a"
+  },
+  "inputs": [
+    {
+      "path": "/workspace/cadence/src/framework/ui/internal/navigationcontroller.cpp",
+      "bytes": 42733,
+      "sha256": "c427ad894091b250d263d13e9e31b5b744dcc7a6565844a817d4d9d88c8a9058"
+    },
+    {
+      "path": "/workspace/cadence/src/project/qml/MuseScore/Project/LocalAudioTranscriptionDialog.qml",
+      "bytes": 14169,
+      "sha256": "6c717a194e615a1bcf0b9eae079a71f81c87dfe02b60814dccffb5b6bf4b78b0"
+    },
+    {
+      "path": "/workspace/cadence/src/framework/ui/inavigation.h",
+      "bytes": 5263,
+      "sha256": "065949ec84022155e4572221102727a081262fdbe53afa98171b3c818e876662"
+    },
+    {
+      "path": "/workspace/cadence/src/framework/ui/qml/Muse/Ui/abstractnavigation.cpp",
+      "bytes": 6118,
+      "sha256": "39193ff12ddb004877cf92ed6994d09febf1aef5a2c0ca75cfb5c530afe55c64"
+    },
+    {
+      "path": "/workspace/cadence/src/app/configs/data/shortcuts.xml",
+      "bytes": 21137,
+      "sha256": "1c2bf707999e4c48b5534a67547645dfdc8f5ed99b00d09617a1beb1e45079d1"
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/omr-next/gui-2008-private/native/ImportDialogsFlow.inc",
+      "bytes": 19249,
+      "sha256": "7ee66dc47810ab10635fbe596fccbc5ae63da9e6ab95d6b769c8d958c24f168d"
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/omr-next/gui-2008-private/native/OwnedKeyboard.h",
+      "bytes": 9043,
+      "sha256": "27431ad585fbf10627573db63f432743d4423011cff009bedd00361fd60ddfc3"
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/omr-next/gui-2008-private/Read-ActualImportTarget.ps1",
+      "bytes": 2464,
+      "sha256": "ea41a2fd48f606fbd9ce93d4c3dfb5a0e267bf210579aadd9abdd84faa3e76aa"
+    }
+  ],
+  "harness": {
+    "path": "/tmp/cadence-navigation-source-model-kojr7yt0/navigation-source-model.cpp",
+    "sha256": "726cf90f8ddfb4e5c5eae41b3aae06ca448571dfbea0cf94333a11cbe922fea9"
+  },
+  "caveats": [
+    "Synthetic enabled/visible inventory follows frozen QML; actual accessibility exposure, keyboard event dispatch, focus, layout and native dialog behavior remain untested.",
+    "Escape transitions from live spin editors are not simulated.",
+    "Windows client is not compiled or executed."
+  ]
+}

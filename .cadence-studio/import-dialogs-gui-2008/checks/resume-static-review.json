@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "status": "reviewed-private-preparation-only",
+  "reviewer": "/root/gui_resume_next/audit_gui_payload",
+  "GUI_executed": false,
+  "Windows_CPP_compiled": false,
+  "source_commit": "8420ff1737b560d86e1cd12c7c487476369f04f1",
+  "source_tree": "f061b64c670f354fb0c87e4afeddcad8c87bfede",
+  "supersedes": "checks/independent-static-review.json",
+  "corrected_issues": [
+    {
+      "issue": "WAV choose and acknowledgement inherit column=-1; parameters/Close use column=0. Down cannot cross this boundary.",
+      "fix": "PgDown from observed choose to tempo; Home after observed noise to unique first choose; Down to acknowledgement; PgDown to Close. Same guarded input insertion, Home<=1/PgDown<=2 per phase."
+    },
+    {
+      "issue": "readyMain combined Home/Scores aliases into one unique-element search and could reject two valid exposed controls.",
+      "fix": "Separate unique Home search OR unique Scores search, as in Notes6."
+    },
+    {
+      "issue": "Before/after-import-key snapshots were overwritten at every gesture.",
+      "fix": "Number each before/after pair within the phase; record observed UIA label/role before input."
+    }
+  ],
+  "reviewed_also": [
+    "Existing single complete Alt pair activates source menu at Alt release; unchanged PID/process/focus/modifier checks",
+    "Final original source commit/tree are pinned independently of as-yet-unproduced stage",
+    "Original evidence and compile.log retained with always upload-artifact in unlaunched workflow fragment"
+  ],
+  "linux_source_model": {
+    "receipt": "checks/navigation-source-model-receipt.json",
+    "source": "checks/navigation-source-model.cpp",
+    "compile_exit_code": 0,
+    "run_exit_code": 0,
+    "transitions": 100000,
+    "shuffles": 10000,
+    "seed": 2008,
+    "GUI_executed": false
+  },
+  "remaining": [
+    "Actual Windows MSVC/SDK compile of independent UIA client",
+    "Actual stage2008 identity/restoration receipt",
+    "Qt/Win32/UIA menu activation and labels/focus",
+    "Escape from actual spinner editor without closing dialog or altering settings",
+    "Original modal screenshots and layout review",
+    "Chooser cancellation and clean Job/profile lifecycle",
+    "QML logs on actual application"
+  ],
+  "actual_stage2008": null,
+  "actual_EXE2008": null,
+  "actual_producer_run": null,
+  "published": false
+}
