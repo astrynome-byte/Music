@@ -13,10 +13,10 @@ if(-not [OperatingSystem]::IsWindows() -or -not [Environment]::Is64BitProcess -o
 function Hash([string]$Path){(Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()}
 $source=$PSScriptRoot
 $qaFile=Join-Path $source 'qa-manifest.json'
-if((Hash $qaFile) -cne '37ee0c885b10dbdeb26ca89c93ae5b421b04ade677c8bda768b447dbe4dbeae3'){throw 'Reviewed QA manifest differs.'}
+if((Hash $qaFile) -cne 'ef73d1b128741b88b59a4d5bff5a6920fce33233978acb2a14af9ba3334f0395'){throw 'Reviewed QA manifest differs.'}
 $qa=Get-Content -LiteralPath $qaFile -Raw -Encoding utf8|ConvertFrom-Json
 if($qa.schema_version -ne 1 -or $qa.content_pack_sha256 -cne '00906d5d4bc85eabb931e9afebb4c2b9c5a452ef2a6a6b28916dbaa867016d03' -or
-   $qa.stage_executable_sha256 -cne 'c29d7c8c76b213b79d7390acd65cbabc6fb940f06e3e7f86c0ce60be7e9b9520' -or @($qa.files).Count -ne 10){throw 'Exact content/stage/helper identities required.'}
+   $qa.stage_executable_sha256 -cne 'c29d7c8c76b213b79d7390acd65cbabc6fb940f06e3e7f86c0ce60be7e9b9520' -or @($qa.files).Count -ne 11){throw 'Exact content/stage/helper identities required.'}
 foreach($entry in $qa.files){
  if($entry.path -cnotmatch '^[A-Za-z0-9_.-]+$' -or $entry.path.Contains('..') -or $entry.sha256 -cnotmatch '^[a-f0-9]{64}$'){throw 'Unsafe QA manifest entry.'}
  $item=Get-Item -LiteralPath (Join-Path $source $entry.path) -Force
@@ -30,6 +30,15 @@ $profile=Join-Path $root 'profile-scope.json'
 $python=(Get-Command python -CommandType Application -ErrorAction Stop|Select-Object -First 1).Source
 $report=[ordered]@{schema_version=1;status='running';stage_build_number=2006;content_pack_sha256=$qa.content_pack_sha256;executable_sha256=$qa.stage_executable_sha256;commands=@();drains=@();profile_cleanup_verified=$false;job_closed_cleanly=$false;errors=@();forced_descendants=0;GUI_tested=$false;human_listening=$false;ASIO_endpoint_used=$false;application_recompiled=$false;MSI_modified=$false}
 $job=$null
+function Write-BoundedPythonStderr([string]$Name,[int]$ExitCode,[string]$Text){
+ if($ExitCode -eq 0){return}
+ $maximum=8192
+ $tail=if($Text.Length -gt $maximum){$Text.Substring($Text.Length-$maximum)}else{$Text}
+ $diagnostic=[ordered]@{name=$Name;exit_code=$ExitCode;original_characters=$Text.Length;printed_characters=$tail.Length;maximum_characters=$maximum;tail_only=($Text.Length -gt $maximum);text=$tail}
+ Write-Host 'CADENCE_OPENSCORE_PYTHON_STDERR_BEGIN'
+ Write-Host ($diagnostic|ConvertTo-Json -Depth 4 -Compress)
+ Write-Host 'CADENCE_OPENSCORE_PYTHON_STDERR_END'
+}
 function Invoke-Owned([string]$Name,[string[]]$Arguments,[int]$Seconds){
  $info=[Diagnostics.ProcessStartInfo]::new();$info.FileName=$python;$info.UseShellExecute=$false
  $info.WorkingDirectory=$root;$info.RedirectStandardOutput=$true;$info.RedirectStandardError=$true
@@ -46,6 +55,7 @@ function Invoke-Owned([string]$Name,[string[]]$Arguments,[int]$Seconds){
   [IO.File]::WriteAllText((Join-Path $root ($Name+'.stdout.log')),$out,[Text.UTF8Encoding]::new($false))
   [IO.File]::WriteAllText((Join-Path $root ($Name+'.stderr.log')),$err,[Text.UTF8Encoding]::new($false))
   Write-Host $out;$row.exit_code=$process.ExitCode
+  Write-BoundedPythonStderr -Name $Name -ExitCode $row.exit_code -Text $err
   if($row.exit_code -ne 0 -or $row.timed_out -or @($proof.TerminatedPids).Count){throw ('Owned command failed or left descendants: '+$Name)}
  }finally{
   if($started){

@@ -52,6 +52,11 @@
       "path": "Run-OpenScoreCorpus.py",
       "bytes": 18594,
       "sha256": "514b13128f93c14ff5f2b82f40a3a9c49eb48802db487b92791e73167a8ec511"
+    },
+    {
+      "path": "profile-source-contract.json",
+      "bytes": 3310,
+      "sha256": "0023f8d7510c89429dea85cda35d803175b3434532cf14aecaf793ded5663a9e"
     }
   ]
 }
