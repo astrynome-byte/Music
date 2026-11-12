@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "files": [
+    {
+      "path": "/workspace/cadence-ci-driver/combined-next-gui/checks/workflow-step-1.ps1",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/combined-next-gui/checks/workflow-step-3.ps1",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/combined-next-gui/checks/workflow-step-5.ps1",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/combined-next-gui/checks/workflow-step-6.ps1",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/combined-next-gui/checks/workflow-step-7.ps1",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/combined-next-gui/Read-ProducedTarget.ps1",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/combined-next-gui/Restore-NextStage.ps1",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/combined-next-gui/Run-CollectionsUiProbe.ps1",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/combined-next-gui/checks/check-produced-target.ps1",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/combined-next-gui/checks/check-ui-evidence-gate.ps1",
+      "parse_errors": 0
+    }
+  ],
+  "application_executed": false,
+  "commands_run_by_parse": false
+}

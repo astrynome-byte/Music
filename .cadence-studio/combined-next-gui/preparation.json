@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "status": "actual-produced2005-target-prepared-for-review-no-collections-GUI-execution",
+  "target_json_exists": true,
+  "expected_build_number": 2005,
+  "expected_producer_workflow_run_number": 5,
+  "native_windows_compiled": false,
+  "native_windows_gui_executed": false,
+  "application_rebuilt_by_probe": false,
+  "source_product_changed": false,
+  "frozen_full_helpers_changed_by_this_preparation": false,
+  "guards": {
+    "expected_executable_sha_before_each_start": true,
+    "actual_produced_source_archive_and_executable_pinned": true,
+    "source_selection_matches_frozen_combined_next_source": true,
+    "all_original_companion_checksums_verified": true,
+    "zip_bounded_original_algorithm_preserved": true,
+    "other_score_processes_refused": true,
+    "fresh_disposable_Cadence_profile_required": true,
+    "owned_PIDs_only": true,
+    "only_controlled_CC0_copy_opened": true,
+    "actual_UI_claims_and_auxiliary_schema2_membership_both_required": true,
+    "clean_exit0_both_phases_required": true,
+    "metadata_alone_cannot_pass_GUI": true
+  },
+  "local_checks": {
+    "target_reader_actual_AST_synthetic_cases_passed": 20,
+    "actual_corroboration_AST_synthetic_cases_passed": 10,
+    "powershell_scripts_and_workflow_blocks_parsed": 10,
+    "workflow_steps": 9,
+    "original_file_dialog_sha256": "4ad24654aa9dbf293b75929157c9d597e4021f8c6ca07e223e630c92eb6683e1",
+    "inherited_zip_extract_algorithm_sha256": "56d251fdca659f439f18c1197522da9b03009a6eef8f3be244f4fe055d71fb05"
+  },
+  "actual_native_UI_fields_required": [
+    "collections_enabled_observed",
+    "collection_created_control_observed",
+    "collection_member_control_observed",
+    "collection_filter_observed",
+    "collection_restored_control_observed"
+  ],
+  "native_phase_deadline_seconds": 140,
+  "wrapper_phase_timeout_seconds": 180,
+  "blocked_until": [
+    "Review the actual source/tree/ZIP/EXE-bound target and publish its concrete payload in one commit",
+    "Compile native UIA client using the real Windows SDK and execute both owned GUI phases",
+    "Review resulting captured score/collection views; listening remains separate"
+  ],
+  "publication_performed": false,
+  "actual_stage_identity": {
+    "producer_run_id": 43207550870,
+    "artifact_id": 13943781621,
+    "reader_run_id": 43216765461,
+    "reader_job_id": 131177872160,
+    "all_original_files_hashed": 289,
+    "executable_bytes_hashed": 79737344,
+    "source_original_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+    "source_ci_commit": "167f50421e67e042e270198853c27aeeaa0f4452",
+    "source_tree": "c4780f1487559744fd4b2c2040b86ac37bb8c67b",
+    "archive_sha256": "4707aea7e6f0f63361ced55edfff7c7cf591f15463f9219263bfac4de3f96f9b",
+    "executable_sha256": "d957ffc99497cb01b1f00f82ba1d6e89ef84547708506c6c51423675805e140a"
+  }
+}

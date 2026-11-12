@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "scope": "Actual produced stage target accepted by the production data-only reader against frozen source.json and patch bytes; no GUI/application execution",
+  "target_sha256": "77883302ec2180ccc3b1a18f359d00acdfc6a40c3708302749993767d6d3bfa7",
+  "source_json_sha256": "acd0aabb88bec95eb8f6803844e4f5cd32e7a67084d2a58d0dce3df3fba33e98",
+  "source_patch_sha256": "1f9823f48ae63c69647bf5dbc3e05e096540f96d1dfd0ed5de568ed4ad7f464b",
+  "producer_run_id": 43207550870,
+  "artifact_id": 13943781621,
+  "application_executed": false
+}

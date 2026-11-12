@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "scope": "Actual wrapper AST catalogue corroboration block replayed on owned synthetic data and synthetic native claims; no UIA, Windows GUI, app or musical parser executed",
+  "source_sha256": "7d5ed8fcb3d549ae8c41d4a7aecd7e9e342772e598db82ce13ce1ab9dda6b620",
+  "cases": [
+    {
+      "case": "synthetic-complete-claims-and-actual-metadata",
+      "passed": true,
+      "accepted": true,
+      "expected_accept": true,
+      "ui_claims_passed": true,
+      "expected_ui_claims_pass": true,
+      "error": null,
+      "only_synthetic_native_claims": true
+    },
+    {
+      "case": "metadata-alone-cannot-validate-GUI",
+      "passed": true,
+      "accepted": true,
+      "expected_accept": true,
+      "ui_claims_passed": false,
+      "expected_ui_claims_pass": false,
+      "error": null,
+      "only_synthetic_native_claims": true
+    },
+    {
+      "case": "missing-member-UI-claim-refused",
+      "passed": true,
+      "accepted": true,
+      "expected_accept": true,
+      "ui_claims_passed": false,
+      "expected_ui_claims_pass": false,
+      "error": null,
+      "only_synthetic_native_claims": true
+    },
+    {
+      "case": "favorite-label-not-observed-refused",
+      "passed": true,
+      "accepted": true,
+      "expected_accept": true,
+      "ui_claims_passed": false,
+      "expected_ui_claims_pass": false,
+      "error": null,
+      "only_synthetic_native_claims": true
+    },
+    {
+      "case": "forced-close-refused",
+      "passed": true,
+      "accepted": true,
+      "expected_accept": true,
+      "ui_claims_passed": false,
+      "expected_ui_claims_pass": false,
+      "error": null,
+      "only_synthetic_native_claims": true
+    },
+    {
+      "case": "nonzero-close-refused",
+      "passed": true,
+      "accepted": true,
+      "expected_accept": true,
+      "ui_claims_passed": false,
+      "expected_ui_claims_pass": false,
+      "error": null,
+      "only_synthetic_native_claims": true
+    },
+    {
+      "case": "missing-persisted-member-refused",
+      "passed": true,
+      "accepted": false,
+      "expected_accept": false,
+      "ui_claims_passed": false,
+      "expected_ui_claims_pass": false,
+      "error": "The actual catalogue does not retain the UI-created collection and its exact score membership.",
+      "only_synthetic_native_claims": true
+    },
+    {
+      "case": "wrong-persisted-collection-name-refused",
+      "passed": true,
+      "accepted": false,
+      "expected_accept": false,
+      "ui_claims_passed": false,
+      "expected_ui_claims_pass": false,
+      "error": "The actual catalogue does not retain the UI-created collection and its exact score membership.",
+      "only_synthetic_native_claims": true
+    },
+    {
+      "case": "old-schema1-catalogue-refused",
+      "passed": true,
+      "accepted": false,
+      "expected_accept": false,
+      "ui_claims_passed": false,
+      "expected_ui_claims_pass": false,
+      "error": "Expected the schema2 catalogue created through UI with exactly one score and one collection.",
+      "only_synthetic_native_claims": true
+    },
+    {
+      "case": "favorite-not-persisted-refused",
+      "passed": true,
+      "accepted": false,
+      "expected_accept": false,
+      "ui_claims_passed": false,
+      "expected_ui_claims_pass": false,
+      "error": "Catalogue title/composer/path/favorite did not match the actual UI actions.",
+      "only_synthetic_native_claims": true
+    }
+  ],
+  "application_executed": false,
+  "gui_validated": false,
+  "fixture_directory": "/tmp/cadence-ui-data-gate-ed70b1cae2214aa199601b70588857d1"
+}

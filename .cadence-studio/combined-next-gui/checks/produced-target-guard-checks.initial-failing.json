@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "status": "failed",
+  "scope": "Actual Get-NextGuiTarget AST definition replayed with explicitly synthetic JSON and inert bytes; Restore-NextStage parse only",
+  "helper_path": "/workspace/cadence-ci-driver/combined-next-gui/Read-ProducedTarget.ps1",
+  "helper_sha256": "002faab3284e603bf93f73cb721c99e13082f67021bceea336c2082e4e29a6b6",
+  "restore_path": "/workspace/cadence-ci-driver/combined-next-gui/Restore-NextStage.ps1",
+  "restore_sha256": "4600d5449461f007ff541e790bbf20f53d91328b07801508b0d365129b37ab4f",
+  "helper_parse_errors": 0,
+  "restore_parse_errors": 0,
+  "cases": [
+    {
+      "case": "synthetic valid target accepted (not a produced Windows stage)",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": true,
+      "expected_acceptance": true,
+      "passed": true,
+      "rejection": null
+    },
+    {
+      "case": "unfilled production template refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "A reviewed actually produced build2003 stage target is required."
+    },
+    {
+      "case": "old build2002 refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "A reviewed actually produced build2003 stage target is required."
+    },
+    {
+      "case": "archive naming old build2002 refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "Stage archive does not identify the reviewed build2003 attempt."
+    },
+    {
+      "case": "wrong source tree refused against real source.json bytes",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "Produced target differs from the frozen Cadence source provenance."
+    },
+    {
+      "case": "wrong source.json SHA256 refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "Frozen source selection/patch bytes differ from the reviewed produced stage."
+    },
+    {
+      "case": "wrong inert patch SHA256 refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "Frozen source selection/patch bytes differ from the reviewed produced stage."
+    },
+    {
+      "case": "missing producer_run_id refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "The property 'producer_run_id' cannot be found on this object. Verify that the property exists."
+    },
+    {
+      "case": "boolean producer_run_id refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "Actual positive producer run/artifact/attempt identifiers are required."
+    },
+    {
+      "case": "missing artifact_id refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "The property 'artifact_id' cannot be found on this object. Verify that the property exists."
+    },
+    {
+      "case": "boolean artifact_id refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "Actual positive producer run/artifact/attempt identifiers are required."
+    },
+    {
+      "case": "missing run_attempt refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "The property 'run_attempt' cannot be found on this object. Verify that the property exists."
+    },
+    {
+      "case": "boolean run_attempt refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "Actual positive producer run/artifact/attempt identifiers are required."
+    },
+    {
+      "case": "expired archive metadata refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "The retained stage artifact has expired; no old download is silently substituted."
+    },
+    {
+      "case": "missing executable SHA256 refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "The property 'executable_sha256' cannot be found on this object. Verify that the property exists."
+    },
+    {
+      "case": "invalid original container digest refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "Record the original container digest explicitly as GitHub metadata."
+    },
+    {
+      "case": "boolean identity field schema_version refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": true,
+      "expected_acceptance": false,
+      "passed": false,
+      "rejection": null
+    },
+    {
+      "case": "boolean identity field build_number refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "Actual positive producer run/artifact/attempt identifiers are required."
+    },
+    {
+      "case": "boolean identity field run_number refused",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": false,
+      "expected_acceptance": false,
+      "passed": true,
+      "rejection": "Actual positive producer run/artifact/attempt identifiers are required."
+    },
+    {
+      "case": "boolean source schema_version refused despite matching file SHA",
+      "fixture": "explicitly synthetic JSON and inert patch bytes",
+      "accepted": true,
+      "expected_acceptance": false,
+      "passed": false,
+      "rejection": null
+    }
+  ],
+  "cases_passed": 18,
+  "cases_total": 20,
+  "application_executed": false,
+  "patch_applied_or_executed": false,
+  "zip_extracted": false,
+  "COM_or_MSI_used": false,
+  "windows_job_started": false,
+  "product_or_helper_modified": false,
+  "fixture_tree_deleted_after_checks": true
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "scope": "Frozen961 source bytes only; no UI execution",
+  "source_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+  "files": [
+    {
+      "path": "src/project/qml/MuseScore/Project/internal/ScoresPage/LocalScoresView.qml",
+      "sha256": "3df5bcf778d583330611726b45fcbf0aafe1f102e71e6de4404944dd35465ed1"
+    },
+    {
+      "path": "src/project/qml/MuseScore/Project/internal/ScoresPage/localscoresmodel.cpp",
+      "sha256": "7825219cabf1d40872ca3bb3c512dfdffce2e5f49ce2fdb2e14b1f0591569a3a"
+    },
+    {
+      "path": "src/framework/uicomponents/qml/Muse/UiComponents/StyledDropdown.qml",
+      "sha256": "f5aaaef92afde49e2e43bd94d90419ff2a565d6bbcaeb3786a718129d482de1f"
+    },
+    {
+      "path": "src/framework/uicomponents/qml/Muse/UiComponents/internal/StyledDropdownView.qml",
+      "sha256": "3be42e46a6815dec47391010492e8b03fe4d109a5ebc69200724094f1d5ba160"
+    },
+    {
+      "path": "src/framework/uicomponents/qml/Muse/UiComponents/TextInputField.qml",
+      "sha256": "b1075b37d579bbb5497cd53336b30766d20840b537721758bed22de47ffb531b"
+    },
+    {
+      "path": "src/framework/uicomponents/qml/Muse/UiComponents/ListItemBlank.qml",
+      "sha256": "af6e374a35df8dbf44815b36db88d5046ce7c626f48d676ab2838679039f5212"
+    },
+    {
+      "path": "src/framework/accessibility/internal/accessibleiteminterface.cpp",
+      "sha256": "88dfc736445fc2a13b45e6f9d03cbcc07d476cd6949837894354ebcc6e8b8327"
+    }
+  ],
+  "application_executed": false
+}

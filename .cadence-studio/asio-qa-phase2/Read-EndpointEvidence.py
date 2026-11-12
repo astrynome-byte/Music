@@ -39,6 +39,7 @@ def read(root:Path):
         if result.get(key)!=expected:raise ValueError('Producer identity differs: '+key)
     text=(root/'harness.stdout.log').read_text(encoding='utf-8-sig')
     if len(text)>32768 or (root/'harness.stderr.log').read_text(encoding='utf-8-sig').strip():raise ValueError('Unexpected harness transcript')
+    print('CADENCE_QA_CLOCK_ORIGINAL_HARNESS_BEGIN');print(text,end='' if text.endswith('\n') else '\n');print('CADENCE_QA_CLOCK_ORIGINAL_HARNESS_END')
     pattern=re.compile(r'^PASS rate=(44100|48000) time_info=(true|false) silence=(true|false) self_stop=(true|false) callbacks=(\d+) frames=(\d+) peak=([\deE+.-]+) rms=([\deE+.-]+)$')
     scenarios=[]
     for line in text.splitlines():
@@ -52,7 +53,7 @@ def read(root:Path):
         elif row['peak']!=.5 or not math.isclose(row['rms'],math.sqrt(.15625),abs_tol=1e-8):raise ValueError('Original known PCM metrics differ')
         scenarios.append(row)
     expected={(44100,False,False,False),(48000,True,False,False),(48000,False,True,False),(44100,True,False,True)}
-    if len(scenarios)!=4 or {(r['rate'],r['time_info'],r['silence'],r['self_stop']) for r in scenarios}!=expected or 'PASS 4 native ASIO ABI scenarios through direct DllGetClassObject; no physical output or listening.' not in text:
+    if len(scenarios)!=4 or {(r['rate'],r['time_info'],r['silence'],r['self_stop']) for r in scenarios}!=expected or 'PASS 4 native ASIO ABI scenarios through direct DllGetClassObject without registry; no physical output or listening.' not in text:
         raise ValueError('Four original scenario kinds and summary not present')
     reports=[];unmatched=list(scenarios)
     paths=list((root/'stats').glob('clock-*.json'))
@@ -71,6 +72,7 @@ def read(root:Path):
         scenario=matches[0];unmatched.remove(scenario)
         if row['nonzero_samples']!=(0 if scenario['silence'] else row['finite_samples']):raise ValueError('Original output sample counts differ')
         reports.append({'path':path.relative_to(root).as_posix(),'sha256':sha(path),'report':row})
+    print('CADENCE_QA_CLOCK_ORIGINAL_STOPPED_REPORTS_BEGIN');print(json.dumps(reports,indent=2));print('CADENCE_QA_CLOCK_ORIGINAL_STOPPED_REPORTS_END')
     with zipfile.ZipFile(root/'Cadence-QA-Clock-corresponding-source.zip') as archive:
         entries={};total=0
         for info in archive.infolist():

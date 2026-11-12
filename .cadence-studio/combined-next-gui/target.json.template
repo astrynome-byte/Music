@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "status": "awaiting-produced-stage",
+  "producer_run_id": null,
+  "artifact_id": null,
+  "artifact_digest_from_github_metadata": null,
+  "artifact_expires_utc": null,
+  "build_number": 2005,
+  "run_number": 5,
+  "run_attempt": null,
+  "source": {
+    "original_commit": null,
+    "ci_commit": null,
+    "tree": null,
+    "source_json_sha256": null,
+    "patch_sha256": null
+  },
+  "stage": {
+    "archive": null,
+    "archive_sha256": null,
+    "executable_sha256": null
+  },
+  "warning": "Template deliberately rejected; fill only after the real2005 stage and its actual hashes exist. No old executable may be substituted."
+}

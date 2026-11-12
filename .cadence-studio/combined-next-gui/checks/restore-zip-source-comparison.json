@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "scope": "Literal source comparison only; no ZIP or stage opened",
+  "target": "/workspace/cadence-ci-driver/combined-next-gui/Restore-NextStage.ps1",
+  "target_sha256": "4600d5449461f007ff541e790bbf20f53d91328b07801508b0d365129b37ab4f",
+  "zip_block_sha256": "56d251fdca659f439f18c1197522da9b03009a6eef8f3be244f4fe055d71fb05",
+  "zip_block_utf8_bytes": 2799,
+  "comparisons": [
+    {
+      "path": "/workspace/cadence-ci-driver/offline-qa/Restore-LibraryStage.ps1",
+      "same_zip_block": true,
+      "candidate_sha256": "497618b21b986d397fd8d242201fe2da7c8df51cf6eee54fcf323c8a0ca94251"
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/missing-resource-retention-next/Restore-CombinedStage.ps1",
+      "same_zip_block": true,
+      "candidate_sha256": "73a7697a0f015fef660466cb31ff4efd1abee84451306456edc024543f71cf4c"
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/library-ui-probe/Restore-LibraryStage.ps1",
+      "same_zip_block": true,
+      "candidate_sha256": "497618b21b986d397fd8d242201fe2da7c8df51cf6eee54fcf323c8a0ca94251"
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/missing-audio-qa/Restore-CombinedStage.ps1",
+      "same_zip_block": true,
+      "candidate_sha256": "73a7697a0f015fef660466cb31ff4efd1abee84451306456edc024543f71cf4c"
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/vsco-sfizz-next/qa/Restore-CombinedStage.ps1",
+      "same_zip_block": true,
+      "candidate_sha256": "73a7697a0f015fef660466cb31ff4efd1abee84451306456edc024543f71cf4c"
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/free-sounds-next/qa/Restore-CombinedStage.ps1",
+      "same_zip_block": true,
+      "candidate_sha256": "73a7697a0f015fef660466cb31ff4efd1abee84451306456edc024543f71cf4c"
+    }
+  ],
+  "application_executed": false,
+  "zip_extracted": false
+}
