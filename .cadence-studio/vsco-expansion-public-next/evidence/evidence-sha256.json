@@ -1,0 +1,26 @@
+{
+  "artifacts.metadata.json": {
+    "bytes": 770,
+    "sha256": "b11c1dd72ecee45983f8888751d151a5d1982d8ca82510bd702ed4d2bc68d6ed"
+  },
+  "assessment.json": {
+    "bytes": 41087,
+    "sha256": "cfeaa3d1bf57239cd07305f92df3aeee31c969b1bcb60acbb7622ea391f4fa01"
+  },
+  "native-report.console-capture.json": {
+    "bytes": 71847,
+    "sha256": "7a240253f1c837c6fdbfb1ff08ec1231da8e3f80ac96d8b558f4c3f8094dbbc7"
+  },
+  "owned-job.console-capture.json": {
+    "bytes": 2557,
+    "sha256": "d3284b841b6357ecef55309dc63e4cfdaf4601365d7d26b470f12f91fb173a34"
+  },
+  "provenance.json": {
+    "bytes": 794,
+    "sha256": "76e73c1a71d8ad5a1becd3e278680de6f45fa8fe53919cbeebfa64b95bedebb8"
+  },
+  "workflow-run.metadata.json": {
+    "bytes": 12527,
+    "sha256": "c76dc4922dc6a42078ab277f430353128a511fa5dfa057684cc980152afe73df"
+  }
+}

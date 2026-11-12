@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "ready": false,
+  "repository": "astrynome-byte/Music",
+  "scope": "vsco_cc0_sounds_only",
+  "version": "1.1.0-exp.1",
+  "release": {
+    "tag": "cadence-studio/sounds-vsco-ce-expansion-1.1.0-exp.1",
+    "title": "Cadence — sons VSCO CE expérimentaux (violoncelles, trompette, contrebasse)",
+    "prerelease": true,
+    "target_commit_mode": "workflow_head"
+  },
+  "source": {
+    "samples_repository": "https://github.com/sgossner/VSCO-2-CE",
+    "samples_commit": "28092772094b2d9f1148d84cea97f4545b8c687d",
+    "samples_license": "CC0-1.0",
+    "converter_license": "GPL-3.0-only",
+    "application_included": false
+  },
+  "producer": {
+    "run_id": 43304846264,
+    "driver_commit": "21e29c9633f13c3e1b4681e5bddbcb5dfc8f4ce5",
+    "full_run_artifact_ids": [
+      13983971420
+    ]
+  },
+  "artifacts": [
+    {
+      "id": 13983971420,
+      "name": "cadence-vsco-expansion-2007-qa-43304846264-1",
+      "digest": "sha256:bfde75816db71387893d5409ce64a24e456003b27db3d1981f03b9dd334120e8",
+      "expires_at": "2026-11-26T20:55:44Z",
+      "run_id": 43304846264
+    }
+  ],
+  "proof": {
+    "assessment_sha256": "cfeaa3d1bf57239cd07305f92df3aeee31c969b1bcb60acbb7622ea391f4fa01",
+    "native_report_sha256": "7a240253f1c837c6fdbfb1ff08ec1231da8e3f80ac96d8b558f4c3f8094dbbc7"
+  },
+  "audit": {
+    "approved": false,
+    "reviewed_by": null
+  },
+  "android": {
+    "audit_status": null,
+    "main_commit": "a6c90b63344b3fd60567fd9f001ac9ecba4b2081",
+    "reviewed_by": null,
+    "main_workflows": [
+      {
+        "path": ".github/workflows/android.yml",
+        "blob_sha1": "ad0539f630eb11556f33f487e145d97558a629ff"
+      }
+    ],
+    "tag_workflows": []
+  },
+  "assets": [
+    {
+      "kind": "sounds",
+      "name": "Cadence-VSCO-CE-Expansion-sons-1.1.0-exp.1.zip",
+      "member_path": "Cadence-VSCO-CE-Expansion-sons-1.1.0-exp.1.zip",
+      "bytes": 118013323,
+      "sha256": "7d994cde1b41ef12fb3012920faab41ae0adb89b2eeecc2187b99d4f78f18b0e"
+    },
+    {
+      "kind": "sources",
+      "name": "Cadence-VSCO-CE-Expansion-convertisseur-1.1.0-exp.1.zip",
+      "member_path": "Cadence-VSCO-CE-Expansion-convertisseur-1.1.0-exp.1.zip",
+      "bytes": 320708,
+      "sha256": "9300739863745d0aaed3b1df117a9a5fb0f1394715b3dbfd0663c28738272bff"
+    },
+    {
+      "kind": "notice",
+      "name": "Cadence-VSCO-CE-Expansion-notice-1.1.0-exp.1.txt",
+      "member_path": "Cadence-VSCO-CE-Expansion-notice-1.1.0-exp.1.txt",
+      "bytes": 4636,
+      "sha256": "e6c7b2e6f9124ca6ceb81b5e74b30e35c64c7e043075e0efed57a19b463adb2c"
+    },
+    {
+      "kind": "license",
+      "name": "Cadence-VSCO-CE-Expansion-CC0-1.1.0-exp.1.txt",
+      "member_path": "Cadence-VSCO-CE-Expansion-CC0-1.1.0-exp.1.txt",
+      "bytes": 6555,
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+    },
+    {
+      "kind": "checksums",
+      "name": "Cadence-VSCO-CE-Expansion-SHA256SUMS-1.1.0-exp.1.txt",
+      "member_path": "Cadence-VSCO-CE-Expansion-SHA256SUMS-1.1.0-exp.1.txt",
+      "bytes": 745,
+      "sha256": "6b28b40ed1cc39cd51c3e407b7f4cfa1018811b7d9e6f80b42437ec1889d24de"
+    },
+    {
+      "kind": "cello_sf2",
+      "name": "Cadence-VSCO-Cello-Ensemble.sf2",
+      "member_path": "Cadence-VSCO-Cello-Ensemble.sf2",
+      "bytes": 48400382,
+      "sha256": "7c5d177057ef73bf6ccf2a7618b0516de678c4a98160d95c1a4e66fd6f670685"
+    },
+    {
+      "kind": "trumpet_sf2",
+      "name": "Cadence-VSCO-Trumpet.sf2",
+      "member_path": "Cadence-VSCO-Trumpet.sf2",
+      "bytes": 21599476,
+      "sha256": "8e6a212811ca9431c03c73a0c0fa1a5b3dd28038848ca7524137e7343ccbfc7c"
+    },
+    {
+      "kind": "contrabass_sf2",
+      "name": "Cadence-VSCO-Contrabass.sf2",
+      "member_path": "Cadence-VSCO-Contrabass.sf2",
+      "bytes": 47966050,
+      "sha256": "a5e307c5eafe24c79a51229ee0a0b1e0d76d2626a6fd07fea6f663e6be4181f3"
+    }
+  ]
+}

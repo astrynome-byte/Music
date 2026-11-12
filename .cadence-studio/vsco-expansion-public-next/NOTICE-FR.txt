@@ -1,0 +1,25 @@
+Cadence — complément de sons VSCO CE expérimental 1.1.0-exp.1
+
+Ce lot contient trois banques SF2 facultatives :
+- Violoncelles ensemble avec vibrato : 48 400 382 octets, notes MIDI 36 à 77, banque 0 / programme 42 (43 dans une liste numérotée à partir de 1).
+- Trompette avec vibrato : 21 599 476 octets, notes MIDI 52 à 84, banque 0 / programme 56 (57 à partir de 1).
+- Contrebasse avec vibrato : 47 966 050 octets, notes MIDI 24 à 60, banque 0 / programme 43 (44 à partir de 1).
+Total des SF2 : 117 965 908 octets, environ 112,5 Mio, hors notices et sources.
+
+Les enregistrements et mappings originaux proviennent de VSCO 2 Community Edition de Versilian Studios / Sam Gossner, sous CC0-1.0. Source originale : https://github.com/sgossner/VSCO-2-CE ; commit exact 28092772094b2d9f1148d84cea97f4545b8c687d (version 1.1.0). Le texte original CC0 figure dans LICENSE-CC0.txt et dans l'archive convertisseur. Les mentions originales README.md et Readme.txt sont également conservées dans les sources.
+
+Le convertisseur indépendant et sa recette sont sous GPL-3.0-only. Les sources complètes et le texte GPL sont dans l'archive « convertisseur » de cette même livraison. Les liens « Source code » automatiques de GitHub désignent seulement le dépôt pilote : utilise l'archive convertisseur jointe pour reconstruire ces banques. Aucune application, aucun installateur, aucun plugin et aucune banque commerciale ne figurent dans ce lot. Les deux banques flûte/violon publiées précédemment restent disponibles séparément et sont inchangées.
+
+Installation sans outil de développement :
+1. Vérifie le fichier avec SHA256SUMS si tu le souhaites. Extrais l'archive de sons dans un nouveau dossier ; elle contient les trois SF2 et leurs notices.
+2. Dans Cadence, ouvre Préférences > Dossiers et repère le dossier SoundFonts. Copie les SF2 dans ce dossier ; tu peux également utiliser la carte correspondante du gestionnaire de collections si ta version de Cadence la propose, avec son bouton d'import de fichier local.
+3. Ferme et relance Cadence si les nouveaux sons ne sont pas encore listés. Dans le mixeur, choisis la banque correspondant à chaque piste. Enregistre la partition pour conserver les identifiants et réglages.
+4. Garde MS Basic pour les autres instruments et les notes hors des plages annoncées. Si une banque est absente sur un autre ordinateur, réinstalle le même fichier vérifié ou choisis explicitement un son de remplacement dans le mixeur.
+
+Résultat musical et limites : une seule articulation tenue avec vibrato, avec couches de vélocité. Aucun legato, staccato, portamento ou transition enregistrée supplémentaire n'est ajouté. Les échantillons originaux ne sont pas bouclés : une tenue très longue finit avec son enregistrement, même si la note reste enfoncée. Attaque et relâchement fixes. Les originaux PCM 24/32 bits sont ramenés de façon déterministe en PCM 16 bits sans dither ; stéréo et zones liées sont conservées. Le gain vise le facteur EMU 0.4 de FluidSynth dans Cadence ; son interprétation peut différer avec un autre lecteur SF2. Ajuste les volumes et la réverbération selon ta partition.
+
+Qualification observée : application Cadence Windows x64 build 2007, source 5058d29dad67e6131ee46ee617258ccfed8ba4b0 ; essai 43304846264 / job 131485280653. Les trois SF2 reconstruits sous Windows correspondent exactement aux octets Linux verrouillés. Vingt-sept commandes, huit cas, seize WAV : son présent, valeurs finies, aucune saturation, réponse p < mf < f, sauvegarde/réouverture conservées. Les PCM des banques diffèrent de MS Basic, le contrôle de gain -18 dB passe et une banque manquante utilise le secours MS Basic. Les rendus de contrôle sont secs, avec les deux envois auxiliaires explicitement désactivés. La fin des échantillons pendant une tenue de vingt secondes est une limite observée.
+
+Ces contrôles automatiques ne constituent pas une écoute humaine. La lecture physique, la justesse complète, l'installation interactive des banques, le message GUI de banque manquante, les articulations complexes et le comportement de toutes les partitions restent à vérifier. La bibliothèque du gestionnaire n'est pas une collection commerciale MuseSounds ni le catalogue de MuseScore.com.
+
+La livraison doit être accessible publiquement sans compte seulement après la vérification de téléchargement anonyme du pilote de publication. Aucune permanence d'hébergement n'est promise : disponibilité selon GitHub et le propriétaire du dépôt. Ce fichier décrit les contenus, pas l'état de la publication courante.

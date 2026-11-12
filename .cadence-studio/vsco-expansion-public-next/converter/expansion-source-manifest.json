@@ -1,0 +1,480 @@
+{
+  "schema_version": 1,
+  "collection_version": "1.1.0-expansion-candidate.1",
+  "repository": "https://github.com/sgossner/VSCO-2-CE",
+  "commit": "28092772094b2d9f1148d84cea97f4545b8c687d",
+  "tag": "1.1.0",
+  "sounds_license": "CC0-1.0",
+  "profiles": [
+    {
+      "id": "cello-ensemble",
+      "mapping": "CelloEnsSusVib.sfz",
+      "regions": 27,
+      "program": 42,
+      "bank": 0,
+      "soundfont_name": "Cadence-VSCO-Cello-Ensemble",
+      "label_fr": "Violoncelles ensemble avec vibrato",
+      "attack_seconds": 0.001,
+      "release_seconds": 0.8,
+      "expected_group": {},
+      "midi_range": [
+        36,
+        77
+      ],
+      "articulation": "recorded sustain vibrato",
+      "source_sample_bytes": 72584478,
+      "preset_name": "Violoncelles"
+    },
+    {
+      "id": "trumpet-vibrato",
+      "mapping": "TrumpetSusVib.sfz",
+      "regions": 22,
+      "program": 56,
+      "bank": 0,
+      "soundfont_name": "Cadence-VSCO-Trumpet",
+      "label_fr": "Trompette avec vibrato",
+      "attack_seconds": 0.001,
+      "release_seconds": 0.5,
+      "expected_group": {
+        "seq_length": "1",
+        "seq_position": "1",
+        "group_label": "gr_1"
+      },
+      "midi_range": [
+        52,
+        84
+      ],
+      "articulation": "recorded sustain vibrato",
+      "source_sample_bytes": 21590948,
+      "preset_name": "Trompette"
+    },
+    {
+      "id": "contrabass-vibrato",
+      "mapping": "ContrabassSusVB.sfz",
+      "regions": 26,
+      "program": 43,
+      "bank": 0,
+      "soundfont_name": "Cadence-VSCO-Contrabass",
+      "label_fr": "Contrebasse avec vibrato",
+      "attack_seconds": 0.001,
+      "release_seconds": 0.8,
+      "expected_group": {
+        "group_label": "gr_1"
+      },
+      "midi_range": [
+        24,
+        60
+      ],
+      "articulation": "recorded sustain vibrato",
+      "source_sample_bytes": 47957640,
+      "preset_name": "Contrebasse"
+    }
+  ],
+  "files": [
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_A#3_v1_rr1.wav",
+      "bytes": 1122252,
+      "git_blob_sha1": "95a9cfcd1d74f641464840f7db150bc4e6050970"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_A#3_v2_rr1.wav",
+      "bytes": 926408,
+      "git_blob_sha1": "165691debf78d3fc3135a8c20a36cb00244fe604"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_A2_v1_rr1.wav",
+      "bytes": 825976,
+      "git_blob_sha1": "469357481da1f36ef27f7da01e2e28afffaf451a"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_A2_v2_rr1.wav",
+      "bytes": 764780,
+      "git_blob_sha1": "c1426b74117537c0d900ee0f1a50abe9f80b826d"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_A4_v1_rr1.wav",
+      "bytes": 1249260,
+      "git_blob_sha1": "51b9d3469da022896d379bd65931b5bb8aac8807"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_A4_v2_rr1.wav",
+      "bytes": 960964,
+      "git_blob_sha1": "b114ad315de41c67c290cf1fd94e6b7bbc30ba8e"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_C3_v1_rr1.wav",
+      "bytes": 811752,
+      "git_blob_sha1": "c824ff5e042cf2c032a471af74873e9ded31c3c7"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_C3_v2_rr1.wav",
+      "bytes": 824692,
+      "git_blob_sha1": "316ddd83d62f71464691f55e695c9911baa74fde"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_C5_v1_rr1.wav",
+      "bytes": 1094804,
+      "git_blob_sha1": "a25b35a4a77babd99940089f0a27177e411ee1e6"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_C5_v2_rr1.wav",
+      "bytes": 1307068,
+      "git_blob_sha1": "3647dd075a81747d559061dc15a0617e68c592da"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_D#3_v1_rr1.wav",
+      "bytes": 1209520,
+      "git_blob_sha1": "42505ac38151f9c9d1079b2a265c3dfcfcb86b17"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_D#3_v2_rr1.wav",
+      "bytes": 875568,
+      "git_blob_sha1": "02b6e138b28395422cf5e17ed63b274dc6e11b20"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_D4_v1_rr1.wav",
+      "bytes": 994124,
+      "git_blob_sha1": "add78913445e51e8e02b0bb4c24811c0cc5cb44a"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_D4_v2_rr1.wav",
+      "bytes": 912916,
+      "git_blob_sha1": "471319f79fe64718967d3692c5b353b79aff2d81"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_F2_v1_rr1.wav",
+      "bytes": 757128,
+      "git_blob_sha1": "a5856816674701e7ebb4e2044c28a9b27dd097a1"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_F2_v2_rr1.wav",
+      "bytes": 1048748,
+      "git_blob_sha1": "a743ef5eb3b3363767d3c0d101a08ba698575b43"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_F3_v1_rr1.wav",
+      "bytes": 977788,
+      "git_blob_sha1": "e5ec4e1cf7446cc9bdc1503b808f95e29c641130"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_F3_v2_rr1.wav",
+      "bytes": 805084,
+      "git_blob_sha1": "8d59a188e8e978e02aea926b0473af239cd72476"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_F4_v1_rr1.wav",
+      "bytes": 1007616,
+      "git_blob_sha1": "7862ff26859605c3889416416edbbaca7fd5b1b7"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_F4_v2_rr1.wav",
+      "bytes": 990092,
+      "git_blob_sha1": "7efbcf69d646e70f8ea35df190235b4ad85290eb"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_G3_v1_rr1.wav",
+      "bytes": 1269840,
+      "git_blob_sha1": "e7a06d5a23c4294d347f2048a49d595873e37b98"
+    },
+    {
+      "path": "Brass/Trumpet/susvib/Sum_SHTrumpet_susvib_G3_v2_rr1.wav",
+      "bytes": 854568,
+      "git_blob_sha1": "5fd67b87a2480ec65e1f5645147f47b516afee73"
+    },
+    {
+      "path": "CelloEnsSusVib.sfz",
+      "bytes": 2933,
+      "git_blob_sha1": "9b34afd020314d1bfa01d5578c9b30aae9cdc603"
+    },
+    {
+      "path": "ContrabassSusVB.sfz",
+      "bytes": 3105,
+      "git_blob_sha1": "dcea252f7f3cf2b598c3f4ab33c5a1056a17f899"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 6555,
+      "git_blob_sha1": "670154e3538863b2d9891fd5483160fbdfc89164"
+    },
+    {
+      "path": "README.md",
+      "bytes": 370,
+      "git_blob_sha1": "2c36b3344ac76f7a78aed5267de0ab4fb27b6cc2"
+    },
+    {
+      "path": "Readme.txt",
+      "bytes": 1883,
+      "git_blob_sha1": "b7a1941bcb77561148bd6abea2dfceb6e2edf9c2"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_A2_v1_1.wav",
+      "bytes": 2336738,
+      "git_blob_sha1": "76df6b474aff133b2ac9d96bf2466cb6fd865c72"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_A2_v3_1.wav",
+      "bytes": 3082676,
+      "git_blob_sha1": "ad696c6ad3cbacb37b6d9cf4f26da4a54521e7ce"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_B1_v1_1.wav",
+      "bytes": 2372492,
+      "git_blob_sha1": "d6a4a2d1a688c6ccb4e1e1a56b878c9c93df468b"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_B1_v3_1.wav",
+      "bytes": 3372962,
+      "git_blob_sha1": "56c81412c60a2b04b8556dfa26a7e0127357c5cb"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_B3_v1_1.wav",
+      "bytes": 1690082,
+      "git_blob_sha1": "16d846690d7c4d385f3cfc8f1fe25873d6bd5b01"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_B3_v3_1.wav",
+      "bytes": 2865086,
+      "git_blob_sha1": "3b1685e657db57bd71c979da8c2d9d35d2d0d197"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_C1_v1_1.wav",
+      "bytes": 2347376,
+      "git_blob_sha1": "ff87d1ae488d87189f33a0d18550d3bcde012f3d"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_C1_v3_1.wav",
+      "bytes": 3335948,
+      "git_blob_sha1": "d3820a6d57daf9a202a000bff0fa082a3f77acf6"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_C3_v1_1.wav",
+      "bytes": 2444174,
+      "git_blob_sha1": "73ccb5dc2cc2a07926a1c41aa3c5621b19f420bf"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_C3_v3_1.wav",
+      "bytes": 3019394,
+      "git_blob_sha1": "a192845091cb8e669c72d3ff4a88eb1c5968e626"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_D2_v1_1.wav",
+      "bytes": 2550956,
+      "git_blob_sha1": "8076f809d4f6a8057f3835e12d22751a25e39252"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_D2_v3_1.wav",
+      "bytes": 3291368,
+      "git_blob_sha1": "fdb46242bb68876ad275b9b8ed10c4b8508b9292"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_D4_v1_1.wav",
+      "bytes": 2153228,
+      "git_blob_sha1": "e1125afc13def9b43e4612cdcebd11b99fce20cc"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_D4_v3_1.wav",
+      "bytes": 2801210,
+      "git_blob_sha1": "9189549dab9d3e0928fc7e42f94c04d66d28c52b"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_E1_v1_1.wav",
+      "bytes": 2468348,
+      "git_blob_sha1": "fcd27d29a8c0d520539cef6aad659bf9006ae730"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_E1_v1_2.wav",
+      "bytes": 2439512,
+      "git_blob_sha1": "d5756d400ce67b25c332e04061dd9f32dc89d283"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_E1_v3_1.wav",
+      "bytes": 3080426,
+      "git_blob_sha1": "666f0d1ba1a76133c12c9859222c1c7094b613cf"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_E3_v1_1.wav",
+      "bytes": 2456672,
+      "git_blob_sha1": "63f4d6df3a25fb95f417b5d45b5f8bf6a11107bf"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_E3_v3_1.wav",
+      "bytes": 3278270,
+      "git_blob_sha1": "7711cb67795d692b0d732eb8fd234c41d5980f42"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_F2_v1_1.wav",
+      "bytes": 2186012,
+      "git_blob_sha1": "78f52c49ddc8a357657d92b05cd89f15beb6c717"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_F2_v3_1.wav",
+      "bytes": 3062696,
+      "git_blob_sha1": "a384e84a342ab9be12ca55b92c845a3c351b75bf"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_F4_v1_1.wav",
+      "bytes": 1922948,
+      "git_blob_sha1": "7f39cccecb392eaa0ff4c94e3607dc2294458a30"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_F4_v3_1.wav",
+      "bytes": 2726342,
+      "git_blob_sha1": "074f12a91124e13ea0e4fb34d9ecbe7279ec0806"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_G1_v1_1.wav",
+      "bytes": 2161700,
+      "git_blob_sha1": "42a2731d11a4749c3026f0618e21a8c9370c2024"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_G1_v3_1.wav",
+      "bytes": 3370496,
+      "git_blob_sha1": "35971538059e18b8f38cdc556630967777a0a0d5"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_G3_v1_1.wav",
+      "bytes": 2431598,
+      "git_blob_sha1": "7880157fbb8e57fb0b7a694b8569701bc0d942ea"
+    },
+    {
+      "path": "Strings/Cello Section/susvib/susvib_G3_v3_1.wav",
+      "bytes": 3335768,
+      "git_blob_sha1": "732d0c80596fdfc593f55b5a24f65c07cd3191cd"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_A#0_v1_rr1.wav",
+      "bytes": 1336820,
+      "git_blob_sha1": "6121cdd1a2011599c3f016c8bba312902d8dff5f"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_A#0_v3_rr1.wav",
+      "bytes": 2193316,
+      "git_blob_sha1": "93b045a2ce6f37a7b479ee32c17b87a791bc16e0"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_A1_v1_rr1.wav",
+      "bytes": 2131692,
+      "git_blob_sha1": "552d5297f6a9b0384a4544eda9689fbb1f9f0950"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_A1_v3_rr1.wav",
+      "bytes": 1975160,
+      "git_blob_sha1": "2829c3686a2ae6c728cd2c924679b66d850d74de"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_B2_v1_rr1.wav",
+      "bytes": 1246160,
+      "git_blob_sha1": "ec3908bbb75b03c60c5fdfc182761016e90b3a89"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_B2_v3_rr1.wav",
+      "bytes": 1633420,
+      "git_blob_sha1": "9424df5a5e339fc2aec523d78b99efa0de6e4d09"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_C#2_v1_rr1.wav",
+      "bytes": 1349416,
+      "git_blob_sha1": "7c9dde09e9bc254c0b7523ccce679c69b87a25e3"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_C#2_v3_rr1.wav",
+      "bytes": 1860096,
+      "git_blob_sha1": "b84db77f1fec73b106f2f108037c66d23a35c1ce"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_C1_v1_rr1.wav",
+      "bytes": 1835940,
+      "git_blob_sha1": "b0698cd7f3deab8320de5bda1d96d1c3443a51b2"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_C1_v3_rr1.wav",
+      "bytes": 2479908,
+      "git_blob_sha1": "961971106505e82db1b2a2c850e573528a75c6e7"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_D1_v1_rr1.wav",
+      "bytes": 3057536,
+      "git_blob_sha1": "305eaa62b5a84f1035a8723792fe0f4011d7f9e6"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_D1_v3_rr1.wav",
+      "bytes": 2450408,
+      "git_blob_sha1": "e66dde25194ee27477b4fdd31fd7726e84df2d73"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_E1_v1_rr1.wav",
+      "bytes": 2429548,
+      "git_blob_sha1": "b1fbaaf4c5226a1ea8447b4e3687fb0539d62b0c"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_E1_v3_rr1.wav",
+      "bytes": 2051084,
+      "git_blob_sha1": "c1749de03dc4ea9b49eca55318e7698b76e5b65d"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_E2_v1_rr1.wav",
+      "bytes": 1533524,
+      "git_blob_sha1": "8a7643452697f29cfddba49c23549fdc913a8726"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_E2_v3_rr1.wav",
+      "bytes": 1874324,
+      "git_blob_sha1": "2fc3c01f5d1a0449489800a5b5dabd3bc8817c80"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_F#0_v1_rr1.wav",
+      "bytes": 1597380,
+      "git_blob_sha1": "ddd3f5c1bff906167aa16bee3ceb45589fc32f22"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_F#0_v3_rr1.wav",
+      "bytes": 2177272,
+      "git_blob_sha1": "4ffc597b3930f4e383be776141f0dab145120d62"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_F#1_v1_rr1.wav",
+      "bytes": 1153568,
+      "git_blob_sha1": "cb95407f5853c21b4544a117bcca9cf074f45e71"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_F#1_v3_rr1.wav",
+      "bytes": 1710912,
+      "git_blob_sha1": "dce2dab98559f73837834f23d80a1f73f6a57ad1"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_G#1_v1_rr1.wav",
+      "bytes": 1256636,
+      "git_blob_sha1": "318147f57e7e2c6c13306e2a703dbcba670454a8"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_G#1_v3_rr1.wav",
+      "bytes": 1874712,
+      "git_blob_sha1": "6f701d221e67b5451cb80affd3002e743c8e4e68"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_G#2_v1_rr1.wav",
+      "bytes": 1352760,
+      "git_blob_sha1": "a9f242894bb6b52da9f7bef619023888e3b70c65"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_G#2_v3_rr1.wav",
+      "bytes": 1821888,
+      "git_blob_sha1": "e64bf733e9622fb6bea298708d0d30e3ce1c49b6"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_G0_v1_rr1.wav",
+      "bytes": 1583696,
+      "git_blob_sha1": "35ee3d675424306c55438f2130f2c05e312da3f6"
+    },
+    {
+      "path": "Strings/Solo Contrabass/SusVib/BKCtbss_SusVib_G0_v3_rr1.wav",
+      "bytes": 1990464,
+      "git_blob_sha1": "834df8922de2c341ee5f841f5bcc13e0bcb1206c"
+    },
+    {
+      "path": "TrumpetSusVib.sfz",
+      "bytes": 2808,
+      "git_blob_sha1": "c57891b0b7a6747ed7d862fa7fde9ef5ca744a1b"
+    }
+  ]
+}

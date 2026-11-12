@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "scope": "Exact returned decoded GitHub job log; JSON lines and API metadata projected without claiming artifact extraction",
+  "original_log_bytes": 118163,
+  "original_log_sha256": "817d03188a67f4b65b3e5d73ac8517a46581cb9ca694c81f27854ed31c5c5d2c",
+  "original_full_freeze_ledger_sha256": "29413807a8ac2b1209d73cbf139a536567e6d6d329d2a4fbfd73b7d177d86b24",
+  "artifact_archive_downloaded_locally": false,
+  "original_log_included_in_this_source_archive": false,
+  "projected_assessment": "assessment.json",
+  "native_json_line_after_timestamp_removal": "native-report.console-capture.json",
+  "owned_job_json_line_after_timestamp_removal": "owned-job.console-capture.json",
+  "api_responses": [
+    "workflow-run.metadata.json",
+    "artifacts.metadata.json"
+  ]
+}

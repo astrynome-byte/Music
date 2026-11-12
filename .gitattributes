@@ -3,3 +3,4 @@ gradlew text eol=lf
 *.bat text eol=crlf
 *.wav binary
 *.jar binary
+.cadence-studio/vsco-expansion-public-next/** -text

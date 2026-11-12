@@ -1,0 +1,22 @@
+Reconstruction des trois banques VSCO CE complémentaires 1.1.0-exp.1
+
+Sources des échantillons : https://github.com/sgossner/VSCO-2-CE
+Commit immuable : 28092772094b2d9f1148d84cea97f4545b8c687d.
+Échantillons et mappings : CC0-1.0. Outils de conversion : GPL-3.0-only.
+
+Dans l'archive convertisseur, le dossier converter contient le code complet, les mappings, les manifests de taille et d'identité Git, les textes de licence et les mentions amont. Aucun binaire ou échantillon commercial n'est requis. Les échantillons CC0 doivent être téléchargés depuis la source originale : le convertisseur vérifie taille et identifiant Git de chaque fichier, ne conserve pas de cache WAV et borne la taille des collections.
+
+Un environnement Python 3.12 standard suffit aux outils de conversion ; il ne fait pas partie des dépendances de l'utilisateur de Cadence.
+
+  python converter/build_collections.py --list
+  python converter/build_collections.py --collection cello-ensemble --collection trumpet-vibrato --collection contrabass-vibrato --output banques --download
+
+Le dossier banques doit être nouveau. Les trois SHA-256 obtenus figurent dans bank-catalog.json et dans le manifeste produit banks-manifest.json. Les deux banques anciennes flûte et violon ne sont pas modifiées par cette commande.
+
+Pour refaire les archives déterministes de cette livraison, dans un nouveau dossier :
+
+  python prepare_assets.py --support-root . --banks banques --output livraison
+
+Ce script ne publie rien, ne lance aucune application et ne requiert aucun compte. Les archives utilisent ZIP_STORED, des chemins triés et une date fixe ; leur contenu est accompagné d'une liste SHA-256. L'archive source inclut les reçus du véritable essai Windows ; les fichiers console-capture sont extraits du journal décodé et les fichiers metadata sont des réponses API, pas des extractions de l'archive d'artefact Actions. L'archive de QA n'a pas été téléchargée localement lors de la préparation de la publication ; son digest annoncé n'est pas présenté comme recalculé ici.
+
+Les scripts Read-PublicationTransport.ps1 et Publish-SoundsExperimental.ps1, livrés dans le dépôt pilote public au commit de la release, servent uniquement à héberger les fichiers après revue ; ils ne sont pas nécessaires pour convertir ou utiliser les sons. La publication demeure bloquée tant que target.json n'est pas ajouté avec les vrais octets, hashes, preuves et inventaires de workflows revus. La publication ne remplace jamais une release existante et vérifie tous les fichiers par téléchargement anonyme après mise en ligne.

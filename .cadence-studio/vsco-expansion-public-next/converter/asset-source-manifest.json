@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/sgossner/VSCO-2-CE",
+  "commit": "28092772094b2d9f1148d84cea97f4545b8c687d",
+  "tag": "1.1.0",
+  "licence": "CC0-1.0",
+  "files": [
+    {
+      "path": "Woodwinds/Flute/susvib/LDFlute_susvib_A3_v1_1.wav",
+      "bytes": 2117124,
+      "git_blob_sha1": "1e8972d4e28dbf8b48e348b93c7862f29b0edfab"
+    },
+    {
+      "path": "Woodwinds/Flute/susvib/LDFlute_susvib_A4_v1_1.wav",
+      "bytes": 1942296,
+      "git_blob_sha1": "1202232193c565a79618a1696913714e9fe1ad20"
+    },
+    {
+      "path": "Woodwinds/Flute/susvib/LDFlute_susvib_A5_v1_1.wav",
+      "bytes": 1457676,
+      "git_blob_sha1": "1114c8bf25896d3ee2f7d257c5d81e426fef2cc5"
+    },
+    {
+      "path": "Woodwinds/Flute/susvib/LDFlute_susvib_C3_v1_1.wav",
+      "bytes": 2088144,
+      "git_blob_sha1": "50220315ef8ca85e92b8809f6c0e15a0c4954cce"
+    },
+    {
+      "path": "Woodwinds/Flute/susvib/LDFlute_susvib_C4_v1_1.wav",
+      "bytes": 2009832,
+      "git_blob_sha1": "7be22f8b86e5dc405a10f51dd71d44712d23c9aa"
+    },
+    {
+      "path": "Woodwinds/Flute/susvib/LDFlute_susvib_C4_v1_2.wav",
+      "bytes": 2140530,
+      "git_blob_sha1": "18bfcccf848cfb4d8d10a005174408ef66fb1cae"
+    },
+    {
+      "path": "Woodwinds/Flute/susvib/LDFlute_susvib_C5_v1_1.wav",
+      "bytes": 1930938,
+      "git_blob_sha1": "5dc3e06072700651fe1844aafd304633692c6e97"
+    },
+    {
+      "path": "Woodwinds/Flute/susvib/LDFlute_susvib_C6_v1_1.wav",
+      "bytes": 1260120,
+      "git_blob_sha1": "f98e1ff1bc4d3dd23cb689de548e13bbfd48ebbb"
+    },
+    {
+      "path": "Woodwinds/Flute/susvib/LDFlute_susvib_E3_v1_1.wav",
+      "bytes": 2802054,
+      "git_blob_sha1": "ee1008bf0f9dde16d2c584b0cca67fc79889d298"
+    },
+    {
+      "path": "Woodwinds/Flute/susvib/LDFlute_susvib_E4_v1_1.wav",
+      "bytes": 2144718,
+      "git_blob_sha1": "19c052eab97d1e823fd7d8344c05d94dc7dd4733"
+    },
+    {
+      "path": "Woodwinds/Flute/susvib/LDFlute_susvib_E4_v1_2.wav",
+      "bytes": 1828944,
+      "git_blob_sha1": "5df7941f73d2de88cfe8890d52031b4e3fa2b8b4"
+    },
+    {
+      "path": "Woodwinds/Flute/susvib/LDFlute_susvib_E5_v1_1.wav",
+      "bytes": 1586118,
+      "git_blob_sha1": "14e407aa2cfd07b98585ebf7963d3c30be6f85dc"
+    },
+    {
+      "path": "Woodwinds/Flute/susvib/LDFlute_susvib_E5_v1_2.wav",
+      "bytes": 1858836,
+      "git_blob_sha1": "45c715c6e1ca72e4535b9723a030024fea16f40a"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_A3_f.wav",
+      "bytes": 2864482,
+      "git_blob_sha1": "82964f15bb0ca3d34dbdfdd43ad0148f9d8767af"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_A3_p.wav",
+      "bytes": 2911130,
+      "git_blob_sha1": "7122b440f4dbd148a81319fca1d04a550710cef3"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_A4_f.wav",
+      "bytes": 2488526,
+      "git_blob_sha1": "3155c72c1f9ea1518ddb6c1a20eb5c0a094bd537"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_A4_p.wav",
+      "bytes": 2612122,
+      "git_blob_sha1": "e8667671328e1cfcd769a7624c26fac133ad7b0f"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_A5_f.wav",
+      "bytes": 1986834,
+      "git_blob_sha1": "eebb9f220dc2a93557acc849d5dd3273b8f0ff8f"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_A5_p.wav",
+      "bytes": 2562122,
+      "git_blob_sha1": "5eb8185d8ca9b3f34110654c2779e587de513921"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_A6_f.wav",
+      "bytes": 2052254,
+      "git_blob_sha1": "c296065592b8adf9e12f51af9d003b7259ecc6e2"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_A6_p.wav",
+      "bytes": 2614110,
+      "git_blob_sha1": "32e4646793f68c897271fb7f97887c95dbaf59fc"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_C4_f.wav",
+      "bytes": 2334170,
+      "git_blob_sha1": "8a700075b7ae2f19c1c56108738324dfba6959e8"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_C4_p.wav",
+      "bytes": 3096650,
+      "git_blob_sha1": "9f876cafa572a8719e2e93fc994c5303992b8e62"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_C5_f.wav",
+      "bytes": 2497990,
+      "git_blob_sha1": "93e9a2cf8106acc5e49ba18dab112c947473917f"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_C5_p.wav",
+      "bytes": 2498790,
+      "git_blob_sha1": "71f0671d77cf8b79ce1a18ba20d9661e24f086fc"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_C6_f.wav",
+      "bytes": 2162774,
+      "git_blob_sha1": "89f48f37313800df4c5901dc76b49b1c5c69e396"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_C6_p.wav",
+      "bytes": 2358906,
+      "git_blob_sha1": "33bc7e87816637462d6e174da9949eb9b5e45ef4"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_C7_f.wav",
+      "bytes": 2176486,
+      "git_blob_sha1": "2348056e211ef9b6d309f3718d8e4e49471f65ce"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_C7_p.wav",
+      "bytes": 2274706,
+      "git_blob_sha1": "bc1f4c13bb7c9693f7c5ef5a44bfe27463aa8cda"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_E4_f.wav",
+      "bytes": 2416566,
+      "git_blob_sha1": "6b1bcdf57513dd089a2172adc0ddbac4a335b3a0"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_E4_p.wav",
+      "bytes": 2600174,
+      "git_blob_sha1": "99279ebc21258ab48aae6eb63d1eb7538f28d306"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_E5_f.wav",
+      "bytes": 2365174,
+      "git_blob_sha1": "269658d510e82345227ac10d22f928cfae428c99"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_E5_p.wav",
+      "bytes": 2517094,
+      "git_blob_sha1": "670865e19772aceab538850ea7a0d1a86024d955"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_E6_f.wav",
+      "bytes": 2363554,
+      "git_blob_sha1": "26855bca28a7be29386cbd6db56d2ae6f7c3b66c"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_E6_p.wav",
+      "bytes": 2514702,
+      "git_blob_sha1": "52407eb061956458643424aa623998ee43ce5136"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_G3_f.wav",
+      "bytes": 2936890,
+      "git_blob_sha1": "a09b038528097878ad6b12d30da4ac1a227d5a98"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_G3_p.wav",
+      "bytes": 2788822,
+      "git_blob_sha1": "bc5f7d33610abbc3000f432562f36063f1d3d725"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_G4_f.wav",
+      "bytes": 2366050,
+      "git_blob_sha1": "f9c1a5547a7e062eb34ee6bef09e559d3839f46e"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_G4_p.wav",
+      "bytes": 2594066,
+      "git_blob_sha1": "7324564c663bf239802020287c217b27c76b8142"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_G5_f.wav",
+      "bytes": 2222106,
+      "git_blob_sha1": "f8745db337ebf8e82d59f90cea7c0f060a3615ce"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_G5_p.wav",
+      "bytes": 2596714,
+      "git_blob_sha1": "a0ac97ce56dcbfb7b622abd2aa3c61678053f791"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_G6_f.wav",
+      "bytes": 2164026,
+      "git_blob_sha1": "9bd2b0d9d6e5505a0c0ce0722bd10db7913ee97d"
+    },
+    {
+      "path": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_G6_p.wav",
+      "bytes": 2417222,
+      "git_blob_sha1": "eca2508aa84cef89ee2002953d3b5f9867d53802"
+    },
+    {
+      "path": "FluteSusVib.sfz",
+      "bytes": 1605,
+      "git_blob_sha1": "abffbb200f9c2b736dd2afd20b4bb457b1cafce2"
+    },
+    {
+      "path": "SViolinVib.sfz",
+      "bytes": 3366,
+      "git_blob_sha1": "62f7c4503996bd8b16c8268fdb8c4f0ced793660"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 6555,
+      "git_blob_sha1": "670154e3538863b2d9891fd5483160fbdfc89164"
+    }
+  ],
+  "instruments": [
+    {
+      "name": "Flûte — sustain vibrato",
+      "patch": "FluteSusVib.sfz",
+      "regions": 13
+    },
+    {
+      "name": "Violon solo — arco vibrato",
+      "patch": "SViolinVib.sfz",
+      "regions": 30
+    }
+  ],
+  "total_source_bytes": 99534068
+}
