@@ -63,9 +63,37 @@ function Get-WorkflowInventory([string]$Commit){
     return @($items|ForEach-Object{[ordered]@{path=$_.path;blob_sha1=$_.sha}})
 }
 function Assert-WorkflowInventory($Actual,$Expected){
-    $a=@($Actual|Sort-Object path);$e=@($Expected|Sort-Object path)
-    if($a.Count-ne$e.Count){throw 'A workflow was added/removed after Android/tag-trigger review.'}
-    for($i=0;$i-lt$a.Count;$i++){if($a[$i].path-cne$e[$i].path-or$a[$i].blob_sha1-cne$e[$i].blob_sha1){throw 'A reviewed workflow changed; publication blocked before any release write.'}}
+    # OrderedDictionary and PSCustomObject do not expose identical sortable
+    # properties. Compare the reviewed path->blob mapping, never sorted rows.
+    $maps=@()
+    foreach($side in @([pscustomobject]@{name='actual';items=@($Actual)},[pscustomobject]@{name='reviewed';items=@($Expected)})){
+        if($side.items.Count-lt1-or$side.items.Count-gt128){throw ('Workflow inventory '+$side.name+' count outside 1..128; publication blocked.')}
+        $map=[Collections.Generic.Dictionary[string,string]]::new([StringComparer]::Ordinal)
+        foreach($item in $side.items){
+            if($item-is[Collections.IDictionary]){
+                if(-not$item.Contains('path')-or-not$item.Contains('blob_sha1')){throw ('Workflow inventory '+$side.name+' has missing fields; publication blocked.')}
+                $path=$item['path'];$sha=$item['blob_sha1']
+            }elseif($item-is[pscustomobject]){
+                if($null-eq$item.PSObject.Properties['path']-or$null-eq$item.PSObject.Properties['blob_sha1']){throw ('Workflow inventory '+$side.name+' has missing fields; publication blocked.')}
+                $path=$item.path;$sha=$item.blob_sha1
+            }else{throw ('Workflow inventory '+$side.name+' has an unsupported entry type; publication blocked.')}
+            if($path-isnot[string]-or$path-cnotmatch'^\.github/workflows/[^/\\:\x00-\x1f]+\.ya?ml$'-or$sha-isnot[string]-or$sha-cnotmatch'^[a-f0-9]{40}$'){
+                throw ('Workflow inventory '+$side.name+' has an invalid path/blob identity; publication blocked.')
+            }
+            if($map.ContainsKey($path)){throw ('Workflow inventory '+$side.name+' repeats path '+$path+'; publication blocked.')}
+            $map.Add($path,$sha)
+        }
+        $maps+=,$map
+    }
+    $a=$maps[0];$e=$maps[1]
+    if($a.Count-ne$e.Count){throw ('Workflow inventory count changed: actual='+$a.Count+', reviewed='+$e.Count+'; publication blocked.')}
+    [string[]]$paths=@($e.Keys);[Array]::Sort($paths,[StringComparer]::Ordinal)
+    foreach($path in $paths){
+        if(-not$a.ContainsKey($path)){throw ('Reviewed workflow missing or renamed: '+$path+'; publication blocked.')}
+        if(-not[StringComparer]::Ordinal.Equals($a[$path],$e[$path])){
+            throw ('Reviewed workflow blob changed: '+$path+'; actual='+$a[$path]+', reviewed='+$e[$path]+'; publication blocked.')
+        }
+    }
 }
 [void][IO.Directory]::CreateDirectory($OutputDirectory)
 $report=[ordered]@{schema_version=1;status='failed';publicly_verified=$false;repository='astrynome-byte/Music';version=$target.version;tag=$target.release.tag;scope='VSCO CC0 experimental sounds and independent GPL converter only';application_included=$false

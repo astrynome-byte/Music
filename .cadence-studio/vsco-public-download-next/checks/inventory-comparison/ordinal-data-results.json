@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "scope": "Exact comparator AST; bounded real54 data cases only",
+  "checks": 18,
+  "records": [
+    {
+      "name": "real54-reversed-ordered-vs-pscustom-en-US",
+      "accepted": true,
+      "expected_accept": true,
+      "error": null
+    },
+    {
+      "name": "real54-reversed-ordered-vs-pscustom-fr-FR",
+      "accepted": true,
+      "expected_accept": true,
+      "error": null
+    },
+    {
+      "name": "real54-reversed-ordered-vs-pscustom-tr-TR",
+      "accepted": true,
+      "expected_accept": true,
+      "error": null
+    },
+    {
+      "name": "real54-mixed-object-types",
+      "accepted": true,
+      "expected_accept": true,
+      "error": null
+    },
+    {
+      "name": "changed-valid-blob",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Reviewed workflow blob changed: .github/workflows/cadence-zlib-windows.yml; actual=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, reviewed=066a24a48e6f87c2b00c3b87a0e41bf38e806758; publication blocked."
+    },
+    {
+      "name": "same-count-renamed-path",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Reviewed workflow missing or renamed: .github/workflows/cadence-zlib-windows.yml; publication blocked."
+    },
+    {
+      "name": "removed-record",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Workflow inventory count changed: actual=53, reviewed=54; publication blocked."
+    },
+    {
+      "name": "added-record",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Workflow inventory count changed: actual=55, reviewed=54; publication blocked."
+    },
+    {
+      "name": "duplicate-actual-path",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Workflow inventory actual repeats path .github/workflows/cadence-zlib-inspection.yml; publication blocked."
+    },
+    {
+      "name": "duplicate-reviewed-path",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Workflow inventory reviewed repeats path .github/workflows/cadence-annotations-store.yml; publication blocked."
+    },
+    {
+      "name": "case-only-path-change",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Workflow inventory actual has an invalid path/blob identity; publication blocked."
+    },
+    {
+      "name": "boolean-blob",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Workflow inventory actual has an invalid path/blob identity; publication blocked."
+    },
+    {
+      "name": "uppercase-invalid-blob",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Workflow inventory actual has an invalid path/blob identity; publication blocked."
+    },
+    {
+      "name": "invalid-path",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Workflow inventory actual has an invalid path/blob identity; publication blocked."
+    },
+    {
+      "name": "missing-blob-field",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Workflow inventory actual has missing fields; publication blocked."
+    },
+    {
+      "name": "string-record",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Workflow inventory actual has an unsupported entry type; publication blocked."
+    },
+    {
+      "name": "empty-inventory",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Workflow inventory actual count outside 1..128; publication blocked."
+    },
+    {
+      "name": "over-bound-inventory",
+      "accepted": false,
+      "expected_accept": false,
+      "error": "Workflow inventory actual count outside 1..128; publication blocked."
+    }
+  ],
+  "network_executed": false,
+  "publication_executed": false
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "scope": "Exact publisher AST functions; real 54+1 reviewed records; GET stub only",
+  "publisher_sha256": "922e8f8a323689f62b528bb12c8b19b88a1677ca076e086686a54c5d1c3ae56d",
+  "audit_sha256": "261e3126ae9399df3c391996a31844be1564bbf58e4bef2b3c96695a1245aa23",
+  "target_sha256": "1e9099dc7ad13c8a7b30d3357dfbafec4bf89511366a3fa8fc20a9885b37b7c7",
+  "culture": "",
+  "records": [
+    {
+      "scope": "main",
+      "actual_count": 1,
+      "expected_count": 1,
+      "accepted": true,
+      "error": null,
+      "legacy_sorted_first_mismatches": []
+    },
+    {
+      "scope": "head",
+      "actual_count": 54,
+      "expected_count": 54,
+      "accepted": false,
+      "error": "A reviewed workflow changed; publication blocked before any release write.",
+      "legacy_sorted_first_mismatches": [
+        {
+          "index": 1,
+          "actual_path": ".github/workflows/cadence-mf-evidence.yml",
+          "expected_path": ".github/workflows/cadence-annotations-store.yml",
+          "actual_type": "System.Collections.Specialized.OrderedDictionary",
+          "expected_type": "System.Management.Automation.PSCustomObject"
+        },
+        {
+          "index": 2,
+          "actual_path": ".github/workflows/cadence-missing-audio-qa.yml",
+          "expected_path": ".github/workflows/cadence-asio-qa-clock-readback.yml",
+          "actual_type": "System.Collections.Specialized.OrderedDictionary",
+          "expected_type": "System.Management.Automation.PSCustomObject"
+        },
+        {
+          "index": 3,
+          "actual_path": ".github/workflows/cadence-msi-upgrade.yml",
+          "expected_path": ".github/workflows/cadence-asio-qa-endpoint.yml",
+          "actual_type": "System.Collections.Specialized.OrderedDictionary",
+          "expected_type": "System.Management.Automation.PSCustomObject"
+        },
+        {
+          "index": 4,
+          "actual_path": ".github/workflows/cadence-named-redist-origins.yml",
+          "expected_path": ".github/workflows/cadence-asio-qa-phase2.yml",
+          "actual_type": "System.Collections.Specialized.OrderedDictionary",
+          "expected_type": "System.Management.Automation.PSCustomObject"
+        },
+        {
+          "index": 5,
+          "actual_path": ".github/workflows/cadence-native-fx-msvc-probe.yml",
+          "expected_path": ".github/workflows/cadence-ci-evidence-reader.yml",
+          "actual_type": "System.Collections.Specialized.OrderedDictionary",
+          "expected_type": "System.Management.Automation.PSCustomObject"
+        }
+      ]
+    }
+  ],
+  "network_executed": false,
+  "publication_executed": false
+}

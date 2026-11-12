@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "only_changed_function": "Assert-WorkflowInventory",
+  "all_before_and_after_function_byte_identical": true,
+  "get_workflow_inventory_function_unchanged": true,
+  "original_publisher_sha256": "922e8f8a323689f62b528bb12c8b19b88a1677ca076e086686a54c5d1c3ae56d",
+  "fixed_publisher_sha256": "a34088cece1c27e4ea1e83a50edca68344b0b8e4f73db448ca3840ef9239700f",
+  "patch_sha256": "06c1e3bc9facbd4c0de8dc009a1d21570a71135724cebb4cf8c0725cdeee070f",
+  "original_failure_reproduced_with_real_54_records": true,
+  "fixed_main1_and_head54_passed": true,
+  "actual_PowerShell_data_cases_passed": 18,
+  "network_executed": false,
+  "publication_executed": false,
+  "active_target_created_or_changed_locally": false,
+  "repair_commit_must_delete_active_target": ".cadence-studio/vsco-public-download-next/target.json",
+  "activation_requires_separate_fresh_reviewed_add_only_commit": true
+}
