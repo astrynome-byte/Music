@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "local_checks": [
+    "real CC0 native ZIP: only audiosettings.json changes, resource fields and opaque state read back; original unchanged",
+    "mismatched part identity refused before output ZIP write",
+    "non-Windows invocation refused with no output directory or application process",
+    "workflow YAML parsed; strict branch/path trigger, contents/actions read only, six steps",
+    "existing corpus WAV checker reused byte-identically",
+    "log-delta appends and overwritten fresh log accounted for, old unchanged prefix excluded"
+  ],
+  "windows_application_executed": false,
+  "status": "prepared-not-run",
+  "powershell_parser": "Restore-CombinedStage.ps1 PASS using pwsh7.6.9 on Linux; Windows execution not inferred",
+  "workflow_powershell_blocks": 2,
+  "workflow_powershell_parser": "PASS two inline blocks using pwsh7.6.9 on Linux; no native Windows execution inferred",
+  "native_fixture_identifiers": {
+    "partId": "1",
+    "instrumentId": "piano",
+    "fixture_sha256": "10ae5eb1fae2679d9ad32aa0b721fef06119ef24b78b4f8b9bd6b770582c289f"
+  }
+}

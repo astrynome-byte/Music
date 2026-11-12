@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: retained2002 missing audio resources'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/missing-audio-qa/**'
+      - '.github/workflows/cadence-missing-audio-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-missing-audio-qa-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  retained2002-missing-audio:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Retrieve only the pinned already-compiled combined stage
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '13898607081'
+          merge-multiple: true
+          run-id: 43108867145
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/missing-audio-original-stage
+      - name: Verify exact source, root hashes and executable; restore into a new folder
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/missing-audio-qa/Restore-CombinedStage.ps1" `
+            -ArtifactDirectory "$env:RUNNER_TEMP/missing-audio-original-stage" `
+            -StagePath "$env:RUNNER_TEMP/missing-audio-stage" `
+            -ResultPath "$env:RUNNER_TEMP/missing-audio-restoration.json"
+      - name: Exercise synthetic missing resources without removing included sounds
+        run: |
+          python -I -X utf8 "$env:GITHUB_WORKSPACE/driver/.cadence-studio/missing-audio-qa/Test-MissingAudio.py" `
+            --stage "$env:RUNNER_TEMP/missing-audio-stage" `
+            --restoration-record "$env:RUNNER_TEMP/missing-audio-restoration.json" `
+            --output "$env:RUNNER_TEMP/missing-audio-results"
+          if ($LASTEXITCODE -ne 0) { throw 'Retained2002 missing-resource check failed; inspect reports and logs' }
+      - name: Retain reports, generated CC0 copies, WAV and diagnostics after success or failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-missing-audio-qa-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/missing-audio-restoration.json
+            ${{ runner.temp }}/missing-audio-results/
+          retention-days: 14
+          include-hidden-files: true
+          if-no-files-found: warn
