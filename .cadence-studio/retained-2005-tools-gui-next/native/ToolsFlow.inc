@@ -101,7 +101,7 @@ static bool activateToolPage(IUIAutomation* automation, const std::filesystem::p
         if (menuRole && toolsLabel(focus, wanted)) return toolsKey(automation, output, VK_RETURN, wanted, "activate_observed_tools_menu");
         if (menuRole && toolsLabel(focus, L"Apprendre") && wanted == L"Collections sonores") {
             if (!toolsKey(automation, output, VK_UP, L"Apprendre", "previous_source_defined_home_menu_item")) return false;
-        } else if (menuRole && (toolsLabel(focus, L"Partitions") || toolsLabel(focus, L"Plugins")
+        } else if (menuRole && (toolsLabel(focus, L"Mes comptes") || toolsLabel(focus, L"Partitions") || toolsLabel(focus, L"Plugins")
                         || toolsLabel(focus, L"Collections sonores"))) {
             if (!toolsKey(automation, output, VK_DOWN, label, "next_source_defined_home_menu_item")) return false;
         } else if (!toolsF6(automation, "discover_owned_home_menu_section")) return false;
