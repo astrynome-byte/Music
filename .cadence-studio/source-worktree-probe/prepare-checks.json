@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "scope": "Linux data-only shared Git clone with no application checkout, cached reviewed patch and five exact resource/test files materialized; not a full Windows worktree result",
+  "candidate_tree": "1d7f2db8877e9cb127d0891d0d9233c13dd139cf",
+  "original_png_sha256": "09f245011b4fe34bad590cdc19be131a69806a56adea6f0c967c2bd695ce26f7",
+  "clone_shared_no_hardlinks_valid": true,
+  "application_executed": false,
+  "windows_tested": false,
+  "fixture_directory": "/tmp/cadence-attr-index-probe-awcx9l1g"
+}

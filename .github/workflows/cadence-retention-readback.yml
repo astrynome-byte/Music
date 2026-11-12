@@ -1,0 +1,58 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: read only retained2002 retention run2 logs'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/retention-readback/**'
+      - '.github/workflows/cadence-retention-readback.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  read-existing-retention-logs:
+    runs-on: windows-2022
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Retrieve only metadata of the exact already completed evidence artifact
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $metadata = Join-Path $env:RUNNER_TEMP 'retention-run2-artifact.json'
+          gh api --method GET repos/astrynome-byte/Music/actions/artifacts/13933979236 | Out-File -FilePath $metadata -Encoding utf8NoBOM
+          if ($LASTEXITCODE -ne 0) { throw 'Read-only source metadata request failed' }
+      - name: Download only the already completed retention run2 artifact
+        uses: actions/download-artifact@v4
+        with:
+          repository: astrynome-byte/Music
+          run-id: '43200417277'
+          artifact-ids: '13933979236'
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/retention-run2-original
+      - name: Verify source pins and print only the three bounded existing app logs
+        shell: pwsh
+        run: |
+          python -I -X utf8 "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retention-readback/read_retention_logs.py" `
+            --root "$env:RUNNER_TEMP/retention-run2-original" `
+            --artifact-metadata "$env:RUNNER_TEMP/retention-run2-artifact.json" `
+            --output "$env:RUNNER_TEMP/retention-run2-readback"
+          if ($LASTEXITCODE -ne 0) { throw 'Readback blocked; source identity was not certified' }
+      - name: Retain read-only log summary for 14 days
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-retention-readback-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/retention-run2-readback/
+          retention-days: 14
+          if-no-files-found: warn

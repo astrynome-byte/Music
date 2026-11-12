@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: packaging-only source worktree and binary attributes'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/source-worktree-probe/**'
+      - '.github/workflows/cadence-source-worktree-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cadence-source-worktree-probe-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  packaging-only-worktree:
+    runs-on: windows-2022
+    timeout-minutes: 12
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Diagnose exact404 and verify the reviewed corrected candidate without any application build
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/source-worktree-probe/Run-WorktreeProbe.ps1" `
+            -FrozenDriverPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-next-source" `
+            -OutputDirectory "$env:RUNNER_TEMP/source-worktree-evidence"
+      - name: Retain packaging-only source metadata and actual resource test output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-packaging-only-worktree-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/source-worktree-evidence/**
+          retention-days: 14
+          if-no-files-found: warn

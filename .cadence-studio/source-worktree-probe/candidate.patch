@@ -1,0 +1,65 @@
+diff --git a/src/musesounds/qml/MuseScore/MuseSounds/resources/.gitattributes b/src/musesounds/qml/MuseScore/MuseSounds/resources/.gitattributes
+index 3fc13282778d50a18c91245be36f238572d99776..6a4a2b72f611333caa8b6518345e6dbbe242073a 100644
+--- a/src/musesounds/qml/MuseScore/MuseSounds/resources/.gitattributes
++++ b/src/musesounds/qml/MuseScore/MuseSounds/resources/.gitattributes
+@@ -1,3 +1,4 @@
+-* text eol=lf
++* text=auto eol=lf
++*.png -text
+ *-LICENSE.txt -text -whitespace
+ *-LICENSE.md -text -whitespace
+diff --git a/test/cadence/test_resource_attributes.py b/test/cadence/test_resource_attributes.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..79947d633835fd7a83ec9846a17751e435130786
+--- /dev/null
++++ b/test/cadence/test_resource_attributes.py
+@@ -0,0 +1,49 @@
++# SPDX-License-Identifier: GPL-3.0-only
++"""Exercise Git's real resource checkout filters on image and legal originals."""
++from pathlib import Path
++import shutil
++import subprocess
++import tempfile
++import unittest
++
++
++RESOURCES = Path(__file__).resolve().parents[2] / 'src/musesounds/qml/MuseScore/MuseSounds/resources'
++
++
++class ResourceAttributeTests(unittest.TestCase):
++    def test_image_and_original_license_survive_git_checkout(self):
++        self.assertIsNotNone(shutil.which('git'), 'A real Git checkout is required')
++        originals = {
++            name: (RESOURCES / name).read_bytes()
++            for name in ('muse_sounds_promo.png', 'GeneralUser-GS-LICENSE.txt')
++        }
++        self.assertTrue(originals['muse_sounds_promo.png'].startswith(b'\x89PNG\r\n\x1a\n'))
++        self.assertIn(b'\r\n', originals['GeneralUser-GS-LICENSE.txt'])
++        for autocrlf in ('false', 'true'):
++            with self.subTest(autocrlf=autocrlf), tempfile.TemporaryDirectory(prefix='cadence-resource-git-') as directory:
++                root = Path(directory)
++                command = ['git', '-c', 'core.autocrlf=' + autocrlf, '-c', 'core.eol=lf',
++                           '-c', 'core.safecrlf=false', '-C', str(root)]
++
++                def git(*args):
++                    result = subprocess.run(command + list(args), capture_output=True, timeout=30)
++                    self.assertEqual(result.returncode, 0, result.stderr.decode('utf-8', errors='replace'))
++                    return result.stdout
++
++                git('init', '--quiet')
++                (root / '.gitattributes').write_bytes((RESOURCES / '.gitattributes').read_bytes())
++                for name, raw in originals.items():
++                    (root / name).write_bytes(raw)
++                git('add', '--', '.gitattributes', *originals)
++                for name, raw in originals.items():
++                    self.assertEqual(git('show', ':' + name), raw, 'Git altered original resource bytes: ' + name)
++                    (root / name).unlink()
++                git('checkout-index', '--all', '--force')
++                for name, raw in originals.items():
++                    self.assertEqual((root / name).read_bytes(), raw, 'Checkout altered resource: ' + name)
++                git('update-index', '--refresh')
++                git('diff-files', '--quiet')
++
++
++if __name__ == '__main__':
++    unittest.main()

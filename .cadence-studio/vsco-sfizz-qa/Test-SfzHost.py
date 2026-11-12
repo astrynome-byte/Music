@@ -30,6 +30,10 @@ STATE_SHA='e4b37b0426712abd5fe29bdee95f2818cea26edcb4561ca11413a48f36b7bb01'
 WAV_TOOL_SHA='f701874e7a37b8d3148f0bb99477b60b96865e804ed238372d75c06598027d82'
 
 
+class PositiveFixtureControlError(RuntimeError):
+    pass
+
+
 class OwnedDebuggerCollectionError(RuntimeError):
     pass
 
@@ -91,7 +95,7 @@ def native_audio(path):
     with zipfile.ZipFile(path) as archive:return json.loads(archive.read('audiosettings.json'))
 
 
-def assign_plugin(base,target,registered,patch,state):
+def assign_plugin(base,target,registered,patch,state,*,factory_control=False):
     with zipfile.ZipFile(base) as archive:
         masters=[name for name in archive.namelist() if name.endswith('.mscx') and '/' not in name]
         if len(masters)!=1:raise ValueError('Unique actual native master required')
@@ -102,9 +106,33 @@ def assign_plugin(base,target,registered,patch,state):
                 tracks.append({'partId':part.get('id'),'instrumentId':instrument.get('id'),
                     'in':state.audio_input_from_registered_plugin(registered,str(patch),volume_db=-12.0),
                     'out':{'balance':0,'volumeDb':0,'fxChain':{},'auxSends':[]},'soloMuteState':{'mute':False,'solo':False}})
+        if factory_control:
+            for track in tracks:track['in']['unitConfiguration']={}
         if len(tracks)!=1:raise ValueError('This small reader qualification requires exactly one real track')
         settings=native_audio(base);settings['activeSoundProfile']='MuseScore Basic';settings['tracks']=tracks
         # Dry and linear master/aux paths keep the controlled-gain proof meaningful.
+        settings['master']={'balance':0,'volumeDb':0,'fxChain':{},'auxSends':[]};settings['aux']=[]
+        with zipfile.ZipFile(target,'x',compression=zipfile.ZIP_DEFLATED) as output:
+            for info in archive.infolist():output.writestr(info,json.dumps(settings,ensure_ascii=False).encode('utf-8') if info.filename=='audiosettings.json' else archive.read(info))
+    return tracks
+
+
+
+def assign_basic(base,target):
+    """Explicit MS Basic on the same actual native IDs and dry linear mix path."""
+    with zipfile.ZipFile(base) as archive:
+        masters=[name for name in archive.namelist() if name.endswith('.mscx') and '/' not in name]
+        if len(masters)!=1:raise ValueError('Unique actual master required for the positive control')
+        score=ET.fromstring(archive.read(masters[0]));tracks=[]
+        for part in score.findall('./Score/Part'):
+            for instrument in part.findall('Instrument'):
+                if not part.get('id') or not instrument.get('id'):raise ValueError('Actual control part/instrument IDs required')
+                tracks.append({'partId':part.get('id'),'instrumentId':instrument.get('id'),
+                    'in':{'resourceMeta':{'id':'MS Basic','vendor':'Fluid','type':'fluid_soundfont','hasNativeEditorSupport':False,
+                        'attributes':{'soundFontName':'MS Basic','playbackSetupData':'generic'}},'unitConfiguration':{}},
+                    'out':{'balance':0,'volumeDb':0,'fxChain':{},'auxSends':[]},'soloMuteState':{'mute':False,'solo':False}})
+        if len(tracks)!=1:raise ValueError('Exactly one actual track required for the control')
+        settings=native_audio(base);settings['activeSoundProfile']='MuseScore Basic';settings['tracks']=tracks
         settings['master']={'balance':0,'volumeDb':0,'fxChain':{},'auxSends':[]};settings['aux']=[]
         with zipfile.ZipFile(target,'x',compression=zipfile.ZIP_DEFLATED) as output:
             for info in archive.infolist():output.writestr(info,json.dumps(settings,ensure_ascii=False).encode('utf-8') if info.filename=='audiosettings.json' else archive.read(info))
@@ -233,6 +261,25 @@ def main():
             if sha(fixture)!=pin:raise ValueError('Original CC0 exercise differs')
             copied=output/'sfz-probe-source.musicxml';shutil.copyfile(fixture,copied);base=output/'sfz-probe-base.mscz'
             run('import-original-exercise',['-o',base,copied])
+            report['positive_controls']=[]
+            control=output/'positive-msbasic.mscz';assign_basic(base,control);before_control=sha(control);control_wav=output/'positive-msbasic.wav'
+            control_log=run('positive-msbasic-render',['-o',control_wav,control],expected_export=control_wav);control_audio=wavtool.inspect_wav(control_wav)
+            observed=any('success load soundfont:' in line and 'ms basic.sf3' in line for line in control_log.replace('\\','/').lower().splitlines())
+            basic_control={'id':'same-exercise-msbasic','role':'Positive note/event/mix-path control, not an alternative-bank validation',
+                'audio':control_audio,'wav_sha256':sha(control_wav),'actual_basic_synth_load_observed':observed,'source_unchanged':sha(control)==before_control}
+            basic_control['passed']=control_audio['passed'] and observed and basic_control['source_unchanged'];report['positive_controls'].append(basic_control)
+            if not basic_control['passed']:raise PositiveFixtureControlError('The same exercise/mix path failed its actual MS Basic positive control')
+            factory=output/'positive-sfizz-factory.mscz'
+            assign_plugin(base,factory,report['registered_plugin'],Path(sample['patches']['FluteSusVib.sfz']),state,factory_control=True)
+            if native_audio(factory)['tracks'][0]['in']['unitConfiguration']!={}:raise RuntimeError('Factory control unexpectedly contains component state')
+            before_factory=sha(factory);factory_wav=output/'positive-sfizz-factory.wav'
+            factory_log=run('positive-sfizz-factory-render',['-o',factory_wav,factory],expected_export=factory_wav);factory_audio=wavtool.inspect_wav(factory_wav)
+            factory_control={'id':'same-exercise-sfizz-factory','role':'Internal sine test tone only; no sampled orchestral instrument or SFZ claimed',
+                'source_reference':'SfizzVstProcessor.cpp:24 defaultSfzText sample=*sine',
+                'componentState_omitted':True,'audio':factory_audio,'wav_sha256':sha(factory_wav),'source_unchanged':sha(factory)==before_factory,
+                'sfizz_engine_init_observed':'[sfizz] new synth' in factory_log.lower()}
+            factory_control['passed']=factory_audio['passed'] and factory_control['source_unchanged'] and factory_control['sfizz_engine_init_observed'];report['positive_controls'].append(factory_control)
+            report['positive_controls_passed']=all(value['passed'] for value in report['positive_controls'])
             diagnostic_errors=('Unable to find vst plugin module','Unable to load vst plugin provider','Unable to initialize vst plugin provider','Component state restore failed','Controller state restore failed','[Sfizz] file not found:')
             for label,patch_name in (('flute','FluteSusVib.sfz'),('violin','SViolinVib.sfz'),('flute-minus18','Cadence-QA-Flute-minus18.sfz')):
                 patch=owned(Path(sample['patches'][patch_name]));native=output/(label+'.mscz')
@@ -260,7 +307,7 @@ def main():
                    'flute_and_violin_WAV_differ':flute['wav_sha256']!=violin['wav_sha256'],
                    'raw_SFZ_direct_support_claimed':False,'proof_scope':'This tests whether the registered real VST3 consumed the controlled SFZ gain change; ordinary nonquiet audio alone does not establish sample loading. Assess gain_ratio_matches and all case audio checks.'}
             report['controlled_SFZ_load_proof']=proof
-            report['controlled_audio_checks_passed']=same_shape and proof['gain_ratio_matches'] and proof['flute_and_violin_WAV_differ'] and all(value['audio_and_load_checks_passed'] for value in report['cases'])
+            report['controlled_audio_checks_passed']=report['positive_controls_passed'] and same_shape and proof['gain_ratio_matches'] and proof['flute_and_violin_WAV_differ'] and all(value['audio_and_load_checks_passed'] for value in report['cases'])
             report['registered_plugins_unchanged_after_render']=sha(registry)==report['registered_plugins_sha256']
             report['originals_and_reader_unchanged']=check_assets() and sha(copied)==pin and sha(fixture)==pin and report['registered_plugins_unchanged_after_render']
             if not report['originals_and_reader_unchanged']:raise RuntimeError('Original CC0 assets or reader changed')
@@ -271,7 +318,7 @@ def main():
                 report['status']='failed_audio_checks';report['error']='Controlled SFZ gain or WAV checks failed; fallback audio is not accepted.'
             else:report['status']='passed_actual_sfizz_VST3_SFZ_controlled_render_and_save_only_checks'
     except Exception as error:
-        report['status']='failed_debugger_collection' if isinstance(error,OwnedDebuggerCollectionError) else 'failed_native_exit' if native_failure_observed(report['commands']) else 'failed_or_blocked'
+        report['status']='failed_fixture_control' if isinstance(error,PositiveFixtureControlError) else 'failed_debugger_collection' if isinstance(error,OwnedDebuggerCollectionError) else 'failed_native_exit' if native_failure_observed(report['commands']) else 'failed_or_blocked'
         report['error']=str(error)
     finally:
         (output/'sfz-host-report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
