@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: read the actual retained2005 stage metadata'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/combined-2005-stage-reader/**'
+      - '.github/workflows/cadence-combined-2005-stage-reader.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  read-retained-stage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Download only the actually retained complete2005 stage artifact
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '13943781621'
+          run-id: 43207550870
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/retained-2005-original-artifact
+      - name: Hash all companions and read the exact build source, ZIP and EXE without executing the application
+        shell: bash
+        run: |
+          python -I "$GITHUB_WORKSPACE/driver/.cadence-studio/combined-2005-stage-reader/read_stage.py" \
+            --root "$RUNNER_TEMP/retained-2005-original-artifact" \
+            --source-selection "$GITHUB_WORKSPACE/driver/.cadence-studio/combined-2005-source" \
+            --output "$RUNNER_TEMP/retained-2005-stage-metadata/stage-receipt.json"
+      - name: Retain the small metadata receipt, not another copy of the application
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-retained-2005-stage-metadata-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/retained-2005-stage-metadata/
+          retention-days: 14
+          if-no-files-found: warn
