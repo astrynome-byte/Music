@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "status": "passed-source-data-checks",
+  "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s checks -v",
+  "tests": 7,
+  "YAML_parse": true,
+  "synthetic_ZIP_and_PE_headers_only": true,
+  "DOCX_XML_synthetic_only": true,
+  "real_release_ZIP_downloaded_or_read": false,
+  "native_DLL_or_application_executed": false,
+  "real_optional_Microsoft_documents_downloaded": false
+}

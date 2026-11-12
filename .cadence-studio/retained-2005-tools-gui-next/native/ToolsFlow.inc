@@ -265,7 +265,7 @@ int wmain(int argc, wchar_t** argv)
             && SUCCEEDED(bounded->put_ConnectionTimeout(800)) && SUCCEEDED(bounded->put_TransactionTimeout(1000))) {
             const auto readyUntil = std::min(deadline, Clock::now() + std::chrono::seconds(25));
             while (alive() && Clock::now() < readyUntil) {
-                if (closeIntroductionOnly()) Sleep(250);
+                if (closeIntroductionOnly() || closeOwnedWelcomeOnly()) Sleep(250);
                 auto nodes = snapshot(automation.Get(), output, L"tree-tools-ready");
                 const Node* home = find(nodes, { L"Accueil", L"Home" });
                 if (home) { invokeSemantic(home, "activate_owned_home_before_tools"); Sleep(250); break; }

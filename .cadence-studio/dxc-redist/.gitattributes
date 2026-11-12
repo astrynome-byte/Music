@@ -1,0 +1,2 @@
+# Preserve exact source/license bytes, including original upstream whitespace.
+* -text -whitespace

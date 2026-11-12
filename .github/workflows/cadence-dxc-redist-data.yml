@@ -1,0 +1,36 @@
+# SOURCE ONLY: collector reads official archive/document bytes; no DLL/app run.
+name: Cadence pinned official DXC and Microsoft legal material data collection
+on:
+  workflow_dispatch:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths:
+      - '.cadence-studio/dxc-redist/**'
+      - '.github/workflows/cadence-dxc-redist-data.yml'
+permissions:
+  contents: read
+jobs:
+  official-package-data:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Verify ZIP structure guards on synthetic data only
+        run: python3 -I -m unittest discover -s .cadence-studio/dxc-redist/checks -v
+      - name: Fetch only pinned official archive and optional bounded Microsoft legal originals
+        run: |
+          python3 -I .cadence-studio/dxc-redist/collect_dxc.py \
+            --output "$RUNNER_TEMP/dxc-redist-evidence"
+      - name: Retain only selected x64 DLL data and exact original legal material
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-dxc-official-data-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/dxc-redist-evidence/
+          if-no-files-found: error
+          retention-days: 14

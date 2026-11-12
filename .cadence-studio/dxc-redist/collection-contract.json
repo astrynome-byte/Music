@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "status": "source-prepared-actual-DXC-ZIP-not-yet-read",
+  "source_namespace": ".cadence-studio/dxc-redist/",
+  "workflow": ".github/workflows/cadence-dxc-redist-data.yml",
+  "official_release": {
+    "tag": "v1.8.2505.1",
+    "commit": "b106a961d09221b3c5bdb37be45b679257da08b8",
+    "asset_id": 272848549,
+    "archive": "dxc_2025_07_14.zip",
+    "bytes": 26505604,
+    "sha256": "9ad895a6b039e3a8f8c22a1009f866800b840a74b50db9218d13319e215ea8a4",
+    "API_release_asset_and_tag_ref_read_and_verified_during_preparation": true
+  },
+  "mandatory_selected_DLLs": [
+    "bin/x64/dxcompiler.dll",
+    "bin/x64/dxil.dll"
+  ],
+  "expected_package_legal_policy_from_exact_source_ReleaseNotes": {
+    "LICENSE-MIT.txt": "d3d12shader.h only",
+    "LICENSE-LLVM.txt": "all other files"
+  },
+  "original_source_material": {
+    "root_LICENSE_TxT": {
+      "path": "official-source/LICENSE.TXT",
+      "bytes": 29241,
+      "sha256": "27a49e35d1da96eba18fba54bc882667ff0ff8c0254f16f2b6e165d605ba7df8",
+      "is_substitute_for_release_package_LICENSE_LLVM": false
+    },
+    "ReleaseNotes": {
+      "path": "official-source/ReleaseNotes.md",
+      "bytes": 14625,
+      "sha256": "acdbb6f89146644f15b7b9742d15356f6c3b5a7c0482413451ca3d0843acd3c1",
+      "git_blob_verified": true
+    }
+  },
+  "archive_contract": {
+    "whole_archive_size_and_SHA_required": true,
+    "runtime_release_API_and_tag_commit_pin_required": true,
+    "entries_max": 4096,
+    "single_expanded_file_max_bytes": 134217728,
+    "total_expanded_bytes_max": 1073741824,
+    "path_case_alias_link_reparse_encryption_collision_guards": true,
+    "selected_DLL_max_bytes": 67108864,
+    "original_legal_texts_max_count": 32,
+    "original_legal_texts_max_bytes_each": 524288,
+    "original_legal_texts_max_bytes_total": 4194304,
+    "unselected_members_extracted": false,
+    "PE_header_inspected_as_data_only": true
+  },
+  "optional_Microsoft_documents": {
+    "purpose": "Read actual missing SDK REDIST and separate Visual C++ runtime terms without borrowing one license for another",
+    "URLs": [
+      "https://go.microsoft.com/fwlink/?LinkId=524842",
+      "https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx"
+    ],
+    "max_download_bytes_each": 1048576,
+    "HTTPS_only_explicit_hosts": [
+      "go.microsoft.com",
+      "www.microsoft.com",
+      "learn.microsoft.com",
+      "docs.microsoft.com",
+      "download.microsoft.com",
+      "visualstudio.microsoft.com",
+      "msdn.microsoft.com",
+      "download.visualstudio.microsoft.com",
+      "aka.ms"
+    ],
+    "refused_redirect_destination_logged_without_query_or_userinfo": true,
+    "failures_explicit_and_nonblocking_for_DXC": true,
+    "DOCX_via_bounded_ZIP_and_XML_only": true,
+    "raw_originals_retained_unchanged": true,
+    "derived_text_views_marked_nonoriginal": true
+  },
+  "console": {
+    "max_bytes": 524288,
+    "base64_original_bytes_each_max": 262144,
+    "derived_text_view_each_max_bytes": 65536,
+    "omissions_retain_path_size_SHA_and_reason": true,
+    "no_executable_or_DLL_content_printed": true
+  },
+  "validation_scope": {
+    "synthetic_Linux_data_tests": 7,
+    "YAML_parse": true,
+    "actual_release_ZIP_read_locally": false,
+    "real_optional_Microsoft_docs_fetched_locally": false,
+    "Windows_or_application_executed": false,
+    "DLL_loaded": false,
+    "Office_or_dxc_exe_executed": false,
+    "source_or_stage_replaced": false,
+    "publication_performed": false,
+    "integration_qualified": false,
+    "redistribution_approved": false,
+    "old_LICENSE_MS_2407_imported": false
+  }
+}

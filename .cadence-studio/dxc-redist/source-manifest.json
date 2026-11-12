@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "status": "source-prepared-real-DXC-package-not-yet-read",
+  "repository_namespace": ".cadence-studio/dxc-redist/",
+  "workflow_repository_path": ".github/workflows/cadence-dxc-redist-data.yml",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 99,
+      "sha256": "ef02af3a955f3dd986b64378b51739cda7b119c97e8dc712bcbd00c1d304b394"
+    },
+    {
+      "path": "TOOLS-GPL-3.0.txt",
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "cadence-dxc-redist-data.yml",
+      "bytes": 1385,
+      "sha256": "1409328f2a7c6f326423bbbfbca3b8e533808cb4c4b07b2b0e7efbb21e37f628"
+    },
+    {
+      "path": "checks/source-checks.json",
+      "bytes": 419,
+      "sha256": "2060128a10bb673b75a70bc068156804b5e64d321d9999206c5456d5ff6a3485"
+    },
+    {
+      "path": "checks/test_dxc_data.py",
+      "bytes": 7011,
+      "sha256": "f37e0476e8894d218349373de6c6ed33e106018d6b23deb172e6547c2fd83ef1"
+    },
+    {
+      "path": "collect_dxc.py",
+      "bytes": 20228,
+      "sha256": "0f56bf628f7298afdbdabdf430d62c9bb145761faaa9862ce24bc962dcada291"
+    },
+    {
+      "path": "collection-contract.json",
+      "bytes": 3630,
+      "sha256": "430538e75e3c163e20f7b73e275b7925098989523af7df577f66154a1c84efc2"
+    },
+    {
+      "path": "official-release-pins.json",
+      "bytes": 3970,
+      "sha256": "dbf4d891ab5aa21a5757513c3adca04c5172b26510a6a7b0d0a0d4de812106da"
+    },
+    {
+      "path": "official-source/LICENSE.TXT",
+      "bytes": 29241,
+      "sha256": "27a49e35d1da96eba18fba54bc882667ff0ff8c0254f16f2b6e165d605ba7df8"
+    },
+    {
+      "path": "official-source/ReleaseNotes.md",
+      "bytes": 14625,
+      "sha256": "acdbb6f89146644f15b7b9742d15356f6c3b5a7c0482413451ca3d0843acd3c1"
+    }
+  ],
+  "code_license": "GPL-3.0-only",
+  "original_upstream_legal_texts_unchanged": true,
+  "source_or_stage_modified": false,
+  "publication_performed": false,
+  "large_local_download_performed": false,
+  "actual_package_integration_qualified": false
+}

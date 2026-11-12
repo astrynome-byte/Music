@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "repository": "microsoft/DirectXShaderCompiler",
+  "tag": "v1.8.2505.1",
+  "commit": "b106a961d09221b3c5bdb37be45b679257da08b8",
+  "asset": {
+    "url": "https://api.github.com/repos/microsoft/DirectXShaderCompiler/releases/assets/272848549",
+    "id": 272848549,
+    "node_id": "RA_kwDOBIRuvs4QQ1al",
+    "name": "dxc_2025_07_14.zip",
+    "label": null,
+    "uploader": {
+      "login": "V-FEXrt",
+      "id": 7253461,
+      "node_id": "MDQ6VXNlcjcyNTM0NjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7253461?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/V-FEXrt",
+      "html_url": "https://github.com/V-FEXrt",
+      "followers_url": "https://api.github.com/users/V-FEXrt/followers",
+      "following_url": "https://api.github.com/users/V-FEXrt/following{/other_user}",
+      "gists_url": "https://api.github.com/users/V-FEXrt/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/V-FEXrt/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/V-FEXrt/subscriptions",
+      "organizations_url": "https://api.github.com/users/V-FEXrt/orgs",
+      "repos_url": "https://api.github.com/users/V-FEXrt/repos",
+      "events_url": "https://api.github.com/users/V-FEXrt/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/V-FEXrt/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "content_type": "application/x-zip-compressed",
+    "state": "uploaded",
+    "size": 26505604,
+    "digest": "sha256:9ad895a6b039e3a8f8c22a1009f866800b840a74b50db9218d13319e215ea8a4",
+    "download_count": 182858,
+    "created_at": "2025-07-14T21:43:32Z",
+    "updated_at": "2025-07-14T21:43:33Z",
+    "browser_download_url": "https://github.com/microsoft/DirectXShaderCompiler/releases/download/v1.8.2505.1/dxc_2025_07_14.zip"
+  },
+  "release_html_url": "https://github.com/microsoft/DirectXShaderCompiler/releases/tag/v1.8.2505.1",
+  "published_at": "2025-07-15T15:58:48Z",
+  "release_body": "This is a Patch Release for the May 2025 DirectX Compiler.\r\n\r\nIssue #7510 was reported, where calling `sizeof()` on a templated type would crash the compiler.\r\nIssue #7508 was reported for the SM6.9 preview, where calling a buffer's `Load` function with a `status` would crash the compiler.\r\n\r\nBoth issues have been root caused and fixed in this patch release. \r\n\r\nThis DX compiler release is also available as a NuGet package [Microsoft.Direct3D.DXC](https://www.nuget.org/packages/Microsoft.Direct3D.DXC/1.8.2505.32).\r\n\r\n## What's Changed\r\n\r\n* Require complete types in some missing places (#7511) by @llvm-beanz in https://github.com/microsoft/DirectXShaderCompiler/pull/7511\r\n* Fix errors in retrieving and assigning load status parameter (#7513) by @pow2clk https://github.com/microsoft/DirectXShaderCompiler/pull/7513\r\n\r\n**Full Changelog**: https://github.com/microsoft/DirectXShaderCompiler/compare/v1.8.2505...v1.8.2505.1\r\n\r\n## Versioning Note\r\n\r\nThis release version is considered `v1.8.2505.1`, and the commit is tagged as such.  However, versioning for binaries and the NuGet package will have a different patch version number.  This is expected at this time.\r\n\r\nThe main dxc executable and `dxcompiler.dll` have version `1.8.2505.32`, and the `DXIL.dll` and NuGet package have version `1.8.2505.32`.",
+  "source_material_notes": "Source repository texts are not substitutes for the release ZIP's own licenses; LICENSE-MS from older 2024 packages is not imported.",
+  "source_files": [
+    {
+      "path": "LICENSE.TXT",
+      "git_blob_sha1": "8987f9b91c3bbd6c86dc103ecd4038ec9dfcc2af",
+      "bytes": 29241
+    },
+    {
+      "path": "docs/ReleaseNotes.md",
+      "git_blob_sha1": "588bda676bf7c2519fef4990d66be4faf8942acb",
+      "bytes": 14625,
+      "sha256": "acdbb6f89146644f15b7b9742d15356f6c3b5a7c0482413451ca3d0843acd3c1"
+    }
+  ]
+}

@@ -108,6 +108,39 @@ static bool closeIntroductionOnly()
     return posted;
 }
 
+static bool closeOwnedWelcomeOnly()
+{
+    const HWND main = mainWindow();
+    if (!owned(main) || IsWindowEnabled(main)) return false;
+    bool posted = false;
+    for (HWND window : windows()) {
+        const std::wstring title = windowTitle(window);
+        if (title != L"Bienvenue" && title != L"Welcome"
+            && title != L"Bienvenue - Cadence Studio" && title != L"Welcome - Cadence Studio") continue;
+        const HWND owner = GetWindow(window, GW_OWNER);
+        wchar_t className[256] = {};
+        GetClassNameW(window, className, 256);
+        const std::wstring kind = className;
+        if (owner != main || !owned(owner) || IsWindowEnabled(owner) || !IsWindowEnabled(window)
+            || kind.rfind(L"Qt", 0) != 0 || kind.find(L"QWindow") == std::wstring::npos) continue;
+        wchar_t checkedClassName[256] = {};
+        const bool classRead = GetClassNameW(window, checkedClassName, 256) > 0;
+        const bool mainEnabled = IsWindowEnabled(main), windowEnabled = IsWindowEnabled(window);
+        const bool ok = owned(window) && owned(owner) && GetWindow(window, GW_OWNER) == main
+            && !mainEnabled && windowEnabled && IsWindowVisible(window) && classRead && std::wstring(checkedClassName) == kind
+            && windowTitle(window) == title && PostMessageW(window, WM_CLOSE, 0, 0);
+        actions.push_back("{\"action\":\"close_owned_welcome_only\",\"title\":" + jsonQuoted(title)
+            + ",\"class_name\":" + jsonQuoted(checkedClassName)
+            + ",\"main_handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(main))
+            + ",\"owner_handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(owner))
+            + ",\"main_enabled\":" + (mainEnabled ? "true" : "false")
+            + ",\"window_enabled\":" + (windowEnabled ? "true" : "false")
+            + ",\"pid\":" + std::to_string(targetPid) + ",\"posted\":" + (ok ? "true" : "false") + "}");
+        posted = posted || ok;
+    }
+    return posted;
+}
+
 struct Node {
     ComPtr<IUIAutomationElement> element;
     std::wstring name, id;
