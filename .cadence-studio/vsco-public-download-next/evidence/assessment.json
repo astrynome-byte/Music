@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "scope": "Actual retained Cadence2005 Windows CLI native-SF2 renders and save-only/reload proof, not GUI or listening qualification",
+  "run_id": 43231480145,
+  "job_id": 131227620619,
+  "driver_commit": "1fbc211789c7698c4c191fa204ddbb00216209ec",
+  "conclusion": "success",
+  "original_application_build": 2005,
+  "original_executable_sha256": "d957ffc99497cb01b1f00f82ba1d6e89ef84547708506c6c51423675805e140a",
+  "all_commands_zero_exit_without_timeout": true,
+  "actual_application_commands": 17,
+  "case_count": 5,
+  "actual_WAV_count": 10,
+  "cases": [
+    {
+      "name": "basic-flute",
+      "requested_resource_id": "MS Basic",
+      "WAV": {
+        "encoding": 3,
+        "bits": 32,
+        "channels": 2,
+        "sample_rate": 44100,
+        "duration_seconds": 7.0,
+        "rms": 0.008146193660989254,
+        "peak": 0.0335167832672596,
+        "nonfinite_samples": 0,
+        "full_scale_samples": 0,
+        "passed": true
+      },
+      "reopened_WAV": {
+        "encoding": 3,
+        "bits": 32,
+        "channels": 2,
+        "sample_rate": 44100,
+        "duration_seconds": 7.0,
+        "rms": 0.008146193660989254,
+        "peak": 0.0335167832672596,
+        "nonfinite_samples": 0,
+        "full_scale_samples": 0,
+        "passed": true
+      },
+      "initial_and_reopened_WAV_hash_identical": true,
+      "resource_preserved_on_save": true,
+      "source_unchanged": true
+    },
+    {
+      "name": "flute",
+      "requested_resource_id": "Cadence-VSCO-Flute\\0\\73",
+      "WAV": {
+        "encoding": 3,
+        "bits": 32,
+        "channels": 2,
+        "sample_rate": 44100,
+        "duration_seconds": 7.0,
+        "rms": 0.0010446974301818405,
+        "peak": 0.005345462821424007,
+        "nonfinite_samples": 0,
+        "full_scale_samples": 0,
+        "passed": true
+      },
+      "reopened_WAV": {
+        "encoding": 3,
+        "bits": 32,
+        "channels": 2,
+        "sample_rate": 44100,
+        "duration_seconds": 7.0,
+        "rms": 0.0010446974301818405,
+        "peak": 0.005345462821424007,
+        "nonfinite_samples": 0,
+        "full_scale_samples": 0,
+        "passed": true
+      },
+      "initial_and_reopened_WAV_hash_identical": true,
+      "resource_preserved_on_save": true,
+      "source_unchanged": true
+    },
+    {
+      "name": "flute-minus18",
+      "requested_resource_id": "Cadence-VSCO-Flute-minus18\\0\\73",
+      "WAV": {
+        "encoding": 3,
+        "bits": 32,
+        "channels": 2,
+        "sample_rate": 44100,
+        "duration_seconds": 7.0,
+        "rms": 0.000131519602230592,
+        "peak": 0.0006729537271894515,
+        "nonfinite_samples": 0,
+        "full_scale_samples": 0,
+        "passed": true
+      },
+      "reopened_WAV": {
+        "encoding": 3,
+        "bits": 32,
+        "channels": 2,
+        "sample_rate": 44100,
+        "duration_seconds": 7.0,
+        "rms": 0.000131519602230592,
+        "peak": 0.0006729537271894515,
+        "nonfinite_samples": 0,
+        "full_scale_samples": 0,
+        "passed": true
+      },
+      "initial_and_reopened_WAV_hash_identical": true,
+      "resource_preserved_on_save": true,
+      "source_unchanged": true
+    },
+    {
+      "name": "basic-violin",
+      "requested_resource_id": "MS Basic",
+      "WAV": {
+        "encoding": 3,
+        "bits": 32,
+        "channels": 2,
+        "sample_rate": 44100,
+        "duration_seconds": 7.0,
+        "rms": 0.005711396923220143,
+        "peak": 0.028648577630519867,
+        "nonfinite_samples": 0,
+        "full_scale_samples": 0,
+        "passed": true
+      },
+      "reopened_WAV": {
+        "encoding": 3,
+        "bits": 32,
+        "channels": 2,
+        "sample_rate": 44100,
+        "duration_seconds": 7.0,
+        "rms": 0.005711396923220143,
+        "peak": 0.028648577630519867,
+        "nonfinite_samples": 0,
+        "full_scale_samples": 0,
+        "passed": true
+      },
+      "initial_and_reopened_WAV_hash_identical": true,
+      "resource_preserved_on_save": true,
+      "source_unchanged": true
+    },
+    {
+      "name": "violin",
+      "requested_resource_id": "Cadence-VSCO-Violin\\0\\40",
+      "WAV": {
+        "encoding": 3,
+        "bits": 32,
+        "channels": 2,
+        "sample_rate": 44100,
+        "duration_seconds": 7.0,
+        "rms": 0.00042779730235882423,
+        "peak": 0.0029610253404825926,
+        "nonfinite_samples": 0,
+        "full_scale_samples": 0,
+        "passed": true
+      },
+      "reopened_WAV": {
+        "encoding": 3,
+        "bits": 32,
+        "channels": 2,
+        "sample_rate": 44100,
+        "duration_seconds": 7.0,
+        "rms": 0.00042779730235882423,
+        "peak": 0.0029610253404825926,
+        "nonfinite_samples": 0,
+        "full_scale_samples": 0,
+        "passed": true
+      },
+      "initial_and_reopened_WAV_hash_identical": true,
+      "resource_preserved_on_save": true,
+      "source_unchanged": true
+    }
+  ],
+  "gain": {
+    "expected_gain_delta_db": -18,
+    "expected_rms_ratio": 0.12589254117941673,
+    "actual_rms_ratio": 0.1258925296750272,
+    "reopened_rms_ratio": 0.1258925296750272,
+    "relative_tolerance": 0.03,
+    "matching_WAV_shape": true,
+    "gain_matches": true,
+    "flute_differs_from_MS_Basic": true,
+    "violin_differs_from_MS_Basic": true,
+    "measured_delta_db": -18.00000079373934
+  },
+  "native_banks_identical_to_local_materialized_banks": true,
+  "banks": [
+    {
+      "file": "Cadence-VSCO-Flute.sf2",
+      "bytes": 16778410,
+      "sha256": "2bc48929d1996687b99e27b532043c4cb34b89480471faaea446ffc021ab3768",
+      "resource_id": "Cadence-VSCO-Flute\\0\\73"
+    },
+    {
+      "file": "Cadence-VSCO-Violin.sf2",
+      "bytes": 74366558,
+      "sha256": "801896ef3be53c4b60d9dc87078787add7fdc44b1a3bfe9fff30fcc519d93e0d",
+      "resource_id": "Cadence-VSCO-Violin\\0\\40"
+    },
+    {
+      "file": "Cadence-VSCO-Flute-minus18.sf2",
+      "bytes": 16778410,
+      "sha256": "b1a53205814bcf3068f0278f2940f6d8b953215f2adf4659a238448a9a70a17f",
+      "resource_id": "Cadence-VSCO-Flute-minus18\\0\\73"
+    }
+  ],
+  "immutable_inputs_preserved": true,
+  "cleanup": {
+    "profile_verified": true,
+    "Job_closed_cleanly": true,
+    "drain_proofs": 9,
+    "each_active_process_count": 1,
+    "forced_descendants": 0,
+    "errors": []
+  },
+  "artifact_metadata": {
+    "id": 13949852671,
+    "name": "cadence-vsco-sf2-qa-43231480145-1",
+    "size_in_bytes": 21278275,
+    "url": "https://api.github.com/repos/astrynome-byte/Music/actions/artifacts/13949852671",
+    "archive_download_url": "https://api.github.com/repos/astrynome-byte/Music/actions/artifacts/13949852671/zip",
+    "expired": false,
+    "created_at": "2026-11-12T13:53:37Z",
+    "expires_at": "2026-11-26T13:53:36Z",
+    "updated_at": "2026-11-12T13:53:37Z",
+    "digest": "sha256:3e0863479ac9a118d58e4082eaf3905838519346e4a3c8ff02a00eb9a78d3604",
+    "workflow_run": {
+      "id": 43231480145,
+      "repository_id": 1419895188,
+      "head_repository_id": 1419895188,
+      "head_branch": "cadence-studio/windows-build",
+      "head_sha": "1fbc211789c7698c4c191fa204ddbb00216209ec"
+    }
+  },
+  "artifact_downloaded": false,
+  "binary_banks_or_PCM_printed": false,
+  "limitations": [
+    "The job exercised CLI native SF2 selection, WAV export, native save-only and reopened WAV export; it did not exercise GUI mixer/manual installation/manager flows.",
+    "No human listening or physical audio output test is inferred.",
+    "Fixed envelopes, finite recordings without source loops and the explicit FluidSynth EMU0.4 attenuation profile remain the converter limits.",
+    "The manager does not advertise these banks as installed; this was an isolated runner profile.",
+    "Windows long-held-note/release behavior beyond the seven-second exercises is not inferred from the separate local Linux20-second test."
+  ],
+  "publication_of_source_or_banks_performed_by_this_readback": false
+}

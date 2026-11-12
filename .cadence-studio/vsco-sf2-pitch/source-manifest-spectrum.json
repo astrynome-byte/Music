@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "status": "source-prepared-spectral-postmortem-not-yet-measured-on-retained-WAVs",
+  "no_application_or_DLL_execution": true,
+  "original_pitch_run_failure_preserved": 43242767374,
+  "source_WAV_run_id": 43231480145,
+  "source_WAV_artifact_id": 13949852671,
+  "dependency": {
+    "path": ".cadence-studio/vsco-sf2-pitch/analyze_existing_wavs.py",
+    "published_commit": "1c50743b0e652d7b0d1ab231009fc76247d9d6fa",
+    "sha256": "d03da527fdaee7af6105654a26d2edcfc5f3e760b285d1479048d00b8a2df52c",
+    "exact_published_bytes_independently_readback_and_verified": true
+  },
+  "synthetic_tests": 3,
+  "files": [
+    {
+      "path": ".cadence-studio/vsco-sf2-pitch/diagnose_pitch_overlap.py",
+      "bytes": 6250,
+      "sha256": "00689a9f4445a1706b31a30c39ed590e9f3142c568858f646c4099874071b946"
+    },
+    {
+      "path": ".cadence-studio/vsco-sf2-pitch/test_pitch_overlap.py",
+      "bytes": 1932,
+      "sha256": "d9a24c182c1980bfc6541e1854996a240098f4a11f0fb05ad0376e7802d9cd8c"
+    },
+    {
+      "path": ".cadence-studio/vsco-sf2-pitch/SPECTRAL-POSTMORTEM-FR.md",
+      "bytes": 1926,
+      "sha256": "fdf1c91c34e46c6c74b5a1527de03de9c7902ea77c3bbee80f6e30b162297e1e"
+    },
+    {
+      "path": ".github/workflows/cadence-vsco-sf2-pitch.yml",
+      "bytes": 1884,
+      "sha256": "e0f011a4f0c810919960ff570c62d2cb78bc01ab35db5f04d532fbb19382fcbf"
+    }
+  ]
+}

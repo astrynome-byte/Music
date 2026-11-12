@@ -1,0 +1,32 @@
+name: Cadence sole ICU experiment retained report DATAONLY
+on:
+  workflow_dispatch:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths:
+      - '.cadence-studio/redist-stage-qa-readback/**'
+      - '.github/workflows/cadence-icu-data-readback.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  read-existing-reports-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: astrynome-byte/Music
+          run-id: '43242767502'
+          artifact-ids: '13954689320'
+          merge-multiple: true
+          path: ${{ runner.temp }}/sole-icu-existing-reports
+      - name: Read only retained JSON, comparison stderr and MXL ZIP members
+        run: python -I ./.cadence-studio/redist-stage-qa-readback/Read-IcuComparison.py --root '${{ runner.temp }}/sole-icu-existing-reports'

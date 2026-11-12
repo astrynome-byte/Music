@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "path": "artifacts.metadata.json",
+      "bytes": 862,
+      "sha256": "ac7973978f6b7ea55512685ac84bcb3a5d57aaf01e8854e6fbcbdffd17d7dfe0"
+    },
+    {
+      "path": "assessment.json",
+      "bytes": 7894,
+      "sha256": "fedf1c81b019bc76d0ef278c8857279f2cdc57f09fe771ed95ebbd574b5a7520"
+    },
+    {
+      "path": "job-logs.decoded.lf.txt",
+      "bytes": 65028,
+      "sha256": "e7c202c7e360a86ffec833b472bf0dc0c0bdca5a17191bd71208a9a5d6ee7b44"
+    },
+    {
+      "path": "native-report.console-capture.json",
+      "bytes": 29402,
+      "sha256": "7382a2b6bdc2a466027fc816f8a62056261b5b232fe1ed8ca57d2dce0f542119"
+    },
+    {
+      "path": "owned-result.console-capture.json",
+      "bytes": 2558,
+      "sha256": "44adfcd1e6bb77a7e7ecd1a011b834c102b2536b18c097eff08db5e38f7e4c02"
+    },
+    {
+      "path": "workflow-job.metadata.json",
+      "bytes": 1500,
+      "sha256": "ea8d1ab33e4fcb973251667ddeedb47e7adcfc5b797ce1e76d4ed7e3ecd2c93b"
+    },
+    {
+      "path": "workflow-run.metadata.json",
+      "bytes": 525,
+      "sha256": "67460c799eb41e3a1490f11673433954187e197083f2165cd97f9bdfc58af657"
+    }
+  ],
+  "source": "GitHub connected read-only job log/API tools; decoded logs CRLF normalized to LF",
+  "large_artifact_downloaded": false
+}

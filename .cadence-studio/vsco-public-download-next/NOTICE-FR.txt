@@ -1,0 +1,61 @@
+Cadence — sons VSCO Community Edition expérimentaux 1.0.0-exp.1
+
+Ce téléchargement contient deux instruments supplémentaires : une flûte et un
+violon solo. Il ne contient aucune application ni aucun installateur Windows.
+Il ne remplace pas une bibliothèque orchestrale complète. Gardez MS Basic
+disponible comme ensemble généraliste et son de secours.
+
+Contenu musical :
+- Cadence-VSCO-Flute.sf2 : 16 778 410 octets, banque 0/programme 73
+  (numérotation GM affichée à partir de 1 : 74), notes MIDI 60 à 96.
+- Cadence-VSCO-Violin.sf2 : 74 366 558 octets, banque 0/programme 40
+  (GM affiché : 41), notes MIDI 55 à 96.
+Total SF2 : 91 144 968 octets, soit environ 86,9 Mio. Les fichiers ZIP utilisent
+le format sans compression pour une reconstruction indépendante des versions
+de compresseur et une extraction native Windows simple.
+Les deux SF2 sont aussi fournis séparément, avec les mêmes octets, pour une
+installation par un gestionnaire. Le ZIP reste le téléchargement simple conseillé.
+
+Les sons et mappings proviennent de VSCO 2 Community Edition, dépôt officiel
+sgossner/VSCO-2-CE, tag 1.1.0, commit
+28092772094b2d9f1148d84cea97f4545b8c687d. Ils sont sous CC0-1.0 ; le texte
+intégral est joint. Aucun compte, abonnement, achat, lecteur SFZ ou plugin VST
+n’est nécessaire pour les charger avec le système SoundFont natif de Cadence.
+Le convertisseur indépendant et ses outils sont sous GPL-3.0-only ; leur archive
+source séparée contient les licences, mappings, manifeste et recette Python.
+La musique composée avec ces échantillons CC0 ne devient pas un logiciel GPL.
+
+Installation manuelle proposée : fermez Cadence, extrayez l’archive et copiez
+uniquement les deux fichiers .sf2 dans Documents/CadenceStudio4/SoundFonts,
+ou dans un dossier présent dans les chemins de banques de sons des préférences.
+Relancez Cadence ; ouvrez une partition pour flûte ou violon et choisissez la
+banque Cadence-VSCO correspondante dans le mixeur. Ne remplacez aucun fichier
+personnel portant déjà ce nom : gardez votre copie et utilisez un autre dossier.
+Cette procédure GUI n’a pas encore été qualifiée dans le cadre de ce lot.
+
+Qualification réellement obtenue : le run Windows 43231480145 du 12 novembre
+2026 a utilisé Cadence build 2005 retenu, son chargeur SF2 natif et les mêmes
+octets de banques. Cinq cas, dix exports WAV de sept secondes et les sauvegardes
+natives/réouvertures correspondantes passent ; les ressources sélectionnées
+sont conservées. Le contrôle technique de gain −18 dB est vérifié avant et après
+réouverture. Cette troisième banque de calibration n’est pas incluse ici.
+Aucune écoute humaine, sortie audio physique, installation par l’interface ou
+sauvegarde GUI après lecture interactive n’est déduite de ces exports CLI.
+
+Limites musicales : uniquement les articulations de tenue avec vibrato des
+mappings d’origine ; pas de legato ou staccato enregistrés supplémentaires.
+Stéréo et couches de vélocité conservées ; PCM24/32 tronqué en PCM16 sans
+dithering. Attaque fixe de 0,001 s ; relâche de 0,7 s pour la flûte et 0,8 s pour
+le violon. Aucune boucle n’a été inventée : une tenue très longue finit avec
+l’enregistrement. Le comportement dynamique d’enveloppe SFZ n’est pas reproduit.
+La compensation de gain cible le facteur d’atténuation FluidSynth EMU 0,4 de
+Cadence ; d’autres lecteurs SF2 peuvent rendre les niveaux différemment.
+
+Vérifiez SHA256SUMS avant usage si vous souhaitez identifier exactement votre
+copie. Cette prerelease est explicitement expérimentale. Elle ne constitue pas
+la livraison finale du cadeau ou de l’application. Un futur lien public ne sera
+annoncé qu’après téléchargement anonyme réel et vérification des mêmes SHA-256.
+L’hébergement GitHub dépend de GitHub et du propriétaire du dépôt ; aucune
+permanence n’est garantie.
+
+Texte original de cette notice et métadonnées originales du lot : CC0-1.0.

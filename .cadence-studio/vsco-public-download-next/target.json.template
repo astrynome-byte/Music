@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "ready": false,
+  "repository": "astrynome-byte/Music",
+  "scope": "vsco_cc0_sounds_only",
+  "version": "1.0.0-exp.1",
+  "release": {
+    "tag": "cadence-studio/sounds-vsco-ce-1.0.0-exp.1",
+    "title": "Cadence — sons VSCO CE expérimentaux (flûte et violon)",
+    "prerelease": true,
+    "target_commit_mode": "workflow_head"
+  },
+  "source": {
+    "samples_repository": "https://github.com/sgossner/VSCO-2-CE",
+    "samples_commit": "28092772094b2d9f1148d84cea97f4545b8c687d",
+    "samples_license": "CC0-1.0",
+    "converter_license": "GPL-3.0-only",
+    "application_included": false
+  },
+  "producer": {
+    "run_id": 43231480145,
+    "driver_commit": "1fbc211789c7698c4c191fa204ddbb00216209ec",
+    "full_run_artifact_ids": [
+      13949852671
+    ]
+  },
+  "artifacts": [
+    {
+      "id": 13949852671,
+      "run_id": 43231480145,
+      "name": "cadence-vsco-sf2-qa-43231480145-1",
+      "digest": "sha256:3e0863479ac9a118d58e4082eaf3905838519346e4a3c8ff02a00eb9a78d3604",
+      "expires_at": "2026-11-26T13:53:36Z"
+    }
+  ],
+  "proof": {
+    "assessment_sha256": "fedf1c81b019bc76d0ef278c8857279f2cdc57f09fe771ed95ebbd574b5a7520",
+    "native_report_sha256": "7382a2b6bdc2a466027fc816f8a62056261b5b232fe1ed8ca57d2dce0f542119"
+  },
+  "audit": {
+    "approved": false,
+    "reviewed_by": null
+  },
+  "android": {
+    "audit_status": null,
+    "main_commit": "a6c90b63344b3fd60567fd9f001ac9ecba4b2081",
+    "reviewed_by": null,
+    "main_workflows": [
+      {
+        "path": ".github/workflows/android.yml",
+        "blob_sha1": "ad0539f630eb11556f33f487e145d97558a629ff"
+      }
+    ],
+    "tag_workflows": []
+  },
+  "assets": [
+    {
+      "kind": "sounds",
+      "name": "Cadence-VSCO-CE-sons-1.0.0-exp.1.zip",
+      "member_path": "Cadence-VSCO-CE-sons-1.0.0-exp.1.zip",
+      "bytes": 91158112,
+      "sha256": "2a384f0babecfd53b4bb6a069d057045be74a971aff01f5f35ace681a52d0570"
+    },
+    {
+      "kind": "sources",
+      "name": "Cadence-VSCO-CE-convertisseur-1.0.0-exp.1.zip",
+      "member_path": "Cadence-VSCO-CE-convertisseur-1.0.0-exp.1.zip",
+      "bytes": 146131,
+      "sha256": "a1c616dd7cee8fa698c659d97729525d8266258339fc2fdc8af1e23b20332404"
+    },
+    {
+      "kind": "notice",
+      "name": "Cadence-VSCO-CE-notice-1.0.0-exp.1.txt",
+      "member_path": "Cadence-VSCO-CE-notice-1.0.0-exp.1.txt",
+      "bytes": 3983,
+      "sha256": "8b583ca8cfa90a4860d413b2039e97453f7e0e6d556d9658973ee9d2ef9bf6a5"
+    },
+    {
+      "kind": "license",
+      "name": "Cadence-VSCO-CE-CC0-1.0.0-exp.1.txt",
+      "member_path": "Cadence-VSCO-CE-CC0-1.0.0-exp.1.txt",
+      "bytes": 6555,
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+    },
+    {
+      "kind": "checksums",
+      "name": "Cadence-VSCO-CE-SHA256SUMS-1.0.0-exp.1.txt",
+      "member_path": "Cadence-VSCO-CE-SHA256SUMS-1.0.0-exp.1.txt",
+      "bytes": 601,
+      "sha256": "309f451f9101efcce7f48d9966230de24b5c1a069a9800da9806f095dafecb38"
+    },
+    {
+      "kind": "flute_sf2",
+      "name": "Cadence-VSCO-Flute.sf2",
+      "member_path": "Cadence-VSCO-Flute.sf2",
+      "bytes": 16778410,
+      "sha256": "2bc48929d1996687b99e27b532043c4cb34b89480471faaea446ffc021ab3768"
+    },
+    {
+      "kind": "violin_sf2",
+      "name": "Cadence-VSCO-Violin.sf2",
+      "member_path": "Cadence-VSCO-Violin.sf2",
+      "bytes": 74366558,
+      "sha256": "801896ef3be53c4b60d9dc87078787add7fdc44b1a3bfe9fff30fcc519d93e0d"
+    }
+  ]
+}

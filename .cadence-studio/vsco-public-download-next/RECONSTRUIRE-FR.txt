@@ -1,0 +1,37 @@
+Sources du convertisseur des sons VSCO CE expérimentaux 1.0.0-exp.1
+
+Prérequis de développement : Python 3.12 et sa bibliothèque standard. Le
+destinataire qui utilise les deux SF2 n’a pas besoin de Python ou de ces outils.
+Les originaux VSCO sont CC0-1.0 ; le code du convertisseur et les outils de
+préparation sont GPL-3.0-only. Les deux licences sont incluses séparément.
+
+Dans un dossier extrait neuf :
+  python converter/build_vsco_sf2.py --output CHEMIN_BANQUES_NEUF --download
+
+Le convertisseur télécharge uniquement les 43 WAV de 99 522 542 octets fixés
+par le commit original et vérifie chacun par taille et identité Git avant usage.
+Les deux mappings, leur licence et leurs identités sont inclus dans ces sources.
+Une source locale exacte peut remplacer le téléchargement :
+  python converter/build_vsco_sf2.py --output CHEMIN_BANQUES_NEUF --source-root CHEMIN_VSCO_ORIGINAL
+
+Trois SF2 sont reconstruits : flûte, violon et flûte technique à −18 dB. Le
+dernier est uniquement un témoin de calibration et n’entre pas dans l’archive
+publique de sons. Les deux banques musicales doivent retrouver exactement les
+tailles et SHA-256 indiqués par bank-catalog.json ; ne publiez pas un résultat
+différent sous le même numéro de version.
+
+Pour régénérer les sept assets de cette livraison, avec les sources et notices
+de cette archive comme dossier support :
+  python prepare_assets.py --support-root CHEMIN_DE_CETTE_ARCHIVE --banks CHEMIN_BANQUES_NEUF --output CHEMIN_ASSETS_NEUF
+
+Les ZIP_STORED fixent dates, ordre et attributs, sans utiliser une compression
+dépendante de la version zlib. Le script refuse toute sortie préexistante et
+toute banque dont les octets divergent. Les deux SF2 bruts, les deux archives, la notice française,
+le texte CC0 et le fichier SHA256SUMS restent identifiables par leurs empreintes.
+
+La preuve Windows liée est conservée dans evidence/. Les JSON console sont des
+extractions authentifiées des logs Actions, pas des octets présentés comme lus
+dans le ZIP d’artefact. Ces sources ne comprennent ni Cadence entier, ni sfizz,
+ni VST, ni une banque commerciale ou un installateur. Le workflow de publication
+est un outil de maintenance séparé du dépôt ; il reste inactif avant une cible
+revue avec ready=true et une vérification anonyme réelle des téléchargements.

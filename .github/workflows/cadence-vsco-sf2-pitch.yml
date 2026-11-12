@@ -1,4 +1,4 @@
-name: Cadence existing SF2 Windows WAV pitch DATAONLY
+name: Cadence existing SF2 Windows WAV spectrum DATAONLY
 on:
   workflow_dispatch:
   push:
@@ -32,15 +32,15 @@ jobs:
           artifact-ids: '13949852671'
           merge-multiple: true
           path: ${{ runner.temp }}/sf2-existing-Windows-WAV-evidence
-      - name: Read exact MusicXML and float32 WAV bytes, estimate musical pitch without running the app
-        run: python -I .cadence-studio/vsco-sf2-pitch/analyze_existing_wavs.py --input "$RUNNER_TEMP/sf2-existing-Windows-WAV-evidence" --metadata "$RUNNER_TEMP/sf2-pitch-metadata.json" --output "$RUNNER_TEMP/sf2-pitch-analysis.json"
+      - name: Read spectral bands of exact retained WAVs without running the app
+        run: python -I .cadence-studio/vsco-sf2-pitch/diagnose_pitch_overlap.py --input "$RUNNER_TEMP/sf2-existing-Windows-WAV-evidence" --metadata "$RUNNER_TEMP/sf2-pitch-metadata.json" --output "$RUNNER_TEMP/sf2-spectrum-analysis.json"
       - name: Retain only numeric pitch analysis and metadata
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cadence-existing-sf2-pitch-${{ github.run_id }}-${{ github.run_attempt }}
+          name: cadence-existing-sf2-spectrum-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            ${{ runner.temp }}/sf2-pitch-analysis.json
+            ${{ runner.temp }}/sf2-spectrum-analysis.json
             ${{ runner.temp }}/sf2-pitch-metadata.json
           if-no-files-found: warn
           retention-days: 14

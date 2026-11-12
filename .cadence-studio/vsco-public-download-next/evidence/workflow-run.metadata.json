@@ -1,0 +1,15 @@
+{
+  "id": 43231480145,
+  "name": "Cadence native VSCO CC0 SF2 render and save reload QA",
+  "head_sha": "1fbc211789c7698c4c191fa204ddbb00216209ec",
+  "head_branch": "cadence-studio/windows-build",
+  "path": ".github/workflows/cadence-vsco-sf2-qa.yml",
+  "run_number": 1,
+  "run_attempt": 1,
+  "event": "push",
+  "status": "completed",
+  "conclusion": "success",
+  "html_url": "https://github.com/astrynome-byte/Music/actions/runs/43231480145",
+  "created_at": "2026-11-12T13:52:31Z",
+  "updated_at": "2026-11-12T13:53:46Z"
+}

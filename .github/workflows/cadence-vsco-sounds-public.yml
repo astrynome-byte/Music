@@ -1,0 +1,71 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# target.json is deliberately absent. Recipes alone cannot trigger this workflow.
+name: 'Cadence: reviewed experimental VSCO CC0 sounds only'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths: ['.cadence-studio/vsco-public-download-next/target.json']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: cadence-vsco-sounds-public-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  reviewed-sounds-only:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Require actual root-reviewed sounds-only readiness before any acquisition
+        run: |
+          $helper="$env:GITHUB_WORKSPACE/driver/.cadence-studio/vsco-public-download-next"
+          . "$helper/Read-PublicationTransport.ps1"
+          $target=Read-PublicationTransport "$helper/target.json"
+          Write-Host 'Only the exact two-bank CC0 release target passed structural review; no release or application touched.'
+      - name: Rebuild the exact qualified banks and deterministic companion archives
+        run: |
+          $helper="$env:GITHUB_WORKSPACE/driver/.cadence-studio/vsco-public-download-next"
+          python "$helper/converter/build_vsco_sf2.py" --output "$env:RUNNER_TEMP/vsco-banks" --download
+          if($LASTEXITCODE-ne0){throw 'Pinned original CC0 bank reconstruction failed.'}
+          python "$helper/prepare_assets.py" --support-root $helper --banks "$env:RUNNER_TEMP/vsco-banks" --output "$env:RUNNER_TEMP/vsco-assets"
+          if($LASTEXITCODE-ne0){throw 'Exact deterministic sound/source archive preparation failed.'}
+      - name: Require real local bytes and negative data checks without executing Cadence
+        run: |
+          $helper="$env:GITHUB_WORKSPACE/driver/.cadence-studio/vsco-public-download-next"
+          $env:CADENCE_SOUNDS_ASSET_ROOT="$env:RUNNER_TEMP/vsco-assets"
+          python "$helper/test_validate_sounds_publication.py"
+          if($LASTEXITCODE-ne0){throw 'Sounds-only validator data checks failed.'}
+          & "$helper/checks/check-transport-data.ps1" -Support $helper
+          python "$helper/validate_sounds_publication.py" --target "$helper/target.json" --root "$env:RUNNER_TEMP/vsco-assets" --output "$env:RUNNER_TEMP/vsco-preflight.json"
+          if($LASTEXITCODE-ne0){throw 'Actual sound archive/source/license identity check failed.'}
+      - name: Publish only the reviewed experimental sound assets and verify anonymous SHA downloads
+        run: |
+          $helper="$env:GITHUB_WORKSPACE/driver/.cadence-studio/vsco-public-download-next"
+          & "$helper/Publish-SoundsExperimental.ps1" -TargetPath "$helper/target.json" -InputRoot "$env:RUNNER_TEMP/vsco-assets" -OutputDirectory "$env:RUNNER_TEMP/vsco-publication-evidence"
+      - name: Retain factual publication evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-vsco-sounds-public-evidence-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/vsco-publication-evidence/*.json
+            ${{ runner.temp }}/vsco-publication-evidence/*.md
+            ${{ runner.temp }}/vsco-publication-evidence/*.txt
+            ${{ runner.temp }}/vsco-preflight.json
+            ${{ runner.temp }}/vsco-assets/asset-preparation.json
+            ${{ github.workspace }}/driver/.cadence-studio/vsco-public-download-next/checks/transport-data-results.json
+          retention-days: 14
+          if-no-files-found: warn

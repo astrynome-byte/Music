@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "component": "Native VSCO CE flute/solo-violin SoundFont derivative",
+  "status": "source-and-real-bank-prepared-Linux-engine-rendered-not-Windows-qualified",
+  "source": {
+    "repository": "https://github.com/sgossner/VSCO-2-CE",
+    "tag": "1.1.0",
+    "commit": "28092772094b2d9f1148d84cea97f4545b8c687d",
+    "original_files": 46,
+    "original_WAV_files": 43,
+    "original_selection_bytes": 99534068,
+    "original_WAV_bytes": 99522542,
+    "original_size_and_Git_blob_verified": true,
+    "original_WAV_cache_retained": false
+  },
+  "licenses": {
+    "builder_code": "GPL-3.0-only",
+    "samples_and_mappings": "CC0-1.0",
+    "original_CC0_text": "VSCO-CC0-LICENSE.txt",
+    "code_GPL_text": "CODE-GPL-3.0.txt"
+  },
+  "mapping": {
+    "flute": {
+      "regions": 13,
+      "key_range": [
+        60,
+        96
+      ],
+      "bank": 0,
+      "program_zero_based": 73,
+      "GM_one_based": 74,
+      "resource_id": "Cadence-VSCO-Flute\\0\\73",
+      "normalization_headroom_db": 12
+    },
+    "violin": {
+      "regions": 30,
+      "key_range": [
+        55,
+        96
+      ],
+      "velocity_split": [
+        62,
+        63
+      ],
+      "bank": 0,
+      "program_zero_based": 40,
+      "GM_one_based": 41,
+      "resource_id": "Cadence-VSCO-Violin\\0\\40",
+      "normalization_headroom_db": 21,
+      "original_C4_p_fine_tune_cents": -20
+    }
+  },
+  "SF2_profile": {
+    "version": "2.1",
+    "PCM_bits": 16,
+    "stereo_channels_preserved": true,
+    "linked_sample_headers_and_panned_zones": true,
+    "WAV_24_or_32_to_16": "deterministic high signed 16 bits, no dither",
+    "attack_seconds": 0.001,
+    "flute_release_seconds": 0.7,
+    "violin_release_seconds": 0.8,
+    "ampeg_dynamic_implemented": false,
+    "original_WAV_loops_found": 0,
+    "invented_loops": false,
+    "long_note_limit": "All 43 originals lack smpl loops. Held notes stop when finite recorded samples end. No perpetual sustain, legato or other articulation is added.",
+    "gain_profile": "Target-specific Cadence/FluidSynth EMU0.4 compensation, NOT generic SF2 gain units",
+    "raw_initialAttenuation_units_per_target_db": 25,
+    "minus18_raw_generator_delta": 450,
+    "other_SF2_engine_gain_portability_claimed": false,
+    "native_engine_source_evidence": {
+      "path": "/workspace/cadence-system-aac/src/framework/audio/thirdparty/fluidsynth/fluidsynth-2.3.3/src/sfloader/fluid_defsfont.c",
+      "sha256": "360264e89d613eb912d567cb141d615728f6ce5fa2d242dbaaec2b879c3bab5f",
+      "matching_lines": [
+        {
+          "line": 35,
+          "text": "#define EMU_ATTENUATION_FACTOR (0.4f)"
+        },
+        {
+          "line": 1478,
+          "text": "            gen[sfgen->id].val = (fluid_real_t) sfgen->amount.sword * EMU_ATTENUATION_FACTOR;"
+        }
+      ]
+    }
+  },
+  "actual_local_results": {
+    "engine": "Existing Linux 2.4.4",
+    "report": "checks/actual-linux-fluid-longnotes.json",
+    "three_real_banks_loaded_and_rendered": true,
+    "both_stereo_sides_nonzero": true,
+    "nonfinite_or_clipped": false,
+    "measured_quiet_gain_db": -17.999999999471964,
+    "long_notes_held_seconds": 20,
+    "finite_tail_silence_observed": true,
+    "release_note_off_after_seconds": 1,
+    "release_tail_silence_by_seconds": 2,
+    "new_system_dependency_installed": false,
+    "Windows_app_executed": false,
+    "human_listening_performed": false
+  },
+  "future_Windows_QA": {
+    "workflow": "cadence-vsco-sf2-qa.yml",
+    "namespace": ".cadence-studio/vsco-sf2/",
+    "stage_build": 2005,
+    "producer_run_id": 43207550870,
+    "artifact_id": 13943781621,
+    "executable_sha256": "d957ffc99497cb01b1f00f82ba1d6e89ef84547708506c6c51423675805e140a",
+    "native_resource_IDs_selected": true,
+    "mandatory_MS_Basic_controls": 2,
+    "VSCO_cases": 3,
+    "reload_WAV_and_save_only_identity": true,
+    "owned_Job_and_three_marked_profile_roots": true,
+    "application_or_system_installed": false,
+    "Windows_qualification_performed": false
+  },
+  "integration": {
+    "product_root_or_app_sources_modified": false,
+    "source_or_artifacts_published": false,
+    "GUI_library_manager_integrated": false,
+    "MS_Basic_remains_general_fallback": true
+  },
+  "banks": [
+    {
+      "file": "Cadence-VSCO-Flute.sf2",
+      "bytes": 16778410,
+      "sha256": "2bc48929d1996687b99e27b532043c4cb34b89480471faaea446ffc021ab3768",
+      "resource_id": "Cadence-VSCO-Flute\\0\\73",
+      "program": 73,
+      "gain_delta_db": 0
+    },
+    {
+      "file": "Cadence-VSCO-Violin.sf2",
+      "bytes": 74366558,
+      "sha256": "801896ef3be53c4b60d9dc87078787add7fdc44b1a3bfe9fff30fcc519d93e0d",
+      "resource_id": "Cadence-VSCO-Violin\\0\\40",
+      "program": 40,
+      "gain_delta_db": 0
+    },
+    {
+      "file": "Cadence-VSCO-Flute-minus18.sf2",
+      "bytes": 16778410,
+      "sha256": "b1a53205814bcf3068f0278f2940f6d8b953215f2adf4659a238448a9a70a17f",
+      "resource_id": "Cadence-VSCO-Flute-minus18\\0\\73",
+      "program": 73,
+      "gain_delta_db": -18
+    }
+  ],
+  "bank_payload_bytes": 107923378,
+  "builder_limits": {
+    "source_WAV_bytes_each": 4000000,
+    "new_local_bytes_maximum": 150000000
+  },
+  "limitations": [
+    "Only the exact sustain-vibrato flute/solo-violin mappings are accepted; no general SFZ opcode support.",
+    "PCM24/32 integer recordings are deterministically truncated to signed PCM16; stereo channels are retained and linked.",
+    "Positive SFZ region gains are normalized by one documented common headroom per bank; relative gains remain unchanged.",
+    "Gain generators target Cadence's FluidSynth EMU attenuation factor 0.4 (25 raw units/dB); other engines may interpret gain differently.",
+    "Attack/release are fixed SoundFont timecents. Live ampeg_dynamic is not implemented; default SoundFont velocity response remains active.",
+    "Only an original forward infinite WAV smpl loop is enabled, continuously through release. No loop or articulation is invented.",
+    "No recorded legato/staccato, original sfizz equivalence, human listening or GUI manager integration is claimed."
+  ]
+}

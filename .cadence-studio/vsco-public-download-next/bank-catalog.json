@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "version": "1.0.0-exp.1",
+  "sounds_license": "CC0-1.0",
+  "qualified_run": 43231480145,
+  "banks": [
+    {
+      "file": "Cadence-VSCO-Flute.sf2",
+      "bytes": 16778410,
+      "sha256": "2bc48929d1996687b99e27b532043c4cb34b89480471faaea446ffc021ab3768",
+      "soundfont_name": "Cadence-VSCO-Flute",
+      "resource_id": "Cadence-VSCO-Flute\\0\\73",
+      "bank": 0,
+      "program": 73,
+      "gain_delta_db": 0,
+      "instrument": "flute",
+      "regions": 13,
+      "zones": 26,
+      "sample_headers": 26,
+      "headroom_db": 12.0,
+      "attack_seconds": 0.001,
+      "release_seconds": 0.7,
+      "loops_enabled": 0,
+      "output_pcm_bits": 16,
+      "stereo_preserved": true,
+      "raw_attenuation_units_per_db": 25
+    },
+    {
+      "file": "Cadence-VSCO-Violin.sf2",
+      "bytes": 74366558,
+      "sha256": "801896ef3be53c4b60d9dc87078787add7fdc44b1a3bfe9fff30fcc519d93e0d",
+      "soundfont_name": "Cadence-VSCO-Violin",
+      "resource_id": "Cadence-VSCO-Violin\\0\\40",
+      "bank": 0,
+      "program": 40,
+      "gain_delta_db": 0,
+      "instrument": "violin",
+      "regions": 30,
+      "zones": 60,
+      "sample_headers": 60,
+      "headroom_db": 21.0,
+      "attack_seconds": 0.001,
+      "release_seconds": 0.8,
+      "loops_enabled": 0,
+      "output_pcm_bits": 16,
+      "stereo_preserved": true,
+      "raw_attenuation_units_per_db": 25
+    }
+  ],
+  "total_sf2_bytes": 91144968,
+  "calibration_control_in_public_audio_archive": false
+}
