@@ -1,0 +1,51 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: collect pinned corresponding source archives and notices'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/corresponding-sources/**'
+      - '.github/workflows/cadence-corresponding-sources.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cadence-corresponding-sources-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  original-source-material:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Download only original archives and collect exact original legal texts
+        run: |
+          python -I -X utf8 "$GITHUB_WORKSPACE/driver/.cadence-studio/corresponding-sources/collect.py" \
+            --output "$RUNNER_TEMP/cadence-corresponding-sources"
+      - name: Recheck complete hashes, source pins and every collected notice
+        run: |
+          python -I -X utf8 "$GITHUB_WORKSPACE/driver/.cadence-studio/corresponding-sources/verify_bundle.py" \
+            --bundle "$RUNNER_TEMP/cadence-corresponding-sources"
+      - name: Exercise real corruption, offline and final-distribution guards on these collected bytes
+        run: |
+          python -I -X utf8 "$GITHUB_WORKSPACE/driver/.cadence-studio/corresponding-sources/test_sources.py" \
+            --bundle "$RUNNER_TEMP/cadence-corresponding-sources" \
+            --cache "$RUNNER_TEMP/cadence-corresponding-sources/archives" \
+            --output "$RUNNER_TEMP/corresponding-source-tests.json"
+          cat "$RUNNER_TEMP/corresponding-source-tests.json"
+      - name: Retain source material even after a diagnostic failure; no final publication
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-corresponding-sources-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cadence-corresponding-sources/
+          retention-days: 14
+          include-hidden-files: true
+          if-no-files-found: warn

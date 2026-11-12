@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "application_or_windows_executed": false,
+  "cases": [
+    {
+      "case": "notice-corrupt",
+      "configuration_refused": true,
+      "installed_files": 0
+    },
+    {
+      "case": "report-hash-wrong",
+      "configuration_refused": true,
+      "installed_files": 0
+    }
+  ],
+  "original_collection_unchanged": true
+}

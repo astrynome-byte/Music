@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "profile": "cadence-combined2002-corresponding-source-candidate1",
+  "qt_version": "6.10.2",
+  "binary_inventory_source": {
+    "run_id": 43108867145,
+    "source_tree": "f95b7097a55dddf9c7f697fc826b95721071231a",
+    "stage_archive_sha256": "18bdda165ddcdef884949bf84ae398e6ee11619439161d4a1b84404edf307b46",
+    "inventory_sha256": "99c4383b2fefa9fc004a4874d945fcba57ac25082e8f64fd0b6e920799fba33f"
+  },
+  "archives": [
+    {
+      "id": "qtbase",
+      "version": "6.10.2",
+      "repository": "https://github.com/qt/qtbase.git",
+      "tag": "v6.10.2",
+      "tag_object": "4e4e866977c08ea7a4e197f872b8fb504f437e80",
+      "commit": "000d6c62f7880bb8d3054724e8da0b8ae244130e",
+      "url": "https://codeload.github.com/qt/qtbase/tar.gz/000d6c62f7880bb8d3054724e8da0b8ae244130e",
+      "archive": "qtbase-000d6c62f7880bb8d3054724e8da0b8ae244130e.tar.gz",
+      "archive_bytes": 67281154,
+      "sha256": "2bffe7325cd32454a7a03548a4afad0e31b9cc3087a37867cb6c9f6ad4024f37",
+      "format": "tar",
+      "root": "qtbase-000d6c62f7880bb8d3054724e8da0b8ae244130e",
+      "source_scope": "Official v6.10.2 module source. Binary build options and patches still need a matching build record.",
+      "archive_gitmodules": []
+    },
+    {
+      "id": "qtdeclarative",
+      "version": "6.10.2",
+      "repository": "https://github.com/qt/qtdeclarative.git",
+      "tag": "v6.10.2",
+      "tag_object": "858423070a1a4f7d8d5c8c525bf056f824b50430",
+      "commit": "09c70541c76659bcd8c49f05841b0e778c9ffd4c",
+      "url": "https://codeload.github.com/qt/qtdeclarative/tar.gz/09c70541c76659bcd8c49f05841b0e778c9ffd4c",
+      "archive": "qtdeclarative-09c70541c76659bcd8c49f05841b0e778c9ffd4c.tar.gz",
+      "archive_bytes": 42460168,
+      "sha256": "0c82076dcaa0d6e7c7e0b0f72072fc5fc6842bf805e4c5df5905080d457dd54c",
+      "format": "tar",
+      "root": "qtdeclarative-09c70541c76659bcd8c49f05841b0e778c9ffd4c",
+      "source_scope": "Official v6.10.2 module source. Binary build options and patches still need a matching build record.",
+      "archive_gitmodules": [
+        "[submodule \"tests/auto/qml/ecmascripttests/test262\"]\n\tpath = tests/auto/qml/ecmascripttests/test262\n\turl = ../qtdeclarative-testsuites.git\n\tbranch = snapshot-20180312-3c69133-based\n"
+      ]
+    },
+    {
+      "id": "qtsvg",
+      "version": "6.10.2",
+      "repository": "https://github.com/qt/qtsvg.git",
+      "tag": "v6.10.2",
+      "tag_object": "1260093d0943114ed8658aa205a3d0f1c2fac20c",
+      "commit": "b925029db51aff0b17a48f5939cb83c27932d0cb",
+      "url": "https://codeload.github.com/qt/qtsvg/tar.gz/b925029db51aff0b17a48f5939cb83c27932d0cb",
+      "archive": "qtsvg-b925029db51aff0b17a48f5939cb83c27932d0cb.tar.gz",
+      "archive_bytes": 2902702,
+      "sha256": "b77b5463d71f86f81dff940cfcabb0803d61a39019a08a3f9e3c680c885806b5",
+      "format": "tar",
+      "root": "qtsvg-b925029db51aff0b17a48f5939cb83c27932d0cb",
+      "source_scope": "Official v6.10.2 module source. Binary build options and patches still need a matching build record.",
+      "archive_gitmodules": []
+    },
+    {
+      "id": "qt5compat",
+      "version": "6.10.2",
+      "repository": "https://github.com/qt/qt5compat.git",
+      "tag": "v6.10.2",
+      "tag_object": "174ea7cfbf803d1c0f4adb5f4d4aa8ab905a7112",
+      "commit": "c005ed402a003af00221782c7548279a75e8c72a",
+      "url": "https://codeload.github.com/qt/qt5compat/tar.gz/c005ed402a003af00221782c7548279a75e8c72a",
+      "archive": "qt5compat-c005ed402a003af00221782c7548279a75e8c72a.tar.gz",
+      "archive_bytes": 17525477,
+      "sha256": "f1a5ec625b5c298a6439161b88232e2502acb7dc97e9b18020cbdd1db0f9c6ac",
+      "format": "tar",
+      "root": "qt5compat-c005ed402a003af00221782c7548279a75e8c72a",
+      "source_scope": "Official v6.10.2 module source. Binary build options and patches still need a matching build record.",
+      "archive_gitmodules": []
+    },
+    {
+      "id": "qtnetworkauth",
+      "version": "6.10.2",
+      "repository": "https://github.com/qt/qtnetworkauth.git",
+      "tag": "v6.10.2",
+      "tag_object": "ccccebd84b484af19b6a895766136b2bc085f134",
+      "commit": "b3999f9967d65320369bb96b0ae91d810fd3fc38",
+      "url": "https://codeload.github.com/qt/qtnetworkauth/tar.gz/b3999f9967d65320369bb96b0ae91d810fd3fc38",
+      "archive": "qtnetworkauth-b3999f9967d65320369bb96b0ae91d810fd3fc38.tar.gz",
+      "archive_bytes": 477780,
+      "sha256": "c32b49d90d44badf6dc3c3956b3b22d71ab2f5ef0afdd8c65388eae22893ec74",
+      "format": "tar",
+      "root": "qtnetworkauth-b3999f9967d65320369bb96b0ae91d810fd3fc38",
+      "source_scope": "Official v6.10.2 module source. Binary build options and patches still need a matching build record.",
+      "archive_gitmodules": []
+    },
+    {
+      "id": "qtshadertools",
+      "version": "6.10.2",
+      "repository": "https://github.com/qt/qtshadertools.git",
+      "tag": "v6.10.2",
+      "tag_object": "8baece095256858c4a54faacfb5525f5398d26a9",
+      "commit": "b9678c24094aef235f649cb443eb4e197487c675",
+      "url": "https://codeload.github.com/qt/qtshadertools/tar.gz/b9678c24094aef235f649cb443eb4e197487c675",
+      "archive": "qtshadertools-b9678c24094aef235f649cb443eb4e197487c675.tar.gz",
+      "archive_bytes": 1767024,
+      "sha256": "43a3f17f4a6c2385505e477fa1519812ea6bfb17ea1003a1f3475a60369898de",
+      "format": "tar",
+      "root": "qtshadertools-b9678c24094aef235f649cb443eb4e197487c675",
+      "source_scope": "Official v6.10.2 module source. Binary build options and patches still need a matching build record.",
+      "archive_gitmodules": []
+    },
+    {
+      "id": "mnxdom",
+      "version": "2.1",
+      "commit": "488aa8757ec602c20ff8cf599a2c6857339d8e93",
+      "url": "https://codeload.github.com/rpatters1/mnxdom/tar.gz/488aa8757ec602c20ff8cf599a2c6857339d8e93",
+      "archive": "mnxdom-488aa8757ec602c20ff8cf599a2c6857339d8e93.tar.gz",
+      "archive_bytes": 201936,
+      "sha256": "308b413cf8288e872715fcdede0ec8504693f7bbadcc50bd5969ed7ea1d35baa",
+      "format": "tar",
+      "root": "mnxdom-488aa8757ec602c20ff8cf599a2c6857339d8e93",
+      "source_scope": "Actual MNX FetchContent dependency at the source pin; bundled W3C schema data remains in mnxdom archive."
+    },
+    {
+      "id": "nlohmann-json",
+      "version": "3.12.0",
+      "commit": null,
+      "url": "https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz",
+      "archive": "nlohmann-json-3.12.0.tar.xz",
+      "archive_bytes": 114576,
+      "sha256": "42f6e95cad6ec532fd372391373363b62a14af6d771056dbfc86160e6dfff7aa",
+      "format": "tar",
+      "root": "json",
+      "source_scope": "Actual MNX FetchContent dependency at the source pin; bundled W3C schema data remains in mnxdom archive."
+    },
+    {
+      "id": "json-schema-validator",
+      "version": "2.4.0",
+      "commit": "40af3ec39670e768fc3f01f935140af311d71024",
+      "url": "https://codeload.github.com/pboettch/json-schema-validator/tar.gz/40af3ec39670e768fc3f01f935140af311d71024",
+      "archive": "json-schema-validator-40af3ec39670e768fc3f01f935140af311d71024.tar.gz",
+      "archive_bytes": 83126,
+      "sha256": "36d7e99a73aa6076834736f0fb108fa8e232c4739aa4b3e2089fe96efb21fa8d",
+      "format": "tar",
+      "root": "json-schema-validator-40af3ec39670e768fc3f01f935140af311d71024",
+      "source_scope": "Actual MNX FetchContent dependency at the source pin; bundled W3C schema data remains in mnxdom archive."
+    },
+    {
+      "id": "vst3-sdk",
+      "version": "v3.7.12_build_20",
+      "commit": "cc2adc90382dded9e347caf74e4532f1458715db",
+      "url": "https://raw.githubusercontent.com/musescore/muse_deps/c9a299e19df04e40435d1c4649548c69ce152bd8/vst3sdk/v3.7.12_build_20/vst3sdk_v3.7.12_build_20_src.7z",
+      "archive": "vst3sdk_v3.7.12_build_20_src.7z",
+      "archive_bytes": 14746510,
+      "sha256": "3f95f6242865e48fc6964f26f96f3624dfbce11830488ad6ee267d56cc42ed23",
+      "format": "7z",
+      "root": "",
+      "source_scope": "Exact original source archive used by the pinned Windows preparation; all source files preserved. Applicable GPLv3 alternatives and separate BSD notices retained."
+    },
+    {
+      "id": "asio-sdk",
+      "version": "ASIO-SDK_2.3.4_2025-10-15",
+      "commit": null,
+      "url": "https://raw.githubusercontent.com/musescore/muse_deps/c9a299e19df04e40435d1c4649548c69ce152bd8/asiosdk/ASIO-SDK_2.3.4_2025-10-15/ASIO-SDK_2.3.4_2025-10-15.zip",
+      "archive": "ASIO-SDK_2.3.4_2025-10-15.zip",
+      "archive_bytes": 8910208,
+      "sha256": "d5ebf0c20dd2c5f43771fd0c1418f4b361bf52434ee670097cfa6b3a335e2eca",
+      "format": "zip",
+      "root": "ASIOSDK",
+      "source_scope": "Exact original source archive used by the pinned Windows preparation; all source files preserved. Applicable GPLv3 alternatives and separate BSD notices retained."
+    }
+  ],
+  "mnx_edges": [
+    [
+      "mnxdom",
+      "nlohmann-json"
+    ],
+    [
+      "mnxdom",
+      "json-schema-validator"
+    ]
+  ],
+  "not_runtime_submodules": [
+    {
+      "module": "qtdeclarative",
+      "path": "tests/auto/qml/ecmascripttests/test262",
+      "purpose": "External conformance tests; not needed to build the delivered libraries with tests disabled"
+    },
+    {
+      "module": "mnxdom",
+      "path": "docs/doxygen-awesome-css",
+      "purpose": "Documentation styling; not needed to build the delivered library"
+    }
+  ],
+  "remaining_binary_provenance": [
+    "Qt binary package build configuration and any downstream patches are not established merely by version equality",
+    "icuuc.dll source/build provenance",
+    "opengl32sw.dll Mesa/software renderer source/build provenance",
+    "dxcompiler.dll/dxil.dll/d3dcompiler_47.dll redistribution provenance",
+    "Microsoft VC runtime redistribution provenance"
+  ],
+  "supplementary_notices": [
+    {
+      "id": "w3c-mnx-cla",
+      "component": "w3c-mnx",
+      "archive": "W3C-CLA-ba437927880a2a85e896670aa20aeedcda38b2ef.html",
+      "archive_bytes": 16429,
+      "sha256": "8fce594ac447e33d3e939ae6659076121c45d4d0ae8797613fe4560a478c9e12",
+      "url": "https://raw.githubusercontent.com/w3c/cg-program/ba437927880a2a85e896670aa20aeedcda38b2ef/policies/cla.html",
+      "notice_file": "W3C-CLA.html",
+      "git_blob_sha": "435e1d429aad1ff6aec629d041337d6b62027db5"
+    },
+    {
+      "id": "w3c-mnx-source-notice",
+      "component": "w3c-mnx",
+      "archive": "MNX-specification-d513cf7a28a84c803ed36e448b416cb49c3a22f9.html",
+      "archive_bytes": 11272,
+      "sha256": "13852efc76de421e7210d3cf972673a131444d43eed90a0bd383bbf01e9fba35",
+      "url": "https://raw.githubusercontent.com/w3c-cg/mnx/d513cf7a28a84c803ed36e448b416cb49c3a22f9/docs/index.html",
+      "notice_file": "MNX-specification-source.html",
+      "git_blob_sha": "9827116b69367ba61ca4904b8fca296115ea4afa"
+    }
+  ],
+  "vendored_w3c_mnx": {
+    "repository": "https://github.com/w3c-cg/mnx",
+    "commit": "d513cf7a28a84c803ed36e448b416cb49c3a22f9",
+    "commit_date": "2026-02-17T14:26:01Z",
+    "specification": "MNX 1.0 draft specification",
+    "authority": "Exact specification footer publishes copyright 2021 Contributors and the W3C Community Contributor License Agreement",
+    "cla_source_repository": "https://github.com/w3c/cg-program",
+    "cla_source_commit": "ba437927880a2a85e896670aa20aeedcda38b2ef",
+    "cla_source_commit_message": "Link fixes; this Nov2026 update incorporates four link fixes made7July2025 with no normative impact",
+    "cla_copyright_grant_section": "2.1",
+    "attribution_requirement_section": "2.2",
+    "scope": "Schema and JSON examples are vendored in mnxdom, not relicensed as MIT by the host library",
+    "generated_attribution_file": "SPECIFICATION-ATTRIBUTION.txt",
+    "generated_attribution": "MNX 1.0 draft specification\nSnapshot: d513cf7a28a84c803ed36e448b416cb49c3a22f9 (17 February 2026)\n\nCopyright © 2021 the Contributors to the MNX Specification, published by the Music Notation Community Group under the W3C Community Contributor License Agreement (CLA).\n\nOriginal specification and schema: https://github.com/w3c-cg/mnx/tree/d513cf7a28a84c803ed36e448b416cb49c3a22f9\nW3C CLA: https://www.w3.org/community/about/agreements/cla/\nThe original text is reproduced in W3C-CLA.html, from the official w3c/cg-program repository at ba437927880a2a85e896670aa20aeedcda38b2ef. That commit only updates links, with no normative changes.\n\nThis attribution accompanies the unmodified schema and JSON examples vendored in MNXDOM. MNXDOM's MIT license does not replace the specification's own terms. No W3C endorsement of Cadence Studio is implied.\n"
+  }
+}

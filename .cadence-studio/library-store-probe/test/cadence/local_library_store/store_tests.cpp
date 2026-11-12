@@ -314,7 +314,7 @@ void metadataWatchDoesNotBlockAtomicReplacement()
         file.close();
     };
     restoreTimestamp();
-    const QString baseline = localCatalogMetadataStamp(store.filePath());
+    QString observedStamp = localCatalogMetadataStamp(store.filePath());
     const qint64 baselineSize = QFileInfo(store.filePath()).size();
     QFileSystemWatcher watcher;
     watchLocalCatalog(watcher, store.filePath());
@@ -324,11 +324,15 @@ void metadataWatchDoesNotBlockAtomicReplacement()
     QObject::connect(&watcher, &QFileSystemWatcher::fileChanged, &watcher, [&](const QString& path) {
         require(path == store.filePath(), "Unexpected watched file");
         ++fileEvents;
+        observedStamp = localCatalogMetadataStamp(store.filePath());
         watchLocalCatalog(watcher, store.filePath());
     });
     QObject::connect(&watcher, &QFileSystemWatcher::directoryChanged, &watcher, [&]() {
-        if (localCatalogMetadataStamp(store.filePath()) != baseline) {
+        const QString current = localCatalogMetadataStamp(store.filePath());
+        if (current != observedStamp) {
             ++meaningfulDirectoryEvents;
+            observedStamp = current;
+            watchLocalCatalog(watcher, store.filePath());
         }
     });
     const auto drainEvents = [&]() {
@@ -343,27 +347,40 @@ void metadataWatchDoesNotBlockAtomicReplacement()
     const auto waitForReplacement = [&](int before) {
         QElapsedTimer timeout;
         timeout.start();
-        while (fileEvents <= before && timeout.elapsed() < 5000) {
+        while (fileEvents + meaningfulDirectoryEvents <= before && timeout.elapsed() < 5000) {
             QCoreApplication::processEvents(QEventLoop::AllEvents, 50);
             QThread::msleep(5);
         }
-        require(fileEvents > before, "Native file watcher missed an equal-size/equal-timestamp atomic replacement");
+        require(fileEvents + meaningfulDirectoryEvents > before,
+                "Native watcher missed an equal-size/equal-timestamp atomic replacement");
         require(watcher.files().contains(store.filePath()), "File watch was not rearmed after atomic replacement");
         drainEvents();
     };
     for (const QString& title : { QStringLiteral("BBB"), QStringLiteral("CCC") }) {
         auto replacement = score;
         replacement.title = title;
-        const int before = fileEvents;
+        const int before = fileEvents + meaningfulDirectoryEvents;
         // Metadata checks may be held as values across the mutation; they own
         // no catalogue stream and cannot block QSaveFile's target replacement.
         const QString observed = localCatalogMetadataStamp(store.filePath());
+#ifdef Q_OS_WIN
+        const QString identity = localCatalogWindowsIdentity(QFileInfo(store.filePath()));
+        require(!identity.isEmpty(), "The Windows runner filesystem did not provide a catalogue entry identity");
+#endif
         const auto changed = store.relink(id, replacement);
         require(changed.ok && changed.entries.front().title == title, "Metadata-only watcher blocked atomic commit");
         restoreTimestamp();
         require(QFileInfo(store.filePath()).size() == baselineSize
-                && localCatalogMetadataStamp(store.filePath()) == observed,
+                && QFileInfo(store.filePath()).lastModified().toMSecsSinceEpoch() == fixed.toMSecsSinceEpoch(),
                 "Equal-size/equal-timestamp replacement test precondition failed");
+#ifdef Q_OS_WIN
+        require(localCatalogWindowsIdentity(QFileInfo(store.filePath())) != identity
+                && localCatalogMetadataStamp(store.filePath()) != observed,
+                "A Windows atomic replacement with equal metadata must change the catalogue entry identity");
+#else
+        require(localCatalogMetadataStamp(store.filePath()) == observed,
+                "The native file-notification test must retain equal metadata on this host");
+#endif
         waitForReplacement(before);
         const auto reopened = store.load();
         require(reopened.ok && reopened.entries.front().title == title, "Reopening lost the committed watched metadata");
@@ -374,7 +391,7 @@ void metadataWatchDoesNotBlockAtomicReplacement()
     drainEvents();
     require(fileEvents == beforeRead && meaningfulDirectoryEvents == meaningfulBeforeRead,
             "Read-lock-only directory activity triggered a meaningful catalogue change");
-    const int beforeFavorite = fileEvents;
+    const int beforeFavorite = fileEvents + meaningfulDirectoryEvents;
     const auto favorite = store.setFavorite(id, true);
     require(favorite.ok && favorite.entries.front().favorite, "Favorite commit failed without a data reader");
     waitForReplacement(beforeFavorite);
@@ -430,7 +447,7 @@ int main(int argc, char** argv)
         { "bounded real lock conflict and stale-window merge", lockAndStaleSnapshots },
         { "permission and invalid-parent failures preserve data", writeFailurePreservesData },
         { "concurrent real processes preserve both writes", concurrentProcesses },
-        { "metadata-only watch permits atomic saves, equal-time replacements and native rearming", metadataWatchDoesNotBlockAtomicReplacement },
+        { "metadata/identity watch permits atomic saves, equal-time replacements and native rearming", metadataWatchDoesNotBlockAtomicReplacement },
         { "native XML gate rejects malformed/non-native/DTD and accepts modern/legacy Unicode", nativeXmlStructuralGate }
     };
     int failures = 0;

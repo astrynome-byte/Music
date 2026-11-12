@@ -1,0 +1,765 @@
+{
+  "schema_version": 1,
+  "original_binary_inventory_sha256": "99c4383b2fefa9fc004a4874d945fcba57ac25082e8f64fd0b6e920799fba33f",
+  "binaries": [
+    {
+      "bytes": 79200256,
+      "file": "bin/CadenceStudio4.exe",
+      "sha256": "35d8b076cacddb8b37a4f23aeea9899e6ab4ac9214e9a5b1125bbeccf26cf39e",
+      "source_archive_id": null,
+      "status": "Application tree f95b7097a55dddf9c7f697fc826b95721071231a is provided separately; static third parties need the build graph"
+    },
+    {
+      "bytes": 324208,
+      "file": "bin/concrt140.dll",
+      "sha256": "2405355f0a58067b258f8df33c327e3a3d716eaac5a3a5aebb757842d85bd376",
+      "source_archive_id": null,
+      "status": "source or redistribution origin needs the original Windows metadata"
+    },
+    {
+      "bytes": 4741488,
+      "file": "bin/d3dcompiler_47.dll",
+      "sha256": "a05f99734f7c4822fefc12b367af21fd0976ed6608752fb1e1e80b6ece7ecbbb",
+      "source_archive_id": null,
+      "status": "source or redistribution origin needs the original Windows metadata"
+    },
+    {
+      "bytes": 12602944,
+      "file": "bin/dxcompiler.dll",
+      "sha256": "6ec587d1952778a41a5a90647b39d0c86958e7dabf87fa1cf2b14408bfe1e8de",
+      "source_archive_id": null,
+      "status": "source or redistribution origin needs the original Windows metadata"
+    },
+    {
+      "bytes": 1508432,
+      "file": "bin/dxil.dll",
+      "sha256": "e69b838018a1e0025201edbe9f166d061807cab2f02221c18c53ea6f5e96f0b5",
+      "source_archive_id": null,
+      "status": "source or redistribution origin needs the original Windows metadata"
+    },
+    {
+      "bytes": 102712,
+      "file": "bin/generic/qtuiotouchplugin.dll",
+      "sha256": "bf4efd69f22ad7b3f3bb79979e9fdef4182ef782e7ab2c4b80e6656bbe33e363",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 71480,
+      "file": "bin/iconengines/qsvgicon.dll",
+      "sha256": "6221fed44f0f560a864312553c6918a536b8e2f04c7cb4e8ee5ba9445338aa96",
+      "source_archive_id": "qtsvg",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 36864,
+      "file": "bin/icuuc.dll",
+      "sha256": "6febd789ff616dd6398ae2453adc1e7ccd7bbb6aee8c623a2638c1c00d51e003",
+      "source_archive_id": null,
+      "status": "source or redistribution origin needs the original Windows metadata"
+    },
+    {
+      "bytes": 47928,
+      "file": "bin/imageformats/qgif.dll",
+      "sha256": "4fe24916a961587173c846055a34735b904900fb75716de4fa458c203da3e7ef",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 45880,
+      "file": "bin/imageformats/qico.dll",
+      "sha256": "0d79934047e06591b74201d826af72f6ab595f5df4705ad7f0c234c0e2cf3a32",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 577848,
+      "file": "bin/imageformats/qjpeg.dll",
+      "sha256": "004f456d513a6bfc58320652c326a023fa8fea905d26b642a561f7081442aff0",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 39224,
+      "file": "bin/imageformats/qsvg.dll",
+      "sha256": "b34f721be6e1a451a2eea3c146b0808091577143587d9e6bc689fe8214ff47d7",
+      "source_archive_id": "qtsvg",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 557728,
+      "file": "bin/msvcp140.dll",
+      "sha256": "0f885b509a685d2bbfa652fed26b5fb31d88fbdab0a978c641d1c7b8aa460aa9",
+      "source_archive_id": null,
+      "status": "source or redistribution origin needs the original Windows metadata"
+    },
+    {
+      "bytes": 35952,
+      "file": "bin/msvcp140_1.dll",
+      "sha256": "bfad5aef4c63a669e3c140655cdfdf395b6c979b400a447bd5dcb65ed8826c3d",
+      "source_archive_id": null,
+      "status": "source or redistribution origin needs the original Windows metadata"
+    },
+    {
+      "bytes": 280200,
+      "file": "bin/msvcp140_2.dll",
+      "sha256": "3ea06f0ee098b4823cb79599df3780e7f23cce52c19aac31d2a0d47efe33a5e9",
+      "source_archive_id": null,
+      "status": "source or redistribution origin needs the original Windows metadata"
+    },
+    {
+      "bytes": 50304,
+      "file": "bin/msvcp140_atomic_wait.dll",
+      "sha256": "640b2aefced484d0368eea5bdd06addd0658a3a70a49256e560d6923b404a479",
+      "source_archive_id": null,
+      "status": "source or redistribution origin needs the original Windows metadata"
+    },
+    {
+      "bytes": 31872,
+      "file": "bin/msvcp140_codecvt_ids.dll",
+      "sha256": "f2069a52880ec885ee7f0511186100eb7fada0411a2b4948fafea7735b878a18",
+      "source_archive_id": null,
+      "status": "source or redistribution origin needs the original Windows metadata"
+    },
+    {
+      "bytes": 70968,
+      "file": "bin/networkinformation/qnetworklistmanager.dll",
+      "sha256": "2f76ab1699bf9a1ef89404d054dc7325c4e18d4d27f52cd3ca3b5088d944eb18",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 20639888,
+      "file": "bin/opengl32sw.dll",
+      "sha256": "b04de4541863bc7d8879040a78889c4849c1b1da2784c4630f734c146c2998ce",
+      "source_archive_id": null,
+      "status": "source or redistribution origin needs the original Windows metadata"
+    },
+    {
+      "bytes": 997688,
+      "file": "bin/platforms/qwindows.dll",
+      "sha256": "540211565db496024246cb8a44437212e6b967f3ee7b899e888f41cc556bf041",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 213816,
+      "file": "bin/qmltooling/qmldbg_debugger.dll",
+      "sha256": "86a61481d8f07e39e2f0dd716ce842ea0fc47f7fbca882996f894e7ac5fda169",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 101176,
+      "file": "bin/qmltooling/qmldbg_inspector.dll",
+      "sha256": "5defd618ca3273db54ef0f0dade3ca1256b33ae565e937f88385803a2badd447",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 39224,
+      "file": "bin/qmltooling/qmldbg_local.dll",
+      "sha256": "8c755bf9c4ed9a2ce27160985e2339d7dc79bf35ba3570733c749cc80d6ed920",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 35640,
+      "file": "bin/qmltooling/qmldbg_messages.dll",
+      "sha256": "dd3dae3e85bbab00ceee0057e5f57b8eb62bb633ba64b57b4252942665ab32e3",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 49464,
+      "file": "bin/qmltooling/qmldbg_native.dll",
+      "sha256": "86d28b8bb8cb0c91023c3d6352fe0f56dc9a948269bb8edd92a0a2b52b5c4205",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 73528,
+      "file": "bin/qmltooling/qmldbg_nativedebugger.dll",
+      "sha256": "f6493a1922a686b9fe5da5f13e8eabfa544e2f58f6d916f95668fde317ef6566",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 204088,
+      "file": "bin/qmltooling/qmldbg_preview.dll",
+      "sha256": "0983da3b050c545dfdf4993b2966bd68a8799fc0d44f43e7d0745905bf4a16f8",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 120632,
+      "file": "bin/qmltooling/qmldbg_profiler.dll",
+      "sha256": "9bfd737b294577290de52c4cb9a7157d397b73ee98c008c6312f08492e221c5e",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 43832,
+      "file": "bin/qmltooling/qmldbg_quickprofiler.dll",
+      "sha256": "a2f17b81737cd1f0f53165dd04edd78db96210d80f94fe767b7590cbe5653d32",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 101176,
+      "file": "bin/qmltooling/qmldbg_server.dll",
+      "sha256": "08f450fe39050873f13d6a131513b8d9c6bd8c4cf62297ca02161006b224efe4",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 36152,
+      "file": "bin/qmltooling/qmldbg_tcp.dll",
+      "sha256": "13086bf71d58e229b570cd1deac629480d3548e7ebd22ba6fc17621b2ffd3fb8",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 10242360,
+      "file": "bin/Qt6Core.dll",
+      "sha256": "b98eea394a95563879b614dbd4432ce074b0fceeb154c3bae252f4e7a9376a40",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 876344,
+      "file": "bin/Qt6Core5Compat.dll",
+      "sha256": "9238290d153c279db5f9fa38400b45666dad7108ec81062c2c7c8849070f9daf",
+      "source_archive_id": "qt5compat",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 9494840,
+      "file": "bin/Qt6Gui.dll",
+      "sha256": "28ca8b9e7d3d1c4e3cfafd6fe63877a05cf10202a240134a11f98384f01c9e37",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 284472,
+      "file": "bin/Qt6LabsPlatform.dll",
+      "sha256": "4a72dae192625083d6d6564a5ce01733ea0e676c36746f2ed9826521265c3b7b",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 190776,
+      "file": "bin/Qt6LabsQmlModels.dll",
+      "sha256": "caa08a1c8b02b4da410c62adf50e28339c09b1f034c0c8dc0cf032cdc2cccc09",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 1766712,
+      "file": "bin/Qt6Network.dll",
+      "sha256": "905e1ce3947fadaad566b6deffe345daf7f6efbc57207ea7fcdbfa77669e3de6",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 292664,
+      "file": "bin/Qt6NetworkAuth.dll",
+      "sha256": "2b2cee4bf6cd28c7c65cadc21089902062ac8c76b74340c7c205e2b5db79a4cd",
+      "source_archive_id": "qtnetworkauth",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 1977144,
+      "file": "bin/Qt6OpenGL.dll",
+      "sha256": "a41b71127d07924ddda67e787e8765ebf60f217817199f1becdd63f3db88847e",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 406840,
+      "file": "bin/Qt6PrintSupport.dll",
+      "sha256": "73b204c1dc66e7c49c1337fdbe4a4aab378eb31ecfe823ed1b009261b4c3925a",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 5333816,
+      "file": "bin/Qt6Qml.dll",
+      "sha256": "b1cad2aef8936cede67fecdc13c8eb930c77d0b189a1e970d72ab903902e611d",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 160056,
+      "file": "bin/Qt6QmlMeta.dll",
+      "sha256": "6da039d0fd79d978b87d6477d2aa60e6161b7f7f8f2dd66006517fb4656afcbd",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 986936,
+      "file": "bin/Qt6QmlModels.dll",
+      "sha256": "3e4075935cd52710628d559e690391ef0bf03f4484aa47ddf1287c57aa0066a0",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 76600,
+      "file": "bin/Qt6QmlWorkerScript.dll",
+      "sha256": "e1ceef21a868e29ddad78624039219676ceff591eb7304c151ff8b5e8bb74c73",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 6506296,
+      "file": "bin/Qt6Quick.dll",
+      "sha256": "14ab58cbe8aabd2eedad322c361119ff628eb602ea62998a5da1051071aeca7e",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 100152,
+      "file": "bin/Qt6QuickControls2.dll",
+      "sha256": "48d1feac8cb6949746f7d9c1a546866ff2220add03495b26c3dd1a0a28393ba0",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 1781048,
+      "file": "bin/Qt6QuickControls2Basic.dll",
+      "sha256": "24299e6a1ec0cb6831cce7504d5dc85dcb1ed4954b7ca559e398c7e1a3a72c43",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 62264,
+      "file": "bin/Qt6QuickControls2BasicStyleImpl.dll",
+      "sha256": "4e5a2020deff50f1e816d86a6090ab032e692305af81924fa32a3b2c0bb093e8",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 197432,
+      "file": "bin/Qt6QuickControls2FluentWinUI3StyleImpl.dll",
+      "sha256": "eae36fc05cfceebf10c68afca452caeccb517eca00f878a4af3ebfbe6abe1eac",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 1418552,
+      "file": "bin/Qt6QuickControls2Fusion.dll",
+      "sha256": "91de4eb567d196082e37906a197f09a6d8be81e60df81a30960c2c3fe5fe55d8",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 160568,
+      "file": "bin/Qt6QuickControls2FusionStyleImpl.dll",
+      "sha256": "ef7eb27fbb5d2392eef53e75e6f49fedcd67bf4717c9f6e93c2a9889f59308e4",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 3022136,
+      "file": "bin/Qt6QuickControls2Imagine.dll",
+      "sha256": "4d9f516a2d8ed02552df028e6e1c0a4359cf480f8b169b0b4c0ed2061bef89ef",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 50488,
+      "file": "bin/Qt6QuickControls2ImagineStyleImpl.dll",
+      "sha256": "2ba84a6c2e0a591a5c3de0f8f07b386e846ba7358e7ab13e5424d18b62614c6a",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 294200,
+      "file": "bin/Qt6QuickControls2Impl.dll",
+      "sha256": "38b6cdb0ae879a09c36b2eebf20e4c316b05931f7f75a63a0944ed38ad262d86",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 1818936,
+      "file": "bin/Qt6QuickControls2Material.dll",
+      "sha256": "8769047158ccb64826761534b3d1911fcc870ead776a811b051909f20fba4c41",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 296760,
+      "file": "bin/Qt6QuickControls2MaterialStyleImpl.dll",
+      "sha256": "69e1ef038004e68242fa5e832b1705ee616751bc87a7272e56e7aeae78202d86",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 1502520,
+      "file": "bin/Qt6QuickControls2Universal.dll",
+      "sha256": "041f4c70e1cbaab23b8927428d4ddf1db0899b6dae4fc7644dd55d052dc8d1bc",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 110392,
+      "file": "bin/Qt6QuickControls2UniversalStyleImpl.dll",
+      "sha256": "e40035d4d70e1143684c855a62e2e9d8bef47eab9f3d849e1a1ad693095bed53",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 51000,
+      "file": "bin/Qt6QuickControls2WindowsStyleImpl.dll",
+      "sha256": "eaccaefad9787ff72499ddad179a66fd751d91a8b3270aac739a0eeaff0dc6f9",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 418616,
+      "file": "bin/Qt6QuickEffects.dll",
+      "sha256": "1e877a4c333a7f9d573c09adb7353f8688b5b9f36ec30da0edd38f0674b82fdf",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 307000,
+      "file": "bin/Qt6QuickLayouts.dll",
+      "sha256": "45b48b77b08a021510fe73b023c4c22e7097b28a501c3fd96a943271362e3c29",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 342840,
+      "file": "bin/Qt6QuickShapes.dll",
+      "sha256": "1c4573fb5aecb6ce9bcac7389806426a6849cc8e5856a43d5e317560a84a845c",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 1999160,
+      "file": "bin/Qt6QuickTemplates2.dll",
+      "sha256": "d3faa8d02ef1c051a879417bd75ce6c5f257e705e26cc8650a964f6fa8e0e4b1",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 4067128,
+      "file": "bin/Qt6ShaderTools.dll",
+      "sha256": "c11e2a478630d8fa58ae25f2827723693f3c66a22de9494205e214e06d703c5a",
+      "source_archive_id": "qtshadertools",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 632120,
+      "file": "bin/Qt6Svg.dll",
+      "sha256": "982a589e52680d7b525da0031eba783d3bbd77e6611cdea5cd276a2b9213f4c9",
+      "source_archive_id": "qtsvg",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 6576952,
+      "file": "bin/Qt6Widgets.dll",
+      "sha256": "f383fb6b3f6996efe23327ff607e7298fc47ee76e8b8ef8a65f8d2e0a91707e4",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 220984,
+      "file": "bin/styles/qmodernwindowsstyle.dll",
+      "sha256": "f9ddcd6f6319be76ec8ea1b95e6829cdc0f9600242b6bdd07babb0185e9762ab",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 103224,
+      "file": "bin/tls/qcertonlybackend.dll",
+      "sha256": "584392e25d46b6edc255e4c5849920da3e52c01172199def876284525587bb05",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 262968,
+      "file": "bin/tls/qschannelbackend.dll",
+      "sha256": "4632404cb87f860e7bb811f525685509127da8d05f398aada5b2b88318e4a621",
+      "source_archive_id": "qtbase",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 124544,
+      "file": "bin/vcruntime140.dll",
+      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+      "source_archive_id": null,
+      "status": "source or redistribution origin needs the original Windows metadata"
+    },
+    {
+      "bytes": 49792,
+      "file": "bin/vcruntime140_1.dll",
+      "sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f",
+      "source_archive_id": null,
+      "status": "source or redistribution origin needs the original Windows metadata"
+    },
+    {
+      "bytes": 24715048,
+      "file": "lib/mnxdom.lib",
+      "sha256": "8114532ababfff6b2249cb0b004b77a661577c71e78f76099810f20b43209a76",
+      "source_archive_id": "mnxdom",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/Qt/labs/platform/labsplatformplugin.dll",
+      "sha256": "591d3656f8659202616ba70c55b962d80bbe3eeb43e578dbc30fa190adb5f3e0",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/Qt/labs/qmlmodels/labsmodelsplugin.dll",
+      "sha256": "8f7d4c521a9ce7492db88236c94039b3058fc1de6ca96cd43bc02501a2332299",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 452408,
+      "file": "qml/Qt5Compat/GraphicalEffects/private/qtgraphicaleffectsprivateplugin.dll",
+      "sha256": "ee7790fc6bb560f26a2ee9c0a7e002ed5c17c1cb6ea1a2ede1ac9237506a6298",
+      "source_archive_id": "qt5compat",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 801080,
+      "file": "qml/Qt5Compat/GraphicalEffects/qtgraphicaleffectsplugin.dll",
+      "sha256": "9682ad0189faf32f2418061e20356db3225c6d52023cbbbc9b011200d7e0eb1c",
+      "source_archive_id": "qt5compat",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQml/Models/modelsplugin.dll",
+      "sha256": "9064190e71a3d0ceef44f618d7987fda310e8fdf1db5668ab6941ccd09bd4c48",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQml/qmlplugin.dll",
+      "sha256": "bb810c3574d4f3f68e71da498addb210a95cb40b2f9f15e797c233a67fbb9913",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQml/WorkerScript/workerscriptplugin.dll",
+      "sha256": "510e4f37e9b9392aaa9fe95e835a989ca4e56a54ee763fa042a0ed5840fc4a38",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQuick/Controls/Basic/impl/qtquickcontrols2basicstyleimplplugin.dll",
+      "sha256": "642e2ab14a61cb0f88b08b288c119e65d040e542c4c340198abe26474c070aa3",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 31544,
+      "file": "qml/QtQuick/Controls/Basic/qtquickcontrols2basicstyleplugin.dll",
+      "sha256": "382fa88cfe3cb0bb5b1be1ff72baa4c81d42a806fc206305030bb7a3d237ab33",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQuick/Controls/FluentWinUI3/impl/qtquickcontrols2fluentwinui3styleimplplugin.dll",
+      "sha256": "81122f8bbb81c1285bb4393853fedefaca7b81eb1efb7576e04fe2656ae84e29",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 3197240,
+      "file": "qml/QtQuick/Controls/FluentWinUI3/qtquickcontrols2fluentwinui3styleplugin.dll",
+      "sha256": "7353c62e1eb03e05af04ecd45e8c919834b38f067d542e5917a9d6ac97c0a501",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQuick/Controls/Fusion/impl/qtquickcontrols2fusionstyleimplplugin.dll",
+      "sha256": "165caefbcac08962ab1dd026c31aa1175fee8b5d96cc3310954db9ec7534f4b6",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 31544,
+      "file": "qml/QtQuick/Controls/Fusion/qtquickcontrols2fusionstyleplugin.dll",
+      "sha256": "e573f466e38dab1c1d901d33244d1d7916b6e0e90dca05c77be88eea79c92174",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQuick/Controls/Imagine/impl/qtquickcontrols2imaginestyleimplplugin.dll",
+      "sha256": "0817e39c16a528d61a6b959699f9f0022a2d4f81ed43af0e07681a3228bbda06",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 31544,
+      "file": "qml/QtQuick/Controls/Imagine/qtquickcontrols2imaginestyleplugin.dll",
+      "sha256": "d8110444d9d484a2867b0c5fa860c202ca4fe29e8540acb5a322785c248920b3",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQuick/Controls/impl/qtquickcontrols2implplugin.dll",
+      "sha256": "b8a08d4054969c350e2d93a8e3d6ada5ede00dd132c421771efc59afda64363a",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQuick/Controls/Material/impl/qtquickcontrols2materialstyleimplplugin.dll",
+      "sha256": "c59f58aadd8253a0a6ca8446f1cba030bad4e0b2ab03a0d4a33f73db6dc9ce7c",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 31544,
+      "file": "qml/QtQuick/Controls/Material/qtquickcontrols2materialstyleplugin.dll",
+      "sha256": "892c00f1111dcfdbf26016ca5e63e69298295b65339574f5d8407f858d6b3f87",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 41272,
+      "file": "qml/QtQuick/Controls/qtquickcontrols2plugin.dll",
+      "sha256": "102b8c10518905f1af624361ba29b6f905928b23bb7e5d6e56c11683925d4318",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQuick/Controls/Universal/impl/qtquickcontrols2universalstyleimplplugin.dll",
+      "sha256": "48b87d4b47a0f7f93e106deae322b19065eb8ee0745cca409d0709bb06eddeaa",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 31544,
+      "file": "qml/QtQuick/Controls/Universal/qtquickcontrols2universalstyleplugin.dll",
+      "sha256": "bfe056cd69c25c48ff3637ac17d8980da18ead2eafaf3609d1b5954eef8f856f",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQuick/Controls/Windows/impl/qtquickcontrols2windowsstyleimplplugin.dll",
+      "sha256": "3e5d9ee4b7ea06ab3720c2f0bb63d1acedb6a6aef6ece7d31370e566006dfbd3",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 651064,
+      "file": "qml/QtQuick/Controls/Windows/qtquickcontrols2windowsstyleplugin.dll",
+      "sha256": "11191b8e240140dc9bcc186cfb2db3ed61cf32809736121074e64ad908652d64",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQuick/Effects/effectsplugin.dll",
+      "sha256": "4a35a2bce92273271349ef855dc38412e4f7a3cd351b1bbf8600a4fe3e018a10",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQuick/Layouts/qquicklayoutsplugin.dll",
+      "sha256": "308078cf664538dfeed9c68b00587ee7167d2375b59ade19bf015de938baea9d",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 929592,
+      "file": "qml/QtQuick/NativeStyle/qtquickcontrols2nativestyleplugin.dll",
+      "sha256": "0712e8466d2d82bf2349a7bb98eb41727d2b7089e62e6c184da60fdb01d3ccbc",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQuick/qtquick2plugin.dll",
+      "sha256": "77f7ecc4ab149736c325e1ad2d3a8a0d919837c20c482a151a9ea4b091c25d22",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 30520,
+      "file": "qml/QtQuick/Shapes/qmlshapesplugin.dll",
+      "sha256": "6bcaffc4275ff3fc9e05b3512084065df714d2fd69d8b737a60032b5e36acd2b",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 31032,
+      "file": "qml/QtQuick/Templates/qtquicktemplates2plugin.dll",
+      "sha256": "0b8e09d76d5677776850f3484d00427ba0d7684c4ee6b7749e3d525d00231485",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    },
+    {
+      "bytes": 31544,
+      "file": "qml/QtQuick/Window/quickwindowplugin.dll",
+      "sha256": "ff8092583f7680fda2dab033dd2c036ae41e410a978c6b5e8e2cf7c53117cdf0",
+      "source_archive_id": "qtdeclarative",
+      "status": "Official pinned module source collected; binary build correspondence still needs configuration/patch provenance"
+    }
+  ],
+  "representative_qt_license_headers": [
+    {
+      "module": "qtbase",
+      "source_file": "src/corelib/kernel/qcoreapplication.cpp",
+      "source_file_sha256": "7179ca401868cbe079bc9ce10d42e98baae5016927577ebfec4c6508cde97435",
+      "representative_source_header_expression": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "Representative library file only; vendor source files and tools have independent licenses. GPL-3.0-only selected where offered for this GPLv3 application."
+    },
+    {
+      "module": "qtdeclarative",
+      "source_file": "src/qml/qml/qqmlengine.cpp",
+      "source_file_sha256": "70e183ee7606540a3c2f725f9bb5fdbc2b5e3d90ccad99ac840e94c8ade049dc",
+      "representative_source_header_expression": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "Representative library file only; vendor source files and tools have independent licenses. GPL-3.0-only selected where offered for this GPLv3 application."
+    },
+    {
+      "module": "qtsvg",
+      "source_file": "src/svg/qsvgrenderer.cpp",
+      "source_file_sha256": "20299c111e804426bf0c2d09c05a841c4efedf5ea9c62b83420490b5eab31d19",
+      "representative_source_header_expression": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "Representative library file only; vendor source files and tools have independent licenses. GPL-3.0-only selected where offered for this GPLv3 application."
+    },
+    {
+      "module": "qt5compat",
+      "source_file": "src/core5/codecs/qtextcodec.cpp",
+      "source_file_sha256": "6ab68e67804189598b0599d06d2d09a8cc16da980c0a54ed7946910bf448774d",
+      "representative_source_header_expression": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "Representative library file only; vendor source files and tools have independent licenses. GPL-3.0-only selected where offered for this GPLv3 application."
+    },
+    {
+      "module": "qtnetworkauth",
+      "source_file": "src/oauth/qoauth2authorizationcodeflow.cpp",
+      "source_file_sha256": "da6ad8efefc36ff52d5b0f66f7fa78b819273c8d2b2544cc3cfc7348b5ab81e6",
+      "representative_source_header_expression": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+      "scope": "Representative library file only; vendor source files and tools have independent licenses. GPL-3.0-only selected where offered for this GPLv3 application."
+    },
+    {
+      "module": "qtshadertools",
+      "source_file": "src/shadertools/qshaderbaker.cpp",
+      "source_file_sha256": "4deed3e5901839f883de6586d947eb451164c6f2fe625e0e716d0d695f652f61",
+      "representative_source_header_expression": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "Representative library file only; vendor source files and tools have independent licenses. GPL-3.0-only selected where offered for this GPLv3 application."
+    }
+  ],
+  "correspondence_claim": "Module identification plus original sources; version equality is not proof of identical build options or downstream patches."
+}

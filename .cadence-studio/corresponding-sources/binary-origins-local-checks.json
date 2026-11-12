@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "windows_runtime_tested": false,
+  "cases": [
+    {
+      "case": "actual_PowerShell_parser",
+      "passed": true
+    },
+    {
+      "case": "Linux_native_refusal",
+      "passed": true,
+      "output_created": false,
+      "qmake_or_stage_executed": false
+    },
+    {
+      "case": "Linux_native_refusal_with_spoofed_Windows_variables",
+      "passed": true,
+      "output_created": false,
+      "qmake_or_stage_executed": false
+    }
+  ]
+}

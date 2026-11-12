@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "scope": "Compile and run actual store/XML/metadata-only watcher sources with QtCore; no full application or GUI",
-  "source_commit": "a07bd3af9bd8ba328363ccac80aaf77311433413",
-  "source_tree": "04bfc174a40158030b1a42cd131287d7a676659e",
+  "scope": "Actual store/XML/watch helpers with Windows parent-directory entry identities; QtCore only, not the full application",
+  "source_commit": "bc3390c6365eb5a3e25311859898aad62f1efa95",
+  "source_tree": "f99d2d6a3c8fc757772d166e6beedc360102f44f",
   "expected_scenarios": 9,
   "required_qt_version": "6.10.2",
   "gui_failure_attribution_confirmed": false,
@@ -24,8 +24,8 @@
     },
     {
       "path": "src/project/internal/localcatalogwatch.h",
-      "bytes": 1221,
-      "sha256": "de910933c3ca8222176205f95a382b2b4ee3d7efa935a3530afa959428bac40f"
+      "bytes": 4965,
+      "sha256": "1777768bd4e91217d6ec0722b01f4962703d69a2cb050bdcea9619d90df009de"
     },
     {
       "path": "test/cadence/local_library_store/CMakeLists.txt",
@@ -34,8 +34,8 @@
     },
     {
       "path": "test/cadence/local_library_store/store_tests.cpp",
-      "bytes": 24398,
-      "sha256": "9655f5d966eedf95ee7c347718313083e46588eb944bbbdfba2f508c44c6033b"
+      "bytes": 25465,
+      "sha256": "0a8422c25ab2e75077bb3ea473694aaca3774d252014d2386ba6c3b92d81586f"
     }
   ]
 }

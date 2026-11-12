@@ -1,0 +1,358 @@
+{
+  "schema_version": 1,
+  "snapshot": "d513cf7a28a84c803ed36e448b416cb49c3a22f9",
+  "schema_and_example_files": 50,
+  "all_exact_source_bytes": true,
+  "records": [
+    {
+      "vendored": "examples/accidentals.json",
+      "upstream": "docs/static/examples/json/accidentals.json",
+      "git_blob_sha": "7c05c4a6f77f77772dced322eeca52947dbbe8df",
+      "expected_git_blob_sha": "7c05c4a6f77f77772dced322eeca52947dbbe8df",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/articulations.json",
+      "upstream": "docs/static/examples/json/articulations.json",
+      "git_blob_sha": "dc16a9ed56eb48f7bbeef00a9ecee76e40060c19",
+      "expected_git_blob_sha": "dc16a9ed56eb48f7bbeef00a9ecee76e40060c19",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/beam-hooks.json",
+      "upstream": "docs/static/examples/json/beam-hooks.json",
+      "git_blob_sha": "46f593421191a54612d95aff6ce3d592988d0666",
+      "expected_git_blob_sha": "46f593421191a54612d95aff6ce3d592988d0666",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/beams-across-barlines.json",
+      "upstream": "docs/static/examples/json/beams-across-barlines.json",
+      "git_blob_sha": "7f5d3299a2a2c2c287550156b06ad0b5fb3c253e",
+      "expected_git_blob_sha": "7f5d3299a2a2c2c287550156b06ad0b5fb3c253e",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/beams-inner-grace-notes.json",
+      "upstream": "docs/static/examples/json/beams-inner-grace-notes.json",
+      "git_blob_sha": "e21c7d19b7a2bc7f510adf101bc1dbf5df91bc3d",
+      "expected_git_blob_sha": "e21c7d19b7a2bc7f510adf101bc1dbf5df91bc3d",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/beams-secondary-beam-breaks-implied.json",
+      "upstream": "docs/static/examples/json/beams-secondary-beam-breaks-implied.json",
+      "git_blob_sha": "968d05ed59c4ed8d1c74a67d769781f2cfb25728",
+      "expected_git_blob_sha": "968d05ed59c4ed8d1c74a67d769781f2cfb25728",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/beams-secondary-beam-breaks.json",
+      "upstream": "docs/static/examples/json/beams-secondary-beam-breaks.json",
+      "git_blob_sha": "3d84a7f4af8b03ef80cc19408d224252280af191",
+      "expected_git_blob_sha": "3d84a7f4af8b03ef80cc19408d224252280af191",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/beams.json",
+      "upstream": "docs/static/examples/json/beams.json",
+      "git_blob_sha": "8ef4b5aae251bf49a35884b87d38caaf2603ae38",
+      "expected_git_blob_sha": "8ef4b5aae251bf49a35884b87d38caaf2603ae38",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/clef-changes.json",
+      "upstream": "docs/static/examples/json/clef-changes.json",
+      "git_blob_sha": "6d3f1c751cb70e6372c0838ff25b083985e96e41",
+      "expected_git_blob_sha": "6d3f1c751cb70e6372c0838ff25b083985e96e41",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/dotted-notes.json",
+      "upstream": "docs/static/examples/json/dotted-notes.json",
+      "git_blob_sha": "5169a95152cee3f734135bf30cef8bd86ad641f6",
+      "expected_git_blob_sha": "5169a95152cee3f734135bf30cef8bd86ad641f6",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/dynamics.json",
+      "upstream": "docs/static/examples/json/dynamics.json",
+      "git_blob_sha": "01961faad5d3500c46d3ee00cb3ebc7c7f367aa4",
+      "expected_git_blob_sha": "01961faad5d3500c46d3ee00cb3ebc7c7f367aa4",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/full-measure-rests.json",
+      "upstream": "docs/static/examples/json/full-measure-rests.json",
+      "git_blob_sha": "5c4aedfe295b5873f44a4ff16d26aebfda960ee8",
+      "expected_git_blob_sha": "5c4aedfe295b5873f44a4ff16d26aebfda960ee8",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/grace-note.json",
+      "upstream": "docs/static/examples/json/grace-note.json",
+      "git_blob_sha": "1c894fe800a52acec4122b0b2dae65fcd43acc32",
+      "expected_git_blob_sha": "1c894fe800a52acec4122b0b2dae65fcd43acc32",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/grace-notes-beamed.json",
+      "upstream": "docs/static/examples/json/grace-notes-beamed.json",
+      "git_blob_sha": "ef7d631524bc131e6440157daa19b0eedf9907fa",
+      "expected_git_blob_sha": "ef7d631524bc131e6440157daa19b0eedf9907fa",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/grand-staff.json",
+      "upstream": "docs/static/examples/json/grand-staff.json",
+      "git_blob_sha": "986e405afe0dfab6cf3e3ca1b66e5d4ccf2fd2f0",
+      "expected_git_blob_sha": "986e405afe0dfab6cf3e3ca1b66e5d4ccf2fd2f0",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/hello-world.json",
+      "upstream": "docs/static/examples/json/hello-world.json",
+      "git_blob_sha": "3421ac6e18af0cc219184479a6018c4b400d65ae",
+      "expected_git_blob_sha": "3421ac6e18af0cc219184479a6018c4b400d65ae",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/jumps-dal-segno.json",
+      "upstream": "docs/static/examples/json/jumps-dal-segno.json",
+      "git_blob_sha": "9cfaf014538bf80054a07e23a3bc2f5c680e8902",
+      "expected_git_blob_sha": "9cfaf014538bf80054a07e23a3bc2f5c680e8902",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/jumps-ds-al-fine.json",
+      "upstream": "docs/static/examples/json/jumps-ds-al-fine.json",
+      "git_blob_sha": "b1ab41ed683bb9b1c3df5e263c9771dfbabd7e85",
+      "expected_git_blob_sha": "b1ab41ed683bb9b1c3df5e263c9771dfbabd7e85",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/key-signatures.json",
+      "upstream": "docs/static/examples/json/key-signatures.json",
+      "git_blob_sha": "f98b24ef66204daab33b503c1a663d2adeeef316",
+      "expected_git_blob_sha": "f98b24ef66204daab33b503c1a663d2adeeef316",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/lyric-line-metadata.json",
+      "upstream": "docs/static/examples/json/lyric-line-metadata.json",
+      "git_blob_sha": "0e89ad34cb640bb483b692e4ad4ef0247b16944c",
+      "expected_git_blob_sha": "0e89ad34cb640bb483b692e4ad4ef0247b16944c",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/lyrics-basic.json",
+      "upstream": "docs/static/examples/json/lyrics-basic.json",
+      "git_blob_sha": "8215f15a5bf1e40f951e35db9ecb207fe5f41373",
+      "expected_git_blob_sha": "8215f15a5bf1e40f951e35db9ecb207fe5f41373",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/lyrics-multi-line.json",
+      "upstream": "docs/static/examples/json/lyrics-multi-line.json",
+      "git_blob_sha": "76727a955cb1dc064312a267d21e2c290208cd5d",
+      "expected_git_blob_sha": "76727a955cb1dc064312a267d21e2c290208cd5d",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/multi-note-tremolos.json",
+      "upstream": "docs/static/examples/json/multi-note-tremolos.json",
+      "git_blob_sha": "089969dfa0ba606f808a7348eac075bf499f741e",
+      "expected_git_blob_sha": "089969dfa0ba606f808a7348eac075bf499f741e",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/multimeasure-rests.json",
+      "upstream": "docs/static/examples/json/multimeasure-rests.json",
+      "git_blob_sha": "f25b3050ccccf58053d3006a7019c8d8468c7116",
+      "expected_git_blob_sha": "f25b3050ccccf58053d3006a7019c8d8468c7116",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/multiple-layouts.json",
+      "upstream": "docs/static/examples/json/multiple-layouts.json",
+      "git_blob_sha": "725d8a0a52e1d843afa0ce574f6139913b1cbe80",
+      "expected_git_blob_sha": "725d8a0a52e1d843afa0ce574f6139913b1cbe80",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/multiple-voices.json",
+      "upstream": "docs/static/examples/json/multiple-voices.json",
+      "git_blob_sha": "17f8160815c8d97fca1f13b5a5d6e7b6cf5e93c4",
+      "expected_git_blob_sha": "17f8160815c8d97fca1f13b5a5d6e7b6cf5e93c4",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/orchestral-layout.json",
+      "upstream": "docs/static/examples/json/orchestral-layout.json",
+      "git_blob_sha": "a001dd41cf2e50af142cf9856942f42577a3eb26",
+      "expected_git_blob_sha": "a001dd41cf2e50af142cf9856942f42577a3eb26",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/organ-layout.json",
+      "upstream": "docs/static/examples/json/organ-layout.json",
+      "git_blob_sha": "c5eabc3e04a9c7f68a44e7a8bbaa8b13e227babf",
+      "expected_git_blob_sha": "c5eabc3e04a9c7f68a44e7a8bbaa8b13e227babf",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/ottavas-8va.json",
+      "upstream": "docs/static/examples/json/ottavas-8va.json",
+      "git_blob_sha": "5cfa26234c227f776834ed0de634e7967da7de63",
+      "expected_git_blob_sha": "5cfa26234c227f776834ed0de634e7967da7de63",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/parts.json",
+      "upstream": "docs/static/examples/json/parts.json",
+      "git_blob_sha": "d6c9403f7d821a70e6e33970e95a0bd3eb640568",
+      "expected_git_blob_sha": "d6c9403f7d821a70e6e33970e95a0bd3eb640568",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/repeats-alternate-endings-advanced.json",
+      "upstream": "docs/static/examples/json/repeats-alternate-endings-advanced.json",
+      "git_blob_sha": "e835f0068777eb6fda9b8e035070980c5a56d023",
+      "expected_git_blob_sha": "e835f0068777eb6fda9b8e035070980c5a56d023",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/repeats-alternate-endings-simple.json",
+      "upstream": "docs/static/examples/json/repeats-alternate-endings-simple.json",
+      "git_blob_sha": "24a7f0f614c56cf19861321dc05093aa0cb0852f",
+      "expected_git_blob_sha": "24a7f0f614c56cf19861321dc05093aa0cb0852f",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/repeats-implied-start-repeat.json",
+      "upstream": "docs/static/examples/json/repeats-implied-start-repeat.json",
+      "git_blob_sha": "ceaf45668b9585efee0222e4f4bee323090da7cc",
+      "expected_git_blob_sha": "ceaf45668b9585efee0222e4f4bee323090da7cc",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/repeats-more-once-repeated.json",
+      "upstream": "docs/static/examples/json/repeats-more-once-repeated.json",
+      "git_blob_sha": "881b6689d58a0249cc2a04ad47645a5a4d8e43db",
+      "expected_git_blob_sha": "881b6689d58a0249cc2a04ad47645a5a4d8e43db",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/repeats.json",
+      "upstream": "docs/static/examples/json/repeats.json",
+      "git_blob_sha": "d19a1a3f70e6d36720f750cac0c5d9afcef0b8bd",
+      "expected_git_blob_sha": "d19a1a3f70e6d36720f750cac0c5d9afcef0b8bd",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/rest-positions.json",
+      "upstream": "docs/static/examples/json/rest-positions.json",
+      "git_blob_sha": "f3f25603fbf9d218762ed60d5391f025e40b791a",
+      "expected_git_blob_sha": "f3f25603fbf9d218762ed60d5391f025e40b791a",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/single-note-tremolos.json",
+      "upstream": "docs/static/examples/json/single-note-tremolos.json",
+      "git_blob_sha": "28545451e0b717ca0fc32bf72a1efe27da568da6",
+      "expected_git_blob_sha": "28545451e0b717ca0fc32bf72a1efe27da568da6",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/slurs-chords.json",
+      "upstream": "docs/static/examples/json/slurs-chords.json",
+      "git_blob_sha": "5a23677ea5dfe60aad73dfc592b0310539f0ee29",
+      "expected_git_blob_sha": "5a23677ea5dfe60aad73dfc592b0310539f0ee29",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/slurs-targeting-specific-notes.json",
+      "upstream": "docs/static/examples/json/slurs-targeting-specific-notes.json",
+      "git_blob_sha": "36e45e5fdb03f7d8e59e8962440764ffb74986e6",
+      "expected_git_blob_sha": "36e45e5fdb03f7d8e59e8962440764ffb74986e6",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/slurs.json",
+      "upstream": "docs/static/examples/json/slurs.json",
+      "git_blob_sha": "fa9fcfb23cde7d06b173730a62541d8d8b63dc79",
+      "expected_git_blob_sha": "fa9fcfb23cde7d06b173730a62541d8d8b63dc79",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/system-layouts.json",
+      "upstream": "docs/static/examples/json/system-layouts.json",
+      "git_blob_sha": "a4d628c211ebe69978c88582af63083fe6614f99",
+      "expected_git_blob_sha": "a4d628c211ebe69978c88582af63083fe6614f99",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/tempo-markings.json",
+      "upstream": "docs/static/examples/json/tempo-markings.json",
+      "git_blob_sha": "2b265d64ae00eeb2c69901150f24ae40a8320cb7",
+      "expected_git_blob_sha": "2b265d64ae00eeb2c69901150f24ae40a8320cb7",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/three-note-chord-and-half-rest.json",
+      "upstream": "docs/static/examples/json/three-note-chord-and-half-rest.json",
+      "git_blob_sha": "d36973882ad9da090ac6bd236d91e08063554e44",
+      "expected_git_blob_sha": "d36973882ad9da090ac6bd236d91e08063554e44",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/tie-target-type.json",
+      "upstream": "docs/static/examples/json/tie-target-type.json",
+      "git_blob_sha": "ffc5a58571a523684001e3999f5a751fc9504f92",
+      "expected_git_blob_sha": "ffc5a58571a523684001e3999f5a751fc9504f92",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/ties.json",
+      "upstream": "docs/static/examples/json/ties.json",
+      "git_blob_sha": "f54d98be1526dc60ebbba529c2d3f1021706d44f",
+      "expected_git_blob_sha": "f54d98be1526dc60ebbba529c2d3f1021706d44f",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/time-signature-glyphs.json",
+      "upstream": "docs/static/examples/json/time-signature-glyphs.json",
+      "git_blob_sha": "71aa7808317f41bc6a40ffea6585899e24c76079",
+      "expected_git_blob_sha": "71aa7808317f41bc6a40ffea6585899e24c76079",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/time-signatures.json",
+      "upstream": "docs/static/examples/json/time-signatures.json",
+      "git_blob_sha": "cd53a6a1ac194cb63be562d876c9ce2950de39b7",
+      "expected_git_blob_sha": "cd53a6a1ac194cb63be562d876c9ce2950de39b7",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/tuplets.json",
+      "upstream": "docs/static/examples/json/tuplets.json",
+      "git_blob_sha": "ce9ba45d6f11b7aeec0baac3fbb354bc42ea03a4",
+      "expected_git_blob_sha": "ce9ba45d6f11b7aeec0baac3fbb354bc42ea03a4",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "examples/two-bar-c-major-scale.json",
+      "upstream": "docs/static/examples/json/two-bar-c-major-scale.json",
+      "git_blob_sha": "d9c2ff3650cef5cff033010614fa1d7254f454cb",
+      "expected_git_blob_sha": "d9c2ff3650cef5cff033010614fa1d7254f454cb",
+      "exact_bytes_identical": true
+    },
+    {
+      "vendored": "mnx-schema.json",
+      "upstream": "docs/mnx-schema.json",
+      "git_blob_sha": "81b35da65af2bccd40fdbd7f17ede129c16ffd98",
+      "expected_git_blob_sha": "81b35da65af2bccd40fdbd7f17ede129c16ffd98",
+      "exact_bytes_identical": true
+    }
+  ]
+}

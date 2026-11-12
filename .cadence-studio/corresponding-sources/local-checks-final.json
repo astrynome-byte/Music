@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "cases": [
+    {
+      "case": "real_complete_existing_material_and_all_original_notice_bytes",
+      "passed": true,
+      "result": {
+        "verified": true,
+        "files": 279,
+        "source_archives": 11,
+        "notice_files": 265,
+        "original_notice_files": 264,
+        "source_lock_sha256": "ab6b6dbeb349d9c3649b07a99537b5ffb43899c88a8f33728e3776c9eee03824",
+        "final_distribution_ready": false,
+        "source_or_application_program_executed": false
+      }
+    },
+    {
+      "case": "unsafe_notice_paths_refused",
+      "passed": true
+    },
+    {
+      "case": "real_mnx_archive_one_byte_corruption_refused_before_output",
+      "passed": true
+    },
+    {
+      "case": "offline_missing_source_refused_without_network_or_output",
+      "passed": true
+    },
+    {
+      "case": "actual_final_distribution_cli_gate_refuses_unresolved_origins_before_writes",
+      "passed": true
+    }
+  ],
+  "application_built_or_run": false,
+  "dll_loaded": false,
+  "listening_or_windows_runtime_validation_claimed": false,
+  "network_test_requested": false,
+  "collector_sha256": "390363bad7dff37c4db62821918e44e7095557c2303e0bc3ff4e81039d7b88ea",
+  "verifier_sha256": "eb3d2d2e5c99f2fcec57a59e0122c0f44b923558a08c84da9ed266d8ca8f6c43"
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "scope": "Actual optional install module, project NONE; no application or Windows execution",
+  "cases": [
+    {
+      "cadence_build": "ON",
+      "installed_files": 267,
+      "all_notice_bytes_identical_to_verified_bundle": true,
+      "source_archives_not_installed": true
+    },
+    {
+      "cadence_build": "OFF",
+      "installed_files": 0,
+      "all_notice_bytes_identical_to_verified_bundle": true,
+      "source_archives_not_installed": true
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "downloaded_total_bytes": 132414305,
+  "archives": [
+    {
+      "module": "qtbase",
+      "tag": "v6.10.2",
+      "tag_object": "4e4e866977c08ea7a4e197f872b8fb504f437e80",
+      "commit": "000d6c62f7880bb8d3054724e8da0b8ae244130e",
+      "repository": "https://github.com/qt/qtbase.git",
+      "archive_url": "https://codeload.github.com/qt/qtbase/tar.gz/000d6c62f7880bb8d3054724e8da0b8ae244130e",
+      "tagger": {
+        "name": "Antti Kokko",
+        "email": "antti.kokko@qt.io",
+        "date": "2026-01-29T06:06:13Z"
+      },
+      "archive_file": "qtbase-000d6c62f7880bb8d3054724e8da0b8ae244130e.tar.gz",
+      "archive_bytes": 67281154,
+      "archive_sha256": "2bffe7325cd32454a7a03548a4afad0e31b9cc3087a37867cb6c9f6ad4024f37",
+      "archive_root": "qtbase-000d6c62f7880bb8d3054724e8da0b8ae244130e",
+      "member_count": 26571,
+      "gitmodules": []
+    },
+    {
+      "module": "qtdeclarative",
+      "tag": "v6.10.2",
+      "tag_object": "858423070a1a4f7d8d5c8c525bf056f824b50430",
+      "commit": "09c70541c76659bcd8c49f05841b0e778c9ffd4c",
+      "repository": "https://github.com/qt/qtdeclarative.git",
+      "archive_url": "https://codeload.github.com/qt/qtdeclarative/tar.gz/09c70541c76659bcd8c49f05841b0e778c9ffd4c",
+      "tagger": {
+        "name": "Antti Kokko",
+        "email": "antti.kokko@qt.io",
+        "date": "2026-01-29T06:06:13Z"
+      },
+      "archive_file": "qtdeclarative-09c70541c76659bcd8c49f05841b0e778c9ffd4c.tar.gz",
+      "archive_bytes": 42460168,
+      "archive_sha256": "0c82076dcaa0d6e7c7e0b0f72072fc5fc6842bf805e4c5df5905080d457dd54c",
+      "archive_root": "qtdeclarative-09c70541c76659bcd8c49f05841b0e778c9ffd4c",
+      "member_count": 24964,
+      "gitmodules": [
+        "[submodule \"tests/auto/qml/ecmascripttests/test262\"]\n\tpath = tests/auto/qml/ecmascripttests/test262\n\turl = ../qtdeclarative-testsuites.git\n\tbranch = snapshot-20180312-3c69133-based\n"
+      ]
+    },
+    {
+      "module": "qtsvg",
+      "tag": "v6.10.2",
+      "tag_object": "1260093d0943114ed8658aa205a3d0f1c2fac20c",
+      "commit": "b925029db51aff0b17a48f5939cb83c27932d0cb",
+      "repository": "https://github.com/qt/qtsvg.git",
+      "archive_url": "https://codeload.github.com/qt/qtsvg/tar.gz/b925029db51aff0b17a48f5939cb83c27932d0cb",
+      "tagger": {
+        "name": "Antti Kokko",
+        "email": "antti.kokko@qt.io",
+        "date": "2026-01-29T06:06:13Z"
+      },
+      "archive_file": "qtsvg-b925029db51aff0b17a48f5939cb83c27932d0cb.tar.gz",
+      "archive_bytes": 2902702,
+      "archive_sha256": "b77b5463d71f86f81dff940cfcabb0803d61a39019a08a3f9e3c680c885806b5",
+      "archive_root": "qtsvg-b925029db51aff0b17a48f5939cb83c27932d0cb",
+      "member_count": 725,
+      "gitmodules": []
+    },
+    {
+      "module": "qt5compat",
+      "tag": "v6.10.2",
+      "tag_object": "174ea7cfbf803d1c0f4adb5f4d4aa8ab905a7112",
+      "commit": "c005ed402a003af00221782c7548279a75e8c72a",
+      "repository": "https://github.com/qt/qt5compat.git",
+      "archive_url": "https://codeload.github.com/qt/qt5compat/tar.gz/c005ed402a003af00221782c7548279a75e8c72a",
+      "tagger": {
+        "name": "Antti Kokko",
+        "email": "antti.kokko@qt.io",
+        "date": "2026-01-29T06:06:14Z"
+      },
+      "archive_file": "qt5compat-c005ed402a003af00221782c7548279a75e8c72a.tar.gz",
+      "archive_bytes": 17525477,
+      "archive_sha256": "f1a5ec625b5c298a6439161b88232e2502acb7dc97e9b18020cbdd1db0f9c6ac",
+      "archive_root": "qt5compat-c005ed402a003af00221782c7548279a75e8c72a",
+      "member_count": 1519,
+      "gitmodules": []
+    },
+    {
+      "module": "qtnetworkauth",
+      "tag": "v6.10.2",
+      "tag_object": "ccccebd84b484af19b6a895766136b2bc085f134",
+      "commit": "b3999f9967d65320369bb96b0ae91d810fd3fc38",
+      "repository": "https://github.com/qt/qtnetworkauth.git",
+      "archive_url": "https://codeload.github.com/qt/qtnetworkauth/tar.gz/b3999f9967d65320369bb96b0ae91d810fd3fc38",
+      "tagger": {
+        "name": "Antti Kokko",
+        "email": "antti.kokko@qt.io",
+        "date": "2026-01-29T06:06:14Z"
+      },
+      "archive_file": "qtnetworkauth-b3999f9967d65320369bb96b0ae91d810fd3fc38.tar.gz",
+      "archive_bytes": 477780,
+      "archive_sha256": "c32b49d90d44badf6dc3c3956b3b22d71ab2f5ef0afdd8c65388eae22893ec74",
+      "archive_root": "qtnetworkauth-b3999f9967d65320369bb96b0ae91d810fd3fc38",
+      "member_count": 173,
+      "gitmodules": []
+    },
+    {
+      "module": "qtshadertools",
+      "tag": "v6.10.2",
+      "tag_object": "8baece095256858c4a54faacfb5525f5398d26a9",
+      "commit": "b9678c24094aef235f649cb443eb4e197487c675",
+      "repository": "https://github.com/qt/qtshadertools.git",
+      "archive_url": "https://codeload.github.com/qt/qtshadertools/tar.gz/b9678c24094aef235f649cb443eb4e197487c675",
+      "tagger": {
+        "name": "Antti Kokko",
+        "email": "antti.kokko@qt.io",
+        "date": "2026-01-29T06:06:14Z"
+      },
+      "archive_file": "qtshadertools-b9678c24094aef235f649cb443eb4e197487c675.tar.gz",
+      "archive_bytes": 1767024,
+      "archive_sha256": "43a3f17f4a6c2385505e477fa1519812ea6bfb17ea1003a1f3475a60369898de",
+      "archive_root": "qtshadertools-b9678c24094aef235f649cb443eb4e197487c675",
+      "member_count": 381,
+      "gitmodules": []
+    }
+  ]
+}
