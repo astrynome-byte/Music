@@ -1,0 +1,47 @@
+{
+  "inactive_template_refused": true,
+  "network_executed": false,
+  "anonymous_HTTP_block_byte_identical": true,
+  "publication_executed": false,
+  "schema_version": 1,
+  "scope": "Local parsing, inactive refusal and proven-code equality only",
+  "unchanged_proven_functions": [
+    "Hash",
+    "Invoke-ReleaseGh",
+    "Get-ReleaseApi",
+    "Assert-AuditedMainBeforeMutation",
+    "Assert-NoExistingRelease",
+    "Get-WorkflowInventory",
+    "Assert-WorkflowInventory"
+  ],
+  "parse_files": [
+    {
+      "parsed": true,
+      "file": "Inspect-DeliveryDataOnly.ps1"
+    },
+    {
+      "parsed": true,
+      "file": "Publish-ExperimentalWindows.ps1"
+    },
+    {
+      "parsed": true,
+      "file": "Read-PublicationTransport.ps1"
+    },
+    {
+      "parsed": true,
+      "file": "workflow-step-1.ps1"
+    },
+    {
+      "parsed": true,
+      "file": "workflow-step-2.ps1"
+    },
+    {
+      "parsed": true,
+      "file": "workflow-step-3.ps1"
+    },
+    {
+      "parsed": true,
+      "file": "workflow-step-4.ps1"
+    }
+  ]
+}

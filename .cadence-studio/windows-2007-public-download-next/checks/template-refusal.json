@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "allowed": false,
+  "error": "ready must be the reviewed boolean true"
+}

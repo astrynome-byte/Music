@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "ready": false,
+  "repository": "astrynome-byte/Music",
+  "build_number": 2007,
+  "version": "4.7.6-cadence.2007",
+  "source": {
+    "original_commit": "5058d29dad67e6131ee46ee617258ccfed8ba4b0",
+    "tree": "58d06a1c89e99173b0473587245187df5bc3b3cf",
+    "ci_commit": null,
+    "source_json_sha256": "e0e36a40d2bee76337d8117016d0ca064e24fb2be2b9713b69855d6182a61fa9",
+    "patch_sha256": "87de70f2c00e2d0e92efd1056a6bd7fab50f95a06c1fcc94a728fb3262e946d7"
+  },
+  "producer": {
+    "run_id": 43266732201,
+    "driver_commit": "c3421a217c76a1b2cc5d4fab74305d209491d82f"
+  },
+  "executable_sha256": null,
+  "msi_sha256": null,
+  "artifacts": [
+    {
+      "role": "stage",
+      "id": null,
+      "name": null,
+      "run_id": 43266732201,
+      "digest": null,
+      "bytes": null,
+      "expires_at": null
+    },
+    {
+      "role": "delivery",
+      "id": null,
+      "name": null,
+      "run_id": 43266732201,
+      "digest": null,
+      "bytes": null,
+      "expires_at": null
+    },
+    {
+      "role": "logs",
+      "id": null,
+      "name": null,
+      "run_id": 43266732201,
+      "digest": null,
+      "bytes": null,
+      "expires_at": null
+    }
+  ],
+  "reports": {
+    "bootstrap": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "build": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "stage_manifest": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "release_manifest": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "cli": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "msi": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "notices": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "components": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "icu_policy": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "icu_exports": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    }
+  },
+  "release": {
+    "tag": null,
+    "title": null,
+    "prerelease": true,
+    "target_commit_mode": "workflow_head"
+  },
+  "review": {
+    "approved": false,
+    "reviewed_by": null,
+    "reviewed_utc": null,
+    "basis": "Existing Qt/Mesa/Microsoft redistribution decisions are retained; review the actual2007 bytes, sources and final notices, without inventing a new legal audit."
+  },
+  "limitations": {
+    "tested_platform": "Windows Server 2022 (GitHub Actions)",
+    "windows10_client_tested": false,
+    "windows11_client_tested": false,
+    "human_listening_completed": false,
+    "paid_equivalence_complete": false,
+    "final_gift": false
+  },
+  "android": {
+    "audit_status": "not-reviewed-for-current-publishing-head",
+    "main_commit": "a6c90b63344b3fd60567fd9f001ac9ecba4b2081",
+    "reviewed_by": null,
+    "main_workflows": [],
+    "tag_workflows": []
+  },
+  "assets": [
+    {
+      "kind": "msi",
+      "name": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "kind": "source_archive",
+      "name": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "kind": "build_recipe",
+      "name": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "kind": "component_sources",
+      "name": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "kind": "notices",
+      "name": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "kind": "guide",
+      "name": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "kind": "checksums",
+      "name": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    }
+  ],
+  "warning": "Deliberately refused INACTIVE template: no real2007 MSI, artifact IDs, hashes, public URLs, target activation or publication is asserted."
+}

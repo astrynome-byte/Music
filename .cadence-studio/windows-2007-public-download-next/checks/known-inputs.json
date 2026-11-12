@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "producer_run_id": 43266732201,
+  "producer_job_id": 131352164369,
+  "producer_driver_commit": "c3421a217c76a1b2cc5d4fab74305d209491d82f",
+  "original_source_commit": "5058d29dad67e6131ee46ee617258ccfed8ba4b0",
+  "source_tree": "58d06a1c89e99173b0473587245187df5bc3b3cf",
+  "source_json_sha256": "e0e36a40d2bee76337d8117016d0ca064e24fb2be2b9713b69855d6182a61fa9",
+  "source_patch_sha256": "87de70f2c00e2d0e92efd1056a6bd7fab50f95a06c1fcc94a728fb3262e946d7",
+  "unknown_actual_executable_sha256": null,
+  "unknown_actual_msi_sha256": null,
+  "actual_artifact_ids": null,
+  "public_url": null,
+  "active_target_created": false
+}

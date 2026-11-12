@@ -1,0 +1,70 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# INACTIVE: target.json is deliberately absent. A reviewed add-only commit is required.
+name: 'Cadence: reviewed experimental Windows 2007 download'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths: ['.cadence-studio/windows-2007-public-download-next/target.json']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: cadence-windows-2007-experimental-public
+  cancel-in-progress: false
+jobs:
+  reviewed-experimental-windows-only:
+    if: github.repository == 'astrynome-byte/Music'
+    runs-on: windows-2022
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Refuse the absent/false template and require actual reviewed full2007 identities before acquisition
+        run: |
+          $helper="$env:GITHUB_WORKSPACE/driver/.cadence-studio/windows-2007-public-download-next"
+          . "$helper/Read-PublicationTransport.ps1"
+          [void](Read-PublicationTransport "$helper/target.json")
+          python -I "$helper/windows_publication.py" check-target --target "$helper/target.json" --output "$env:RUNNER_TEMP/windows2007-target-check.json"
+          if($LASTEXITCODE-ne0){throw 'No complete reviewed real2007 target; no artifact acquisition or release operation allowed.'}
+      - name: Authenticate the exact completed full producer and recompute all three original ZIP digests
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $helper="$env:GITHUB_WORKSPACE/driver/.cadence-studio/windows-2007-public-download-next"
+          python -I "$helper/acquire_originals.py" --target "$helper/target.json" --output "$env:RUNNER_TEMP/windows2007-originals"
+          if($LASTEXITCODE-ne0){throw 'Original producer/artifact acquisition incomplete; no publication.'}
+      - name: Build the seven deterministic public files from authenticated originals without executing app or MSI
+        run: |
+          $helper="$env:GITHUB_WORKSPACE/driver/.cadence-studio/windows-2007-public-download-next"
+          python -I "$helper/windows_publication.py" prepare --target "$helper/target.json" --acquired "$env:RUNNER_TEMP/windows2007-originals" --root "$env:RUNNER_TEMP/windows2007-assets" --output "$env:RUNNER_TEMP/windows2007-preparation.json"
+          if($LASTEXITCODE-ne0){throw 'Actual MSI/source/notices/systemICU evidence or deterministic packaging failed.'}
+      - name: Publish only the new experimental prerelease and download every asset anonymously to verify SHA
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $helper="$env:GITHUB_WORKSPACE/driver/.cadence-studio/windows-2007-public-download-next"
+          & "$helper/Publish-ExperimentalWindows.ps1" -TargetPath "$helper/target.json" -AcquiredRoot "$env:RUNNER_TEMP/windows2007-originals" -InputRoot "$env:RUNNER_TEMP/windows2007-assets" -OutputDirectory "$env:RUNNER_TEMP/windows2007-publication-evidence"
+      - name: Retain factual metadata on success or failure without reuploading any installer or source ZIP
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-windows2007-public-evidence-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/windows2007-publication-evidence/*.json
+            ${{ runner.temp }}/windows2007-publication-evidence/*.txt
+            ${{ runner.temp }}/windows2007-publication-evidence/*.md
+            ${{ runner.temp }}/windows2007-originals/artifact-acquisition.json
+            ${{ runner.temp }}/windows2007-target-check.json
+            ${{ runner.temp }}/windows2007-preparation.json
+            ${{ runner.temp }}/windows2007-assets/asset-preparation.json
+          retention-days: 14
+          if-no-files-found: warn

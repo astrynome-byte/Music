@@ -1,0 +1,51 @@
+CADENCE STUDIO 4.7.6-cadence.2007 — PRÉVERSION EXPÉRIMENTALE WINDOWS 64 BITS
+
+Cette préversion sert à essayer le logiciel. Elle ne constitue pas le cadeau
+final ni une reproduction complète des services ou contenus payants de MuseScore.
+La bibliothèque, les cours locaux, le coach et les alternatives sonores restent
+en développement. Le catalogue commercial de MuseScore.com et les enregistrements
+commerciaux MuseSounds ne sont pas inclus. MS Basic fournit les sons de base.
+
+INSTALLER
+1. Télécharge le fichier CadenceStudio-4.7.6-cadence.2007-x86_64.msi de cette
+   préversion GitHub. Aucun compte ni abonnement n'est nécessaire au téléchargement.
+2. Vérifie, si tu le souhaites, son empreinte avec le fichier SHA256SUMS joint.
+   La commande PowerShell facultative est : Get-FileHash .\nom-du-fichier.msi -Algorithm SHA256
+3. Double-clique sur le MSI, suis les étapes de l'assistant puis ouvre Cadence
+   Studio depuis le menu Démarrer. Aucun outil de développement n'est requis.
+   L'installateur est non signé : Windows peut afficher une demande de confiance.
+4. Choisis le français si nécessaire. Crée une partition ou ouvre une COPIE de
+   tes fichiers pour les premiers essais. Le coeur de l'application et MS Basic
+   fonctionnent hors ligne, sans compte obligatoire.
+
+Cadence utilise une identité et des dossiers de réglages distincts de MuseScore.
+Conserve tes partitions et sauvegardes d'origine. Un retour vers une version
+antérieure de l'éditeur ou du catalogue local peut perdre certaines informations.
+La désinstallation se fait depuis Applications installées dans Windows.
+
+CE QUI A ÉTÉ TESTÉ POUR CETTE LIVRAISON
+La publication n'est permise qu'après les rapports automatiques du vrai build :
+imports/exports CLI, installation et désinstallation MSI, démarrage/fermeture GUI
+et notices installées. Ces contrôles se déroulent
+sur Windows Server 2022 dans GitHub Actions, avec un profil de test préparé.
+Le parcours complet d'un premier lancement neuf n'est pas validé par ce profil.
+
+LIMITES À CONNAÎTRE
+Les clients Windows 10 et Windows 11 n'ont pas été validés pour cette préversion.
+Les écoutes musicales humaines, le matériel audio/MIDI et les plugins personnels
+ne sont pas validés par ces tests CI. Les fonctions payantes n'ont pas toutes un
+équivalent achevé. Consulte FEATURES.md, STATUS.md et ROADMAP.md dans les sources
+pour les différences et travaux restants. Ne remplace pas tes sauvegardes de travail.
+
+SOURCES ET LICENCES
+La source exacte de l'application, la recette de construction, les sources
+correspondantes des composants et les notices sont des fichiers joints à cette
+même préversion. Le coeur dérive de MuseScore sous GPL ; les sons, polices,
+composants et bibliothèques conservent leurs propres licences et mentions.
+Les liens GitHub automatiques « Source code » désignent le dépôt pilote : utilise
+l'archive -source.tar.gz et les archives -build-recipe.zip, -component-sources.zip
+et -notices.zip jointes pour les sources et informations correspondant au MSI.
+
+Les liens publics ne nécessitent pas de compte et n'ont pas de date d'expiration
+annoncée. Leur maintien dépend de GitHub et du propriétaire du dépôt ; aucune
+permanence n'est garantie. La version et le SHA identifient les fichiers diffusés.
