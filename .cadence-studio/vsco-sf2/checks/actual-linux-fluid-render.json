@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "scope": "Data-load/render generated banks using an EXISTING Linux FluidSynth library.\n\nNo audio driver, app, installer, Windows qualification or listening is involved.\nNo library is installed. This complements the future real Cadence Windows job.\n",
+  "fluid_library": "libfluidsynth.so.3",
+  "fluid_version": "2.4.4",
+  "results": [
+    {
+      "file": "Cadence-VSCO-Flute.sf2",
+      "sha256": "2bc48929d1996687b99e27b532043c4cb34b89480471faaea446ffc021ab3768",
+      "sfont_id": 1,
+      "bank": 0,
+      "program": 73,
+      "note": 72,
+      "velocity": 100,
+      "frames": 88200,
+      "peak": 0.00443772180005908,
+      "rms": 0.0012728911934677698,
+      "left_nonzero": true,
+      "right_nonzero": true
+    },
+    {
+      "file": "Cadence-VSCO-Violin.sf2",
+      "sha256": "801896ef3be53c4b60d9dc87078787add7fdc44b1a3bfe9fff30fcc519d93e0d",
+      "sfont_id": 1,
+      "bank": 0,
+      "program": 40,
+      "note": 72,
+      "velocity": 100,
+      "frames": 88200,
+      "peak": 0.0035902259405702353,
+      "rms": 0.0011919008486839587,
+      "left_nonzero": true,
+      "right_nonzero": true
+    },
+    {
+      "file": "Cadence-VSCO-Flute-minus18.sf2",
+      "sha256": "b1a53205814bcf3068f0278f2940f6d8b953215f2adf4659a238448a9a70a17f",
+      "sfont_id": 1,
+      "bank": 0,
+      "program": 73,
+      "note": 72,
+      "velocity": 100,
+      "frames": 88200,
+      "peak": 0.0005586760235019028,
+      "rms": 0.00016024750700029992,
+      "left_nonzero": true,
+      "right_nonzero": true
+    }
+  ],
+  "attenuated_rms_ratio": 0.12589254118707002,
+  "attenuated_db": -17.999999999471964,
+  "passed": true,
+  "audio_driver_created": false,
+  "windows_app_executed": false,
+  "new_system_library_installed": false
+}

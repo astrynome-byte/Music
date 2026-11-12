@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "status": "native-SF2-source-prepared-real-Linux-bank-rendered-not-Windows-qualified",
+  "repository_namespace": ".cadence-studio/vsco-sf2/",
+  "workflow_repository_path": ".github/workflows/cadence-vsco-sf2-qa.yml",
+  "source_license": "GPL-3.0-only",
+  "sample_and_mapping_license": "CC0-1.0",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "repository_path": ".cadence-studio/vsco-sf2/.gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "CODE-GPL-3.0.txt",
+      "repository_path": ".cadence-studio/vsco-sf2/CODE-GPL-3.0.txt",
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "CadenceProfileScope.py",
+      "repository_path": ".cadence-studio/vsco-sf2/CadenceProfileScope.py",
+      "bytes": 34344,
+      "sha256": "60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c"
+    },
+    {
+      "path": "OwnProcessJob.psm1",
+      "repository_path": ".cadence-studio/vsco-sf2/OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    },
+    {
+      "path": "README-FR.md",
+      "repository_path": ".cadence-studio/vsco-sf2/README-FR.md",
+      "bytes": 7400,
+      "sha256": "e72edbbcaf091f2528eb765b6b39ba8f83dd6de89bef13395e9f16c0537d36ff"
+    },
+    {
+      "path": "Test-VscoSf2.py",
+      "repository_path": ".cadence-studio/vsco-sf2/Test-VscoSf2.py",
+      "bytes": 23578,
+      "sha256": "09dd018e157df20d6acb928587e07dd1cb4aaea5e5c6831b7cb55c538f328711"
+    },
+    {
+      "path": "VSCO-CC0-LICENSE.txt",
+      "repository_path": ".cadence-studio/vsco-sf2/VSCO-CC0-LICENSE.txt",
+      "bytes": 6555,
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+    },
+    {
+      "path": "asset-source-manifest.json",
+      "repository_path": ".cadence-studio/vsco-sf2/asset-source-manifest.json",
+      "bytes": 8238,
+      "sha256": "f2d68c3fdf42c130c8b182581aa0a63e881f6f30b1934b39c97fc448843b1a8b"
+    },
+    {
+      "path": "build_vsco_sf2.py",
+      "repository_path": ".cadence-studio/vsco-sf2/build_vsco_sf2.py",
+      "bytes": 21079,
+      "sha256": "a3a7be1e2ceca170c7e6d1ad19606542e669d3c6ac165de1bd76fe0aedbc4a58"
+    },
+    {
+      "path": "cadence-vsco-sf2-qa.yml",
+      "repository_path": ".github/workflows/cadence-vsco-sf2-qa.yml",
+      "bytes": 8085,
+      "sha256": "bbe738bdd7e7397c24016043ba45aff854cb5874a464bc08658308028aa1bf6e"
+    },
+    {
+      "path": "checks/actual-linux-fluid-longnotes.json",
+      "repository_path": ".cadence-studio/vsco-sf2/checks/actual-linux-fluid-longnotes.json",
+      "bytes": 2488,
+      "sha256": "45c5b774c85d47a1933f9e2c905b0f909cdb960617399b081117d2095e7ca608"
+    },
+    {
+      "path": "checks/actual-linux-fluid-render.json",
+      "repository_path": ".cadence-studio/vsco-sf2/checks/actual-linux-fluid-render.json",
+      "bytes": 1758,
+      "sha256": "e73db418dd58d072d9f6c1a9336553d74c2fec043604eea4a95f795b5b03aa38"
+    },
+    {
+      "path": "checks/render_existing_fluid.py",
+      "repository_path": ".cadence-studio/vsco-sf2/checks/render_existing_fluid.py",
+      "bytes": 7616,
+      "sha256": "51c3268533c3d2fb7a95f33b1dbe9482ea9c24a1aaaf96e5b5962ae54de01e7d"
+    },
+    {
+      "path": "checks/source-checks.json",
+      "repository_path": ".cadence-studio/vsco-sf2/checks/source-checks.json",
+      "bytes": 1071,
+      "sha256": "67dd41f62f2ab90b6dafd254af23b8feba5cc6d0f2af0ca337d0c6914f16b157"
+    },
+    {
+      "path": "checks/test_converter.py",
+      "repository_path": ".cadence-studio/vsco-sf2/checks/test_converter.py",
+      "bytes": 5075,
+      "sha256": "23c5a0b7be553373ba23415690da22f6ebd78a5a2f2ea9466bab13fa68b7b15d"
+    },
+    {
+      "path": "conversion-contract.json",
+      "repository_path": ".cadence-studio/vsco-sf2/conversion-contract.json",
+      "bytes": 6078,
+      "sha256": "b9899fa1aeebcc4c4167562f32bd56160c7367858fb2a442efb6a249b05b3198"
+    },
+    {
+      "path": "mappings/FluteSusVib.sfz",
+      "repository_path": ".cadence-studio/vsco-sf2/mappings/FluteSusVib.sfz",
+      "bytes": 1605,
+      "sha256": "26b0dedaa483b6f7f4201d144673b26ab1d0e4585493a97815d03904319a0734"
+    },
+    {
+      "path": "mappings/SViolinVib.sfz",
+      "repository_path": ".cadence-studio/vsco-sf2/mappings/SViolinVib.sfz",
+      "bytes": 3366,
+      "sha256": "a2ca3611463547ac9371aa9d13a693af9cd10804f9232d2c602d65937387a992"
+    },
+    {
+      "path": "profile-source-contract.json",
+      "repository_path": ".cadence-studio/vsco-sf2/profile-source-contract.json",
+      "bytes": 3310,
+      "sha256": "0023f8d7510c89429dea85cda35d803175b3434532cf14aecaf793ded5663a9e"
+    },
+    {
+      "path": "test_native_qa_source.py",
+      "repository_path": ".cadence-studio/vsco-sf2/test_native_qa_source.py",
+      "bytes": 4290,
+      "sha256": "34b227a1c3f66bc9cea7f1ca6412ea0938088d450d91ad7fc3046ec52427427a"
+    },
+    {
+      "path": "workflow-gitattributes.txt",
+      "repository_path": ".github/workflows/.gitattributes",
+      "bytes": 30,
+      "sha256": "4f656df0c127bbad7df98577152417ff1ce4a79dcfff70367c5e1d90fdf74216"
+    }
+  ],
+  "manifest_itself_excluded_from_files": true,
+  "code_license_text_provenance": {
+    "source_preparation_path": "/workspace/cadence-ci-driver/asio-qa-phase2-next/LICENSE.txt",
+    "bytes": 35147,
+    "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "description": "Unmodified complete GNU GPL version3 text, replacing an unrelated KDDockWidgets GPLv2/v3 combined notice with explicit parent authorization."
+  },
+  "binary_bank_payload_included": false,
+  "binary_bank_metadata": "conversion-contract.json",
+  "excluded_from_publication": [
+    "real-banks/**",
+    "**/__pycache__/**",
+    "*.pyc",
+    "upload-payload-utf8.json",
+    "upload-payload-sha256.json"
+  ],
+  "publication_preconditions": {
+    "workflow_attributes_path": ".github/workflows/.gitattributes",
+    "required_exact_rule": "cadence-vsco-sf2-qa.yml -text",
+    "last_remote_observation": "404 absent at driver head5879f9fa (reported by corresponding-sources parent)",
+    "root_must_recheck_before_publish": true,
+    "if_file_exists": "Merge the exact rule preserving all existing contents; regenerate the corresponding blob hashes/payload; never replace existing attributes wholesale."
+  },
+  "source_or_bank_published": false,
+  "product_sources_modified": false,
+  "Windows_qualification_performed": false
+}

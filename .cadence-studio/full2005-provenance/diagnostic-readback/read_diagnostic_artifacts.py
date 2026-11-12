@@ -13,10 +13,13 @@ import argparse
 import base64
 import hashlib
 import json
+import math
 import os
 from pathlib import Path, PurePosixPath
 import stat
+import struct
 import sys
+import types
 
 HEAD = "f46d6bf3777a4153979fd075cc7cc8a7bf4d1818"
 PINS = {
@@ -37,6 +40,10 @@ MAX_TEXT = 128 * 1024
 MAX_ORIGINAL = 256 * 1024
 MAX_FILE = 64 * 1024 * 1024
 MAX_TREE = 256 * 1024 * 1024
+WAV_PATH = 'GUI-retention/basic-control.wav'
+WAV_BYTES = 4390286
+WAV_SHA256 = '9bb1578b6b09a2ddd01a0a03dddd22a74c0f21b4409cef81ced10cd99ec1d676'
+AUDIO_HELPER_SHA256 = 'f701874e7a37b8d3148f0bb99477b60b96865e804ed238372d75c06598027d82'
 BEGIN = "CADENCE_DIAGNOSTIC_DATA_READBACK_V1_BEGIN"
 END = "CADENCE_DIAGNOSTIC_DATA_READBACK_V1_END"
 ENVELOPES = {
@@ -240,6 +247,91 @@ def file_sha(path: Path) -> str:
     return algorithm.hexdigest()
 
 
+def strict_wav_structure(data: bytes) -> dict:
+    """Bound RIFF chunks before using the existing trusted sample analyzer."""
+    if (len(data) < 44 or data[:4] != b'RIFF' or data[8:12] != b'WAVE'
+            or struct.unpack_from('<I', data, 4)[0] + 8 != len(data)):
+        raise ValueError('Complete exact-length RIFF/WAVE required')
+    position = 12
+    count = 0
+    fmt = None
+    data_size = None
+    while position < len(data):
+        count += 1
+        if count > 128 or position + 8 > len(data):
+            raise ValueError('Incomplete or excessive RIFF chunks')
+        kind, size = struct.unpack_from('<4sI', data, position)
+        position += 8
+        end = position + size
+        padded_end = end + (size & 1)
+        if end > len(data) or padded_end > len(data):
+            raise ValueError('RIFF chunk exceeds original file bounds')
+        if kind == b'fmt ':
+            if fmt is not None or not 16 <= size <= 4096:
+                raise ValueError('Unique bounded WAV format chunk required')
+            fmt = struct.unpack_from('<HHIIHH', data, position)
+        elif kind == b'data':
+            if data_size is not None or not size:
+                raise ValueError('Unique nonempty WAV data chunk required')
+            data_size = size
+        position = padded_end
+    if position != len(data) or fmt is None or data_size is None:
+        raise ValueError('Complete WAV format and data required')
+    code, channels, rate, byte_rate, align, bits = fmt
+    if ((code, bits) not in {(1,16), (1,24), (1,32), (3,32), (3,64)}
+            or not 1 <= channels <= 64 or not 1 <= rate <= 384000
+            or align != channels * (bits // 8) or byte_rate != rate * align
+            or data_size % align):
+        raise ValueError('Unsupported or inconsistent bounded WAV sample format')
+    return {'riff_chunks': count, 'data_bytes': data_size, 'frames': data_size // align,
+            'sample_count': data_size // (bits // 8), 'encoding': code, 'bits': bits,
+            'channels': channels, 'sample_rate': rate,
+            'duration_seconds': data_size / byte_rate}
+
+
+def measure_exact_wav(path: Path, helper: Path | None = None,
+                      expected_bytes: int = WAV_BYTES, expected_sha256: str = WAV_SHA256) -> dict:
+    raw = read_bytes(path, MAX_FILE)
+    if len(raw) != expected_bytes or digest(raw) != expected_sha256:
+        raise ValueError('The exact original GUI WAV bytes are required')
+    structure = strict_wav_structure(raw)
+    if helper is None:
+        # Published reader lives in .cadence-studio/full2005-provenance/
+        # diagnostic-readback; reuse the already published corpus source.
+        helper = Path(__file__).resolve().parents[2] / 'asio-qa-phase2/corpus_run_exports.py'
+    helper_bytes = read_bytes(helper, 32768)
+    if digest(helper_bytes) != AUDIO_HELPER_SHA256:
+        raise ValueError('Previously qualified WAV analyzer source changed')
+    # Execute the exact verified source bytes; do not consult an unverified pyc
+    # or reopen a path after its hash check. The module's CLI guard stays false.
+    module = types.ModuleType('cadence_pinned_audio_data_helper')
+    module.__file__ = str(helper)
+    exec(compile(helper_bytes, str(helper), 'exec'), module.__dict__)
+    metrics = module.inspect_wav(path)
+    if not isinstance(metrics, dict) or type(metrics.get('passed')) is not bool:
+        raise ValueError('Analyzer metrics and result types differ')
+    for key in ('encoding', 'bits', 'channels', 'sample_rate', 'full_scale_samples', 'nonfinite_samples'):
+        if type(metrics.get(key)) is not int or metrics[key] < 0:
+            raise ValueError('Invalid numeric sample counter/format: ' + key)
+    for key in ('peak', 'rms', 'duration_seconds'):
+        if type(metrics.get(key)) not in (int, float) or not math.isfinite(metrics[key]) or metrics[key] < 0:
+            raise ValueError('Nonfinite or invalid numeric sample measurement: ' + key)
+    if (metrics['full_scale_samples'] > structure['sample_count']
+            or metrics['nonfinite_samples'] > structure['sample_count']):
+        raise ValueError('Analyzer counters exceed the sample population')
+    for key in ('encoding', 'bits', 'channels', 'sample_rate', 'duration_seconds'):
+        if metrics.get(key) != structure[key]:
+            raise ValueError('Container and sample analyzer disagree: ' + key)
+    if file_sha(path) != expected_sha256:
+        raise ValueError('Original WAV changed while measuring samples')
+    return {**structure, **metrics,
+            'finite_samples': structure['sample_count'] - metrics['nonfinite_samples'],
+            'analysis_helper_sha256': AUDIO_HELPER_SHA256,
+            'original_bytes_verified': True, 'numeric_metrics_only': True,
+            'pcm_printed': False, 'human_listening': False,
+            'GUI_API_return_or_native_save_qualified': False}
+
+
 def asio_data(root: Path, files: dict) -> dict:
     fixed = ["phase2-result.json", "registry-scope.json", "profile-scope.json",
              "profile-scope-prepared.snapshot.json", "GUI-retention/retention-report.json",
@@ -275,6 +367,10 @@ def asio_data(root: Path, files: dict) -> dict:
                           "pcm_printed": False})
     if len(waves) > 32:
         raise ValueError("Too many WAV files")
+    selected = [row for row in waves if row['path'] == WAV_PATH]
+    if len(selected) != 1:
+        raise ValueError('The original observed basic-control WAV is missing')
+    selected[0]['strict_audio_measurement'] = measure_exact_wav(root / WAV_PATH)
     return {"diagnostic_files": rows, "wav_inventory": waves, "binaries_executed": False,
             "absent_files_are_expected_diagnostics": True, "application_or_driver_qualification": False}
 

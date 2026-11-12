@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "status": "source-checks-passed",
+  "checks": [
+    {
+      "name": "restricted_converter_synthetic_format_guards",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s checks -v",
+      "tests": 4,
+      "passed": true
+    },
+    {
+      "name": "native_QA_synthetic_data_and_Linux_refusal",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v test_native_qa_source.py",
+      "tests": 5,
+      "passed": true
+    },
+    {
+      "name": "YAML_parse",
+      "passed": true
+    },
+    {
+      "name": "real_PowerShell_parse_only",
+      "result": {
+        "parser": "7.6.9",
+        "errors": 0
+      },
+      "passed": true
+    },
+    {
+      "name": "actual_existing_Linux_FluidSynth_load_render_gain_long_notes_release",
+      "report": "actual-linux-fluid-longnotes.json",
+      "passed": true
+    }
+  ],
+  "Windows_app_executed": false,
+  "Windows_behavior_qualified": false,
+  "physical_audio_or_human_listening": false,
+  "new_system_library_installed": false,
+  "source_or_bank_published": false
+}
