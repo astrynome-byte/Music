@@ -44,6 +44,40 @@ static bool noteWaitFocus(IUIAutomation* automation, const std::filesystem::path
     }
     return false;
 }
+// After schema activation removes the focused button, Qt can expose only the
+// main-window chrome through UIA. Re-enter the source-known Scores section and
+// Notes panel using the same bounded discovery as the already-qualified Add
+// focus restoration. Never invoke Back, the account menu, or any foreign node.
+static bool noteRestoreSelectorFocus(IUIAutomation* automation, const std::filesystem::path& output)
+{
+    if (noteWaitFocus(automation, output, noteSelector, UIA_ComboBoxControlTypeId)) return true;
+    bool search = false;
+    for (int attempt = 0; attempt < 5 && collectionContext(); ++attempt) {
+        const Node before = observeCollectionFocus(automation, "before_notes_section_reanchor_f6");
+        if (before.pid != static_cast<int>(targetPid) || !before.enabled || before.offscreen) return false;
+        const bool sent = sendNavigationKey(VK_F6, "reanchor_existing_notes_section_without_activation");
+        Sleep(180);
+        const Node after = observeCollectionFocus(automation, "after_notes_section_reanchor_f6");
+        const auto label = controlLabel(after.name);
+        if (!sent || after.pid != static_cast<int>(targetPid) || !after.enabled || after.offscreen) return false;
+        search = after.type == UIA_EditControlTypeId
+            && (label == L"Rechercher par titre, compositeur ou fichier"
+                || label == L"Rechercher les partitions r\u00e9centes" || label == L"Search recent scores");
+        if (search) break;
+    }
+    if (!search) return false;
+    const Node field = focusedNode(automation);
+    if (!collectionKey(automation, output, VK_TAB, controlLabel(field.name), UIA_EditControlTypeId,
+            "reanchor_notes_via_selected_library_tab")) return false;
+    const Node tab = observeCollectionFocus(automation, "notes_reanchor_selected_library_tab");
+    const auto label = controlLabel(tab.name);
+    if ((tab.type != UIA_TabItemControlTypeId && tab.type != UIA_RadioButtonControlTypeId)
+        || (label != L"Biblioth\u00e8que locale" && label != L"Local library")) return false;
+    return moveCollectionFocus(automation, output, VK_TAB, label, tab.type,
+                noteBack, UIA_ButtonControlTypeId, "reanchor_notes_back_control_without_invoking")
+        && moveCollectionFocus(automation, output, VK_DOWN, noteBack, UIA_ButtonControlTypeId,
+                noteSelector, UIA_ComboBoxControlTypeId, "reanchor_private_note_selector_after_schema_activation");
+}
 static bool noteFocusText(IUIAutomation* automation, const std::filesystem::path& output)
 {
     if (setExactCollectionFocus(automation, output, noteTextLabel, UIA_EditControlTypeId)) return true;
@@ -120,7 +154,7 @@ static NotesResult exercisePrivateNote(IUIAutomation* automation, const std::fil
         if (!triggerVerifiedFocusedButton(automation, output, noteEnable, "activate_private_notes_in_fresh_qa_profile")) {
             result.status = "blocked_notes_activation_action"; return result;
         }
-        result.annotationsEnabled = noteWaitFocus(automation, output, noteSelector, UIA_ComboBoxControlTypeId);
+        result.annotationsEnabled = noteRestoreSelectorFocus(automation, output);
         if (!result.annotationsEnabled || !noteFocusText(automation, output)) {
             result.status = "blocked_notes_enabled_selector_or_text_control"; return result;
         }
