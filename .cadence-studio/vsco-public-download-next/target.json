@@ -1,0 +1,324 @@
+{
+  "schema_version": 1,
+  "ready": true,
+  "repository": "astrynome-byte/Music",
+  "scope": "vsco_cc0_sounds_only",
+  "version": "1.0.0-exp.1",
+  "release": {
+    "tag": "cadence-studio/sounds-vsco-ce-1.0.0-exp.1",
+    "title": "Cadence — sons VSCO CE expérimentaux (flûte et violon)",
+    "prerelease": true,
+    "target_commit_mode": "workflow_head"
+  },
+  "source": {
+    "samples_repository": "https://github.com/sgossner/VSCO-2-CE",
+    "samples_commit": "28092772094b2d9f1148d84cea97f4545b8c687d",
+    "samples_license": "CC0-1.0",
+    "converter_license": "GPL-3.0-only",
+    "application_included": false
+  },
+  "producer": {
+    "run_id": 43231480145,
+    "driver_commit": "1fbc211789c7698c4c191fa204ddbb00216209ec",
+    "full_run_artifact_ids": [
+      13949852671
+    ]
+  },
+  "artifacts": [
+    {
+      "id": 13949852671,
+      "run_id": 43231480145,
+      "name": "cadence-vsco-sf2-qa-43231480145-1",
+      "digest": "sha256:3e0863479ac9a118d58e4082eaf3905838519346e4a3c8ff02a00eb9a78d3604",
+      "expires_at": "2026-11-26T13:53:36Z"
+    }
+  ],
+  "proof": {
+    "assessment_sha256": "fedf1c81b019bc76d0ef278c8857279f2cdc57f09fe771ed95ebbd574b5a7520",
+    "native_report_sha256": "7382a2b6bdc2a466027fc816f8a62056261b5b232fe1ed8ca57d2dce0f542119"
+  },
+  "audit": {
+    "approved": true,
+    "reviewed_by": "Codex root: exact seven assets, CC0/GPL source, Windows producer evidence and scoped experimental release reviewed 2026-11-12; ordinal workflow comparator reviewed and 18 actual PowerShell guards passed"
+  },
+  "android": {
+    "audit_status": "reviewed-no-android-release-or-tag-trigger",
+    "main_commit": "a6c90b63344b3fd60567fd9f001ac9ecba4b2081",
+    "reviewed_by": "Codex root: 54 HEAD workflows and 1 main workflow parsed, exact Git blob hashes verified; no tag/release/create trigger",
+    "main_workflows": [
+      {
+        "path": ".github/workflows/android.yml",
+        "blob_sha1": "ad0539f630eb11556f33f487e145d97558a629ff"
+      }
+    ],
+    "tag_workflows": [
+      {
+        "path": ".github/workflows/android.yml",
+        "blob_sha1": "ad0539f630eb11556f33f487e145d97558a629ff"
+      },
+      {
+        "path": ".github/workflows/cadence-annotations-store.yml",
+        "blob_sha1": "05be47a56010f4cb9568b130ae49979d6b2e744b"
+      },
+      {
+        "path": ".github/workflows/cadence-asio-qa-clock-readback.yml",
+        "blob_sha1": "6fb3fd4dc46332a11a862f0c23202daba083b64c"
+      },
+      {
+        "path": ".github/workflows/cadence-asio-qa-endpoint.yml",
+        "blob_sha1": "9c0c29acd9eeeb128cb1c44755e83d4b00cf1510"
+      },
+      {
+        "path": ".github/workflows/cadence-asio-qa-phase2.yml",
+        "blob_sha1": "1bf8725af1c6912acd6ea042b80b3e9acaa6e148"
+      },
+      {
+        "path": ".github/workflows/cadence-ci-evidence-reader.yml",
+        "blob_sha1": "c778db3ddc1bf4c28dc8c69f6e0cc15f21ba0271"
+      },
+      {
+        "path": ".github/workflows/cadence-coexistence.yml",
+        "blob_sha1": "5b99c7293f41fc2b7010e6fce0e7a9b67f786888"
+      },
+      {
+        "path": ".github/workflows/cadence-combined-2005-stage-reader.yml",
+        "blob_sha1": "bb4b55528d3856eb9f241d7d7c73a44047a39652"
+      },
+      {
+        "path": ".github/workflows/cadence-combined-evidence.yml",
+        "blob_sha1": "c1776a7b9e84f01772ce6ed16782ce99b8c10185"
+      },
+      {
+        "path": ".github/workflows/cadence-combined-msi-evidence.yml",
+        "blob_sha1": "c0357c9dabb327c852569b861dc08902f938a7f1"
+      },
+      {
+        "path": ".github/workflows/cadence-combined-next-gui.yml",
+        "blob_sha1": "276db95eb41616e615511bc602b2c934b2ada466"
+      },
+      {
+        "path": ".github/workflows/cadence-combined-retained.yml",
+        "blob_sha1": "631d9caa1df3b1350c1c1ee1f9113bfc4ac5114d"
+      },
+      {
+        "path": ".github/workflows/cadence-combined-system-aac.yml",
+        "blob_sha1": "f59b64726ad3a96e32bae65e618dd7e0c2363163"
+      },
+      {
+        "path": ".github/workflows/cadence-corresponding-sources.yml",
+        "blob_sha1": "dc7f7c813a1662fa6668153efc3f9fedd8870959"
+      },
+      {
+        "path": ".github/workflows/cadence-diagnostic-artifact-readback.yml",
+        "blob_sha1": "af1a90b42903fa21182c7496746c49e0e5536f05"
+      },
+      {
+        "path": ".github/workflows/cadence-dxc-redist-data.yml",
+        "blob_sha1": "e4d91dc50b2983f22ea8e591c6bb41bb37ae60b5"
+      },
+      {
+        "path": ".github/workflows/cadence-engraving-qa.yml",
+        "blob_sha1": "c253dfde50cf8ebc61bff4330efe7f94b709cfac"
+      },
+      {
+        "path": ".github/workflows/cadence-free-sound-bank-qa.yml",
+        "blob_sha1": "6fbad22cd00494dde0e89d9c8f2633a601987efd"
+      },
+      {
+        "path": ".github/workflows/cadence-full2005-sdk-provenance.yml",
+        "blob_sha1": "148a462bd4cc142189d61a4c2bf36e92156b1f9d"
+      },
+      {
+        "path": ".github/workflows/cadence-icu-data-readback.yml",
+        "blob_sha1": "09e7c18bb06ba43a25166afc3afc472e0d03dd0e"
+      },
+      {
+        "path": ".github/workflows/cadence-icu-system-qa.yml",
+        "blob_sha1": "dccaa209434d2e73848a6227ab40de89fc726309"
+      },
+      {
+        "path": ".github/workflows/cadence-large-qa.yml",
+        "blob_sha1": "2896fe4d4b1bd025862f741ef5611681c7f09de9"
+      },
+      {
+        "path": ".github/workflows/cadence-library-parent-watch-fix.yml",
+        "blob_sha1": "a5f58dff1f95fd1982168f480ebfa1214474e7ba"
+      },
+      {
+        "path": ".github/workflows/cadence-library-store-probe.yml",
+        "blob_sha1": "6398b1569374094aa97c827c2b0c7055eb6841ac"
+      },
+      {
+        "path": ".github/workflows/cadence-library-ui-evidence-reader.yml",
+        "blob_sha1": "64e6361fb42a523ce88bddc025b29fd865e3757c"
+      },
+      {
+        "path": ".github/workflows/cadence-library-ui-probe.yml",
+        "blob_sha1": "e415bbd65440d968e86c305360b0a3cb6ef6363c"
+      },
+      {
+        "path": ".github/workflows/cadence-library-watch-mode-stress.yml",
+        "blob_sha1": "b7ac6874026035f01fcb7ea23c24f9ea5cc94025"
+      },
+      {
+        "path": ".github/workflows/cadence-library-windows.yml",
+        "blob_sha1": "0bdbabac2ed044c5a7ef09110c54d4207f3fa76a"
+      },
+      {
+        "path": ".github/workflows/cadence-mf-aac-probe.yml",
+        "blob_sha1": "106a217e8b81b038696f3026886051bc33636325"
+      },
+      {
+        "path": ".github/workflows/cadence-mf-evidence.yml",
+        "blob_sha1": "1296c9424a88b1f7879a22adb920e7c195a5d1b7"
+      },
+      {
+        "path": ".github/workflows/cadence-missing-audio-qa.yml",
+        "blob_sha1": "2bf8ece5609ef917468400ab6b3c4a1c0861937a"
+      },
+      {
+        "path": ".github/workflows/cadence-msi-upgrade.yml",
+        "blob_sha1": "f31f016d582eeab5231a4fa10e739c38ad249b75"
+      },
+      {
+        "path": ".github/workflows/cadence-named-redist-origins.yml",
+        "blob_sha1": "d4bd6b9b8e77ff1aa24ba5d71edcfb7d9d013e8c"
+      },
+      {
+        "path": ".github/workflows/cadence-native-fx-msvc-probe.yml",
+        "blob_sha1": "2c0773a74dea25152e25e35f0e0d94ed6a132a6d"
+      },
+      {
+        "path": ".github/workflows/cadence-offline-qa.yml",
+        "blob_sha1": "30d909bfcbcb7c4afff197e4f010bd46791755fc"
+      },
+      {
+        "path": ".github/workflows/cadence-packaging-diagnostic.yml",
+        "blob_sha1": "2c9dfe4e8daf351f51273a938d33ac29563053c7"
+      },
+      {
+        "path": ".github/workflows/cadence-release-permission-probe.yml",
+        "blob_sha1": "8f265157c9768794e30f029f0a25eed32bf8e836"
+      },
+      {
+        "path": ".github/workflows/cadence-resource-retention.yml",
+        "blob_sha1": "c2068b3719454d5a8bf7a2696fceb9c8a1542b4d"
+      },
+      {
+        "path": ".github/workflows/cadence-retained-2005-tools-gui.yml",
+        "blob_sha1": "523afe790c91331eb3bac1cafa19f4f5336f0f4d"
+      },
+      {
+        "path": ".github/workflows/cadence-retained-inspection.yml",
+        "blob_sha1": "cfad8dcf6c6f9782c980acebb97bf3934502ae1c"
+      },
+      {
+        "path": ".github/workflows/cadence-retained-package.yml",
+        "blob_sha1": "8b90196e7145520bd2d06648a14d5e681825fdc8"
+      },
+      {
+        "path": ".github/workflows/cadence-retention-readback.yml",
+        "blob_sha1": "35f3ce4849ee4ed63ad34e660dfa581a53b0459c"
+      },
+      {
+        "path": ".github/workflows/cadence-source-worktree-probe.yml",
+        "blob_sha1": "345eed2bbc5413d775fed43449ab0d54b6a8dca3"
+      },
+      {
+        "path": ".github/workflows/cadence-system-aac-native.yml",
+        "blob_sha1": "cc62b7d327b4d9341d989a95720a1ecfac6c3524"
+      },
+      {
+        "path": ".github/workflows/cadence-tempo-windows-probe.yml",
+        "blob_sha1": "ffb0bdb685892b4bac0408ef386212c46df69e38"
+      },
+      {
+        "path": ".github/workflows/cadence-tools-gui3-readback.yml",
+        "blob_sha1": "c1dba2826ffa3adc0c16198c6a73b527105a1b32"
+      },
+      {
+        "path": ".github/workflows/cadence-vsco-installer-probe.yml",
+        "blob_sha1": "9d5cfd24ceef2db62879e519c4a240c7a569839e"
+      },
+      {
+        "path": ".github/workflows/cadence-vsco-sf2-pitch.yml",
+        "blob_sha1": "64049ea6d34f18b616d893ef0740069533048781"
+      },
+      {
+        "path": ".github/workflows/cadence-vsco-sf2-qa.yml",
+        "blob_sha1": "2b524f6d5ef7cf57217c5cc75206d7baaa4223b1"
+      },
+      {
+        "path": ".github/workflows/cadence-vsco-sfizz-qa.yml",
+        "blob_sha1": "a0633ebbb7d0055dfafeccb6c3520a65896064b5"
+      },
+      {
+        "path": ".github/workflows/cadence-vsco-sounds-public.yml",
+        "blob_sha1": "9e85634928cafccc8fdcd6fc6fcd905833a1f611"
+      },
+      {
+        "path": ".github/workflows/cadence-windows.yml",
+        "blob_sha1": "1802af40d1fb23009d823dee818971324004bfc1"
+      },
+      {
+        "path": ".github/workflows/cadence-zlib-inspection.yml",
+        "blob_sha1": "3e0f15389408d7da13eae6f40c8276ce5fe691e8"
+      },
+      {
+        "path": ".github/workflows/cadence-zlib-windows.yml",
+        "blob_sha1": "066a24a48e6f87c2b00c3b87a0e41bf38e806758"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "kind": "sounds",
+      "name": "Cadence-VSCO-CE-sons-1.0.0-exp.1.zip",
+      "member_path": "Cadence-VSCO-CE-sons-1.0.0-exp.1.zip",
+      "bytes": 91158112,
+      "sha256": "2a384f0babecfd53b4bb6a069d057045be74a971aff01f5f35ace681a52d0570"
+    },
+    {
+      "kind": "sources",
+      "name": "Cadence-VSCO-CE-convertisseur-1.0.0-exp.1.zip",
+      "member_path": "Cadence-VSCO-CE-convertisseur-1.0.0-exp.1.zip",
+      "bytes": 146131,
+      "sha256": "a1c616dd7cee8fa698c659d97729525d8266258339fc2fdc8af1e23b20332404"
+    },
+    {
+      "kind": "notice",
+      "name": "Cadence-VSCO-CE-notice-1.0.0-exp.1.txt",
+      "member_path": "Cadence-VSCO-CE-notice-1.0.0-exp.1.txt",
+      "bytes": 3983,
+      "sha256": "8b583ca8cfa90a4860d413b2039e97453f7e0e6d556d9658973ee9d2ef9bf6a5"
+    },
+    {
+      "kind": "license",
+      "name": "Cadence-VSCO-CE-CC0-1.0.0-exp.1.txt",
+      "member_path": "Cadence-VSCO-CE-CC0-1.0.0-exp.1.txt",
+      "bytes": 6555,
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+    },
+    {
+      "kind": "checksums",
+      "name": "Cadence-VSCO-CE-SHA256SUMS-1.0.0-exp.1.txt",
+      "member_path": "Cadence-VSCO-CE-SHA256SUMS-1.0.0-exp.1.txt",
+      "bytes": 601,
+      "sha256": "309f451f9101efcce7f48d9966230de24b5c1a069a9800da9806f095dafecb38"
+    },
+    {
+      "kind": "flute_sf2",
+      "name": "Cadence-VSCO-Flute.sf2",
+      "member_path": "Cadence-VSCO-Flute.sf2",
+      "bytes": 16778410,
+      "sha256": "2bc48929d1996687b99e27b532043c4cb34b89480471faaea446ffc021ab3768"
+    },
+    {
+      "kind": "violin_sf2",
+      "name": "Cadence-VSCO-Violin.sf2",
+      "member_path": "Cadence-VSCO-Violin.sf2",
+      "bytes": 74366558,
+      "sha256": "801896ef3be53c4b60d9dc87078787add7fdc44b1a3bfe9fff30fcc519d93e0d"
+    }
+  ]
+}
