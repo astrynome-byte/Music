@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-12T16:23:46.669892+00:00",
+  "base_commit": "ac9a24933f78f22ea630570910848201baad3d3b",
+  "base_tree": "a94a09974229c47e7b90b593a7649c29d6a6d190",
+  "source_commit": "b07fcaf544f494ca9bbab78000c220235d0db731",
+  "source_tree": "ae4cdc6b70db059ad91a103480aaa7bfe72aa990",
+  "patch_bytes": 1178048,
+  "patch_gzip_bytes": 253888,
+  "patch_gzip_sha256": "34799e2065bb5f477fba32f0ead7c9557cbeaefd3dc72f390d8bdff0f3e56e67",
+  "contains_audio_banks_or_executables": false,
+  "distribution": false,
+  "scope": "Local resume checkpoint after tested MSI2006; native VSCO manager plus notices, actual proofs, docs; no audio-intent engine fix yet",
+  "reconstruction_verified_locally": true
+}
