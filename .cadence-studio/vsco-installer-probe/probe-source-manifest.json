@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "source_commit": "13c68381fe81f57e09f892db00b014d9c1a09133",
+  "source_tree": "dda148ef004e17d038a443315eb4e975b1d9ef5e",
+  "parent_commit": "ac9a24933f78f22ea630570910848201baad3d3b",
+  "expected_local_only_scenarios": 8,
+  "expected_existing_scenarios": 13,
+  "required_qt_version": "6.10.2",
+  "required_python_version": "3.12",
+  "scope": "Real isolated production installer only; no application GUI/audio test",
+  "qualified_converter_driver_commit": "1fbc211789c7698c4c191fa204ddbb00216209ec",
+  "qualified_converter_run": 43231480145,
+  "VSCO_source_commit": "28092772094b2d9f1148d84cea97f4545b8c687d",
+  "generated_banks": [
+    {
+      "file": "Cadence-VSCO-Flute.sf2",
+      "bytes": 16778410,
+      "sha256": "2bc48929d1996687b99e27b532043c4cb34b89480471faaea446ffc021ab3768",
+      "resource_id": "Cadence-VSCO-Flute\\0\\73"
+    },
+    {
+      "file": "Cadence-VSCO-Violin.sf2",
+      "bytes": 74366558,
+      "sha256": "801896ef3be53c4b60d9dc87078787add7fdc44b1a3bfe9fff30fcc519d93e0d",
+      "resource_id": "Cadence-VSCO-Violin\\0\\40"
+    },
+    {
+      "file": "Cadence-VSCO-Flute-minus18.sf2",
+      "bytes": 16778410,
+      "sha256": "b1a53205814bcf3068f0278f2940f6d8b953215f2adf4659a238448a9a70a17f",
+      "resource_id": "Cadence-VSCO-Flute-minus18\\0\\73"
+    }
+  ],
+  "files": [
+    {
+      "path": "source/src/musesounds/internal/freecollectioninstaller.h",
+      "source_commit": "13c68381fe81f57e09f892db00b014d9c1a09133",
+      "source_path": "src/musesounds/internal/freecollectioninstaller.h",
+      "bytes": 2141,
+      "sha256": "bc198251bcfb1e36f0e83945ef492c7711f993df0eaaa1d16cbb62a7b9693aee"
+    },
+    {
+      "path": "source/src/musesounds/internal/freecollectioninstaller.cpp",
+      "source_commit": "13c68381fe81f57e09f892db00b014d9c1a09133",
+      "source_path": "src/musesounds/internal/freecollectioninstaller.cpp",
+      "bytes": 14857,
+      "sha256": "d1c09aa04d4449af3790969a54d653b25a18479abca87a4a48f372abdaa477e0"
+    },
+    {
+      "path": "source/src/musesounds/qml/MuseScore/MuseSounds/resources/free-sound-collections.json",
+      "source_commit": "13c68381fe81f57e09f892db00b014d9c1a09133",
+      "source_path": "src/musesounds/qml/MuseScore/MuseSounds/resources/free-sound-collections.json",
+      "bytes": 65303,
+      "sha256": "c5e197b77ab637c0c2d308a4278ac63c3d51190e76d198aba1c17de93f53e0a5"
+    },
+    {
+      "path": "source/src/musesounds/qml/MuseScore/MuseSounds/resources/VSCO-CC0-LICENSE.txt",
+      "source_commit": "13c68381fe81f57e09f892db00b014d9c1a09133",
+      "source_path": "src/musesounds/qml/MuseScore/MuseSounds/resources/VSCO-CC0-LICENSE.txt",
+      "bytes": 6555,
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+    },
+    {
+      "path": "source/src/musesounds/qml/MuseScore/MuseSounds/resources/GeneralUser-GS-LICENSE.txt",
+      "source_commit": "13c68381fe81f57e09f892db00b014d9c1a09133",
+      "source_path": "src/musesounds/qml/MuseScore/MuseSounds/resources/GeneralUser-GS-LICENSE.txt",
+      "bytes": 2317,
+      "sha256": "7b32efefdf95ce38a043799f0659853ddc00fbaa14d8c50f0aca16b9b8b405be"
+    },
+    {
+      "path": "source/test/cadence/free_sound_collections/CMakeLists.txt",
+      "source_commit": "13c68381fe81f57e09f892db00b014d9c1a09133",
+      "source_path": "test/cadence/free_sound_collections/CMakeLists.txt",
+      "bytes": 1817,
+      "sha256": "eb3bc565da4b4c86b82f94be88f5b2509fe99cbd2328388a9db5f5c8062fdfce"
+    },
+    {
+      "path": "source/test/cadence/free_sound_collections/installer_tests.cpp",
+      "source_commit": "13c68381fe81f57e09f892db00b014d9c1a09133",
+      "source_path": "test/cadence/free_sound_collections/installer_tests.cpp",
+      "bytes": 13245,
+      "sha256": "be9f9e3dd720b7ecfc69ef081d829150c96e98656e14880559ff2c217cda17ad"
+    },
+    {
+      "path": "source/test/cadence/free_sound_collections/local_only_tests.cpp",
+      "source_commit": "13c68381fe81f57e09f892db00b014d9c1a09133",
+      "source_path": "test/cadence/free_sound_collections/local_only_tests.cpp",
+      "bytes": 14695,
+      "sha256": "3f94030875358a3b33c8b2940f24d0006e2b8fbd0caa80b7cc43ce5a024f159c"
+    },
+    {
+      "path": "converter/build_vsco_sf2.py",
+      "qualified_driver_commit": "1fbc211789c7698c4c191fa204ddbb00216209ec",
+      "qualified_repository_path": ".cadence-studio/vsco-sf2/build_vsco_sf2.py",
+      "bytes": 21079,
+      "sha256": "a3a7be1e2ceca170c7e6d1ad19606542e669d3c6ac165de1bd76fe0aedbc4a58"
+    },
+    {
+      "path": "converter/asset-source-manifest.json",
+      "qualified_driver_commit": "1fbc211789c7698c4c191fa204ddbb00216209ec",
+      "qualified_repository_path": ".cadence-studio/vsco-sf2/asset-source-manifest.json",
+      "bytes": 8238,
+      "sha256": "f2d68c3fdf42c130c8b182581aa0a63e881f6f30b1934b39c97fc448843b1a8b"
+    },
+    {
+      "path": "converter/VSCO-CC0-LICENSE.txt",
+      "qualified_driver_commit": "1fbc211789c7698c4c191fa204ddbb00216209ec",
+      "qualified_repository_path": ".cadence-studio/vsco-sf2/VSCO-CC0-LICENSE.txt",
+      "bytes": 6555,
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+    },
+    {
+      "path": "converter/mappings/FluteSusVib.sfz",
+      "qualified_driver_commit": "1fbc211789c7698c4c191fa204ddbb00216209ec",
+      "qualified_repository_path": ".cadence-studio/vsco-sf2/mappings/FluteSusVib.sfz",
+      "bytes": 1605,
+      "sha256": "26b0dedaa483b6f7f4201d144673b26ab1d0e4585493a97815d03904319a0734"
+    },
+    {
+      "path": "converter/mappings/SViolinVib.sfz",
+      "qualified_driver_commit": "1fbc211789c7698c4c191fa204ddbb00216209ec",
+      "qualified_repository_path": ".cadence-studio/vsco-sf2/mappings/SViolinVib.sfz",
+      "bytes": 3366,
+      "sha256": "a2ca3611463547ac9371aa9d13a693af9cd10804f9232d2c602d65937387a992"
+    },
+    {
+      "path": "converter/CODE-GPL-3.0.txt",
+      "qualified_driver_commit": "1fbc211789c7698c4c191fa204ddbb00216209ec",
+      "qualified_repository_path": ".cadence-studio/vsco-sf2/CODE-GPL-3.0.txt",
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    }
+  ]
+}

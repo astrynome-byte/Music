@@ -1,0 +1,86 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: native local-only VSCO installer qualification'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/vsco-installer-probe/**'
+      - '.github/workflows/cadence-vsco-installer-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cadence-vsco-installer-probe-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-Qt-installer-only:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Use native MSVC 2022 x64 and SDK 26100
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+      - name: Install only the pinned Qt base development kit
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.2'
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          archives: 'qtbase'
+          cache: true
+          cache-key-prefix: 'cadence-qtbase-free-sound-installer'
+      - name: Rebuild exact CC0 banks and execute only the 8 plus 13 native installer scenarios
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/vsco-installer-probe/Run-VscoInstallerProbe.ps1" `
+            -SourcePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/vsco-installer-probe" `
+            -QtPath $env:QT_ROOT_DIR `
+            -OutputDirectory "$env:RUNNER_TEMP/vsco-installer-probe-results"
+      - name: Print bounded native reports and logs after success or failure
+        if: always()
+        run: |
+          $root=Join-Path $env:RUNNER_TEMP 'vsco-installer-probe-results'
+          $budget=393216L
+          if(Test-Path -LiteralPath $root -PathType Container){
+            $files=@(Get-ChildItem -LiteralPath $root -File |
+              Where-Object { -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) -and $_.Extension -in @('.json','.log') } |
+              Sort-Object @{Expression={if($_.Extension -eq '.json'){0}else{1}}},Name | Select-Object -First 30)
+            foreach($file in $files){
+              $limit=[Math]::Min(65536L,$budget)
+              if($limit -le 0){break}
+              $stream=[IO.File]::OpenRead($file.FullName)
+              try{
+                [void]$stream.Seek([Math]::Max(0L,$stream.Length-$limit),[IO.SeekOrigin]::Begin)
+                $bytes=[byte[]]::new([int][Math]::Min($limit,$stream.Length));$count=$stream.Read($bytes,0,$bytes.Length)
+                $text=[Text.Encoding]::UTF8.GetString($bytes,0,$count)
+              }finally{$stream.Dispose()}
+              Write-Host 'CADENCE_FREE_SOUND_EVIDENCE_BEGIN'
+              Write-Host ([ordered]@{file=$file.Name;file_bytes=$file.Length;printed_bytes=$count;tail_only=$file.Length -gt $count;text=$text}|ConvertTo-Json -Depth 4 -Compress)
+              Write-Host 'CADENCE_FREE_SOUND_EVIDENCE_END'
+              $budget-=$count
+            }
+          }else{Write-Host 'No native result directory exists; no runtime success inferred.'}
+      - name: Retain only component diagnostics and manifests, never heavy sounds or an installer
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-vsco-installer-probe-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/vsco-installer-probe-results/*.json
+            ${{ runner.temp }}/vsco-installer-probe-results/*.log
+          retention-days: 14
+          if-no-files-found: warn
