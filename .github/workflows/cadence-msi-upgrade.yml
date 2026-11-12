@@ -1,0 +1,112 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: real MSI7 to retained MSI2002 upgrade'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/upgrade/**'
+      - '.github/workflows/cadence-msi-upgrade.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-msi-upgrade-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  actual-upgrade:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    env:
+      CANDIDATE_RUN_ID: '43123411562'
+      CANDIDATE_ARTIFACT_ID: '13902536112'
+      CANDIDATE_MSI_FILENAME: 'CadenceStudio-4.7.6-cadence.2002-x86_64.msi'
+      CANDIDATE_MSI_SHA256: '2d0d4b82ced312b22fea36470aec4c2677060135dd6cf8fb43bb25777953673e'
+      CANDIDATE_EXE_SHA256: '35d8b076cacddb8b37a4f23aeea9899e6ab4ac9214e9a5b1125bbeccf26cf39e'
+      CANDIDATE_MSI_VERSION: '4.7.6.2002'
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Guard native disposable Windows x64 before checkout or download
+        run: |
+          if (-not [OperatingSystem]::IsWindows() -or $env:OS -ne 'Windows_NT' -or -not [Environment]::Is64BitProcess -or
+              [Runtime.InteropServices.RuntimeInformation]::OSArchitecture -ne 'X64' -or $env:GITHUB_ACTIONS -ne 'true' -or
+              $env:CI -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') {
+            throw 'Only disposable native Windows x64 GitHub-hosted runners are permitted.'
+          }
+      - name: Require the six real measured inputs before downloading any candidate
+        run: |
+          foreach ($id in @($env:CANDIDATE_RUN_ID,$env:CANDIDATE_ARTIFACT_ID)) {
+            if ($id -notmatch '^[1-9][0-9]+$') { throw 'An actual completed run/artifact ID is required' }
+          }
+          foreach ($hash in @($env:CANDIDATE_MSI_SHA256,$env:CANDIDATE_EXE_SHA256)) {
+            if ($hash -notmatch '^[a-f0-9]{64}$') { throw 'Measured candidate SHA-256 values are required' }
+          }
+          if ($env:CANDIDATE_MSI_FILENAME -notmatch '^[A-Za-z0-9_.-]+\.msi$') { throw 'MSI input must be a plain exact leaf filename' }
+          if ($env:CANDIDATE_MSI_VERSION -notmatch '^4\.7\.6\.\d+$' -or ([version]$env:CANDIDATE_MSI_VERSION).Revision -lt 2000) {
+            throw 'Candidate must be the actual 4.7.6 build numbered 2000 or higher'
+          }
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Download the actual qualified build7 MSI
+        uses: actions/download-artifact@v4
+        with:
+          repository: astrynome-byte/Music
+          run-id: 42721049351
+          artifact-ids: '13720861986'
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/upgrade-old
+      - name: Download only the explicitly identified produced candidate artifact
+        uses: actions/download-artifact@v4
+        with:
+          repository: astrynome-byte/Music
+          run-id: '43123411562'
+          artifact-ids: '13902536112'
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/upgrade-candidate
+      - name: Authenticate complete delivery/source records and original executable ZIP bytes
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/upgrade/Verify-UpgradeInputs.ps1" `
+            -OldArtifactDirectory "$env:RUNNER_TEMP/upgrade-old" `
+            -CandidateArtifactDirectory "$env:RUNNER_TEMP/upgrade-candidate" `
+            -OutputDirectory "$env:RUNNER_TEMP/upgrade-input-verification"
+      - name: Qualify real MSI replacement and owned-data preservation
+        run: |
+          $old = @(Get-ChildItem "$env:RUNNER_TEMP/upgrade-old" -Recurse -File -Filter 'CadenceStudio-4.7.6-cadence.7-x86_64.msi')
+          $candidate = @(Get-ChildItem "$env:RUNNER_TEMP/upgrade-candidate" -Recurse -File -Filter $env:CANDIDATE_MSI_FILENAME)
+          if ($old.Count -ne 1 -or $candidate.Count -ne 1) { throw 'Expected exactly one actual old MSI and one exact candidate MSI' }
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/upgrade/Test-MsiUpgrade.ps1" `
+            -OldMsiPath $old[0].FullName -CandidateMsiPath $candidate[0].FullName `
+            -CandidateMsiSha256 $env:CANDIDATE_MSI_SHA256 `
+            -CandidateExecutableSha256 $env:CANDIDATE_EXE_SHA256 `
+            -CandidateMsiVersion $env:CANDIDATE_MSI_VERSION `
+            -InputVerificationRecordPath "$env:RUNNER_TEMP/upgrade-input-verification/input-verification.json" `
+            -OutputDirectory "$env:RUNNER_TEMP/msi-upgrade-qa"
+      - name: Print actual qualification results even if the test fails
+        if: always()
+        run: |
+          foreach($directory in @("$env:RUNNER_TEMP/upgrade-input-verification","$env:RUNNER_TEMP/msi-upgrade-qa")) {
+            foreach($report in @(Get-ChildItem -LiteralPath $directory -File -Filter '*.json' -ErrorAction SilentlyContinue)) {
+              Write-Host ('CADENCE_MSI_UPGRADE_JSON_BEGIN '+$report.Name)
+              Get-Content -LiteralPath $report.FullName -Raw -Encoding utf8 | Out-Host
+              Write-Host ('CADENCE_MSI_UPGRADE_JSON_END '+$report.Name)
+            }
+          }
+      - name: Retain upgrade evidence; no product publication
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-msi-upgrade-qa-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/msi-upgrade-qa/**
+            ${{ runner.temp }}/upgrade-input-verification/**
+            ${{ github.workspace }}/driver/.cadence-studio/upgrade/selection.json
+            ${{ github.workspace }}/driver/.cadence-studio/upgrade/README.md
+          retention-days: 14
+          if-no-files-found: warn

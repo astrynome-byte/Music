@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "status": "prepared-for-real-push-run-not-Windows-executed-by-local-checks",
+  "prepared_utc": "2026-11-12",
+  "scope": "Local syntax/guards/payload checks; no installer or application execution",
+  "workflow_push_paths_checked": true,
+  "workflow_read_only_permissions": true,
+  "six_real_inputs_pinned": true,
+  "native_guard_first_step": true,
+  "parse_errors": 0,
+  "powershell_version": "7.6.9",
+  "independent_review": [
+    "COM helpers and same-three-part Upgrade gate reviewed",
+    "Timeout msiexec added; only owned direct process Kill()",
+    "ProductLanguage now read from actual MSI Property",
+    "Sources MSI7 and2002 confirm --long-version exits before QApplication/module setup"
+  ],
+  "windows_upgrade_executed_by_preparation": false,
+  "remote_mutation_performed": false,
+  "linux_guards": [
+    {
+      "script": "Verify-UpgradeInputs.ps1",
+      "exit_code": 1,
+      "output_created": false,
+      "windows_environment_spoof_rejected": true
+    },
+    {
+      "script": "Test-MsiUpgrade.ps1",
+      "exit_code": 1,
+      "output_created": false,
+      "windows_environment_spoof_rejected": true
+    }
+  ],
+  "utf8_without_bom": true,
+  "namespace_lf_and_raw_musicxml": true,
+  "files_sha256": {
+    ".gitattributes": "070d85961b822bdd74d75df23cd1e98c760c541697bb865c5c74001e9426737c",
+    "MsiReadOnly.ps1": "37e6c04cbf97230b33c460c5ad565990a18083bf1e33cb5fd9a553a9af12dbcf",
+    "README.md": "73d940da505289e816001e5e048a6a6a39120cf96a9826d731bcfd95832b0dec",
+    "Test-MsiUpgrade.ps1": "631a9150c191631399ccc713b7c47a7a972e4df04d1d32ff268adb4f7d3a173a",
+    "Verify-UpgradeInputs.ps1": "0fc9a651faa443a532e970a3ac16a7f252b91aa40f127a6ef3cc33b3d1147c6a",
+    "cadence-msi-upgrade.yml": "18797bc51968b1dc2ab2369a102c564e2095c29e53cd519d979e44fa171b1904",
+    "fixtures/LICENSE.txt": "506fdeacbf34a01edf36e2775f777889b93cfe0af8b471991b2e02b80bcee246",
+    "fixtures/piano.musicxml": "1b38cc5953cc56426976345411394c24d39e0ff22dbf6c350addcb68c770a3fb",
+    "selection.json": "1fd21ab7b84a770a9232c0cfb3a2aa16cb5d4389b09e69d5ce5396ca0e483a3d"
+  }
+}
