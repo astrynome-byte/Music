@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: read actual MSI2002 receipts, inventory and screenshots'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/combined-msi-evidence/**'
+      - '.github/workflows/cadence-combined-msi-evidence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-combined-msi-evidence-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  inspect-completed-delivery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Download only the completed original GUI and installation evidence
+        uses: actions/download-artifact@v4
+        with:
+          repository: astrynome-byte/Music
+          run-id: '43123411562'
+          artifact-ids: '13902581012'
+          merge-multiple: true
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/combined2002-qa
+      - name: Download original delivery for file receipts and nested stage directory inventory
+        uses: actions/download-artifact@v4
+        with:
+          repository: astrynome-byte/Music
+          run-id: '43123411562'
+          artifact-ids: '13902536112'
+          merge-multiple: true
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/combined2002-delivery
+      - name: Verify hashes and relay unchanged PNG bytes, without executing any program
+        run: |
+          python -I -X utf8 "$GITHUB_WORKSPACE/driver/.cadence-studio/combined-msi-evidence/inspect.py" \
+            --qa "$RUNNER_TEMP/combined2002-qa" --delivery "$RUNNER_TEMP/combined2002-delivery" \
+            --output "$RUNNER_TEMP/combined2002-evidence"
+      - name: Retain durable copies of actual reports, hashes and unchanged screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-combined2002-evidence-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/combined2002-evidence/
+          retention-days: 14
+          if-no-files-found: warn
