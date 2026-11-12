@@ -85,8 +85,8 @@ static bool noteFocusText(IUIAutomation* automation, const std::filesystem::path
     const std::wstring measure = L"Rep\u00e8re manuel de mesure, z\u00e9ro pour aucun";
     // No modification to the numeric reference: Down only, from exact roles.
     return moveCollectionFocus(automation, output, VK_DOWN, noteSelector, UIA_ComboBoxControlTypeId,
-                               measure, UIA_EditControlTypeId, "observe_note_measure_without_editing")
-        && moveCollectionFocus(automation, output, VK_DOWN, measure, UIA_EditControlTypeId,
+                               measure, UIA_SpinnerControlTypeId, "observe_note_measure_without_editing")
+        && moveCollectionFocus(automation, output, VK_DOWN, measure, UIA_SpinnerControlTypeId,
                                noteTextLabel, UIA_EditControlTypeId, "focus_private_note_text");
 }
 static bool noteTextMatches(IUIAutomation* automation, const std::filesystem::path& output,
