@@ -101,9 +101,12 @@ try {
     [IO.File]::Copy($manifestPath,(Join-Path $OutputDirectory 'source-manifest.json'),$false)
     $report.source_manifest_verified=$true
     if($env:VSCMD_ARG_TGT_ARCH -ne 'x64' -or $env:VSCMD_VER -notmatch '^17\.' -or $env:WindowsSDKVersion.TrimEnd('\') -ne '10.0.26100.0'){throw 'MSVC2022 x64 and SDK10.0.26100.0 are required.'}
-    $cmake=(Get-Command cmake -CommandType Application).Source
-    $ninja=(Get-Command ninja -CommandType Application).Source
-    $cl=(Get-Command cl -CommandType Application).Source
+    # A hosted developer PATH can contain both standalone and Visual Studio
+    # installations. Use its first actual application, not an array converted
+    # to a space-joined non-existent executable filename.
+    $cmake=(Get-Command cmake -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
+    $ninja=(Get-Command ninja -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
+    $cl=(Get-Command cl -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
     $report.toolchain=[ordered]@{cmake=$cmake;ninja=$ninja;cl=$cl;visual_studio=$env:VSCMD_VER;windows_sdk=$env:WindowsSDKVersion}
     $qmake=Join-Path $QtPath 'bin/qmake.exe'
     foreach($file in @($qmake,(Join-Path $QtPath 'bin/Qt6Core.dll'),(Join-Path $QtPath 'lib/cmake/Qt6/Qt6Config.cmake'))){if(-not(Test-Path -LiteralPath $file -PathType Leaf)){throw 'The supplied Qt base development kit is incomplete.'}}
