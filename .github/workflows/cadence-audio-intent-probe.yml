@@ -1,0 +1,100 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: native audio intent retention qualification'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/audio-intent-probe/**'
+      - '.github/workflows/cadence-audio-intent-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-audio-intent-probe-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-engine-and-writer-only:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Use native MSVC 2022 x64 and Windows SDK 26100
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+      - name: Install the exact Qt base development kit
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.2'
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          archives: 'qtbase'
+          cache: true
+          cache-key-prefix: 'cadence-qtbase-audio-intent-probe'
+      # Qt's action can prepend its own Python. Restore the pinned interpreter
+      # only after Qt setup; the native wrapper still checks the actual version.
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Retrieve only the retained qualified source-built zlib package
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '13891238030'
+          run-id: '43101767743'
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/audio-intent-zlib-transport
+          merge-multiple: true
+      - name: Compile real component snapshots and require ON, OFF and old negative controls
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/audio-intent-probe/Run-AudioIntentProbe.ps1" `
+            -SourcePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/audio-intent-probe" `
+            -QtPath $env:QT_ROOT_DIR `
+            -ZlibTransportPath "$env:RUNNER_TEMP/audio-intent-zlib-transport" `
+            -OutputDirectory "$env:RUNNER_TEMP/audio-intent-probe-results"
+      - name: Print bounded native evidence after success or failure
+        if: always()
+        run: |
+          $root=Join-Path $env:RUNNER_TEMP 'audio-intent-probe-results'
+          $budget=1048576L
+          if(Test-Path -LiteralPath $root -PathType Container){
+            $files=@(Get-ChildItem -LiteralPath $root -File |
+              Where-Object { -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) -and $_.Extension -in @('.json','.log') } |
+              Sort-Object @{Expression={if($_.Extension -eq '.json'){0}else{1}}},Name | Select-Object -First 64)
+            foreach($file in $files){
+              $ceiling=if($file.Extension -eq '.json'){262144L}else{65536L}
+              $limit=[Math]::Min($ceiling,$budget)
+              if($limit -le 0){break}
+              $stream=[IO.File]::OpenRead($file.FullName)
+              try{
+                [void]$stream.Seek([Math]::Max(0L,$stream.Length-$limit),[IO.SeekOrigin]::Begin)
+                $bytes=[byte[]]::new([int][Math]::Min($limit,$stream.Length));$count=$stream.Read($bytes,0,$bytes.Length)
+                $text=[Text.Encoding]::UTF8.GetString($bytes,0,$count)
+              }finally{$stream.Dispose()}
+              Write-Host 'CADENCE_AUDIO_INTENT_EVIDENCE_BEGIN'
+              Write-Host ([ordered]@{file=$file.Name;file_bytes=$file.Length;printed_bytes=$count;tail_only=$file.Length -gt $count;text=$text}|ConvertTo-Json -Depth 4 -Compress)
+              Write-Host 'CADENCE_AUDIO_INTENT_EVIDENCE_END'
+              $budget-=$count
+            }
+          }else{Write-Host 'No result directory exists; no native execution success inferred.'}
+      - name: Retain component diagnostics and manifests without an application or sound library
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-audio-intent-probe-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/audio-intent-probe-results/*.json
+            ${{ runner.temp }}/audio-intent-probe-results/*.log
+          retention-days: 14
+          if-no-files-found: warn

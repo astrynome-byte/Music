@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "source_commit": "88f49ea89ba96471fb00abd4e3074488239648aa",
+  "source_tree": "4c63daf6fd5d5fd44f9fb6a05f9fec18236b80a9",
+  "control_commit": "b02b41f4cbb31f43df073d6cdf5249a18d425a7e",
+  "candidate_files": 170,
+  "control_files": 6,
+  "archive_entries": 178,
+  "source_manifest_sha256": "26fb0c02cf17d8e065431cc3dc23dc39be3865810b6487894c145ada62bf5b8c",
+  "zip_bytes": 368456,
+  "zip_sha256": "126959e3b82f29ffe47199bdca682d42b7c4b4e9cc2753f9386c1f4c118b0e47",
+  "base64_file_bytes": 496394,
+  "base64_file_sha256": "c3b0610f24f0760e27655d6767d1cdfba3a2616e78e9267850f24ba6eccfe3b5",
+  "source_only": true,
+  "binary_sounds_or_executables_included": false
+}
