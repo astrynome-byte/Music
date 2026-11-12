@@ -150,18 +150,23 @@ static bool readFocusedEditText(IUIAutomation* automation, std::wstring& value)
 {
     const Node node = focusedNode(automation);
     if (!collectionNodeIs(node, L"Nom de collection", UIA_EditControlTypeId)) return false;
-    ComPtr<IUIAutomationValuePattern> pattern;
-    if (SUCCEEDED(node.element->GetCurrentPatternAs(UIA_ValuePatternId, IID_PPV_ARGS(&pattern)))) {
-        BSTR raw = nullptr;
-        if (SUCCEEDED(pattern->get_CurrentValue(&raw))) { value = text(raw); return true; }
-    }
+    // TextInputField binds accessible.text to its real text. Its ValuePattern
+    // can successfully return an empty unrelated accessibleValue, so it must
+    // not hide a supported TextPattern result (as observed in actual GUI6).
     ComPtr<IUIAutomationTextPattern> textPattern;
     ComPtr<IUIAutomationTextRange> range;
     BSTR raw = nullptr;
-    if (FAILED(node.element->GetCurrentPatternAs(UIA_TextPatternId, IID_PPV_ARGS(&textPattern)))
-        || FAILED(textPattern->get_DocumentRange(&range)) || !range || FAILED(range->GetText(81, &raw))) return false;
-    value = text(raw);
-    return true;
+    if (SUCCEEDED(node.element->GetCurrentPatternAs(UIA_TextPatternId, IID_PPV_ARGS(&textPattern)))
+        && SUCCEEDED(textPattern->get_DocumentRange(&range)) && range) {
+        if (SUCCEEDED(range->GetText(81, &raw))) { value = text(raw); return true; }
+        SysFreeString(raw); raw = nullptr;
+    }
+    ComPtr<IUIAutomationValuePattern> pattern;
+    if (SUCCEEDED(node.element->GetCurrentPatternAs(UIA_ValuePatternId, IID_PPV_ARGS(&pattern)))) {
+        if (SUCCEEDED(pattern->get_CurrentValue(&raw))) { value = text(raw); return true; }
+        SysFreeString(raw); raw = nullptr;
+    }
+    return false;
 }
 
 static bool fillNewCollectionName(IUIAutomation* automation, const std::filesystem::path& output,
