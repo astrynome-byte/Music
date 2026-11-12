@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "status": "reviewed-produced-stage",
+  "producer_run_id": 43207550870,
+  "artifact_id": 13943781621,
+  "artifact_digest_from_github_metadata": "sha256:b80df24aceb9a49ca4ef8618f36d681f57099d47da9ab5ec6261b2fd2fa9b5ba",
+  "artifact_expires_utc": "2026-11-26T12:13:12Z",
+  "build_number": 2005,
+  "run_number": 5,
+  "run_attempt": 1,
+  "source": {
+    "original_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+    "ci_commit": "167f50421e67e042e270198853c27aeeaa0f4452",
+    "tree": "c4780f1487559744fd4b2c2040b86ac37bb8c67b",
+    "source_json_sha256": "acd0aabb88bec95eb8f6803844e4f5cd32e7a67084d2a58d0dce3df3fba33e98",
+    "patch_sha256": "1f9823f48ae63c69647bf5dbc3e05e096540f96d1dfd0ed5de568ed4ad7f464b"
+  },
+  "stage": {
+    "archive": "CadenceStudio-v4.7.6-combined-system-aac-stage-build-2005-attempt-1-x64.zip",
+    "archive_sha256": "4707aea7e6f0f63361ced55edfff7c7cf591f15463f9219263bfac4de3f96f9b",
+    "executable_sha256": "d957ffc99497cb01b1f00f82ba1d6e89ef84547708506c6c51423675805e140a"
+  },
+  "evidence": {
+    "reader_run_id": 43216765461,
+    "reader_job_id": 131177872160,
+    "reader_driver_commit": "6f530eedac3d4e1c678ad737781348cf917700cc",
+    "all_original_files_hashed": 289,
+    "actual_executable_bytes_hashed": 79737344,
+    "scope": "Actual source/ZIP/EXE identity; GUI collection behavior has not been exercised by the reader."
+  }
+}
+

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "byte_identical_function_bodies": true,
+  "reused_functions": [
+    "Read-ExactRule",
+    "Test-EffectiveEnforcement",
+    "Resolve-EnforcementValues",
+    "Assert-EffectiveRule"
+  ],
+  "original_source": "offline-qa/Run-OfflineQa.ps1",
+  "original_source_sha256": "0d05de562e0838b09408410d8f28a25e4628dd43537a1816eab4985e0f5eec52",
+  "function_bodies_sha256": "1564cfa63bdcba0e4169a3d1dffdc8ea6231ad6534b24e14589455e3d635ea71",
+  "network_or_firewall_executed_here": false
+}

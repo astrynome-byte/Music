@@ -1,0 +1,11 @@
+Cadence Studio — Premiers pas musicaux
+Copyright (C) 2026 Cadence Studio contributors.
+
+The lesson texts, musical exercises and course.json in this directory are
+original works dedicated to the public domain under CC0 1.0 Universal.
+To the extent possible under law, their authors waive copyright and related
+rights in these original materials. No commercial catalogue, lesson, book,
+arrangement or recording is reproduced by these materials.
+
+CC0 legal text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+No warranty is provided. The application code has its own GPLv3 license.

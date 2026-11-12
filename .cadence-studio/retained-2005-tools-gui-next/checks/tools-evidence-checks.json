@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "scope": "Actual pure evidence helper tested with synthetic UI claims and copies of frozen CC0 resources; no GUI/application/COM/firewall/network",
+  "helper_sha256": "c0ebaed87849264ea8a39cfb1cebada99d6283d30588deef4b8fb325dc6265c1",
+  "cases": [
+    {
+      "case": "synthetic-full-claims-accepted-data-only",
+      "passed": true,
+      "accepted": true,
+      "expected": true,
+      "error": null,
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "metadata-without-GUI-claims-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Actual native UI claim missing: generaluser_license_text_observed",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "wrong-owned-pid-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Native report schema or owned PID differs.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "boolean-schema-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Native report schema or owned PID differs.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "boolean-pid-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Native report schema or owned PID differs.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "seven-lessons-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "All eight distinct exercise controls must be observed.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "floating-count-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "All eight distinct exercise controls must be observed.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "string-true-is-not-native-bool",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Actual native UI claim missing: generaluser_license_text_observed",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "unchanged-caption-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Changed owned Qt editor caption was not established.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "wrong-caption-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Changed owned Qt editor caption was not established.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "wrong-window-class-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Changed owned Qt editor caption was not established.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "actual-CC0-bytes-in-controlled-synthetic-UUID",
+      "passed": true,
+      "accepted": true,
+      "expected": true,
+      "error": null,
+      "only_owned_fixture_copies": true
+    },
+    {
+      "case": "int64-zero-exit-accepted",
+      "passed": true,
+      "accepted": true,
+      "expected": true,
+      "error": null,
+      "only_owned_fixture_copies": true
+    },
+    {
+      "case": "exit-null-no-read",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "No confirmed clean application exit; exercise and fixture reads skipped.",
+      "only_owned_fixture_copies": true
+    },
+    {
+      "case": "exit-bool-no-read",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "No confirmed clean application exit; exercise and fixture reads skipped.",
+      "only_owned_fixture_copies": true
+    },
+    {
+      "case": "exit-nonzero-no-read",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "No confirmed clean application exit; exercise and fixture reads skipped.",
+      "only_owned_fixture_copies": true
+    },
+    {
+      "case": "wrong-score-bytes-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Actual source/copy bytes differ: pulsation.musicxml",
+      "only_owned_fixture_copies": true
+    },
+    {
+      "case": "missing-license-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Exercise copy must contain exactly its score and CC0 license.",
+      "only_owned_fixture_copies": true
+    },
+    {
+      "case": "extra-copy-file-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Exercise copy must contain exactly its score and CC0 license.",
+      "only_owned_fixture_copies": true
+    },
+    {
+      "case": "multiple-UUID-folders-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Expected exactly one new UI-created pulsation UUID folder.",
+      "only_owned_fixture_copies": true
+    },
+    {
+      "case": "non-UUID-folder-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Expected exactly one new UI-created pulsation UUID folder.",
+      "only_owned_fixture_copies": true
+    },
+    {
+      "case": "read-only-personal-score-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "The UI-created personal exercise copy remains read-only.",
+      "only_owned_fixture_copies": true
+    },
+    {
+      "case": "no-manifest-read-without-exit",
+      "passed": true,
+      "error": "No confirmed clean application exit; exercise and fixture reads skipped."
+    },
+    {
+      "case": "synthetic-close-without-prompt-accepted-data-only",
+      "passed": true,
+      "accepted": true,
+      "expected": true,
+      "error": null,
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "synthetic-exact-discard-and-exit-accepted-data-only",
+      "passed": true,
+      "accepted": true,
+      "expected": true,
+      "error": null,
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "discard-not-delivered-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Clean exit0 or exact owned discard observation/delivery missing.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "unknown-modal-without-discard-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Clean exit0 or exact owned discard observation/delivery missing.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "close-boolean-zero-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Clean exit0 or exact owned discard observation/delivery missing.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "close-string-pid-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Owned close schema/PID differs.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "close-wrong-pid-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Owned close schema/PID differs.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "close-wrong-initial-caption-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Close did not start from the controlled Qt exercise caption.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "close-wrong-initial-class-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Close did not start from the controlled Qt exercise caption.",
+      "synthetic_UI_claims_only": true
+    },
+    {
+      "case": "close-exit-not-observed-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Actual owned close claim missing: app_exit_observed",
+      "synthetic_UI_claims_only": true
+    }
+  ],
+  "GUI_validated": false,
+  "application_executed": false,
+  "network_executed": false,
+  "firewall_executed": false
+}

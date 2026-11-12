@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "state": "prepared_not_published_or_executed_on_Windows",
+  "scope": "One retained2005 job: GeneralUser offer/size/read-only license; eight local lessons and UI-created exercise/editor; owned discard close and post-exit CC0 corroboration",
+  "source_original_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+  "source_tree": "c4780f1487559744fd4b2c2040b86ac37bb8c67b",
+  "build_number": 2005,
+  "producer_run_id": 43207550870,
+  "stage_artifact_id": 13943781621,
+  "actual_stage_executable_sha256": "d957ffc99497cb01b1f00f82ba1d6e89ef84547708506c6c51423675805e140a",
+  "native_manifest_sha256": "3ddc2578f086e03241e1d7893beb873fee06bddd40cd1ccb0dbb3d730b51d4c0",
+  "local_checks": {
+    "powershell_scripts_and_workflow_blocks_parsed": 12,
+    "powershell_parse_errors": 0,
+    "actual_pure_guard_cases_passed": 33,
+    "UI_claim_inputs_are_synthetic": true,
+    "CC0_fixture_bytes_are_from_frozen_source": true,
+    "native_inventory_files": 9,
+    "native_inventory_hashes_verified": true,
+    "target_and_stage_restore_reused_byte_identical": true,
+    "offline_enforcement_four_functions_reused_byte_identical": true
+  },
+  "controlled_exercise_close": {
+    "option": "--close-exercise true",
+    "requires_owned_Qt_exercise_caption": true,
+    "requires_unique_owned_modal_and_exact_discard_if_prompted": true,
+    "requires_observed_exit_code": 0,
+    "save_requested": false,
+    "source_modality": "Transient QQuickView ApplicationModal; Windows GW_OWNER/main-enabled state still to observe"
+  },
+  "environment_mutations_future_job_only": {
+    "hosted_disposable_Windows_runner_required": true,
+    "existing_score_processes_refused": true,
+    "existing_Cadence_profile_and_exercise_root_refused": true,
+    "only_new_EXE_specific_outbound_block_rule": true,
+    "existing_firewall_profiles_and_services_required_unchanged": true,
+    "owned_rule_removed_and_absence_verified": true,
+    "physical_network_disconnected": false,
+    "runner_and_GitHub_remain_online": true
+  },
+  "not_executed": {
+    "native_Windows_compilation": true,
+    "application": true,
+    "UI_Automation": true,
+    "COM": true,
+    "firewall": true,
+    "Windows_network_test": true,
+    "bank_download_or_install": true,
+    "purchase": true,
+    "coach": true,
+    "musical_playback_or_listening": true,
+    "editing": true
+  },
+  "application_source_changed": false,
+  "stage_mutated": false,
+  "workflow_started": false,
+  "GitHub_published": false,
+  "limitations": [
+    "MSI2005 collection activation AccessDenied remains unchanged and independent",
+    "Application imported MusicXML needs a discard prompt; unknown modality blocks",
+    "Source/model metadata alone never establish GUI success",
+    "Corroboration reads exercise/fixtures only after a real integer exit0",
+    "This preparation does not provide the anonymous public gift download"
+  ]
+}

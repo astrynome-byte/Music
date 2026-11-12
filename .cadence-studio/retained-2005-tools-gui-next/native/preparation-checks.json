@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "state": "prepared_not_compiled_or_run_on_Windows",
+  "source_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+  "frozen_source_resources_verified": 19,
+  "eight_lesson_titles_exact_source_match": true,
+  "generaluser_display_size_and_count_verified_from_source": true,
+  "owned_headers_byte_identical_to_v2": true,
+  "native_source_compiled": false,
+  "windows_sdk_available": false,
+  "windows_uia_executed": false,
+  "app_source_changed": false,
+  "publication_or_job_started": false,
+  "corroboration_required": "wrapper must verify unique newly created UUID exercise folder plus exact XML/license bytes after owned clean close",
+  "parent_source_fixture": {
+    "musicxml_bytes": 5101,
+    "musicxml_sha256": "39da44328324f7d33c22ff803000a0e50b558abe4678eba878d7e659ed11a4de",
+    "license_sha256": "3767f335112a9088a11ae0a13fde590942543534b20e92d9e644ca22fd39814d"
+  },
+  "source_sdk_review": "Read-only SDK signatures compared with retained compiled UIA helpers; no Windows compile claimed",
+  "sounds_phase_deadline_seconds": 45,
+  "controlled_close_mode_prepared": {
+    "option": "--close-exercise true",
+    "report": "close-report.json",
+    "deadline_seconds": 25,
+    "requires_confirmed_owned_exit0": true,
+    "only_exact_discard_button": true,
+    "source_and_default_flow_change_scope": "CloseExercise.inc added; shared header includes it; main parser early-dispatch only, original page flow unchanged",
+    "owned_keyboard_and_file_dialog_headers_unchanged": true,
+    "compiled_or_executed": false,
+    "save_requested": false
+  }
+}

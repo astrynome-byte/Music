@@ -1,0 +1,119 @@
+{
+  "source_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+  "files": [
+    {
+      "path": "src/musesounds/qml/MuseScore/MuseSounds/FreeSoundCollectionsPage.qml",
+      "bytes": 26514,
+      "sha256": "8a54bd318e2aa21cd0456288f592b8b51e68fb8c702b95396ec6d5bb341054ee",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/musesounds/qml/MuseScore/MuseSounds/resources/free-sound-collections.json",
+      "bytes": 62033,
+      "sha256": "c49198095ca91aea53816a2cad7e99fcef2b04a014bfb4028515e5c5f2918b6f",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/musesounds/qml/MuseScore/MuseSounds/resources/GeneralUser-GS-LICENSE.txt",
+      "bytes": 2317,
+      "sha256": "7b32efefdf95ce38a043799f0659853ddc00fbaa14d8c50f0aca16b9b8b405be",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/framework/learn/qml/Muse/Learn/LearnPage.qml",
+      "bytes": 8486,
+      "sha256": "76ea7d02463939fa51d4206fd335b6230732d53c80ab2a41fedcf08e7f76502f",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/framework/learn/qml/Muse/Learn/internal/LocalLessonsView.qml",
+      "bytes": 5856,
+      "sha256": "657b7e0f87e7b0dc31364f14e40372d10de0bf7bc6979a4c3ad178ee93b87352",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/framework/learn/qml/Muse/Learn/internal/localexercise.h",
+      "bytes": 2661,
+      "sha256": "fec5198028215b507dae56306efe2aa7934177f650bc85fb1ad8f31677f50d84",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/framework/learn/qml/Muse/Learn/resources/cadence/course.json",
+      "bytes": 5605,
+      "sha256": "729edccf871ff82aeceb1585e5fe6a8aaab872afbca049e17293e83f71d6dcb1",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/framework/learn/qml/Muse/Learn/resources/cadence/pulsation.musicxml",
+      "bytes": 5101,
+      "sha256": "39da44328324f7d33c22ff803000a0e50b558abe4678eba878d7e659ed11a4de",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/framework/learn/qml/Muse/Learn/resources/cadence/LICENSE-CC0.txt",
+      "bytes": 595,
+      "sha256": "3767f335112a9088a11ae0a13fde590942543534b20e92d9e644ca22fd39814d",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/appshell/qml/MuseScore/AppShell/HomePage/HomeMenu.qml",
+      "bytes": 3866,
+      "sha256": "8537df48fc940e2e7a72a9f26ef0bac4c66b3409831561f38308d30da911d598",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/project/internal/notationproject.cpp",
+      "bytes": 38639,
+      "sha256": "28a6070b8b75b7b989b000b90e3fc0c0dc12e0008ce0ee286e5f3b98366eea93",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/notation/internal/notation.cpp",
+      "bytes": 7694,
+      "sha256": "b32bd5f37cc1a24d1c371c948dab0198b2c3f679988d52976019042de1257cb7",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/appshell/qml/MuseScore/AppShell/mainwindowtitleprovider.cpp",
+      "bytes": 3045,
+      "sha256": "89f380550a02a37ddbb68fbd75e756bc105594d1934b727cf522b613260ca79a",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/project/internal/projectactionscontroller.cpp",
+      "bytes": 68019,
+      "sha256": "049bd10d2a3a4d2d83d279e7d704a09ee3ddbbaaa00786ff02f6b0eba353a963",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/framework/uicomponents/qml/Muse/UiComponents/buttonboxmodel.h",
+      "bytes": 7773,
+      "sha256": "842b673e154d20c826550efcd7ae7c1773ee044400867c119e5b6b57fe027025",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/framework/uicomponents/qml/Muse/UiComponents/ButtonBox.qml",
+      "bytes": 7437,
+      "sha256": "fc3db779ecc35e6d9313157b66b81d2ebb5331aad8473439979edef02013f269",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/framework/ui/qml/Muse/Ui/Dialogs/StandardDialogPanel.qml",
+      "bytes": 6950,
+      "sha256": "0ee94586b46d7dd38d4c9579b77fffe5338205cd90edcd1698bb8a544af3673f",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "src/framework/ui/qml/Muse/Ui/Dialogs/StandardDialog.qml",
+      "bytes": 3453,
+      "sha256": "cec3bed7b6b97fa71b1791a3fe103c110e7df7bbc0a7bdef23e1522ad5fc0a06",
+      "current_equals_frozen_source": true
+    },
+    {
+      "path": "share/locale/musescore_fr.ts",
+      "bytes": 1981874,
+      "sha256": "7d174d22bc4fe99aa54963bf8798bc41cd7b73f66700a9a4e94768af51994c5b",
+      "current_equals_frozen_source": true
+    }
+  ]
+}

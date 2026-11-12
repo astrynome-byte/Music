@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "source_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+  "source_tree": "c4780f1487559744fd4b2c2040b86ac37bb8c67b",
+  "application_name": "CadenceStudio4",
+  "exercise_id": "pulsation",
+  "exercise_title": "Garder la pulsation",
+  "documents_relative_root": "CadenceStudio4/Exercices",
+  "license": "CC0-1.0",
+  "files": [
+    {
+      "name": "pulsation.musicxml",
+      "source_path": "src/framework/learn/qml/Muse/Learn/resources/cadence/pulsation.musicxml",
+      "bytes": 5101,
+      "sha256": "39da44328324f7d33c22ff803000a0e50b558abe4678eba878d7e659ed11a4de"
+    },
+    {
+      "name": "LICENSE-CC0.txt",
+      "source_path": "src/framework/learn/qml/Muse/Learn/resources/cadence/LICENSE-CC0.txt",
+      "bytes": 595,
+      "sha256": "3767f335112a9088a11ae0a13fde590942543534b20e92d9e644ca22fd39814d"
+    }
+  ]
+}

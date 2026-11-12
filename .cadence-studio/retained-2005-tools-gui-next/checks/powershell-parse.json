@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "files": [
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2005-tools-gui-next/checks/workflow-step-1.ps1",
+      "sha256": "eee597a410b473904ebb28eebbd62f29da12d6e6fc6bfec7bff2d3e8208080be",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2005-tools-gui-next/checks/workflow-step-3.ps1",
+      "sha256": "ac06ae0926432ec30769f70292c7f663a4184b580b6e5d522825e771fe758282",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2005-tools-gui-next/checks/workflow-step-5.ps1",
+      "sha256": "b0c11395b9a5a9fc6cde81f872a624df694847924ae022acd0b4ae881b958da0",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2005-tools-gui-next/checks/workflow-step-6.ps1",
+      "sha256": "71bfd56554c188b6ef05c5fe901f67c3479676729c64ddf8fcfb2cf379ad220a",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2005-tools-gui-next/checks/workflow-step-7.ps1",
+      "sha256": "ded6c7cb1d49fc65fab5061a22b90a0e8c6aa3e595dddc21c00d80c27bf582b2",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2005-tools-gui-next/Run-ToolsUiProbe.ps1",
+      "sha256": "dbc02e7e165e72b4d580a95a6eec5fd0ad3a25f61b1bcaee818b07a722cd1d19",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2005-tools-gui-next/Scoped-OfflineRule.ps1",
+      "sha256": "831f47f9ad7cef35f4e710d7f09b4363c038a04c35d8d3e3c3a686ae62109d23",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2005-tools-gui-next/Restore-NextStage.ps1",
+      "sha256": "4977871eb659ac4a353c99ce6e6ae807845fe95e96e1bdba1d1e6d3f7dfcc7d3",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2005-tools-gui-next/Read-ExerciseEvidence.ps1",
+      "sha256": "c0ebaed87849264ea8a39cfb1cebada99d6283d30588deef4b8fb325dc6265c1",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2005-tools-gui-next/Owned-WindowEvidence.ps1",
+      "sha256": "4de2be84eb0c02f18909796a268f0bebd2dc51101f050699686e934f9f374755",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2005-tools-gui-next/Read-ProducedTarget.ps1",
+      "sha256": "be42d6ae4ea1536bd1d41d11d0e04a4b77c00c75a1f84764c6ded4123421db2f",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2005-tools-gui-next/checks/check-tools-evidence.ps1",
+      "sha256": "a4bf28d311e3c79fadefa694c9799de8befe92f01fb7df88e7f80ea991a61ff1",
+      "parse_errors": 0
+    }
+  ],
+  "commands_run_by_parser": false,
+  "application_executed": false,
+  "firewall_executed": false
+}
