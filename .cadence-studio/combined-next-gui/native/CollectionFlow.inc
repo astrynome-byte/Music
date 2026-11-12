@@ -176,7 +176,12 @@ static bool fillNewCollectionName(IUIAutomation* automation, const std::filesyst
     if (SUCCEEDED(edit.element->GetCurrentPatternAs(UIA_ValuePatternId, IID_PPV_ARGS(&valuePattern)))) {
         BOOL readOnly = TRUE;
         if (SUCCEEDED(valuePattern->get_CurrentIsReadOnly(&readOnly)) && !readOnly
-            && collectionFocusIs(automation, L"Nom de collection", UIA_EditControlTypeId)) setResult = valuePattern->SetValue(collectionName.c_str());
+            && collectionFocusIs(automation, L"Nom de collection", UIA_EditControlTypeId)) {
+            BSTR value = SysAllocStringLen(collectionName.data(), static_cast<UINT>(collectionName.size()));
+            if (!value) return false;
+            setResult = valuePattern->SetValue(value);
+            SysFreeString(value);
+        }
     }
     std::wstring after;
     bool written = SUCCEEDED(setResult) && readFocusedEditText(automation, after) && after == collectionName;

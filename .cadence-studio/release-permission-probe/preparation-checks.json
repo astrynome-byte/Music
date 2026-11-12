@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "scope": "Prepared only; no live GitHub HTTP or mutation executed",
+  "local_python_tests_passed": 15,
+  "real_Ruby_tests_skipped": 2,
+  "Ruby_available_locally": false,
+  "Python_syntax_passed": true,
+  "workflow_YAML_loaded_with_PyYAML_not_Psych": true,
+  "workflow_push_only_scoped_namespace": true,
+  "main_and_Android_pins": {
+    "main": "a6c90b63344b3fd60567fd9f001ac9ecba4b2081",
+    "android_blob": "ad0539f630eb11556f33f487e145d97558a629ff"
+  },
+  "remaining": [
+    "Real Psych parsing on Ubuntu",
+    "Actual contents:write token tag/draft capability",
+    "Actual owned deletion and GET404 after cleanup"
+  ],
+  "pre_delete_main_recheck_tested": true
+}

@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# A private empty draft and unique temporary tag are the only possible mutations.
+name: 'Cadence Studio: reversible private release permission probe'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/release-permission-probe/**'
+      - '.github/workflows/cadence-release-permission-probe.yml'
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: cadence-release-permission-probe-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  private-draft-capability:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Exercise only local policy and owned-cleanup data tests
+        working-directory: driver/.cadence-studio/release-permission-probe
+        shell: bash
+        run: python3 -m unittest -v test_probe.py
+      - name: Audit exact main and all HEAD workflows before testing the private draft capability
+        working-directory: driver
+        shell: bash
+        run: |
+          python3 -I .cadence-studio/release-permission-probe/probe.py \
+            --output "$RUNNER_TEMP/release-permission-probe"
+      - name: Retain the factual capability and owned cleanup result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-release-permission-probe-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/release-permission-probe/permission-probe-report.json
+          retention-days: 14
+          if-no-files-found: warn
