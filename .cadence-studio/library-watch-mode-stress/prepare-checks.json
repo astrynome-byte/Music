@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "prepared_utc": "2026-11-12T13:08:07.464255+00:00",
+  "status": "prepared-only-not-Windows-executed",
+  "source_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+  "source_tree": "c4780f1487559744fd4b2c2040b86ac37bb8c67b",
+  "linux_compile_passed": true,
+  "linux_mutations": 12000,
+  "linux_failures": 0,
+  "linux_overlap_callbacks": 31458,
+  "linux_data_preserved": true,
+  "windows_localappdata_and_acl_branch_compiled": false,
+  "powershell_and_yaml_parse_passed": true,
+  "existing_root_or_profiles_modified": false,
+  "publication_performed": false,
+  "maximum_windows_phases": 12,
+  "baseline_windows_phases": 6,
+  "optional_C_volume_trigger": "All default-Temp modes have zero failures",
+  "manifest_sha256": "ee6a5126777ad86f5871809e0293f64de3b746f1f63990de070a5dd2504d7b52",
+  "helper_sha256": "7ab03fafee35b8a06590d44dbba927f4aea04adde31b8c8f54802ba48edd1914",
+  "workflow_sha256": "46d549a593763fca199b571234d4cb4b31ffb70ae875e37d33b8512b81881fa5"
+}

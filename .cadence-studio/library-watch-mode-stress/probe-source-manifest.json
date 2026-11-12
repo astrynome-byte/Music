@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "source_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+  "source_tree": "c4780f1487559744fd4b2c2040b86ac37bb8c67b",
+  "required_qt_version": "6.10.2",
+  "expected_phases": 6,
+  "optional_fresh_local_appdata_phases": 6,
+  "local_appdata_trigger": "Only when all default-Temp modes have zero failures",
+  "rounds": 2,
+  "iterations_per_phase": 2000,
+  "phase_budget_ms": 30000,
+  "scope": "Concurrent worker real frozen2005 store against current file+directory watch, directory-only parent FileID and no-watch control; not an application fix",
+  "files": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 833,
+      "sha256": "9d4d4daf16e01b68aab0c1dff9cbae5f07685f3f6576fb3bd567ed589acad18f"
+    },
+    {
+      "path": "watch_mode_stress.cpp",
+      "bytes": 15762,
+      "sha256": "b64ef12beae87f335aceb72893382d8bdc0e0c62cd30f57581c2ddc8d799ab0e"
+    },
+    {
+      "path": "source/src/project/internal/localscorelibrarystore.cpp",
+      "bytes": 20832,
+      "sha256": "02e35f74f22a3bd56b7fc285e1243f85b892e26b66410c08e76d7fbab9718726"
+    },
+    {
+      "path": "source/src/project/internal/localscorelibrarystore.h",
+      "bytes": 2147,
+      "sha256": "e884724008baca52e27fa02e52ba3d234690d3ea518864a888e098c01033241e"
+    },
+    {
+      "path": "source/src/project/internal/localcatalogwatch.h",
+      "bytes": 4965,
+      "sha256": "1777768bd4e91217d6ec0722b01f4962703d69a2cb050bdcea9619d90df009de"
+    }
+  ]
+}

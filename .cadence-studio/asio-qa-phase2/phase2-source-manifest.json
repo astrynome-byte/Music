@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "status": "source-prepared-phase2-not-executed",
+  "scope": "QA tools for disposable native Windows hosted CI only; no application rebuild, installer or physical output",
+  "endpoint_original_run_id": 43212261044,
+  "endpoint_original_artifact_id": 13941567509,
+  "retained_application_build": 2002,
+  "registry_activation_executed": false,
+  "Windows_Job_executed": false,
+  "profile_lifecycle_executed_on_Windows": false,
+  "source_license": "GPL-3.0-only; fixture CC0-1.0 per fixtures/LICENSE.txt",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "CadenceProfileScope.py",
+      "bytes": 34344,
+      "sha256": "60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c"
+    },
+    {
+      "path": "Invoke-Phase2.ps1",
+      "bytes": 14853,
+      "sha256": "8f17a6b7f74d607668caf3eef6a237dac879bf49602db14e65439fae6c2fc9ec"
+    },
+    {
+      "path": "LICENSE.txt",
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    },
+    {
+      "path": "QaRegistryScope.psm1",
+      "bytes": 10191,
+      "sha256": "8ff30bfb5dddf3ec3976b8ff58dc808ff0a8ccb463128c51be5e3d6b68595268"
+    },
+    {
+      "path": "README-FR.md",
+      "bytes": 10976,
+      "sha256": "c766f7a385db93d8e00054de8d84a1a06a80d3aa345a1df5bd5e4748d1a6688a"
+    },
+    {
+      "path": "Read-EndpointEvidence.py",
+      "bytes": 8646,
+      "sha256": "8f5d3b542f3b9c2bee713aa0faf9c0c0621d7f69e150dc81cf46fde564e5cdde"
+    },
+    {
+      "path": "Restore-CombinedStage.ps1",
+      "bytes": 14937,
+      "sha256": "73a7697a0f015fef660466cb31ff4efd1abee84451306456edc024543f71cf4c"
+    },
+    {
+      "path": "Run-Retention-WithClock.py",
+      "bytes": 26172,
+      "sha256": "06f2155ac197f8f61b913dc33b3ea9c3c9f8f1d7acce12989e768919ddcbd8d7"
+    },
+    {
+      "path": "corpus_run_exports.py",
+      "bytes": 16535,
+      "sha256": "f701874e7a37b8d3148f0bb99477b60b96865e804ed238372d75c06598027d82"
+    },
+    {
+      "path": "fixtures/LICENSE.txt",
+      "bytes": 939,
+      "sha256": "d5bd4fa4e4bada2cfaf5494b4d5d8f1b7466c92260d0706bcbd31af95459c1ea"
+    },
+    {
+      "path": "fixtures/piano.mscx",
+      "bytes": 10586,
+      "sha256": "10ae5eb1fae2679d9ad32aa0b721fef06119ef24b78b4f8b9bd6b770582c289f"
+    },
+    {
+      "path": "missing_audio_helpers.py",
+      "bytes": 14664,
+      "sha256": "da45c66b2e9f2df6c91746f3cd1e34893b2aff1126abf5cebb4b431993de0f4a"
+    },
+    {
+      "path": "profile-source-contract.json",
+      "bytes": 3310,
+      "sha256": "0023f8d7510c89429dea85cda35d803175b3434532cf14aecaf793ded5663a9e"
+    }
+  ]
+}

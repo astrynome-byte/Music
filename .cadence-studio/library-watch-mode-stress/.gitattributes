@@ -1,0 +1,2 @@
+# Preserve exact frozen source/diagnostic bytes on Windows.
+* -text

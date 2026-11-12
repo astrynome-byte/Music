@@ -1,0 +1,60 @@
+name: Cadence QA Clock registered endpoint and retained2002 GUI
+on:
+  workflow_dispatch:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths:
+      - '.cadence-studio/asio-qa-phase2/**'
+      - '.github/workflows/cadence-asio-qa-phase2.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-asio-phase2-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  registered-and-real-GUI:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Retrieve the exact successful endpoint DLL and original source evidence
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: astrynome-byte/Music
+          run-id: '43212261044'
+          artifact-ids: '13941567509'
+          merge-multiple: true
+          path: ${{ runner.temp }}/asio-phase2-original-endpoint
+      - name: Retrieve only the pinned retained2002 application stage
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: astrynome-byte/Music
+          run-id: '43108867145'
+          artifact-ids: '13898607081'
+          merge-multiple: true
+          path: ${{ runner.temp }}/asio-phase2-original-stage
+      - name: Activate only owned QA COM keys, then real GUI render and save
+        shell: pwsh
+        run: |
+          & ./.cadence-studio/asio-qa-phase2/Invoke-Phase2.ps1 `
+            -EndpointArtifactPath (Join-Path $env:RUNNER_TEMP 'asio-phase2-original-endpoint') `
+            -StageArtifactPath (Join-Path $env:RUNNER_TEMP 'asio-phase2-original-stage') `
+            -StagePath (Join-Path $env:RUNNER_TEMP 'asio-phase2-stage2002') `
+            -WorkPath (Join-Path $env:RUNNER_TEMP 'asio-phase2-evidence')
+      - name: Retain actual reports, native saved copies, WAV, markers and cleanup result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-asio-phase2-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/asio-phase2-evidence
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14

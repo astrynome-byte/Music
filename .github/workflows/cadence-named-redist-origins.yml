@@ -1,0 +1,38 @@
+# SOURCE ONLY: root may publish/dispatch after review. No Qt/app/SDK downloads.
+name: 'Cadence full2005: inspect named installed Microsoft redist files'
+on:
+  workflow_dispatch:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths:
+      - '.cadence-studio/corresponding-sources/full2005-provenance/**'
+      - '.github/workflows/cadence-named-redist-origins.yml'
+permissions:
+  contents: read
+jobs:
+  named-installed-files:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Export the already installed x64 MSVC and Windows SDK environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+      - name: Read only exact named candidates and retain accessible original text evidence
+        shell: pwsh
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/corresponding-sources/full2005-provenance/Collect-NamedRedistOrigins.ps1" `
+            -OutputDirectory "$env:RUNNER_TEMP/cadence-full2005-named-redist-origins"
+      - name: Retain diagnostics and original text evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-full2005-named-redist-origins-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cadence-full2005-named-redist-origins/
+          if-no-files-found: error
+          retention-days: 14

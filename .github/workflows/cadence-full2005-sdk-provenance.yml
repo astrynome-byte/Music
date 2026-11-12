@@ -1,0 +1,53 @@
+name: Cadence full2005 original SDK SBOM and source correspondence
+on:
+  workflow_dispatch:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths:
+      - '.cadence-studio/full2005-provenance/Read-SdkSbom.py'
+      - '.cadence-studio/full2005-provenance/sdk-sbom.expected.json'
+      - '.github/workflows/cadence-full2005-sdk-provenance.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-data-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Retrieve original full2005 log material including all SDK SBOM originals
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: astrynome-byte/Music
+          run-id: '43207550870'
+          artifact-ids: '13942753863'
+          merge-multiple: true
+          path: ${{ runner.temp }}/full2005-original-logs
+      - name: Retrieve pinned six-module Qt source archives already collected
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: astrynome-byte/Music
+          run-id: '43188835600'
+          artifact-ids: '13929727718'
+          merge-multiple: true
+          path: ${{ runner.temp }}/corresponding-original
+      - name: Hash original material and compare SPDX source-file checksums without running any source program
+        shell: bash
+        run: |
+          python3 -I .cadence-studio/full2005-provenance/Read-SdkSbom.py \
+            --artifact-root "$RUNNER_TEMP/full2005-original-logs" \
+            --source-root "$RUNNER_TEMP/corresponding-original" \
+            --output "$RUNNER_TEMP/full2005-sdk-provenance"
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-full2005-sdk-provenance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/full2005-sdk-provenance
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14

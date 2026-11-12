@@ -1,0 +1,1606 @@
+{
+  "schema_version": 1,
+  "producer_run_id": 43207550870,
+  "driver_commit": "2578bc3bcfefbe32f03140cc645b8c8f5d3218b7",
+  "executable_sha256": "d957ffc99497cb01b1f00f82ba1d6e89ef84547708506c6c51423675805e140a",
+  "qt_runtime_identity": [
+    {
+      "file": "bin/Qt6Core.dll",
+      "stage_sha256": "b98eea394a95563879b614dbd4432ce074b0fceeb154c3bae252f4e7a9376a40",
+      "stage_bytes": 10242360,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "b98eea394a95563879b614dbd4432ce074b0fceeb154c3bae252f4e7a9376a40",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6Core5Compat.dll",
+      "stage_sha256": "9238290d153c279db5f9fa38400b45666dad7108ec81062c2c7c8849070f9daf",
+      "stage_bytes": 876344,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "9238290d153c279db5f9fa38400b45666dad7108ec81062c2c7c8849070f9daf",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6Gui.dll",
+      "stage_sha256": "28ca8b9e7d3d1c4e3cfafd6fe63877a05cf10202a240134a11f98384f01c9e37",
+      "stage_bytes": 9494840,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "28ca8b9e7d3d1c4e3cfafd6fe63877a05cf10202a240134a11f98384f01c9e37",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6LabsPlatform.dll",
+      "stage_sha256": "4a72dae192625083d6d6564a5ce01733ea0e676c36746f2ed9826521265c3b7b",
+      "stage_bytes": 284472,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "4a72dae192625083d6d6564a5ce01733ea0e676c36746f2ed9826521265c3b7b",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6LabsQmlModels.dll",
+      "stage_sha256": "caa08a1c8b02b4da410c62adf50e28339c09b1f034c0c8dc0cf032cdc2cccc09",
+      "stage_bytes": 190776,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "caa08a1c8b02b4da410c62adf50e28339c09b1f034c0c8dc0cf032cdc2cccc09",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6Network.dll",
+      "stage_sha256": "905e1ce3947fadaad566b6deffe345daf7f6efbc57207ea7fcdbfa77669e3de6",
+      "stage_bytes": 1766712,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "905e1ce3947fadaad566b6deffe345daf7f6efbc57207ea7fcdbfa77669e3de6",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6NetworkAuth.dll",
+      "stage_sha256": "2b2cee4bf6cd28c7c65cadc21089902062ac8c76b74340c7c205e2b5db79a4cd",
+      "stage_bytes": 292664,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "2b2cee4bf6cd28c7c65cadc21089902062ac8c76b74340c7c205e2b5db79a4cd",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6OpenGL.dll",
+      "stage_sha256": "a41b71127d07924ddda67e787e8765ebf60f217817199f1becdd63f3db88847e",
+      "stage_bytes": 1977144,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "a41b71127d07924ddda67e787e8765ebf60f217817199f1becdd63f3db88847e",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6PrintSupport.dll",
+      "stage_sha256": "73b204c1dc66e7c49c1337fdbe4a4aab378eb31ecfe823ed1b009261b4c3925a",
+      "stage_bytes": 406840,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "73b204c1dc66e7c49c1337fdbe4a4aab378eb31ecfe823ed1b009261b4c3925a",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6Qml.dll",
+      "stage_sha256": "b1cad2aef8936cede67fecdc13c8eb930c77d0b189a1e970d72ab903902e611d",
+      "stage_bytes": 5333816,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "b1cad2aef8936cede67fecdc13c8eb930c77d0b189a1e970d72ab903902e611d",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QmlMeta.dll",
+      "stage_sha256": "6da039d0fd79d978b87d6477d2aa60e6161b7f7f8f2dd66006517fb4656afcbd",
+      "stage_bytes": 160056,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "6da039d0fd79d978b87d6477d2aa60e6161b7f7f8f2dd66006517fb4656afcbd",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QmlModels.dll",
+      "stage_sha256": "3e4075935cd52710628d559e690391ef0bf03f4484aa47ddf1287c57aa0066a0",
+      "stage_bytes": 986936,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "3e4075935cd52710628d559e690391ef0bf03f4484aa47ddf1287c57aa0066a0",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QmlWorkerScript.dll",
+      "stage_sha256": "e1ceef21a868e29ddad78624039219676ceff591eb7304c151ff8b5e8bb74c73",
+      "stage_bytes": 76600,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "e1ceef21a868e29ddad78624039219676ceff591eb7304c151ff8b5e8bb74c73",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6Quick.dll",
+      "stage_sha256": "14ab58cbe8aabd2eedad322c361119ff628eb602ea62998a5da1051071aeca7e",
+      "stage_bytes": 6506296,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "14ab58cbe8aabd2eedad322c361119ff628eb602ea62998a5da1051071aeca7e",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2.dll",
+      "stage_sha256": "48d1feac8cb6949746f7d9c1a546866ff2220add03495b26c3dd1a0a28393ba0",
+      "stage_bytes": 100152,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "48d1feac8cb6949746f7d9c1a546866ff2220add03495b26c3dd1a0a28393ba0",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2Basic.dll",
+      "stage_sha256": "24299e6a1ec0cb6831cce7504d5dc85dcb1ed4954b7ca559e398c7e1a3a72c43",
+      "stage_bytes": 1781048,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "24299e6a1ec0cb6831cce7504d5dc85dcb1ed4954b7ca559e398c7e1a3a72c43",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2BasicStyleImpl.dll",
+      "stage_sha256": "4e5a2020deff50f1e816d86a6090ab032e692305af81924fa32a3b2c0bb093e8",
+      "stage_bytes": 62264,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "4e5a2020deff50f1e816d86a6090ab032e692305af81924fa32a3b2c0bb093e8",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2FluentWinUI3StyleImpl.dll",
+      "stage_sha256": "eae36fc05cfceebf10c68afca452caeccb517eca00f878a4af3ebfbe6abe1eac",
+      "stage_bytes": 197432,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "eae36fc05cfceebf10c68afca452caeccb517eca00f878a4af3ebfbe6abe1eac",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2Fusion.dll",
+      "stage_sha256": "91de4eb567d196082e37906a197f09a6d8be81e60df81a30960c2c3fe5fe55d8",
+      "stage_bytes": 1418552,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "91de4eb567d196082e37906a197f09a6d8be81e60df81a30960c2c3fe5fe55d8",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2FusionStyleImpl.dll",
+      "stage_sha256": "ef7eb27fbb5d2392eef53e75e6f49fedcd67bf4717c9f6e93c2a9889f59308e4",
+      "stage_bytes": 160568,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "ef7eb27fbb5d2392eef53e75e6f49fedcd67bf4717c9f6e93c2a9889f59308e4",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2Imagine.dll",
+      "stage_sha256": "4d9f516a2d8ed02552df028e6e1c0a4359cf480f8b169b0b4c0ed2061bef89ef",
+      "stage_bytes": 3022136,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "4d9f516a2d8ed02552df028e6e1c0a4359cf480f8b169b0b4c0ed2061bef89ef",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2ImagineStyleImpl.dll",
+      "stage_sha256": "2ba84a6c2e0a591a5c3de0f8f07b386e846ba7358e7ab13e5424d18b62614c6a",
+      "stage_bytes": 50488,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "2ba84a6c2e0a591a5c3de0f8f07b386e846ba7358e7ab13e5424d18b62614c6a",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2Impl.dll",
+      "stage_sha256": "38b6cdb0ae879a09c36b2eebf20e4c316b05931f7f75a63a0944ed38ad262d86",
+      "stage_bytes": 294200,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "38b6cdb0ae879a09c36b2eebf20e4c316b05931f7f75a63a0944ed38ad262d86",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2Material.dll",
+      "stage_sha256": "8769047158ccb64826761534b3d1911fcc870ead776a811b051909f20fba4c41",
+      "stage_bytes": 1818936,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "8769047158ccb64826761534b3d1911fcc870ead776a811b051909f20fba4c41",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2MaterialStyleImpl.dll",
+      "stage_sha256": "69e1ef038004e68242fa5e832b1705ee616751bc87a7272e56e7aeae78202d86",
+      "stage_bytes": 296760,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "69e1ef038004e68242fa5e832b1705ee616751bc87a7272e56e7aeae78202d86",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2Universal.dll",
+      "stage_sha256": "041f4c70e1cbaab23b8927428d4ddf1db0899b6dae4fc7644dd55d052dc8d1bc",
+      "stage_bytes": 1502520,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "041f4c70e1cbaab23b8927428d4ddf1db0899b6dae4fc7644dd55d052dc8d1bc",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2UniversalStyleImpl.dll",
+      "stage_sha256": "e40035d4d70e1143684c855a62e2e9d8bef47eab9f3d849e1a1ad693095bed53",
+      "stage_bytes": 110392,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "e40035d4d70e1143684c855a62e2e9d8bef47eab9f3d849e1a1ad693095bed53",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickControls2WindowsStyleImpl.dll",
+      "stage_sha256": "eaccaefad9787ff72499ddad179a66fd751d91a8b3270aac739a0eeaff0dc6f9",
+      "stage_bytes": 51000,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "eaccaefad9787ff72499ddad179a66fd751d91a8b3270aac739a0eeaff0dc6f9",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickEffects.dll",
+      "stage_sha256": "1e877a4c333a7f9d573c09adb7353f8688b5b9f36ec30da0edd38f0674b82fdf",
+      "stage_bytes": 418616,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "1e877a4c333a7f9d573c09adb7353f8688b5b9f36ec30da0edd38f0674b82fdf",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickLayouts.dll",
+      "stage_sha256": "45b48b77b08a021510fe73b023c4c22e7097b28a501c3fd96a943271362e3c29",
+      "stage_bytes": 307000,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "45b48b77b08a021510fe73b023c4c22e7097b28a501c3fd96a943271362e3c29",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickShapes.dll",
+      "stage_sha256": "1c4573fb5aecb6ce9bcac7389806426a6849cc8e5856a43d5e317560a84a845c",
+      "stage_bytes": 342840,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "1c4573fb5aecb6ce9bcac7389806426a6849cc8e5856a43d5e317560a84a845c",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6QuickTemplates2.dll",
+      "stage_sha256": "d3faa8d02ef1c051a879417bd75ce6c5f257e705e26cc8650a964f6fa8e0e4b1",
+      "stage_bytes": 1999160,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "d3faa8d02ef1c051a879417bd75ce6c5f257e705e26cc8650a964f6fa8e0e4b1",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6ShaderTools.dll",
+      "stage_sha256": "c11e2a478630d8fa58ae25f2827723693f3c66a22de9494205e214e06d703c5a",
+      "stage_bytes": 4067128,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "c11e2a478630d8fa58ae25f2827723693f3c66a22de9494205e214e06d703c5a",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6Svg.dll",
+      "stage_sha256": "982a589e52680d7b525da0031eba783d3bbd77e6611cdea5cd276a2b9213f4c9",
+      "stage_bytes": 632120,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "982a589e52680d7b525da0031eba783d3bbd77e6611cdea5cd276a2b9213f4c9",
+      "identical_to_sdk": true
+    },
+    {
+      "file": "bin/Qt6Widgets.dll",
+      "stage_sha256": "f383fb6b3f6996efe23327ff607e7298fc47ee76e8b8ef8a65f8d2e0a91707e4",
+      "stage_bytes": 6576952,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "f383fb6b3f6996efe23327ff607e7298fc47ee76e8b8ef8a65f8d2e0a91707e4",
+      "identical_to_sdk": true
+    }
+  ],
+  "dll_metadata": [
+    {
+      "file": "bin/icuuc.dll",
+      "present": true,
+      "bytes": 36864,
+      "sha256": "6febd789ff616dd6398ae2453adc1e7ccd7bbb6aee8c623a2638c1c00d51e003",
+      "company": "The ICU Project",
+      "file_version": "64, 2, 0, 2 (WinBuild.160101.0800)",
+      "product_version": "64, 2, 0, 2",
+      "original_filename": "icuuc.dll",
+      "description": "ICU Common Forwarder DLL",
+      "product": "International Components for Unicode",
+      "copyright": " Copyright (C) 2016 and later: Unicode, Inc. and others. License & terms of use: http://www.unicode.org/copyright.html ",
+      "signature_status": "Valid",
+      "signature_status_message": "Signature verified.",
+      "signer": {
+        "subject": "CN=Microsoft Windows, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "issuer": "CN=Microsoft Windows Production PCA 2026 RSA2048-SHA256, O=Microsoft Corporation, C=US",
+        "thumbprint": "667BBA1E1F478221AA65DE4F75187A751B03A453",
+        "not_before": "2026-08-06T17:49:20.0000000Z",
+        "not_after": "2027-08-05T17:49:20.0000000Z"
+      },
+      "qt_sdk_same_named_file": null
+    },
+    {
+      "file": "bin/opengl32sw.dll",
+      "present": true,
+      "bytes": 20639888,
+      "sha256": "b04de4541863bc7d8879040a78889c4849c1b1da2784c4630f734c146c2998ce",
+      "company": null,
+      "file_version": null,
+      "product_version": null,
+      "original_filename": null,
+      "description": null,
+      "product": null,
+      "copyright": null,
+      "signature_status": "Valid",
+      "signature_status_message": "Signature verified.",
+      "signer": {
+        "subject": "CN=The Qt Company Oy, SERIALNUMBER=2637805-2, OID.2.5.4.15=Private Organization, O=The Qt Company Oy, OID.1.3.6.1.4.1.311.60.2.1.3=FI, L=Espoo, C=FI",
+        "issuer": "CN=Entrust Extended Validation Code Signing CA - EVCS2, O=\"Entrust, Inc.\", C=US",
+        "thumbprint": "1013009051124CA0EDE0A0363CF650146A272C0F",
+        "not_before": "2022-11-18T07:19:46.0000000Z",
+        "not_after": "2025-12-01T07:19:46.0000000Z"
+      },
+      "qt_sdk_same_named_file": {
+        "file": "bin/opengl32sw.dll",
+        "sha256": "b04de4541863bc7d8879040a78889c4849c1b1da2784c4630f734c146c2998ce",
+        "identical_to_stage": true
+      }
+    },
+    {
+      "file": "bin/dxcompiler.dll",
+      "present": true,
+      "bytes": 12602944,
+      "sha256": "6ec587d1952778a41a5a90647b39d0c86958e7dabf87fa1cf2b14408bfe1e8de",
+      "company": "Microsoft Corporation",
+      "file_version": "10.0.19041.5609 (WinBuild.160101.0800)",
+      "product_version": "10.0.19041.5609",
+      "original_filename": "DXCompiler.dll",
+      "description": "Direct3D Compiler DLL for Redistribution",
+      "product": "Microsoft® Windows® Operating System",
+      "copyright": "© Microsoft Corporation. All rights reserved.",
+      "signature_status": "Valid",
+      "signature_status_message": "Signature verified.",
+      "signer": {
+        "subject": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "issuer": "CN=Microsoft Code Signing PCA 2010, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "thumbprint": "7920AC8FB05E0FFFE21E8FF4B4F03093BA6AC16E",
+        "not_before": "2024-08-22T19:25:57.0000000Z",
+        "not_after": "2025-07-05T19:25:57.0000000Z"
+      },
+      "qt_sdk_same_named_file": null
+    },
+    {
+      "file": "bin/dxil.dll",
+      "present": true,
+      "bytes": 1508432,
+      "sha256": "e69b838018a1e0025201edbe9f166d061807cab2f02221c18c53ea6f5e96f0b5",
+      "company": "Microsoft(r) Corporation",
+      "file_version": "101.6.2112.13",
+      "product_version": "101.6.2112.13 (release/github-release-1.6.2112, b9cfa8a)",
+      "original_filename": "dxil.dll",
+      "description": "DirectX IL for Redistribution",
+      "product": "",
+      "copyright": "(c) Microsoft Corporation. All rights reserved.",
+      "signature_status": "Valid",
+      "signature_status_message": "Signature verified.",
+      "signer": {
+        "subject": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "issuer": "CN=Microsoft Code Signing PCA 2010, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "thumbprint": "0BD8C56733FDCC06F8CB919FF5A200E39B1ACF71",
+        "not_before": "2024-08-22T19:25:57.0000000Z",
+        "not_after": "2025-07-05T19:25:57.0000000Z"
+      },
+      "qt_sdk_same_named_file": null
+    },
+    {
+      "file": "bin/d3dcompiler_47.dll",
+      "present": true,
+      "bytes": 4741488,
+      "sha256": "a05f99734f7c4822fefc12b367af21fd0976ed6608752fb1e1e80b6ece7ecbbb",
+      "company": "Microsoft Corporation",
+      "file_version": "10.0.26100.7705 (WinBuild.160101.0800)",
+      "product_version": "10.0.26100.7705",
+      "original_filename": "d3dcompiler_47.dll",
+      "description": "Direct3D HLSL Compiler for Redistribution",
+      "product": "Microsoft® Windows® Operating System",
+      "copyright": "© Microsoft Corporation. All rights reserved.",
+      "signature_status": "Valid",
+      "signature_status_message": "Signature verified.",
+      "signer": {
+        "subject": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "issuer": "CN=Microsoft Windows Code Signing PCA 2024, O=Microsoft Corporation, C=US",
+        "thumbprint": "6ACE61BAE3F09F4DD2697806D73E022CBFE70EB4",
+        "not_before": "2025-05-08T18:24:54.0000000Z",
+        "not_after": "2026-05-06T18:24:54.0000000Z"
+      },
+      "qt_sdk_same_named_file": {
+        "file": "bin/d3dcompiler_47.dll",
+        "sha256": "e994847e01a6f1e4cbdc5a864616ac262f67ee4f14db194984661a8d927ab7f4",
+        "identical_to_stage": false
+      }
+    },
+    {
+      "file": "bin/concrt140.dll",
+      "present": true,
+      "bytes": 324208,
+      "sha256": "2405355f0a58067b258f8df33c327e3a3d716eaac5a3a5aebb757842d85bd376",
+      "company": "Microsoft Corporation",
+      "file_version": "14.44.35211.0",
+      "product_version": "14.44.35211.0",
+      "original_filename": "concrt140.dll",
+      "description": "Microsoft® Concurrency Runtime Library",
+      "product": "Microsoft® Visual Studio®",
+      "copyright": "© Microsoft Corporation. All rights reserved.",
+      "signature_status": "Valid",
+      "signature_status_message": "Signature verified.",
+      "signer": {
+        "subject": "CN=Microsoft Windows Software Compatibility Publisher, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "issuer": "CN=Microsoft Windows Third Party Component CA 2013, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "thumbprint": "81915C173D7FFCBF49EAA8CF7594696B29A035E1",
+        "not_before": "2025-05-15T18:26:06.0000000Z",
+        "not_after": "2026-05-15T18:26:06.0000000Z"
+      },
+      "qt_sdk_same_named_file": null
+    },
+    {
+      "file": "bin/msvcp140.dll",
+      "present": true,
+      "bytes": 557728,
+      "sha256": "0f885b509a685d2bbfa652fed26b5fb31d88fbdab0a978c641d1c7b8aa460aa9",
+      "company": "Microsoft Corporation",
+      "file_version": "14.44.35211.0",
+      "product_version": "14.44.35211.0",
+      "original_filename": "msvcp140.dll",
+      "description": "Microsoft® C Runtime Library",
+      "product": "Microsoft® Visual Studio®",
+      "copyright": "© Microsoft Corporation. All rights reserved.",
+      "signature_status": "Valid",
+      "signature_status_message": "Signature verified.",
+      "signer": {
+        "subject": "CN=Microsoft Windows Software Compatibility Publisher, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "issuer": "CN=Microsoft Windows Third Party Component CA 2013, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "thumbprint": "81915C173D7FFCBF49EAA8CF7594696B29A035E1",
+        "not_before": "2025-05-15T18:26:06.0000000Z",
+        "not_after": "2026-05-15T18:26:06.0000000Z"
+      },
+      "qt_sdk_same_named_file": null
+    },
+    {
+      "file": "bin/msvcp140_1.dll",
+      "present": true,
+      "bytes": 35952,
+      "sha256": "bfad5aef4c63a669e3c140655cdfdf395b6c979b400a447bd5dcb65ed8826c3d",
+      "company": "Microsoft Corporation",
+      "file_version": "14.44.35211.0",
+      "product_version": "14.44.35211.0",
+      "original_filename": "msvcp140_1.dll",
+      "description": "Microsoft® C Runtime Library _1",
+      "product": "Microsoft® Visual Studio®",
+      "copyright": "© Microsoft Corporation. All rights reserved.",
+      "signature_status": "Valid",
+      "signature_status_message": "Signature verified.",
+      "signer": {
+        "subject": "CN=Microsoft Windows Software Compatibility Publisher, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "issuer": "CN=Microsoft Windows Third Party Component CA 2013, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "thumbprint": "81915C173D7FFCBF49EAA8CF7594696B29A035E1",
+        "not_before": "2025-05-15T18:26:06.0000000Z",
+        "not_after": "2026-05-15T18:26:06.0000000Z"
+      },
+      "qt_sdk_same_named_file": null
+    },
+    {
+      "file": "bin/msvcp140_2.dll",
+      "present": true,
+      "bytes": 280200,
+      "sha256": "3ea06f0ee098b4823cb79599df3780e7f23cce52c19aac31d2a0d47efe33a5e9",
+      "company": "Microsoft Corporation",
+      "file_version": "14.44.35211.0",
+      "product_version": "14.44.35211.0",
+      "original_filename": "msvcp140_2.dll",
+      "description": "Microsoft® C Runtime Library _2",
+      "product": "Microsoft® Visual Studio®",
+      "copyright": "© Microsoft Corporation. All rights reserved.",
+      "signature_status": "Valid",
+      "signature_status_message": "Signature verified.",
+      "signer": {
+        "subject": "CN=Microsoft Windows Software Compatibility Publisher, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "issuer": "CN=Microsoft Windows Third Party Component CA 2013, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "thumbprint": "EC5F0D7EE2327688384B4FDF5D7633553A0D055F",
+        "not_before": "2025-05-15T18:26:07.0000000Z",
+        "not_after": "2026-05-15T18:26:07.0000000Z"
+      },
+      "qt_sdk_same_named_file": null
+    },
+    {
+      "file": "bin/msvcp140_atomic_wait.dll",
+      "present": true,
+      "bytes": 50304,
+      "sha256": "640b2aefced484d0368eea5bdd06addd0658a3a70a49256e560d6923b404a479",
+      "company": "Microsoft Corporation",
+      "file_version": "14.44.35211.0",
+      "product_version": "14.44.35211.0",
+      "original_filename": "msvcp140_atomic_wait.dll",
+      "description": "Microsoft® C Runtime Library _atomic_wait",
+      "product": "Microsoft® Visual Studio®",
+      "copyright": "© Microsoft Corporation. All rights reserved.",
+      "signature_status": "Valid",
+      "signature_status_message": "Signature verified.",
+      "signer": {
+        "subject": "CN=Microsoft Windows Software Compatibility Publisher, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "issuer": "CN=Microsoft Windows Third Party Component CA 2013, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "thumbprint": "EC5F0D7EE2327688384B4FDF5D7633553A0D055F",
+        "not_before": "2025-05-15T18:26:07.0000000Z",
+        "not_after": "2026-05-15T18:26:07.0000000Z"
+      },
+      "qt_sdk_same_named_file": null
+    },
+    {
+      "file": "bin/msvcp140_codecvt_ids.dll",
+      "present": true,
+      "bytes": 31872,
+      "sha256": "f2069a52880ec885ee7f0511186100eb7fada0411a2b4948fafea7735b878a18",
+      "company": "Microsoft Corporation",
+      "file_version": "14.44.35211.0",
+      "product_version": "14.44.35211.0",
+      "original_filename": "msvcp140_codecvt_ids.dll",
+      "description": "Microsoft® C Runtime Library _codecvt_ids",
+      "product": "Microsoft® Visual Studio®",
+      "copyright": "© Microsoft Corporation. All rights reserved.",
+      "signature_status": "Valid",
+      "signature_status_message": "Signature verified.",
+      "signer": {
+        "subject": "CN=Microsoft Windows Software Compatibility Publisher, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "issuer": "CN=Microsoft Windows Third Party Component CA 2013, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "thumbprint": "EC5F0D7EE2327688384B4FDF5D7633553A0D055F",
+        "not_before": "2025-05-15T18:26:07.0000000Z",
+        "not_after": "2026-05-15T18:26:07.0000000Z"
+      },
+      "qt_sdk_same_named_file": null
+    },
+    {
+      "file": "bin/vcruntime140.dll",
+      "present": true,
+      "bytes": 124544,
+      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+      "company": "Microsoft Corporation",
+      "file_version": "14.44.35211.0",
+      "product_version": "14.44.35211.0",
+      "original_filename": "vcruntime140.dll",
+      "description": "Microsoft® C Runtime Library",
+      "product": "Microsoft® Visual Studio®",
+      "copyright": "© Microsoft Corporation. All rights reserved.",
+      "signature_status": "Valid",
+      "signature_status_message": "Signature verified.",
+      "signer": {
+        "subject": "CN=Microsoft Windows Software Compatibility Publisher, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "issuer": "CN=Microsoft Windows Third Party Component CA 2013, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "thumbprint": "EC5F0D7EE2327688384B4FDF5D7633553A0D055F",
+        "not_before": "2025-05-15T18:26:07.0000000Z",
+        "not_after": "2026-05-15T18:26:07.0000000Z"
+      },
+      "qt_sdk_same_named_file": null
+    },
+    {
+      "file": "bin/vcruntime140_1.dll",
+      "present": true,
+      "bytes": 49792,
+      "sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f",
+      "company": "Microsoft Corporation",
+      "file_version": "14.44.35211.0",
+      "product_version": "14.44.35211.0",
+      "original_filename": "vcruntime140_1.dll",
+      "description": "Microsoft® C Runtime Library",
+      "product": "Microsoft® Visual Studio®",
+      "copyright": "© Microsoft Corporation. All rights reserved.",
+      "signature_status": "Valid",
+      "signature_status_message": "Signature verified.",
+      "signer": {
+        "subject": "CN=Microsoft Windows Software Compatibility Publisher, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "issuer": "CN=Microsoft Windows Third Party Component CA 2013, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+        "thumbprint": "EC5F0D7EE2327688384B4FDF5D7633553A0D055F",
+        "not_before": "2025-05-15T18:26:07.0000000Z",
+        "not_after": "2026-05-15T18:26:07.0000000Z"
+      },
+      "qt_sdk_same_named_file": null
+    }
+  ],
+  "sdk_sbom": {
+    "status": "optional-sdk-sbom-originals-retained",
+    "present": true,
+    "files": [
+      {
+        "sdk_path": "sbom/qt5compat-6.10.2.cdx.json",
+        "retained_path": "sdk-sbom/qt5compat-6.10.2.cdx.json",
+        "bytes": 24399,
+        "sha256": "200e2a1a1176a038043572c971cfef68a4f70f4bc3a00af5321500a436f59416"
+      },
+      {
+        "sdk_path": "sbom/qt5compat-6.10.2.source.spdx",
+        "retained_path": "sdk-sbom/qt5compat-6.10.2.source.spdx",
+        "bytes": 653109,
+        "sha256": "caa4ca9e1fbe3d1b0d3dfd915122b2ad82b1ab1bf02f5067d6d4021a0ad66f0b"
+      },
+      {
+        "sdk_path": "sbom/qt5compat-6.10.2.spdx",
+        "retained_path": "sdk-sbom/qt5compat-6.10.2.spdx",
+        "bytes": 98697,
+        "sha256": "9d5c85f467669d5af483ea30d32d84c08a675efbbfaabb0b056a908f30114411"
+      },
+      {
+        "sdk_path": "sbom/qt5compat-6.10.2.spdx.json",
+        "retained_path": "sdk-sbom/qt5compat-6.10.2.spdx.json",
+        "bytes": 159200,
+        "sha256": "4705e8573ac82e6146705876327c5c04d4f16e74b18380eb68d71b4be9bcf829"
+      },
+      {
+        "sdk_path": "sbom/qtbase-6.10.2.cdx.json",
+        "retained_path": "sdk-sbom/qtbase-6.10.2.cdx.json",
+        "bytes": 295293,
+        "sha256": "eec3c488ebb475259349095cf42e47ad91827cb8d47a3a7024c6c3db93a02190"
+      },
+      {
+        "sdk_path": "sbom/qtbase-6.10.2.source.spdx",
+        "retained_path": "sdk-sbom/qtbase-6.10.2.source.spdx",
+        "bytes": 10602103,
+        "sha256": "c858581bb8e6175802bbae976e408586b94aa83c64eab05ec1f9b1655604b525"
+      },
+      {
+        "sdk_path": "sbom/qtbase-6.10.2.spdx",
+        "retained_path": "sdk-sbom/qtbase-6.10.2.spdx",
+        "bytes": 2176129,
+        "sha256": "4902e6c6c837f37ce27240fd08181bf71835419f08ab55cf2fa4754a7f941875"
+      },
+      {
+        "sdk_path": "sbom/qtbase-6.10.2.spdx.json",
+        "retained_path": "sdk-sbom/qtbase-6.10.2.spdx.json",
+        "bytes": 3679793,
+        "sha256": "49a96273143388adf81829d2a5150f0e9679f2c12e651a4b83e29dbc764a87be"
+      },
+      {
+        "sdk_path": "sbom/qtdeclarative-6.10.2.cdx.json",
+        "retained_path": "sdk-sbom/qtdeclarative-6.10.2.cdx.json",
+        "bytes": 411358,
+        "sha256": "9fc0d71fe0b7c37042711d27299e504bb9726d592ff9c229e3745993c33f75db"
+      },
+      {
+        "sdk_path": "sbom/qtdeclarative-6.10.2.source.spdx",
+        "retained_path": "sdk-sbom/qtdeclarative-6.10.2.source.spdx",
+        "bytes": 10302547,
+        "sha256": "865cecf5bcc2b211f8abe4d8180ed1d4e60445d4aa6f6d26558223b7fd0b6ba8"
+      },
+      {
+        "sdk_path": "sbom/qtdeclarative-6.10.2.spdx",
+        "retained_path": "sdk-sbom/qtdeclarative-6.10.2.spdx",
+        "bytes": 3306454,
+        "sha256": "291c918defb0b4c3aedb631f8f4dbc424e7d99cebe4ea502a0a4ee1168242c81"
+      },
+      {
+        "sdk_path": "sbom/qtdeclarative-6.10.2.spdx.json",
+        "retained_path": "sdk-sbom/qtdeclarative-6.10.2.spdx.json",
+        "bytes": 5411393,
+        "sha256": "683bc92896ce354880985f839df4200b5ee4bdc322028ddb8ae915ebf9fb3cd7"
+      },
+      {
+        "sdk_path": "sbom/qtnetworkauth-6.10.2.cdx.json",
+        "retained_path": "sdk-sbom/qtnetworkauth-6.10.2.cdx.json",
+        "bytes": 6623,
+        "sha256": "7cde996872d2e35f6a9d872f002ebf0bbe9f7a812a9f2ad8504556b882226945"
+      },
+      {
+        "sdk_path": "sbom/qtnetworkauth-6.10.2.source.spdx",
+        "retained_path": "sdk-sbom/qtnetworkauth-6.10.2.source.spdx",
+        "bytes": 56279,
+        "sha256": "6e7d262ac3d703ff4a877c866e6f89532982271acfa96cf133615960ffb012ec"
+      },
+      {
+        "sdk_path": "sbom/qtnetworkauth-6.10.2.spdx",
+        "retained_path": "sdk-sbom/qtnetworkauth-6.10.2.spdx",
+        "bytes": 32323,
+        "sha256": "0911f935433bb44425b2746e2d875ccaec073c7e5185a823df9f547b9250c697"
+      },
+      {
+        "sdk_path": "sbom/qtnetworkauth-6.10.2.spdx.json",
+        "retained_path": "sdk-sbom/qtnetworkauth-6.10.2.spdx.json",
+        "bytes": 53975,
+        "sha256": "1089ec6a79e1244888ec255d6b14f7e3f5092af4775fe48fa9d0f8a1c40aaaac"
+      },
+      {
+        "sdk_path": "sbom/qtshadertools-6.10.2.cdx.json",
+        "retained_path": "sdk-sbom/qtshadertools-6.10.2.cdx.json",
+        "bytes": 26091,
+        "sha256": "c35cfdedf324aa743c71e56a83661f1dfb33b98a6a09d240e75010ead191b285"
+      },
+      {
+        "sdk_path": "sbom/qtshadertools-6.10.2.source.spdx",
+        "retained_path": "sdk-sbom/qtshadertools-6.10.2.source.spdx",
+        "bytes": 161993,
+        "sha256": "642b7ab93ae4f6d8a00a822bf0c213da86209e9f4c9f22ba87a85525d5985563"
+      },
+      {
+        "sdk_path": "sbom/qtshadertools-6.10.2.spdx",
+        "retained_path": "sdk-sbom/qtshadertools-6.10.2.spdx",
+        "bytes": 32510,
+        "sha256": "a88b082ada87686b53f256d6fe68de116d4322fb95ec7a9b462c9b431a51130e"
+      },
+      {
+        "sdk_path": "sbom/qtshadertools-6.10.2.spdx.json",
+        "retained_path": "sdk-sbom/qtshadertools-6.10.2.spdx.json",
+        "bytes": 51661,
+        "sha256": "a178b91a4bfffda3b6f19bed868892bd8ae18e1a179b9f42f7b6533c2848a360"
+      },
+      {
+        "sdk_path": "sbom/qtsvg-6.10.2.cdx.json",
+        "retained_path": "sdk-sbom/qtsvg-6.10.2.cdx.json",
+        "bytes": 16796,
+        "sha256": "422a5b280ba8f750bd4ad7086345dcde3e019e76c361c2765cb33a1a6879bd3c"
+      },
+      {
+        "sdk_path": "sbom/qtsvg-6.10.2.source.spdx",
+        "retained_path": "sdk-sbom/qtsvg-6.10.2.source.spdx",
+        "bytes": 289193,
+        "sha256": "cc1753aa093c1ba23187bd18dfe5e9951ba6635f3ed4333ddb25f54f8328a486"
+      },
+      {
+        "sdk_path": "sbom/qtsvg-6.10.2.spdx",
+        "retained_path": "sdk-sbom/qtsvg-6.10.2.spdx",
+        "bytes": 56255,
+        "sha256": "d6590a98fcde1d3ac6f79e1188306a195e7838e036fddf93b6ca199b74b74533"
+      },
+      {
+        "sdk_path": "sbom/qtsvg-6.10.2.spdx.json",
+        "retained_path": "sdk-sbom/qtsvg-6.10.2.spdx.json",
+        "bytes": 99640,
+        "sha256": "7aa49ecca62638cc25b31f6d87fc89e0b2a53731ebaa2a72f0b5bef00407a615"
+      },
+      {
+        "sdk_path": "sbom/qttools-6.10.2.cdx.json",
+        "retained_path": "sdk-sbom/qttools-6.10.2.cdx.json",
+        "bytes": 96876,
+        "sha256": "47b962c137acdaf68a08cfb093380f141fcbc4ab350f97248e865d45b72811bd"
+      },
+      {
+        "sdk_path": "sbom/qttools-6.10.2.source.spdx",
+        "retained_path": "sdk-sbom/qttools-6.10.2.source.spdx",
+        "bytes": 1874750,
+        "sha256": "49027e0e5ae790a6ac3e9f5f84712f83461e5963c8ee19b416b456b9f302b752"
+      },
+      {
+        "sdk_path": "sbom/qttools-6.10.2.spdx",
+        "retained_path": "sdk-sbom/qttools-6.10.2.spdx",
+        "bytes": 621016,
+        "sha256": "690d0e59ab1eec512b67daa9d59844562a98e05ae1505e56a0519f0ff1559fd0"
+      },
+      {
+        "sdk_path": "sbom/qttools-6.10.2.spdx.json",
+        "retained_path": "sdk-sbom/qttools-6.10.2.spdx.json",
+        "bytes": 1025880,
+        "sha256": "9e840bffa63b3acc36d61abdd89eb8916a98aea9687e48fe8ab3f6f4d03cb057"
+      },
+      {
+        "sdk_path": "sbom/qttranslations-6.10.2.cdx.json",
+        "retained_path": "sdk-sbom/qttranslations-6.10.2.cdx.json",
+        "bytes": 4687,
+        "sha256": "3f31a37431a140885512fcfc90326afb68c70f35237ce4b8d443a17c90e54f62"
+      },
+      {
+        "sdk_path": "sbom/qttranslations-6.10.2.spdx",
+        "retained_path": "sdk-sbom/qttranslations-6.10.2.spdx",
+        "bytes": 466934,
+        "sha256": "072c4a5be9d4aa17ae9ff7193bbeb3f02ca51343c6b7188ac4e60350b38c4728"
+      },
+      {
+        "sdk_path": "sbom/qttranslations-6.10.2.spdx.json",
+        "retained_path": "sdk-sbom/qttranslations-6.10.2.spdx.json",
+        "bytes": 974509,
+        "sha256": "9260ced863617d316087a0d953757572d059392d0e4b9334bc165f232d00dc1c"
+      },
+      {
+        "sdk_path": "sbom/qtwebsockets-6.10.2.cdx.json",
+        "retained_path": "sdk-sbom/qtwebsockets-6.10.2.cdx.json",
+        "bytes": 10121,
+        "sha256": "0780d0b77210871a8597b8308dae1192f2ef1ec2e4ece20f25a622bf98f0d208"
+      },
+      {
+        "sdk_path": "sbom/qtwebsockets-6.10.2.source.spdx",
+        "retained_path": "sdk-sbom/qtwebsockets-6.10.2.source.spdx",
+        "bytes": 89054,
+        "sha256": "a89163b3af41938820551e8ae951e8e2634bc79654572c9746a2e89ee7b725f6"
+      },
+      {
+        "sdk_path": "sbom/qtwebsockets-6.10.2.spdx",
+        "retained_path": "sdk-sbom/qtwebsockets-6.10.2.spdx",
+        "bytes": 37869,
+        "sha256": "871b59119ec5dadbb6c2fa746c216350102f331da10e142e251c9469a19b13e8"
+      },
+      {
+        "sdk_path": "sbom/qtwebsockets-6.10.2.spdx.json",
+        "retained_path": "sdk-sbom/qtwebsockets-6.10.2.spdx.json",
+        "bytes": 63566,
+        "sha256": "3ac576d4f3245dd38d6b5237da0cd8aa7beee6cf69ecd604db30d7a078319cb9"
+      }
+    ],
+    "total_bytes": 43269076,
+    "maximum_files": 128,
+    "maximum_file_bytes": 16777216,
+    "maximum_total_bytes": 134217728,
+    "source_or_application_program_executed": false,
+    "full_original_bytes_retained": true
+  },
+  "qt_runtime_source_map": [
+    {
+      "file": "bin/Qt6Core.dll",
+      "stage_sha256": "b98eea394a95563879b614dbd4432ce074b0fceeb154c3bae252f4e7a9376a40",
+      "stage_bytes": 10242360,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "b98eea394a95563879b614dbd4432ce074b0fceeb154c3bae252f4e7a9376a40",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtbase"
+    },
+    {
+      "file": "bin/Qt6Core5Compat.dll",
+      "stage_sha256": "9238290d153c279db5f9fa38400b45666dad7108ec81062c2c7c8849070f9daf",
+      "stage_bytes": 876344,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "9238290d153c279db5f9fa38400b45666dad7108ec81062c2c7c8849070f9daf",
+      "identical_to_sdk": true,
+      "source_archive_id": "qt5compat"
+    },
+    {
+      "file": "bin/Qt6Gui.dll",
+      "stage_sha256": "28ca8b9e7d3d1c4e3cfafd6fe63877a05cf10202a240134a11f98384f01c9e37",
+      "stage_bytes": 9494840,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "28ca8b9e7d3d1c4e3cfafd6fe63877a05cf10202a240134a11f98384f01c9e37",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtbase"
+    },
+    {
+      "file": "bin/Qt6LabsPlatform.dll",
+      "stage_sha256": "4a72dae192625083d6d6564a5ce01733ea0e676c36746f2ed9826521265c3b7b",
+      "stage_bytes": 284472,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "4a72dae192625083d6d6564a5ce01733ea0e676c36746f2ed9826521265c3b7b",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6LabsQmlModels.dll",
+      "stage_sha256": "caa08a1c8b02b4da410c62adf50e28339c09b1f034c0c8dc0cf032cdc2cccc09",
+      "stage_bytes": 190776,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "caa08a1c8b02b4da410c62adf50e28339c09b1f034c0c8dc0cf032cdc2cccc09",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6Network.dll",
+      "stage_sha256": "905e1ce3947fadaad566b6deffe345daf7f6efbc57207ea7fcdbfa77669e3de6",
+      "stage_bytes": 1766712,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "905e1ce3947fadaad566b6deffe345daf7f6efbc57207ea7fcdbfa77669e3de6",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtbase"
+    },
+    {
+      "file": "bin/Qt6NetworkAuth.dll",
+      "stage_sha256": "2b2cee4bf6cd28c7c65cadc21089902062ac8c76b74340c7c205e2b5db79a4cd",
+      "stage_bytes": 292664,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "2b2cee4bf6cd28c7c65cadc21089902062ac8c76b74340c7c205e2b5db79a4cd",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtnetworkauth"
+    },
+    {
+      "file": "bin/Qt6OpenGL.dll",
+      "stage_sha256": "a41b71127d07924ddda67e787e8765ebf60f217817199f1becdd63f3db88847e",
+      "stage_bytes": 1977144,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "a41b71127d07924ddda67e787e8765ebf60f217817199f1becdd63f3db88847e",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtbase"
+    },
+    {
+      "file": "bin/Qt6PrintSupport.dll",
+      "stage_sha256": "73b204c1dc66e7c49c1337fdbe4a4aab378eb31ecfe823ed1b009261b4c3925a",
+      "stage_bytes": 406840,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "73b204c1dc66e7c49c1337fdbe4a4aab378eb31ecfe823ed1b009261b4c3925a",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtbase"
+    },
+    {
+      "file": "bin/Qt6Qml.dll",
+      "stage_sha256": "b1cad2aef8936cede67fecdc13c8eb930c77d0b189a1e970d72ab903902e611d",
+      "stage_bytes": 5333816,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "b1cad2aef8936cede67fecdc13c8eb930c77d0b189a1e970d72ab903902e611d",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QmlMeta.dll",
+      "stage_sha256": "6da039d0fd79d978b87d6477d2aa60e6161b7f7f8f2dd66006517fb4656afcbd",
+      "stage_bytes": 160056,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "6da039d0fd79d978b87d6477d2aa60e6161b7f7f8f2dd66006517fb4656afcbd",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QmlModels.dll",
+      "stage_sha256": "3e4075935cd52710628d559e690391ef0bf03f4484aa47ddf1287c57aa0066a0",
+      "stage_bytes": 986936,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "3e4075935cd52710628d559e690391ef0bf03f4484aa47ddf1287c57aa0066a0",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QmlWorkerScript.dll",
+      "stage_sha256": "e1ceef21a868e29ddad78624039219676ceff591eb7304c151ff8b5e8bb74c73",
+      "stage_bytes": 76600,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "e1ceef21a868e29ddad78624039219676ceff591eb7304c151ff8b5e8bb74c73",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6Quick.dll",
+      "stage_sha256": "14ab58cbe8aabd2eedad322c361119ff628eb602ea62998a5da1051071aeca7e",
+      "stage_bytes": 6506296,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "14ab58cbe8aabd2eedad322c361119ff628eb602ea62998a5da1051071aeca7e",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2.dll",
+      "stage_sha256": "48d1feac8cb6949746f7d9c1a546866ff2220add03495b26c3dd1a0a28393ba0",
+      "stage_bytes": 100152,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "48d1feac8cb6949746f7d9c1a546866ff2220add03495b26c3dd1a0a28393ba0",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2Basic.dll",
+      "stage_sha256": "24299e6a1ec0cb6831cce7504d5dc85dcb1ed4954b7ca559e398c7e1a3a72c43",
+      "stage_bytes": 1781048,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "24299e6a1ec0cb6831cce7504d5dc85dcb1ed4954b7ca559e398c7e1a3a72c43",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2BasicStyleImpl.dll",
+      "stage_sha256": "4e5a2020deff50f1e816d86a6090ab032e692305af81924fa32a3b2c0bb093e8",
+      "stage_bytes": 62264,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "4e5a2020deff50f1e816d86a6090ab032e692305af81924fa32a3b2c0bb093e8",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2FluentWinUI3StyleImpl.dll",
+      "stage_sha256": "eae36fc05cfceebf10c68afca452caeccb517eca00f878a4af3ebfbe6abe1eac",
+      "stage_bytes": 197432,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "eae36fc05cfceebf10c68afca452caeccb517eca00f878a4af3ebfbe6abe1eac",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2Fusion.dll",
+      "stage_sha256": "91de4eb567d196082e37906a197f09a6d8be81e60df81a30960c2c3fe5fe55d8",
+      "stage_bytes": 1418552,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "91de4eb567d196082e37906a197f09a6d8be81e60df81a30960c2c3fe5fe55d8",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2FusionStyleImpl.dll",
+      "stage_sha256": "ef7eb27fbb5d2392eef53e75e6f49fedcd67bf4717c9f6e93c2a9889f59308e4",
+      "stage_bytes": 160568,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "ef7eb27fbb5d2392eef53e75e6f49fedcd67bf4717c9f6e93c2a9889f59308e4",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2Imagine.dll",
+      "stage_sha256": "4d9f516a2d8ed02552df028e6e1c0a4359cf480f8b169b0b4c0ed2061bef89ef",
+      "stage_bytes": 3022136,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "4d9f516a2d8ed02552df028e6e1c0a4359cf480f8b169b0b4c0ed2061bef89ef",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2ImagineStyleImpl.dll",
+      "stage_sha256": "2ba84a6c2e0a591a5c3de0f8f07b386e846ba7358e7ab13e5424d18b62614c6a",
+      "stage_bytes": 50488,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "2ba84a6c2e0a591a5c3de0f8f07b386e846ba7358e7ab13e5424d18b62614c6a",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2Impl.dll",
+      "stage_sha256": "38b6cdb0ae879a09c36b2eebf20e4c316b05931f7f75a63a0944ed38ad262d86",
+      "stage_bytes": 294200,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "38b6cdb0ae879a09c36b2eebf20e4c316b05931f7f75a63a0944ed38ad262d86",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2Material.dll",
+      "stage_sha256": "8769047158ccb64826761534b3d1911fcc870ead776a811b051909f20fba4c41",
+      "stage_bytes": 1818936,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "8769047158ccb64826761534b3d1911fcc870ead776a811b051909f20fba4c41",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2MaterialStyleImpl.dll",
+      "stage_sha256": "69e1ef038004e68242fa5e832b1705ee616751bc87a7272e56e7aeae78202d86",
+      "stage_bytes": 296760,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "69e1ef038004e68242fa5e832b1705ee616751bc87a7272e56e7aeae78202d86",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2Universal.dll",
+      "stage_sha256": "041f4c70e1cbaab23b8927428d4ddf1db0899b6dae4fc7644dd55d052dc8d1bc",
+      "stage_bytes": 1502520,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "041f4c70e1cbaab23b8927428d4ddf1db0899b6dae4fc7644dd55d052dc8d1bc",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2UniversalStyleImpl.dll",
+      "stage_sha256": "e40035d4d70e1143684c855a62e2e9d8bef47eab9f3d849e1a1ad693095bed53",
+      "stage_bytes": 110392,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "e40035d4d70e1143684c855a62e2e9d8bef47eab9f3d849e1a1ad693095bed53",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickControls2WindowsStyleImpl.dll",
+      "stage_sha256": "eaccaefad9787ff72499ddad179a66fd751d91a8b3270aac739a0eeaff0dc6f9",
+      "stage_bytes": 51000,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "eaccaefad9787ff72499ddad179a66fd751d91a8b3270aac739a0eeaff0dc6f9",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickEffects.dll",
+      "stage_sha256": "1e877a4c333a7f9d573c09adb7353f8688b5b9f36ec30da0edd38f0674b82fdf",
+      "stage_bytes": 418616,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "1e877a4c333a7f9d573c09adb7353f8688b5b9f36ec30da0edd38f0674b82fdf",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickLayouts.dll",
+      "stage_sha256": "45b48b77b08a021510fe73b023c4c22e7097b28a501c3fd96a943271362e3c29",
+      "stage_bytes": 307000,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "45b48b77b08a021510fe73b023c4c22e7097b28a501c3fd96a943271362e3c29",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickShapes.dll",
+      "stage_sha256": "1c4573fb5aecb6ce9bcac7389806426a6849cc8e5856a43d5e317560a84a845c",
+      "stage_bytes": 342840,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "1c4573fb5aecb6ce9bcac7389806426a6849cc8e5856a43d5e317560a84a845c",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6QuickTemplates2.dll",
+      "stage_sha256": "d3faa8d02ef1c051a879417bd75ce6c5f257e705e26cc8650a964f6fa8e0e4b1",
+      "stage_bytes": 1999160,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "d3faa8d02ef1c051a879417bd75ce6c5f257e705e26cc8650a964f6fa8e0e4b1",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtdeclarative"
+    },
+    {
+      "file": "bin/Qt6ShaderTools.dll",
+      "stage_sha256": "c11e2a478630d8fa58ae25f2827723693f3c66a22de9494205e214e06d703c5a",
+      "stage_bytes": 4067128,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "c11e2a478630d8fa58ae25f2827723693f3c66a22de9494205e214e06d703c5a",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtshadertools"
+    },
+    {
+      "file": "bin/Qt6Svg.dll",
+      "stage_sha256": "982a589e52680d7b525da0031eba783d3bbd77e6611cdea5cd276a2b9213f4c9",
+      "stage_bytes": 632120,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "982a589e52680d7b525da0031eba783d3bbd77e6611cdea5cd276a2b9213f4c9",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtsvg"
+    },
+    {
+      "file": "bin/Qt6Widgets.dll",
+      "stage_sha256": "f383fb6b3f6996efe23327ff607e7298fc47ee76e8b8ef8a65f8d2e0a91707e4",
+      "stage_bytes": 6576952,
+      "file_version": "6.10.2.0",
+      "product_version": "6.10.2.0",
+      "sdk_same_named_file_present": true,
+      "sdk_sha256": "f383fb6b3f6996efe23327ff607e7298fc47ee76e8b8ef8a65f8d2e0a91707e4",
+      "identical_to_sdk": true,
+      "source_archive_id": "qtbase"
+    }
+  ],
+  "qt_module_sources": [
+    {
+      "id": "qtbase",
+      "version": "6.10.2",
+      "repository": "https://github.com/qt/qtbase.git",
+      "tag": "v6.10.2",
+      "tag_object": "4e4e866977c08ea7a4e197f872b8fb504f437e80",
+      "commit": "000d6c62f7880bb8d3054724e8da0b8ae244130e",
+      "url": "https://codeload.github.com/qt/qtbase/tar.gz/000d6c62f7880bb8d3054724e8da0b8ae244130e",
+      "archive": "qtbase-000d6c62f7880bb8d3054724e8da0b8ae244130e.tar.gz",
+      "archive_bytes": 67281154,
+      "sha256": "2bffe7325cd32454a7a03548a4afad0e31b9cc3087a37867cb6c9f6ad4024f37",
+      "format": "tar",
+      "root": "qtbase-000d6c62f7880bb8d3054724e8da0b8ae244130e",
+      "source_scope": "Official v6.10.2 module source. Binary build options and patches still need a matching build record.",
+      "archive_gitmodules": []
+    },
+    {
+      "id": "qtdeclarative",
+      "version": "6.10.2",
+      "repository": "https://github.com/qt/qtdeclarative.git",
+      "tag": "v6.10.2",
+      "tag_object": "858423070a1a4f7d8d5c8c525bf056f824b50430",
+      "commit": "09c70541c76659bcd8c49f05841b0e778c9ffd4c",
+      "url": "https://codeload.github.com/qt/qtdeclarative/tar.gz/09c70541c76659bcd8c49f05841b0e778c9ffd4c",
+      "archive": "qtdeclarative-09c70541c76659bcd8c49f05841b0e778c9ffd4c.tar.gz",
+      "archive_bytes": 42460168,
+      "sha256": "0c82076dcaa0d6e7c7e0b0f72072fc5fc6842bf805e4c5df5905080d457dd54c",
+      "format": "tar",
+      "root": "qtdeclarative-09c70541c76659bcd8c49f05841b0e778c9ffd4c",
+      "source_scope": "Official v6.10.2 module source. Binary build options and patches still need a matching build record.",
+      "archive_gitmodules": [
+        "[submodule \"tests/auto/qml/ecmascripttests/test262\"]\n\tpath = tests/auto/qml/ecmascripttests/test262\n\turl = ../qtdeclarative-testsuites.git\n\tbranch = snapshot-20180312-3c69133-based\n"
+      ]
+    },
+    {
+      "id": "qtsvg",
+      "version": "6.10.2",
+      "repository": "https://github.com/qt/qtsvg.git",
+      "tag": "v6.10.2",
+      "tag_object": "1260093d0943114ed8658aa205a3d0f1c2fac20c",
+      "commit": "b925029db51aff0b17a48f5939cb83c27932d0cb",
+      "url": "https://codeload.github.com/qt/qtsvg/tar.gz/b925029db51aff0b17a48f5939cb83c27932d0cb",
+      "archive": "qtsvg-b925029db51aff0b17a48f5939cb83c27932d0cb.tar.gz",
+      "archive_bytes": 2902702,
+      "sha256": "b77b5463d71f86f81dff940cfcabb0803d61a39019a08a3f9e3c680c885806b5",
+      "format": "tar",
+      "root": "qtsvg-b925029db51aff0b17a48f5939cb83c27932d0cb",
+      "source_scope": "Official v6.10.2 module source. Binary build options and patches still need a matching build record.",
+      "archive_gitmodules": []
+    },
+    {
+      "id": "qt5compat",
+      "version": "6.10.2",
+      "repository": "https://github.com/qt/qt5compat.git",
+      "tag": "v6.10.2",
+      "tag_object": "174ea7cfbf803d1c0f4adb5f4d4aa8ab905a7112",
+      "commit": "c005ed402a003af00221782c7548279a75e8c72a",
+      "url": "https://codeload.github.com/qt/qt5compat/tar.gz/c005ed402a003af00221782c7548279a75e8c72a",
+      "archive": "qt5compat-c005ed402a003af00221782c7548279a75e8c72a.tar.gz",
+      "archive_bytes": 17525477,
+      "sha256": "f1a5ec625b5c298a6439161b88232e2502acb7dc97e9b18020cbdd1db0f9c6ac",
+      "format": "tar",
+      "root": "qt5compat-c005ed402a003af00221782c7548279a75e8c72a",
+      "source_scope": "Official v6.10.2 module source. Binary build options and patches still need a matching build record.",
+      "archive_gitmodules": []
+    },
+    {
+      "id": "qtnetworkauth",
+      "version": "6.10.2",
+      "repository": "https://github.com/qt/qtnetworkauth.git",
+      "tag": "v6.10.2",
+      "tag_object": "ccccebd84b484af19b6a895766136b2bc085f134",
+      "commit": "b3999f9967d65320369bb96b0ae91d810fd3fc38",
+      "url": "https://codeload.github.com/qt/qtnetworkauth/tar.gz/b3999f9967d65320369bb96b0ae91d810fd3fc38",
+      "archive": "qtnetworkauth-b3999f9967d65320369bb96b0ae91d810fd3fc38.tar.gz",
+      "archive_bytes": 477780,
+      "sha256": "c32b49d90d44badf6dc3c3956b3b22d71ab2f5ef0afdd8c65388eae22893ec74",
+      "format": "tar",
+      "root": "qtnetworkauth-b3999f9967d65320369bb96b0ae91d810fd3fc38",
+      "source_scope": "Official v6.10.2 module source. Binary build options and patches still need a matching build record.",
+      "archive_gitmodules": []
+    },
+    {
+      "id": "qtshadertools",
+      "version": "6.10.2",
+      "repository": "https://github.com/qt/qtshadertools.git",
+      "tag": "v6.10.2",
+      "tag_object": "8baece095256858c4a54faacfb5525f5398d26a9",
+      "commit": "b9678c24094aef235f649cb443eb4e197487c675",
+      "url": "https://codeload.github.com/qt/qtshadertools/tar.gz/b9678c24094aef235f649cb443eb4e197487c675",
+      "archive": "qtshadertools-b9678c24094aef235f649cb443eb4e197487c675.tar.gz",
+      "archive_bytes": 1767024,
+      "sha256": "43a3f17f4a6c2385505e477fa1519812ea6bfb17ea1003a1f3475a60369898de",
+      "format": "tar",
+      "root": "qtshadertools-b9678c24094aef235f649cb443eb4e197487c675",
+      "source_scope": "Official v6.10.2 module source. Binary build options and patches still need a matching build record.",
+      "archive_gitmodules": []
+    }
+  ],
+  "representative_source_headers": [
+    {
+      "module": "qtbase",
+      "source_file": "src/corelib/kernel/qcoreapplication.cpp",
+      "source_file_sha256": "7179ca401868cbe079bc9ce10d42e98baae5016927577ebfec4c6508cde97435",
+      "representative_source_header_expression": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "Representative library file only; vendor source files and tools have independent licenses. GPL-3.0-only selected where offered for this GPLv3 application."
+    },
+    {
+      "module": "qtdeclarative",
+      "source_file": "src/qml/qml/qqmlengine.cpp",
+      "source_file_sha256": "70e183ee7606540a3c2f725f9bb5fdbc2b5e3d90ccad99ac840e94c8ade049dc",
+      "representative_source_header_expression": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "Representative library file only; vendor source files and tools have independent licenses. GPL-3.0-only selected where offered for this GPLv3 application."
+    },
+    {
+      "module": "qtsvg",
+      "source_file": "src/svg/qsvgrenderer.cpp",
+      "source_file_sha256": "20299c111e804426bf0c2d09c05a841c4efedf5ea9c62b83420490b5eab31d19",
+      "representative_source_header_expression": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "Representative library file only; vendor source files and tools have independent licenses. GPL-3.0-only selected where offered for this GPLv3 application."
+    },
+    {
+      "module": "qt5compat",
+      "source_file": "src/core5/codecs/qtextcodec.cpp",
+      "source_file_sha256": "6ab68e67804189598b0599d06d2d09a8cc16da980c0a54ed7946910bf448774d",
+      "representative_source_header_expression": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "Representative library file only; vendor source files and tools have independent licenses. GPL-3.0-only selected where offered for this GPLv3 application."
+    },
+    {
+      "module": "qtnetworkauth",
+      "source_file": "src/oauth/qoauth2authorizationcodeflow.cpp",
+      "source_file_sha256": "da6ad8efefc36ff52d5b0f66f7fa78b819273c8d2b2544cc3cfc7348b5ab81e6",
+      "representative_source_header_expression": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+      "scope": "Representative library file only; vendor source files and tools have independent licenses. GPL-3.0-only selected where offered for this GPLv3 application."
+    },
+    {
+      "module": "qtshadertools",
+      "source_file": "src/shadertools/qshaderbaker.cpp",
+      "source_file_sha256": "4deed3e5901839f883de6586d947eb451164c6f2fe625e0e716d0d695f652f61",
+      "representative_source_header_expression": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "Representative library file only; vendor source files and tools have independent licenses. GPL-3.0-only selected where offered for this GPLv3 application."
+    }
+  ],
+  "corresponding_source_lock_sha256": "ab6b6dbeb349d9c3649b07a99537b5ffb43899c88a8f33728e3776c9eee03824",
+  "qmake": {
+    "path": "D:\\a\\Music\\Qt\\6.10.2\\msvc2022_64\\bin\\qmake.exe",
+    "sha256": "d40a1f4fb8ebb63a27329fca97efea85bc29161d246c16bef26a0edeab3168f2",
+    "exit_code": 0,
+    "stdout": "QT_SYSROOT:\r\nQT_INSTALL_PREFIX:D:/a/Music/Qt/6.10.2/msvc2022_64\r\nQT_INSTALL_ARCHDATA:D:/a/Music/Qt/6.10.2/msvc2022_64\r\nQT_INSTALL_DATA:D:/a/Music/Qt/6.10.2/msvc2022_64\r\nQT_INSTALL_DOCS:D:/a/Music/Qt/6.10.2/msvc2022_64/doc\r\nQT_INSTALL_HEADERS:D:/a/Music/Qt/6.10.2/msvc2022_64/include\r\nQT_INSTALL_LIBS:D:/a/Music/Qt/6.10.2/msvc2022_64/lib\r\nQT_INSTALL_LIBEXECS:D:/a/Music/Qt/6.10.2/msvc2022_64/bin\r\nQT_INSTALL_BINS:D:/a/Music/Qt/6.10.2/msvc2022_64/bin\r\nQT_INSTALL_TESTS:D:/a/Music/Qt/6.10.2/msvc2022_64/tests\r\nQT_INSTALL_PLUGINS:D:/a/Music/Qt/6.10.2/msvc2022_64/plugins\r\nQT_INSTALL_QML:D:/a/Music/Qt/6.10.2/msvc2022_64/qml\r\nQT_INSTALL_TRANSLATIONS:D:/a/Music/Qt/6.10.2/msvc2022_64/translations\r\nQT_INSTALL_CONFIGURATION:\r\nQT_INSTALL_EXAMPLES:D:/a/Music/Qt/6.10.2/msvc2022_64/examples\r\nQT_INSTALL_DEMOS:D:/a/Music/Qt/6.10.2/msvc2022_64/examples\r\nQT_HOST_PREFIX:D:/a/Music/Qt/6.10.2/msvc2022_64\r\nQT_HOST_DATA:D:/a/Music/Qt/6.10.2/msvc2022_64\r\nQT_HOST_BINS:D:/a/Music/Qt/6.10.2/msvc2022_64/bin\r\nQT_HOST_LIBEXECS:D:/a/Music/Qt/6.10.2/msvc2022_64/bin\r\nQT_HOST_LIBS:D:/a/Music/Qt/6.10.2/msvc2022_64/lib\r\nQMAKE_SPEC:win32-msvc\r\nQMAKE_XSPEC:win32-msvc\r\nQMAKE_VERSION:3.1\r\nQT_VERSION:6.10.2\r\n",
+    "stderr": ""
+  },
+  "sdk_metadata": [
+    {
+      "path": "mkspecs/qconfig.pri",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 852,
+      "sha256": "728a0fe49e598f467c4ea69ea91694f9ccbad41c699d27500a9db6c750e3878a",
+      "printed_bytes": 852,
+      "head_only": false,
+      "text": "QT_ARCH = x86_64\r\nQT_BUILDABI = \r\nQT_LIBCPP_ABI_TAG = \r\nQT.global.enabled_features = version_tagging shared debug_and_release signaling_nan thread future concurrent dbus opensslv30 test_gui shared intelcet shared debug_and_release openssl\r\nQT.global.disabled_features = static cross_compile pkg-config separate_debug_info appstore-compliant simulator_and_device rpath force_asserts framework c++20 c++2a c++2b c++2c reduce_relocations wasm-simd128 wasm-exceptions wasm-jspi zstd openssl-linked opensslv11\r\nQT.global.disabled_features += release build_all\r\nQT_CONFIG += shared no-pkg-config debug_and_release openssl release debug\r\nCONFIG +=  shared plugin_manifest intelcet\r\nQT_VERSION = 6.10.2\r\nQT_MAJOR_VERSION = 6\r\nQT_MINOR_VERSION = 10\r\nQT_PATCH_VERSION = 2\r\n\r\nQT_MSVC_MAJOR_VERSION = 19\r\nQT_MSVC_MINOR_VERSION = 39\r\nQT_MSVC_PATCH_VERSION = 33520\r\n"
+    },
+    {
+      "path": "mkspecs/modules/qt_lib_core.pri",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 2199,
+      "sha256": "9c654a017f89211d494a2e8301cdc9b684231178b4d2185b8f073bd5f67b0d9e",
+      "printed_bytes": 2199,
+      "head_only": false,
+      "text": "QT.core.VERSION = 6.10.2\r\nQT.core.name = QtCore\r\nQT.core.module = Qt6Core\r\nQT.core.libs = $$QT_MODULE_LIB_BASE\r\nQT.core.ldflags = \r\nQT.core.includes = $$QT_MODULE_INCLUDE_BASE $$QT_MODULE_INCLUDE_BASE/QtCore\r\nQT.core.frameworks = \r\nQT.core.bins = $$QT_MODULE_BIN_BASE\r\nQT.core.depends =  \r\nQT.core.uses = libatomic\r\nQT.core.module_config = v2\r\nQT.core.CONFIG = moc resources\r\nQT.core.DEFINES = QT_CORE_LIB\r\nQT.core.enabled_features = cxx11_future cxx17_filesystem std-atomic64 mimetype regularexpression sharedmemory shortcut systemsemaphore xmlstream cpp-winrt xmlstreamreader xmlstreamwriter textdate datestring process processenvironment temporaryfile library settings filesystemwatcher filesystemiterator itemmodel proxymodel sortfilterproxymodel identityproxymodel transposeproxymodel concatenatetablesproxymodel stringlistmodel translation easingcurve animation gestures jalalicalendar islamiccivilcalendar timezone commandlineparser cborstreamreader cborstreamwriter permissions version_tagging shared debug_and_release signaling_nan thread future concurrent dbus opensslv30 test_gui shared intelcet shared debug_and_release openssl\r\nQT.core.disabled_features = clock-monotonic glib inotify jemalloc timezone_tzdb static cross_compile pkg-config separate_debug_info appstore-compliant simulator_and_device rpath force_asserts framework c++20 c++2a c++2b c++2c reduce_relocations wasm-simd128 wasm-exceptions wasm-jspi zstd openssl-linked opensslv11\r\nQT_CONFIG += cxx11_future cxx17_filesystem std-atomic64 mimetype regularexpression sharedmemory shortcut systemsemaphore xmlstream cpp-winrt xmlstreamreader xmlstreamwriter textdate datestring process processenvironment temporaryfile library settings filesystemwatcher filesystemiterator itemmodel proxymodel sortfilterproxymodel identityproxymodel transposeproxymodel concatenatetablesproxymodel stringlistmodel translation easingcurve animation gestures jalalicalendar islamiccivilcalendar timezone commandlineparser cborstreamreader cborstreamwriter permissions version_tagging shared debug_and_release signaling_nan thread future concurrent dbus opensslv30 test_gui shared intelcet shared debug_and_release openssl\r\nQT_MODULES += core\r\n\r\n"
+    },
+    {
+      "path": "mkspecs/modules/qt_lib_gui.pri",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 1897,
+      "sha256": "607687028253626b5c9983b441bcdc9186ec4cf6c65a0f58ad8794f5fe8a8ae3",
+      "printed_bytes": 1897,
+      "head_only": false,
+      "text": "QT.gui.VERSION = 6.10.2\r\nQT.gui.name = QtGui\r\nQT.gui.module = Qt6Gui\r\nQT.gui.libs = $$QT_MODULE_LIB_BASE\r\nQT.gui.ldflags = \r\nQT.gui.includes = $$QT_MODULE_INCLUDE_BASE $$QT_MODULE_INCLUDE_BASE/QtGui\r\nQT.gui.frameworks = \r\nQT.gui.bins = $$QT_MODULE_BIN_BASE\r\nQT.gui.plugin_types = accessiblebridge platforms platforms/darwin xcbglintegrations platformthemes platforminputcontexts generic iconengines imageformats egldeviceintegrations\r\nQT.gui.depends =  core\r\nQT.gui.uses = vulkan/nolink\r\nQT.gui.module_config = v2\r\nQT.gui.CONFIG = opengl\r\nQT.gui.DEFINES = QT_GUI_LIB\r\nQT.gui.enabled_features = emojisegmenter freetype harfbuzz dynamicgl opengl vulkan ico sessionmanager texthtmlparser textmarkdownreader textmarkdownwriter textodfwriter cssparser draganddrop action cursor clipboard wheelevent tabletevent im highdpiscaling validator standarditemmodel filesystemmodel imageformatplugin movie imageformat_bmp imageformat_ppm imageformat_xbm imageformat_xpm imageformat_png imageformat_jpeg image_heuristic_mask image_text picture colornames pdf desktopservices systemtrayicon accessibility whatsthis undocommand undostack undogroup\r\nQT.gui.disabled_features = accessibility-atspi-bridge fontconfig opengles2 opengles3 opengles31 opengles32 metal openvg egl xcb xcb-glx-plugin system-textmarkdownreader wayland waylandscanner\r\nQT_CONFIG += emojisegmenter freetype harfbuzz dynamicgl opengl vulkan ico sessionmanager texthtmlparser textmarkdownreader textmarkdownwriter textodfwriter cssparser draganddrop action cursor clipboard wheelevent tabletevent im highdpiscaling validator standarditemmodel filesystemmodel imageformatplugin movie imageformat_bmp imageformat_ppm imageformat_xbm imageformat_xpm imageformat_png imageformat_jpeg image_heuristic_mask image_text picture colornames pdf desktopservices systemtrayicon accessibility whatsthis undocommand undostack undogroup\r\nQT_MODULES += gui\r\n\r\n"
+    },
+    {
+      "path": "mkspecs/modules/qt_lib_network.pri",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 909,
+      "sha256": "504171bf06b9b97161d43d3448be2af8b8b82b85e9d4304e5f6d9e1b073b8bca",
+      "printed_bytes": 909,
+      "head_only": false,
+      "text": "QT.network.VERSION = 6.10.2\r\nQT.network.name = QtNetwork\r\nQT.network.module = Qt6Network\r\nQT.network.libs = $$QT_MODULE_LIB_BASE\r\nQT.network.ldflags = \r\nQT.network.includes = $$QT_MODULE_INCLUDE_BASE $$QT_MODULE_INCLUDE_BASE/QtNetwork\r\nQT.network.frameworks = \r\nQT.network.bins = $$QT_MODULE_BIN_BASE\r\nQT.network.plugin_types = networkaccess networkinformation tls\r\nQT.network.depends =  core\r\nQT.network.uses = \r\nQT.network.module_config = v2\r\nQT.network.DEFINES = QT_NETWORK_LIB\r\nQT.network.enabled_features = schannel ssl dtls ocsp http udpsocket networkproxy socks5 networkinterface networkdiskcache localserver dnslookup sspi topleveldomain\r\nQT.network.disabled_features = getifaddrs ipv6ifname securetransport sctp brotli gssapi\r\nQT_CONFIG += schannel ssl dtls ocsp http udpsocket networkproxy socks5 networkinterface networkdiskcache localserver dnslookup sspi topleveldomain\r\nQT_MODULES += network\r\n\r\n"
+    },
+    {
+      "path": "mkspecs/modules/qt_lib_qml.pri",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 562,
+      "sha256": "f7e1d9c930f048210667bd684dc28e8145f5dc1f70ed28228ef21a2a3c821a5b",
+      "printed_bytes": 562,
+      "head_only": false,
+      "text": "QT.qml.VERSION = 6.10.2\r\nQT.qml.name = QtQml\r\nQT.qml.module = Qt6Qml\r\nQT.qml.libs = $$QT_MODULE_LIB_BASE\r\nQT.qml.ldflags = \r\nQT.qml.includes = $$QT_MODULE_INCLUDE_BASE $$QT_MODULE_INCLUDE_BASE/QtQml\r\nQT.qml.frameworks = \r\nQT.qml.bins = $$QT_MODULE_BIN_BASE\r\nQT.qml.plugin_types = qmltooling\r\nQT.qml.depends =  core qmlintegration network\r\nQT.qml.uses = \r\nQT.qml.module_config = v2\r\nQT.qml.DEFINES = QT_QML_LIB\r\nQT.qml.enabled_features = qml-network qml-ssl qml-debug\r\nQT.qml.disabled_features = \r\nQT_CONFIG += qml-network qml-ssl qml-debug\r\nQT_MODULES += qml\r\n\r\n"
+    },
+    {
+      "path": "mkspecs/modules/qt_lib_quick.pri",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 798,
+      "sha256": "a6045d34455ca6d6338f4f69bc9ca540acd1e0fceaba6c5adafd470c1830493e",
+      "printed_bytes": 798,
+      "head_only": false,
+      "text": "QT.quick.VERSION = 6.10.2\r\nQT.quick.name = QtQuick\r\nQT.quick.module = Qt6Quick\r\nQT.quick.libs = $$QT_MODULE_LIB_BASE\r\nQT.quick.ldflags = \r\nQT.quick.includes = $$QT_MODULE_INCLUDE_BASE $$QT_MODULE_INCLUDE_BASE/QtQuick\r\nQT.quick.frameworks = \r\nQT.quick.bins = $$QT_MODULE_BIN_BASE\r\nQT.quick.plugin_types = scenegraph vectorimageformats\r\nQT.quick.depends =  core gui qml opengl core gui qml\r\nQT.quick.run_depends = qmlmodels qmlmeta network qmlmodels_private qmlmeta_private\r\nQT.quick.uses = \r\nQT.quick.module_config = v2\r\nQT.quick.DEFINES = QT_QUICK_LIB\r\nQT.quick.enabled_features = quick-shadereffect quick-draganddrop quick-pixmap-cache-threaded-download\r\nQT.quick.disabled_features = \r\nQT_CONFIG += quick-shadereffect quick-draganddrop quick-pixmap-cache-threaded-download\r\nQT_MODULES += quick\r\n\r\n"
+    },
+    {
+      "path": "mkspecs/modules/qt_lib_quickcontrols2.pri",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 719,
+      "sha256": "38f194ef64d2b903e2d62092fef7406748748edb4ce08fecd9c211135b55435a",
+      "printed_bytes": 719,
+      "head_only": false,
+      "text": "QT.quickcontrols2.VERSION = 6.10.2\r\nQT.quickcontrols2.name = QtQuickControls2\r\nQT.quickcontrols2.module = Qt6QuickControls2\r\nQT.quickcontrols2.libs = $$QT_MODULE_LIB_BASE\r\nQT.quickcontrols2.ldflags = \r\nQT.quickcontrols2.includes = $$QT_MODULE_INCLUDE_BASE $$QT_MODULE_INCLUDE_BASE/QtQuickControls2\r\nQT.quickcontrols2.frameworks = \r\nQT.quickcontrols2.bins = $$QT_MODULE_BIN_BASE\r\nQT.quickcontrols2.depends =  core gui quick\r\nQT.quickcontrols2.run_depends = qml quicktemplates2\r\nQT.quickcontrols2.uses = \r\nQT.quickcontrols2.module_config = v2\r\nQT.quickcontrols2.DEFINES = QT_QUICKCONTROLS2_LIB\r\nQT.quickcontrols2.enabled_features = \r\nQT.quickcontrols2.disabled_features = \r\nQT_CONFIG += \r\nQT_MODULES += quickcontrols2\r\n\r\n"
+    },
+    {
+      "path": "mkspecs/modules/qt_lib_core5compat.pri",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 658,
+      "sha256": "da8a4d1e4e4f1e71e9210f1bf4f7d03a721fcc999cb933b79bdcbcf0142c8ca2",
+      "printed_bytes": 658,
+      "head_only": false,
+      "text": "QT.core5compat.VERSION = 6.10.2\r\nQT.core5compat.name = QtCore5Compat\r\nQT.core5compat.module = Qt6Core5Compat\r\nQT.core5compat.libs = $$QT_MODULE_LIB_BASE\r\nQT.core5compat.ldflags = \r\nQT.core5compat.includes = $$QT_MODULE_INCLUDE_BASE $$QT_MODULE_INCLUDE_BASE/QtCore5Compat\r\nQT.core5compat.frameworks = \r\nQT.core5compat.bins = $$QT_MODULE_BIN_BASE\r\nQT.core5compat.depends =  core\r\nQT.core5compat.uses = \r\nQT.core5compat.module_config = v2\r\nQT.core5compat.DEFINES = QT_CORE5COMPAT_LIB\r\nQT.core5compat.enabled_features = textcodec codecs big_codecs\r\nQT.core5compat.disabled_features = iconv\r\nQT_CONFIG += textcodec codecs big_codecs\r\nQT_MODULES += core5compat\r\n\r\n"
+    },
+    {
+      "path": "mkspecs/modules/qt_lib_networkauth.pri",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 641,
+      "sha256": "baa262cd74b661ab26dac1e3d232623575a8200296bd90f98463ebd4bb150267",
+      "printed_bytes": 641,
+      "head_only": false,
+      "text": "QT.networkauth.VERSION = 6.10.2\r\nQT.networkauth.name = QtNetworkAuth\r\nQT.networkauth.module = Qt6NetworkAuth\r\nQT.networkauth.libs = $$QT_MODULE_LIB_BASE\r\nQT.networkauth.ldflags = \r\nQT.networkauth.includes = $$QT_MODULE_INCLUDE_BASE $$QT_MODULE_INCLUDE_BASE/QtNetworkAuth\r\nQT.networkauth.frameworks = \r\nQT.networkauth.bins = $$QT_MODULE_BIN_BASE\r\nQT.networkauth.depends =  core network\r\nQT.networkauth.run_depends = gui\r\nQT.networkauth.uses = \r\nQT.networkauth.module_config = v2\r\nQT.networkauth.DEFINES = QT_NETWORKAUTH_LIB\r\nQT.networkauth.enabled_features = \r\nQT.networkauth.disabled_features = \r\nQT_CONFIG += \r\nQT_MODULES += networkauth\r\n\r\n"
+    },
+    {
+      "path": "mkspecs/modules/qt_lib_shadertools.pri",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 603,
+      "sha256": "9d0162844012741f65d60555fb35007a4bee9cd30b4c00d6268e72353d5a3d04",
+      "printed_bytes": 603,
+      "head_only": false,
+      "text": "QT.shadertools.VERSION = 6.10.2\r\nQT.shadertools.name = QtShaderTools\r\nQT.shadertools.module = Qt6ShaderTools\r\nQT.shadertools.libs = $$QT_MODULE_LIB_BASE\r\nQT.shadertools.ldflags = \r\nQT.shadertools.includes = $$QT_MODULE_INCLUDE_BASE $$QT_MODULE_INCLUDE_BASE/QtShaderTools\r\nQT.shadertools.frameworks = \r\nQT.shadertools.bins = $$QT_MODULE_BIN_BASE\r\nQT.shadertools.depends =  core gui\r\nQT.shadertools.uses = \r\nQT.shadertools.module_config = v2\r\nQT.shadertools.DEFINES = QT_SHADERTOOLS_LIB\r\nQT.shadertools.enabled_features = \r\nQT.shadertools.disabled_features = \r\nQT_CONFIG += \r\nQT_MODULES += shadertools\r\n\r\n"
+    },
+    {
+      "path": "mkspecs/modules/qt_lib_svg.pri",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 451,
+      "sha256": "64fee1754492c0c30d72db6ba7e9d17a2e72ae97ee093d6116edcbf94bfc059a",
+      "printed_bytes": 451,
+      "head_only": false,
+      "text": "QT.svg.VERSION = 6.10.2\r\nQT.svg.name = QtSvg\r\nQT.svg.module = Qt6Svg\r\nQT.svg.libs = $$QT_MODULE_LIB_BASE\r\nQT.svg.ldflags = \r\nQT.svg.includes = $$QT_MODULE_INCLUDE_BASE $$QT_MODULE_INCLUDE_BASE/QtSvg\r\nQT.svg.frameworks = \r\nQT.svg.bins = $$QT_MODULE_BIN_BASE\r\nQT.svg.depends =  core gui\r\nQT.svg.uses = \r\nQT.svg.module_config = v2\r\nQT.svg.DEFINES = QT_SVG_LIB\r\nQT.svg.enabled_features = \r\nQT.svg.disabled_features = \r\nQT_CONFIG += \r\nQT_MODULES += svg\r\n\r\n"
+    },
+    {
+      "path": "lib/cmake/Qt6Core/Qt6CoreConfig.cmake",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 9114,
+      "sha256": "5e3073a0281dea6f4d931275272cc59c98ff2018af2c543b0152f3e21d567bb3",
+      "printed_bytes": 9114,
+      "head_only": false,
+      "text": "# Copyright (C) 2024 The Qt Company Ltd.\r\n# SPDX-License-Identifier: BSD-3-Clause\r\n\r\n\r\n####### Expanded from @PACKAGE_INIT@ by configure_package_config_file() #######\r\n####### Any changes to this file will be overwritten by the next CMake run ####\r\n####### The input file was QtModuleConfig.cmake.in                            ########\r\n\r\nget_filename_component(PACKAGE_PREFIX_DIR \"${CMAKE_CURRENT_LIST_DIR}/../../../\" ABSOLUTE)\r\n\r\nmacro(set_and_check _var _file)\r\n  set(${_var} \"${_file}\")\r\n  if(NOT EXISTS \"${_file}\")\r\n    message(FATAL_ERROR \"File or directory ${_file} referenced by variable ${_var} does not exist !\")\r\n  endif()\r\nendmacro()\r\n\r\nmacro(check_required_components _NAME)\r\n  foreach(comp ${${_NAME}_FIND_COMPONENTS})\r\n    if(NOT ${_NAME}_${comp}_FOUND)\r\n      if(${_NAME}_FIND_REQUIRED_${comp})\r\n        set(${_NAME}_FOUND FALSE)\r\n      endif()\r\n    endif()\r\n  endforeach()\r\nendmacro()\r\n\r\n####################################################################################\r\n\r\ncmake_minimum_required(VERSION 3.16...3.21)\r\n\r\ninclude(CMakeFindDependencyMacro)\r\n\r\n# Extra cmake code begin\r\nset(QT_KNOWN_POLICY_QTP0002 TRUE)\r\nset(QT_KNOWN_POLICY_QTP0003 TRUE)\r\n\r\n# Extra cmake code end\r\n\r\n# Find required dependencies, if any.\r\nif(EXISTS \"${CMAKE_CURRENT_LIST_DIR}/Qt6CoreDependencies.cmake\")\r\n    include(\"${CMAKE_CURRENT_LIST_DIR}/Qt6CoreDependencies.cmake\")\r\n    _qt_internal_suggest_dependency_debugging(Core\r\n        __qt_Core_pkg ${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE)\r\nendif()\r\n\r\n# If *ConfigDependencies.cmake exists, the variable value will be defined there.\r\n# Don't override it in that case.\r\nif(NOT DEFINED \"Qt6Core_FOUND\")\r\n    set(\"Qt6Core_FOUND\" TRUE)\r\nendif()\r\n\r\nif (NOT QT_NO_CREATE_TARGETS AND Qt6Core_FOUND)\r\n    include(\"${CMAKE_CURRENT_LIST_DIR}/Qt6CoreTargets.cmake\")\r\n    include(\"${CMAKE_CURRENT_LIST_DIR}/Qt6CoreAdditionalTargetInfo.cmake\"\r\n        OPTIONAL)\r\n    include(\"${CMAKE_CURRENT_LIST_DIR}/Qt6CoreExtraProperties.cmake\"\r\n        OPTIONAL)\r\nendif()\r\n\r\n# Find the private module counterpart.\r\nset(__qt_Core_always_load_private_module OFF)\r\ninclude(\"${CMAKE_CURRENT_LIST_DIR}/Qt6Core-build.cmake\" OPTIONAL)\r\nif (Qt6Core_FOUND\r\n        AND NOT Qt6CorePrivate_FOUND\r\n        AND NOT FALSE\r\n        AND (\r\n            __qt_Core_always_load_private_module\r\n            OR DEFINED QT_REPO_MODULE_VERSION\r\n            OR QT_FIND_PRIVATE_MODULES\r\n        )\r\n    )\r\n    if(\"${_qt_cmake_dir}\" STREQUAL \"\")\r\n        set(_qt_cmake_dir \"${QT_TOOLCHAIN_RELOCATABLE_CMAKE_DIR}\")\r\n    endif()\r\n    set(__qt_use_no_default_path_for_qt_packages \"NO_DEFAULT_PATH\")\r\n    if(QT_DISABLE_NO_DEFAULT_PATH_IN_QT_PACKAGES)\r\n        set(__qt_use_no_default_path_for_qt_packages \"\")\r\n    endif()\r\n    find_package(Qt6CorePrivate \"6.10.2\" EXACT\r\n        QUIET\r\n        CONFIG\r\n        PATHS\r\n            ${QT_BUILD_CMAKE_PREFIX_PATH}\r\n            \"${CMAKE_CURRENT_LIST_DIR}/..\"\r\n            \"${_qt_cmake_dir}\"\r\n            ${_qt_additional_packages_prefix_paths}\r\n        ${__qt_use_no_default_path_for_qt_packages}\r\n    )\r\n\r\n    if(NOT Qt6CorePrivate_FOUND)\r\n        get_property(Qt6CorePrivate_warning_shown GLOBAL PROPERTY\r\n            Qt6CorePrivate_warning_shown\r\n        )\r\n        if(NOT Qt6CorePrivate_warning_shown)\r\n            message(VERBOSE\r\n                \"The private module package 'Qt6CorePrivate' \"\r\n                \"could not be found. It possibly needs to be installed separately with your \"\r\n                \"package manager.\"\r\n            )\r\n            set_property(GLOBAL PROPERTY\r\n                Qt6CorePrivate_warning_shown ON\r\n            )\r\n        endif()\r\n    endif()\r\nendif()\r\nunset(__qt_Core_always_load_private_module)\r\n\r\nif (NOT QT_NO_CREATE_TARGETS AND Qt6Core_FOUND)\r\n    # DEPRECATED\r\n    # Provide old style variables for includes, compile definitions, etc.\r\n    # These variables are deprecated and only provided on a best-effort basis to facilitate porting.\r\n    # Consider using target_link_libraries(app PRIVATE Qt6Core) instead.\r\n    set(Qt6Core_LIBRARIES \"Qt6::Core\")\r\n\r\n    get_target_property(_Qt6Core_OWN_INCLUDE_DIRS\r\n                        Qt6::Core INTERFACE_INCLUDE_DIRECTORIES)\r\n    if(NOT _Qt6Core_OWN_INCLUDE_DIRS)\r\n        set(_Qt6Core_OWN_INCLUDE_DIRS \"\")\r\n    endif()\r\n\r\n    if(TARGET Qt6::CorePrivate)\r\n        get_target_property(_Qt6Core_OWN_PRIVATE_INCLUDE_DIRS\r\n                            Qt6::CorePrivate INTERFACE_INCLUDE_DIRECTORIES)\r\n        if(NOT _Qt6Core_OWN_PRIVATE_INCLUDE_DIRS)\r\n            set(_Qt6Core_OWN_PRIVATE_INCLUDE_DIRS \"\")\r\n        endif()\r\n    endif()\r\n\r\n    get_target_property(Qt6Core_DEFINITIONS\r\n                        Qt6::Core INTERFACE_COMPILE_DEFINITIONS)\r\n    if(NOT Qt6Core_DEFINITIONS)\r\n        set(Qt6Core_DEFINITIONS \"\")\r\n    else()\r\n        set(updated_defs \"\")\r\n        foreach(def IN LISTS  Qt6Core_DEFINITIONS)\r\n             if(def MATCHES \"^[A-Za-z_]\")\r\n                 list(APPEND updated_defs \"-D${def}\")\r\n             else()\r\n                 list(APPEND updated_defs \"${def}\")\r\n             endif()\r\n        endforeach()\r\n        set(Qt6Core_DEFINITIONS \"${updated_defs}\")\r\n        unset(updated_defs)\r\n    endif()\r\n\r\n    get_target_property(Qt6Core_COMPILE_DEFINITIONS\r\n                        Qt6::Core INTERFACE_COMPILE_DEFINITIONS)\r\n    if(NOT Qt6Core_COMPILE_DEFINITIONS)\r\n        set(Qt6Core_COMPILE_DEFINITIONS \"\")\r\n    endif()\r\n\r\n    set(Qt6Core_INCLUDE_DIRS\r\n        ${_Qt6Core_OWN_INCLUDE_DIRS})\r\n\r\n    set(Qt6Core_PRIVATE_INCLUDE_DIRS\r\n        ${_Qt6Core_OWN_PRIVATE_INCLUDE_DIRS})\r\n\r\n    foreach(_module_dep ${_Qt6Core_MODULE_DEPENDENCIES})\r\n        if(_module_dep MATCHES \".+Private$\")\r\n            set(_private_suffix \"Private\")\r\n        else()\r\n            set(_private_suffix \"\")\r\n        endif()\r\n        list(APPEND Qt6Core${_private_suffix}_INCLUDE_DIRS\r\n             ${Qt6${_module_dep}_INCLUDE_DIRS})\r\n        list(APPEND Qt6Core${_private_suffix}_PRIVATE_INCLUDE_DIRS\r\n             ${Qt6${_module_dep}_PRIVATE_INCLUDE_DIRS})\r\n        if(_private_suffix)\r\n            list(APPEND Qt6Core_PRIVATE_INCLUDE_DIRS\r\n                ${Qt6${_module_dep}_PRIVATE_INCLUDE_DIRS})\r\n        endif()\r\n        list(APPEND Qt6Core${_private_suffix}_DEFINITIONS\r\n             ${Qt6${_module_dep}_DEFINITIONS})\r\n        list(APPEND Qt6Core${_private_suffix}_COMPILE_DEFINITIONS\r\n             ${Qt6${_module_dep}_COMPILE_DEFINITIONS})\r\n    endforeach()\r\n    unset(_private_suffix)\r\n\r\n    list(REMOVE_DUPLICATES Qt6Core_INCLUDE_DIRS)\r\n    list(REMOVE_DUPLICATES Qt6Core_PRIVATE_INCLUDE_DIRS)\r\n    list(REMOVE_DUPLICATES Qt6Core_DEFINITIONS)\r\n    list(REMOVE_DUPLICATES Qt6Core_COMPILE_DEFINITIONS)\r\nendif()\r\n\r\nif (TARGET Qt6::Core)\r\n    qt_make_features_available(Qt6::Core)\r\n\r\n    foreach(extra_cmake_include Qt6CoreMacros.cmake;Qt6CoreConfigExtras.cmake)\r\n        include(\"${CMAKE_CURRENT_LIST_DIR}/${extra_cmake_include}\")\r\n    endforeach()\r\n\r\n    if(EXISTS \"${CMAKE_CURRENT_LIST_DIR}/Qt6CorePlugins.cmake\")\r\n        include(\"${CMAKE_CURRENT_LIST_DIR}/Qt6CorePlugins.cmake\")\r\n    endif()\r\n\r\n    if(NOT \"Core\" IN_LIST QT_ALL_MODULES_FOUND_VIA_FIND_PACKAGE)\r\n        list(APPEND QT_ALL_MODULES_FOUND_VIA_FIND_PACKAGE \"Core\")\r\n        list(APPEND QT_ALL_MODULES_VERSIONED_FOUND_VIA_FIND_PACKAGE\r\n            \"Qt6::Core\")\r\n    endif()\r\n\r\n    get_target_property(_qt_module_target_type \"Qt6::Core\" TYPE)\r\n    if(NOT _qt_module_target_type STREQUAL \"INTERFACE_LIBRARY\")\r\n        get_target_property(_qt_module_plugin_types\r\n                            Qt6::Core MODULE_PLUGIN_TYPES)\r\n        if(_qt_module_plugin_types)\r\n            foreach(_qt_module_plugin_type IN LISTS _qt_module_plugin_types)\r\n                if(NOT \"${_qt_module_plugin_type}\"\r\n                    IN_LIST QT_ALL_PLUGIN_TYPES_FOUND_VIA_FIND_PACKAGE)\r\n                    list(APPEND QT_ALL_PLUGIN_TYPES_FOUND_VIA_FIND_PACKAGE\r\n                    \"${_qt_module_plugin_type}\")\r\n                endif()\r\n            endforeach()\r\n            unset(_qt_module_plugin_type)\r\n        endif()\r\n    endif()\r\n\r\n    # Load Module's BuildInternals should any exist\r\n    if (Qt6BuildInternals_DIR AND\r\n        EXISTS \"${CMAKE_CURRENT_LIST_DIR}/Qt6CoreBuildInternals.cmake\")\r\n        include(\"${CMAKE_CURRENT_LIST_DIR}/Qt6CoreBuildInternals.cmake\")\r\n    endif()\r\n\r\n    if(NOT QT_NO_CREATE_VERSIONLESS_TARGETS)\r\n        if(CMAKE_VERSION VERSION_LESS 3.18 OR QT_USE_OLD_VERSION_LESS_TARGETS)\r\n            include(\"${CMAKE_CURRENT_LIST_DIR}/Qt6CoreVersionlessTargets.cmake\")\r\n        else()\r\n            include(\"${CMAKE_CURRENT_LIST_DIR}/Qt6CoreVersionlessAliasTargets.cmake\")\r\n        endif()\r\n    endif()\r\nelse()\r\n\r\n    set(Qt6Core_FOUND FALSE)\r\n    if(NOT DEFINED Qt6Core_NOT_FOUND_MESSAGE)\r\n        set(Qt6Core_NOT_FOUND_MESSAGE\r\n            \"Target \\\"Qt6::Core\\\" was not found.\")\r\n\r\n        if(QT_NO_CREATE_TARGETS)\r\n            string(APPEND Qt6Core_NOT_FOUND_MESSAGE\r\n                \"Possibly due to QT_NO_CREATE_TARGETS being set to TRUE and thus \"\r\n                \"${CMAKE_CURRENT_LIST_DIR}/Qt6CoreTargets.cmake was not \"\r\n                \"included to define the target.\")\r\n        endif()\r\n    endif()\r\nendif()\r\n"
+    },
+    {
+      "path": "lib/cmake/Qt6Core/Qt6CoreConfigExtras.cmake",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 1865,
+      "sha256": "5e3b805f067eda633d4a0465b61fe6871cf80dfb81b56cedd576888d568d3333",
+      "printed_bytes": 1865,
+      "head_only": false,
+      "text": "# Copyright (C) 2024 The Qt Company Ltd.\r\n# SPDX-License-Identifier: BSD-3-Clause\r\nif(NOT DEFINED QT_DEFAULT_MAJOR_VERSION)\r\n    set(QT_DEFAULT_MAJOR_VERSION 6)\r\nendif()\r\n\r\nif (NOT QT_NO_CREATE_TARGETS)\r\n    set(__qt_core_target Qt6::Core)\r\n    get_property(__qt_core_aliased_target TARGET ${__qt_core_target} PROPERTY ALIASED_TARGET)\r\n    if(__qt_core_aliased_target)\r\n        set(__qt_core_target \"${__qt_core_aliased_target}\")\r\n    endif()\r\n    unset(__qt_core_aliased_target)\r\n    \r\n    set_property(TARGET ${__qt_core_target} APPEND PROPERTY INTERFACE_COMPILE_DEFINITIONS $<$<NOT:$<CONFIG:Debug>>:QT_NO_DEBUG>)\r\n    set_property(TARGET ${__qt_core_target} PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)\r\nendif()\r\n\r\n# note: all the other AUTOMOC_MACRO_NAMES are already set by upstream CMake\r\nlist(APPEND CMAKE_AUTOMOC_MACRO_NAMES Q_GADGET_EXPORT Q_ENUM_NS)\r\nlist(REMOVE_DUPLICATES CMAKE_AUTOMOC_MACRO_NAMES)\r\n\r\nset(QT6_IS_SHARED_LIBS_BUILD \"ON\")\r\nset(QT6_DEBUG_POSTFIX \"d\")\r\n\r\nset(_Qt6CTestMacros \"${CMAKE_CURRENT_LIST_DIR}/Qt6CTestMacros.cmake\")\r\n\r\n\r\n_qt_internal_setup_deploy_support()\r\n\r\nif(ANDROID_PLATFORM)\r\n    include(\"${CMAKE_CURRENT_LIST_DIR}/Qt6AndroidMacros.cmake\")\r\n    _qt_internal_create_global_android_targets()\r\n    _qt_internal_collect_default_android_abis()\r\n    if(NOT QT_NO_CREATE_TARGETS)\r\n        _qt_internal_add_android_executable_finalizer(${__qt_core_target})\r\n    endif()\r\nendif()\r\n\r\nif(QT_FEATURE_permissions AND APPLE)\r\n    if(NOT QT_NO_CREATE_TARGETS)\r\n        set_property(TARGET ${__qt_core_target} APPEND PROPERTY\r\n            INTERFACE_QT_EXECUTABLE_FINALIZERS\r\n                _qt_internal_darwin_permission_finalizer\r\n        )\r\n    endif()\r\nendif()\r\n\r\nif(EMSCRIPTEN)\r\n    include(\"${CMAKE_CURRENT_LIST_DIR}/Qt6WasmMacros.cmake\")\r\nendif()\r\n\r\n_qt_internal_override_example_install_dir_to_dot()\r\n\r\nunset(__qt_core_target)\r\n"
+    },
+    {
+      "path": "lib/cmake/Qt6Core/Qt6CoreConfigVersionImpl.cmake",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 1905,
+      "sha256": "22e39f71f4fbc7549684cac7bcf4040cd51bd15dfd7baef01c70cbaf50a85985",
+      "printed_bytes": 1905,
+      "head_only": false,
+      "text": "# This is a basic version file for the Config-mode of find_package().\r\n# It is used by write_basic_package_version_file() as input file for configure_file()\r\n# to create a version-file which can be installed along a config.cmake file.\r\n#\r\n# The created file sets PACKAGE_VERSION_EXACT if the current version string and\r\n# the requested version string are exactly the same and it sets\r\n# PACKAGE_VERSION_COMPATIBLE if the current version is >= requested version.\r\n# The variable CVF_VERSION must be set before calling configure_file().\r\n\r\nset(PACKAGE_VERSION \"6.10.2\")\r\n\r\nif (PACKAGE_FIND_VERSION_RANGE)\r\n  # Package version must be in the requested version range\r\n  if ((PACKAGE_FIND_VERSION_RANGE_MIN STREQUAL \"INCLUDE\" AND PACKAGE_VERSION VERSION_LESS PACKAGE_FIND_VERSION_MIN)\r\n      OR ((PACKAGE_FIND_VERSION_RANGE_MAX STREQUAL \"INCLUDE\" AND PACKAGE_VERSION VERSION_GREATER PACKAGE_FIND_VERSION_MAX)\r\n        OR (PACKAGE_FIND_VERSION_RANGE_MAX STREQUAL \"EXCLUDE\" AND PACKAGE_VERSION VERSION_GREATER_EQUAL PACKAGE_FIND_VERSION_MAX)))\r\n    set(PACKAGE_VERSION_COMPATIBLE FALSE)\r\n  else()\r\n    set(PACKAGE_VERSION_COMPATIBLE TRUE)\r\n  endif()\r\nelse()\r\n  if(PACKAGE_VERSION VERSION_LESS PACKAGE_FIND_VERSION)\r\n    set(PACKAGE_VERSION_COMPATIBLE FALSE)\r\n  else()\r\n    set(PACKAGE_VERSION_COMPATIBLE TRUE)\r\n    if(PACKAGE_FIND_VERSION STREQUAL PACKAGE_VERSION)\r\n      set(PACKAGE_VERSION_EXACT TRUE)\r\n    endif()\r\n  endif()\r\nendif()\r\n\r\n\r\n# if the installed or the using project don't have CMAKE_SIZEOF_VOID_P set, ignore it:\r\nif(\"${CMAKE_SIZEOF_VOID_P}\" STREQUAL \"\" OR \"8\" STREQUAL \"\")\r\n  return()\r\nendif()\r\n\r\n# check that the installed version has the same 32/64bit-ness as the one which is currently searching:\r\nif(NOT CMAKE_SIZEOF_VOID_P STREQUAL \"8\")\r\n  math(EXPR installedBits \"8 * 8\")\r\n  set(PACKAGE_VERSION \"${PACKAGE_VERSION} (${installedBits}bit)\")\r\n  set(PACKAGE_VERSION_UNSUITABLE TRUE)\r\nendif()\r\n"
+    },
+    {
+      "path": "lib/cmake/Qt6Gui/Qt6GuiConfigExtras.cmake",
+      "category": "build configuration",
+      "present": false
+    },
+    {
+      "path": "include/QtCore/qtcoreversion.h",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 208,
+      "sha256": "be3fee8b8f44649db8ecaa2e086924889f9410d42772834258a0eb76dd45454d",
+      "printed_bytes": 208,
+      "head_only": false,
+      "text": "/* This file was generated by syncqt. */\r\n#ifndef QT_QTCORE_VERSION_H\r\n#define QT_QTCORE_VERSION_H\r\n\r\n#define QTCORE_VERSION_STR \"6.10.2\"\r\n\r\n#define QTCORE_VERSION 0x0601002\r\n\r\n#endif // QT_QTCORE_VERSION_H\r\n"
+    },
+    {
+      "path": "include/QtCore/qconfig.h",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 2449,
+      "sha256": "27033b0f666d01a4b0cac00e39c915ff292606f85dada301eb5251098ef45fbf",
+      "printed_bytes": 2449,
+      "head_only": false,
+      "text": "#ifndef QT_FEATURES_GlobalConfig_src_corelib_global_qconfig_h_H\r\n#define QT_FEATURES_GlobalConfig_src_corelib_global_qconfig_h_H\r\n\r\n#define QT_FEATURE_version_tagging 1\r\n\r\n#define QT_FEATURE_shared 1\r\n\r\n#define QT_FEATURE_static -1\r\n\r\n#define QT_FEATURE_cross_compile -1\r\n\r\n#define QT_FEATURE_pkg_config -1\r\n\r\n#define QT_FEATURE_debug_and_release 1\r\n\r\n#define QT_FEATURE_separate_debug_info -1\r\n\r\n#define QT_FEATURE_appstore_compliant -1\r\n\r\n#define QT_FEATURE_simulator_and_device -1\r\n\r\n#define QT_FEATURE_rpath -1\r\n\r\n#define QT_FEATURE_force_asserts -1\r\n\r\n#define QT_FEATURE_framework -1\r\n\r\n#define QT_FEATURE_cxx20 -1\r\n\r\n#define QT_FEATURE_cxx2a -1\r\n\r\n#define QT_FEATURE_cxx2b -1\r\n\r\n#define QT_FEATURE_cxx2c -1\r\n\r\n#define QT_FEATURE_reduce_relocations -1\r\n\r\n#define QT_FEATURE_signaling_nan 1\r\n\r\n#define QT_FEATURE_wasm_simd128 -1\r\n\r\n#define QT_FEATURE_wasm_exceptions -1\r\n\r\n#define QT_FEATURE_wasm_jspi -1\r\n\r\n#define QT_FEATURE_zstd -1\r\n\r\n#define QT_FEATURE_thread 1\r\n\r\n#define QT_FEATURE_future 1\r\n\r\n#define QT_FEATURE_concurrent 1\r\n\r\n#define QT_FEATURE_dbus 1\r\n\r\n#define QT_FEATURE_openssl_linked -1\r\n\r\n#define QT_FEATURE_opensslv11 -1\r\n\r\n#define QT_FEATURE_opensslv30 1\r\n\r\n#define QT_FEATURE_test_gui 1\r\n\r\n\r\n#define QT_VERSION_STR \"6.10.2\"\r\n\r\n#define QT_VERSION_MAJOR 6\r\n\r\n#define QT_VERSION_MINOR 10\r\n\r\n#define QT_VERSION_PATCH 2\r\n\r\n#define QT_COPYRIGHT \"Copyright (C) The Qt Company Ltd. and other contributors.\"\r\n#define QT_LARGEFILE_SUPPORT 64\r\n#define QT_COMPILER_SUPPORTS_SSE2 1\r\n#define QT_COMPILER_SUPPORTS_SSE3 1\r\n#define QT_COMPILER_SUPPORTS_SSSE3 1\r\n#define QT_COMPILER_SUPPORTS_SSE4_1 1\r\n#define QT_COMPILER_SUPPORTS_SSE4_2 1\r\n#define QT_COMPILER_SUPPORTS_AVX 1\r\n#define QT_COMPILER_SUPPORTS_F16C 1\r\n#define QT_COMPILER_SUPPORTS_AVX2 1\r\n#define QT_COMPILER_SUPPORTS_AVX512F 1\r\n#define QT_COMPILER_SUPPORTS_AVX512ER 1\r\n#define QT_COMPILER_SUPPORTS_AVX512CD 1\r\n#define QT_COMPILER_SUPPORTS_AVX512PF 1\r\n#define QT_COMPILER_SUPPORTS_AVX512DQ 1\r\n#define QT_COMPILER_SUPPORTS_AVX512BW 1\r\n#define QT_COMPILER_SUPPORTS_AVX512VL 1\r\n#define QT_COMPILER_SUPPORTS_AVX512IFMA 1\r\n#define QT_COMPILER_SUPPORTS_AVX512VBMI 1\r\n#define QT_COMPILER_SUPPORTS_AVX512VBMI2 1\r\n#define QT_COMPILER_SUPPORTS_AES 1\r\n#define QT_COMPILER_SUPPORTS_VAES 1\r\n#define QT_COMPILER_SUPPORTS_RDRND 1\r\n#define QT_COMPILER_SUPPORTS_RDSEED 1\r\n#define QT_COMPILER_SUPPORTS_SHA 1\r\n#define QT_GUI_TEST 1\r\n\r\n#endif // QT_FEATURES_GlobalConfig_src_corelib_global_qconfig_h_H\r\n"
+    },
+    {
+      "path": "include/QtCore/6.10.2/QtCore/private/qconfig_p.h",
+      "category": "build configuration",
+      "present": true,
+      "bytes": 2804,
+      "sha256": "ff74e309c9b7b8ca2a766a9109503add8680a7755c4bed5cd2f6938c00ff7eb6",
+      "printed_bytes": 2804,
+      "head_only": false,
+      "text": "#ifndef QT_FEATURES_GlobalConfig_src_corelib_global_qconfig_p_h_H\r\n#define QT_FEATURES_GlobalConfig_src_corelib_global_qconfig_p_h_H\r\n\r\n#define QT_FEATURE_use_bfd_linker -1\r\n\r\n#define QT_FEATURE_use_gold_linker -1\r\n\r\n#define QT_FEATURE_use_lld_linker -1\r\n\r\n#define QT_FEATURE_use_mold_linker -1\r\n\r\n#define QT_FEATURE_android_style_assets -1\r\n\r\n#define QT_FEATURE_gc_binaries -1\r\n\r\n#define QT_FEATURE_developer_build -1\r\n\r\n#define QT_FEATURE_private_tests -1\r\n\r\n#define QT_FEATURE_doc_snippets -1\r\n\r\n#define QT_FEATURE_debug 1\r\n\r\n#define QT_FEATURE_elf_private_full_version -1\r\n\r\n#define QT_FEATURE_reduce_exports -1\r\n\r\n#define QT_FEATURE_no_direct_extern_access -1\r\n\r\n#define QT_FEATURE_x86intrin 1\r\n\r\n#define QT_FEATURE_sse2 1\r\n\r\n#define QT_FEATURE_sse3 1\r\n\r\n#define QT_FEATURE_ssse3 1\r\n\r\n#define QT_FEATURE_sse4_1 1\r\n\r\n#define QT_FEATURE_sse4_2 1\r\n\r\n#define QT_FEATURE_avx 1\r\n\r\n#define QT_FEATURE_f16c 1\r\n\r\n#define QT_FEATURE_avx2 1\r\n\r\n#define QT_FEATURE_avx512f 1\r\n\r\n#define QT_FEATURE_avx512er 1\r\n\r\n#define QT_FEATURE_avx512cd 1\r\n\r\n#define QT_FEATURE_avx512pf 1\r\n\r\n#define QT_FEATURE_avx512dq 1\r\n\r\n#define QT_FEATURE_avx512bw 1\r\n\r\n#define QT_FEATURE_avx512vl 1\r\n\r\n#define QT_FEATURE_avx512ifma 1\r\n\r\n#define QT_FEATURE_avx512vbmi 1\r\n\r\n#define QT_FEATURE_avx512vbmi2 1\r\n\r\n#define QT_FEATURE_aesni 1\r\n\r\n#define QT_FEATURE_vaes 1\r\n\r\n#define QT_FEATURE_rdrnd 1\r\n\r\n#define QT_FEATURE_rdseed 1\r\n\r\n#define QT_FEATURE_shani 1\r\n\r\n#define QT_FEATURE_lsx -1\r\n\r\n#define QT_FEATURE_lasx -1\r\n\r\n#define QT_FEATURE_mips_dsp -1\r\n\r\n#define QT_FEATURE_mips_dspr2 -1\r\n\r\n#define QT_FEATURE_neon -1\r\n\r\n#define QT_FEATURE_arm_crc32 -1\r\n\r\n#define QT_FEATURE_arm_crypto -1\r\n\r\n#define QT_FEATURE_arm_sve -1\r\n\r\n#define QT_FEATURE_localtime_r -1\r\n\r\n#define QT_FEATURE_localtime_s 1\r\n\r\n#define QT_FEATURE_posix_fallocate -1\r\n\r\n#define QT_FEATURE_force_system_libs -1\r\n\r\n#define QT_FEATURE_force_bundled_libs -1\r\n\r\n#define QT_FEATURE_system_zlib -1\r\n\r\n#define QT_FEATURE_stdlib_libcpp -1\r\n\r\n#define QT_FEATURE_dbus 1\r\n\r\n#define QT_FEATURE_dbus_linked -1\r\n\r\n#define QT_FEATURE_gui 1\r\n\r\n#define QT_FEATURE_network 1\r\n\r\n#define QT_FEATURE_printsupport 1\r\n\r\n#define QT_FEATURE_sql 1\r\n\r\n#define QT_FEATURE_testlib 1\r\n\r\n#define QT_FEATURE_widgets 1\r\n\r\n#define QT_FEATURE_xml 1\r\n\r\n#define QT_FEATURE_libudev -1\r\n\r\n#define QT_FEATURE_openssl 1\r\n\r\n#define QT_FEATURE_dlopen -1\r\n\r\n#define QT_FEATURE_relocatable 1\r\n\r\n#define QT_FEATURE_intelcet 1\r\n\r\n#define QT_FEATURE_glibc_fortify_source -1\r\n\r\n#define QT_FEATURE_trivial_auto_var_init_pattern -1\r\n\r\n#define QT_FEATURE_stack_protector -1\r\n\r\n#define QT_FEATURE_stack_clash_protection -1\r\n\r\n#define QT_FEATURE_libstdcpp_assertions -1\r\n\r\n#define QT_FEATURE_libcpp_hardening -1\r\n\r\n#define QT_FEATURE_relro_now_linker -1\r\n\r\n\r\n#endif // QT_FEATURES_GlobalConfig_src_corelib_global_qconfig_p_h_H\r\n"
+    }
+  ],
+  "sdk_notices": []
+}
