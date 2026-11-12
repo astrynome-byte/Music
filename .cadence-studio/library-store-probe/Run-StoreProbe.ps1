@@ -73,7 +73,7 @@ try {
         'src/project/internal/localscorelibrarystore.cpp',
         'src/project/internal/localscorelibrarystore.h',
         'src/project/internal/localscorexmlcheck.h',
-        'src/project/internal/localcatalogsnapshot.h',
+        'src/project/internal/localcatalogwatch.h',
         'test/cadence/local_library_store/CMakeLists.txt',
         'test/cadence/local_library_store/store_tests.cpp'
     )

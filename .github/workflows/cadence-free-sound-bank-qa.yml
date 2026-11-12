@@ -1,0 +1,121 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: real optional SF2 and collection installer qualification'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/free-sound-qa/**'
+      - '.github/workflows/cadence-free-sound-bank-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-free-sound-bank-qa-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  actual-optional-bank:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Use the native Windows x64 compiler for the small real installer component
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+      - name: Install only the pinned Qt base development kit for the component test
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.2'
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          archives: 'qtbase'
+          cache: true
+          cache-key-prefix: 'cadence-qtbase-free-sound-installer'
+      - name: Download only the immutable already compiled combined2002 stage
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '13898607081'
+          merge-multiple: true
+          run-id: 43108867145
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/free-bank-original-stage
+      - name: Verify the retained executable and full source/stage provenance
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/free-sound-qa/Restore-CombinedStage.ps1" `
+            -ArtifactDirectory "$env:RUNNER_TEMP/free-bank-original-stage" `
+            -StagePath "$env:RUNNER_TEMP/free-bank-stage" `
+            -ResultPath "$env:RUNNER_TEMP/free-bank-restoration.json"
+      - name: Download the explicitly selected optional bank from its exact official source
+        run: |
+          if (-not [OperatingSystem]::IsWindows() -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') { throw 'Native hosted Windows required.' }
+          $root=Join-Path $env:RUNNER_TEMP 'free-bank-original-assets'
+          if (Test-Path -LiteralPath $root) { throw 'New asset directory required.' }
+          [void][IO.Directory]::CreateDirectory($root)
+          $file=Join-Path $root 'GeneralUser-GS.sf2'
+          Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/mrbumpy409/GeneralUser-GS/684543d5e5efaef08d02be50dcda8d552478fa60/GeneralUser-GS.sf2' `
+            -OutFile $file -MaximumRedirection 0 -TimeoutSec 180
+          if ((Get-Item -LiteralPath $file).Length -ne 32319396 -or
+              (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant() -ne '9575028c7a1f589f5770fccc8cff2734566af40cd26ed836944e9a5152688cfe') {
+            throw 'The official optional bank no longer matches its measured size/hash.'
+          }
+      - name: Compile the real collection installer and require fourteen native scenarios including explicit HTTPS download
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/free-sound-qa/Run-FreeSoundProbe.ps1" `
+            -SourcePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/free-sound-qa/runtime-src" `
+            -QtPath $env:QT_ROOT_DIR `
+            -BankPath "$env:RUNNER_TEMP/free-bank-original-assets/GeneralUser-GS.sf2" `
+            -LicensePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/free-sound-qa/GeneralUser-GS-LICENSE.txt" `
+            -OutputDirectory "$env:RUNNER_TEMP/free-installer-results"
+      - name: Assign the actual bank to five controlled scores and require synth loading, WAV integrity and native resource persistence
+        run: |
+          python -I -X utf8 "$env:GITHUB_WORKSPACE/driver/.cadence-studio/free-sound-qa/Test-FreeBank.py" `
+            --stage "$env:RUNNER_TEMP/free-bank-stage" `
+            --bank "$env:RUNNER_TEMP/free-bank-original-assets/GeneralUser-GS.sf2" `
+            --license "$env:GITHUB_WORKSPACE/driver/.cadence-studio/free-sound-qa/GeneralUser-GS-LICENSE.txt" `
+            --output "$env:RUNNER_TEMP/free-bank-results"
+          if ($LASTEXITCODE -ne 0) { throw 'The real optional bank check failed; inspect actual audio and resource diagnostics.' }
+      - name: Print bounded real runtime reports and component logs even after failure
+        if: always()
+        run: |
+          $budget=262144L
+          foreach($root in @("$env:RUNNER_TEMP/free-installer-results","$env:RUNNER_TEMP/free-bank-results")) {
+            if(-not(Test-Path -LiteralPath $root -PathType Container)){continue}
+            $files=@(Get-ChildItem -LiteralPath $root -File|Where-Object{$_.Extension -eq '.json' -or $_.Name -in @('actual-installer-scenarios.stdout.log','actual-installer-scenarios.stderr.log','configure.stderr.log','build.stdout.log','build.stderr.log')}|Sort-Object Name)
+            foreach($file in $files) {
+              if($budget -le 0){break};$limit=[Math]::Min(65536L,$budget)
+              $stream=[IO.File]::OpenRead($file.FullName)
+              try{[void]$stream.Seek([Math]::Max(0L,$stream.Length-$limit),[IO.SeekOrigin]::Begin);$bytes=[byte[]]::new([int][Math]::Min($limit,$stream.Length));$count=$stream.Read($bytes,0,$bytes.Length);$text=[Text.Encoding]::UTF8.GetString($bytes,0,$count)}finally{$stream.Dispose()}
+              Write-Host 'CADENCE_FREE_SOUND_EVIDENCE_BEGIN'
+              Write-Host ([ordered]@{file=$file.Name;file_bytes=$file.Length;printed_bytes=$count;tail_only=$file.Length -gt $count;text=$text}|ConvertTo-Json -Depth 4 -Compress)
+              Write-Host 'CADENCE_FREE_SOUND_EVIDENCE_END';$budget-=$count
+            }
+          }
+      - name: Retain qualification evidence, never present it as a finished gift
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-free-sound-qa-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/free-bank-restoration.json
+            ${{ runner.temp }}/free-installer-results/**
+            ${{ runner.temp }}/free-bank-results/**
+            ${{ github.workspace }}/driver/.cadence-studio/free-sound-qa/runtime-src/source-manifest.json
+            ${{ github.workspace }}/driver/.cadence-studio/free-sound-qa/GeneralUser-GS-LICENSE.txt
+          retention-days: 14
+          include-hidden-files: true
+          if-no-files-found: warn

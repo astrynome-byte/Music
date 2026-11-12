@@ -1,0 +1,12 @@
+SPDX-License-Identifier: CC0-1.0
+
+The MusicXML test compositions, their manifest, and generate.py are original
+contributions to the Cadence regression corpus and are dedicated to the public
+domain under CC0 1.0 Universal:
+https://creativecommons.org/publicdomain/zero/1.0/
+
+To the extent possible under law, their contributors waive all copyright and
+related or neighboring rights to these test materials. The materials are
+provided without warranty. They contain no copied commercial score catalogue.
+
+Other files in the MuseScore-derived repository retain their own licenses.

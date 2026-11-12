@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 Cadence Studio contributors
 #include "localscorelibrarystore.h"
-#include "localcatalogsnapshot.h"
+#include "localcatalogwatch.h"
 #include "localscorexmlcheck.h"
 
 #include <QCoreApplication>
 #include <QCryptographicHash>
 #include <QDir>
+#include <QDateTime>
+#include <QEventLoop>
+#include <QFileSystemWatcher>
 #include <QElapsedTimer>
 #include <QFile>
 #include <QFileInfo>
@@ -16,6 +19,8 @@
 #include <QLockFile>
 #include <QProcess>
 #include <QTemporaryDir>
+#include <QThread>
+#include <QTimeZone>
 #include <QUuid>
 
 #include <functional>
@@ -274,56 +279,108 @@ void concurrentProcesses()
     require(result.ok && result.entries.size() == 2, "Concurrent process lost a committed score");
 }
 
-void snapshotDoesNotBlockAtomicReplacement()
+void metadataWatchDoesNotBlockAtomicReplacement()
 {
     QTemporaryDir temporary;
     require(temporary.isValid(), "Temporary directory unavailable");
-    const auto score = fixture(temporary.path(), QString::fromUtf8("Partitions été/Étude.mscx"));
+    const auto score = fixture(temporary.path(), QString::fromUtf8("Partitions été/Étude.mscx"), QStringLiteral("AAA"));
     const QByteArray scoreBefore = digest(score.path);
     LocalScoreLibraryStore store(temporary.path() + QString::fromUtf8("/Profil été/Bibliothèque.json"));
     const auto added = store.add({ score });
-    require(added.ok && added.entries.size() == 1, "Initial snapshot catalogue failed");
+    require(added.ok && added.entries.size() == 1, "Initial watched catalogue failed");
     const QString id = added.entries.front().id;
     const QByteArray catalogueBefore = read(store.filePath());
 
 #ifdef Q_OS_WIN
-    // Reproduce the old GUI hash-reader race deterministically: hold its
-    // ordinary QFile open across the real store commit. No timing/retry loop.
+    // The source of the old race is a real open data reader. Qt's Windows
+    // FileRenameInfo replacement cannot replace such a target. Close it before
+    // exercising the production metadata-only watcher below.
     QFile oldReader(store.filePath());
-    require(oldReader.open(QIODevice::ReadOnly), "Cannot open old-style snapshot reader");
+    require(oldReader.open(QIODevice::ReadOnly), "Cannot open old-style GUI catalogue reader");
     const auto blocked = store.setFavorite(id, true);
     require(!blocked.ok && blocked.error.startsWith(QStringLiteral("Cannot save the local library")),
-            "The Windows no-DELETE reader did not reproduce the atomic-save conflict");
-    require(oldReader.readAll() == catalogueBefore, "A failed atomic save changed the open snapshot");
+            "The Windows data reader did not reproduce the atomic-save conflict");
+    require(oldReader.readAll() == catalogueBefore, "Failed atomic save changed the open catalogue");
     oldReader.close();
-    require(read(store.filePath()) == catalogueBefore, "A blocked save changed catalogue bytes");
+    require(read(store.filePath()) == catalogueBefore, "Blocked save changed catalogue bytes");
     std::cout << "INFO: Windows old QFile reader reproduced: " << blocked.error.toStdString() << '\n';
 #endif
 
-    // Keep the exact production reader open while the writer replaces its
-    // catalogue. The old handle must remain a coherent snapshot; a fresh read
-    // must see the newly committed favourite. This also covers another window.
-    QFile snapshot;
-    require(openLocalLibrarySnapshot(snapshot, store.filePath()), "Cannot open production catalogue snapshot");
-    require(snapshot.isReadable() && !snapshot.isWritable(), "Snapshot reader must remain read-only");
-    const auto changed = store.setFavorite(id, true);
-    require(changed.ok && changed.entries.front().favorite, "Snapshot reader blocked atomic favourite commit");
-    require(snapshot.readAll() == catalogueBefore, "An open snapshot mixed the old and new catalogues");
-    require(snapshot.error() == QFileDevice::NoError, "Reading the open snapshot failed after replacement");
-    snapshot.close();
-    const auto reopened = LocalScoreLibraryStore(store.filePath()).load();
-    require(reopened.ok && reopened.entries.size() == 1 && reopened.entries.front().id == id
-            && reopened.entries.front().favorite, "Fresh catalogue read lost the committed favourite");
-    QFile fresh;
-    require(openLocalLibrarySnapshot(fresh, store.filePath()), "Cannot reopen catalogue snapshot after replacement");
-    require(fresh.readAll() == read(store.filePath()) && fresh.error() == QFileDevice::NoError,
-            "Fresh snapshot did not see the committed catalogue");
-    fresh.close();
-    QFile missing;
-    const QString missingPath = temporary.path() + QStringLiteral("/missing.json");
-    require(!openLocalLibrarySnapshot(missing, missingPath) && !QFileInfo::exists(missingPath),
-            "Snapshot read created a missing catalogue");
-    require(digest(score.path) == scoreBefore, "Snapshot/save operations changed the score");
+    const QDateTime fixed = QDateTime::fromMSecsSinceEpoch(1700000000000, QTimeZone::UTC);
+    const auto restoreTimestamp = [&]() {
+        QFile file(store.filePath());
+        require(file.open(QIODevice::ReadWrite), "Cannot open test catalogue to restore its timestamp");
+        require(file.setFileTime(fixed, QFileDevice::FileModificationTime), "Cannot restore catalogue timestamp");
+        file.close();
+    };
+    restoreTimestamp();
+    const QString baseline = localCatalogMetadataStamp(store.filePath());
+    const qint64 baselineSize = QFileInfo(store.filePath()).size();
+    QFileSystemWatcher watcher;
+    watchLocalCatalog(watcher, store.filePath());
+    require(watcher.files().contains(store.filePath()), "Catalogue file watch was not installed");
+    int fileEvents = 0;
+    int meaningfulDirectoryEvents = 0;
+    QObject::connect(&watcher, &QFileSystemWatcher::fileChanged, &watcher, [&](const QString& path) {
+        require(path == store.filePath(), "Unexpected watched file");
+        ++fileEvents;
+        watchLocalCatalog(watcher, store.filePath());
+    });
+    QObject::connect(&watcher, &QFileSystemWatcher::directoryChanged, &watcher, [&]() {
+        if (localCatalogMetadataStamp(store.filePath()) != baseline) {
+            ++meaningfulDirectoryEvents;
+        }
+    });
+    const auto drainEvents = [&]() {
+        QElapsedTimer interval;
+        interval.start();
+        while (interval.elapsed() < 200) {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 20);
+            QThread::msleep(5);
+        }
+    };
+    drainEvents();
+    const auto waitForReplacement = [&](int before) {
+        QElapsedTimer timeout;
+        timeout.start();
+        while (fileEvents <= before && timeout.elapsed() < 5000) {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 50);
+            QThread::msleep(5);
+        }
+        require(fileEvents > before, "Native file watcher missed an equal-size/equal-timestamp atomic replacement");
+        require(watcher.files().contains(store.filePath()), "File watch was not rearmed after atomic replacement");
+        drainEvents();
+    };
+    for (const QString& title : { QStringLiteral("BBB"), QStringLiteral("CCC") }) {
+        auto replacement = score;
+        replacement.title = title;
+        const int before = fileEvents;
+        // Metadata checks may be held as values across the mutation; they own
+        // no catalogue stream and cannot block QSaveFile's target replacement.
+        const QString observed = localCatalogMetadataStamp(store.filePath());
+        const auto changed = store.relink(id, replacement);
+        require(changed.ok && changed.entries.front().title == title, "Metadata-only watcher blocked atomic commit");
+        restoreTimestamp();
+        require(QFileInfo(store.filePath()).size() == baselineSize
+                && localCatalogMetadataStamp(store.filePath()) == observed,
+                "Equal-size/equal-timestamp replacement test precondition failed");
+        waitForReplacement(before);
+        const auto reopened = store.load();
+        require(reopened.ok && reopened.entries.front().title == title, "Reopening lost the committed watched metadata");
+    }
+    const int beforeRead = fileEvents;
+    const int meaningfulBeforeRead = meaningfulDirectoryEvents;
+    require(store.load().ok, "Locked read after replacement failed");
+    drainEvents();
+    require(fileEvents == beforeRead && meaningfulDirectoryEvents == meaningfulBeforeRead,
+            "Read-lock-only directory activity triggered a meaningful catalogue change");
+    const int beforeFavorite = fileEvents;
+    const auto favorite = store.setFavorite(id, true);
+    require(favorite.ok && favorite.entries.front().favorite, "Favorite commit failed without a data reader");
+    waitForReplacement(beforeFavorite);
+    require(digest(score.path) == scoreBefore, "Catalogue watch/save operations changed the score");
+    require(localCatalogMetadataStamp(temporary.path() + QStringLiteral("/missing.json")) == QStringLiteral("missing"),
+            "Missing catalogue metadata was not represented without creating a file");
 }
 
 void nativeXmlStructuralGate()
@@ -373,7 +430,7 @@ int main(int argc, char** argv)
         { "bounded real lock conflict and stale-window merge", lockAndStaleSnapshots },
         { "permission and invalid-parent failures preserve data", writeFailurePreservesData },
         { "concurrent real processes preserve both writes", concurrentProcesses },
-        { "open catalogue snapshots allow atomic replacement and preserve old/new views", snapshotDoesNotBlockAtomicReplacement },
+        { "metadata-only watch permits atomic saves, equal-time replacements and native rearming", metadataWatchDoesNotBlockAtomicReplacement },
         { "native XML gate rejects malformed/non-native/DTD and accepts modern/legacy Unicode", nativeXmlStructuralGate }
     };
     int failures = 0;

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "scope": "Exact proposed production installer and real test sources, no editor replacement.",
+  "files": [
+    {
+      "path": "src/musesounds/internal/freecollectioninstaller.h",
+      "bytes": 2141,
+      "sha256": "bc198251bcfb1e36f0e83945ef492c7711f993df0eaaa1d16cbb62a7b9693aee"
+    },
+    {
+      "path": "src/musesounds/internal/freecollectioninstaller.cpp",
+      "bytes": 14575,
+      "sha256": "3999ec34463891a4207c3f54288f1b50b29c2344d1accc99ea8a32df88c79904"
+    },
+    {
+      "path": "test/cadence/free_sound_collections/CMakeLists.txt",
+      "bytes": 1058,
+      "sha256": "23d0cceea97b2f433b5dafe7c57d0ed6f7b31447edfa94acb8a5a99a50cc2d88"
+    },
+    {
+      "path": "test/cadence/free_sound_collections/installer_tests.cpp",
+      "bytes": 13245,
+      "sha256": "be9f9e3dd720b7ecfc69ef081d829150c96e98656e14880559ff2c217cda17ad"
+    }
+  ]
+}

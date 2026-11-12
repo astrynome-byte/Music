@@ -1,43 +1,35 @@
-# Qualification Windows courte du lecteur de catalogue
+# Windows QtCore : filtre de métadonnées et surveillance native
 
-Cette cible compile les véritables sources QtCore du store, du contrôle XML et
-du lecteur d'empreinte, au commit `c2541128116014e512632da1656b140827acf4cd`.
-Le manifeste vérifie les octets et SHA-256 de chacun des six fichiers avant
-CMake. Aucun moteur, interface ou exécutable de remplacement n'est développé.
-La compilation complète de Cadence n'est pas déclenchée par ce namespace.
+Source réelle a07bd3af9bd8ba328363ccac80aaf77311433413 ; six fichiers exacts
+identifiés dans source-manifest.json. Cette cible compile le vrai store,
+le helper de métadonnées/surveillance et ses neuf groupes de tests ; elle ne
+construit ni ne lance Cadence complet. Le namespace ancien reste dans les
+commits de l'historique ; localcatalogsnapshot.h n'est plus compilé ni publié.
 
-Les huit scénarios antérieurs sont conservés. Le neuvième maintient un lecteur
-ouvert pendant une vraie mutation :
+L'ancien run43126537489 avait zéro job, à cause de fichiers base64 littéraux.
+Le run43178954921 a vérifié les six sources puis échoué avant C++ : lookup
+PowerShell de deux installations CMake concaténé en faux chemin. Le correctif
+Select-Object -First 1 est conservé pour CMake/Ninja/MSVC.
+Le vrai run43179668680 a compilé mais donné8/9 : SHARE_DELETE ne permet pas le
+remplacement Qt FileRenameInfo d'une cible ouverte. Cet échec est conservé ;
+il n'est pas réétiqueté comme un défaut du pilote.
 
-1. Sous Windows, un `QFile` normal doit reproduire le refus de remplacement et
-   préserver les octets du catalogue, sans boucle probabiliste.
-2. Le même lecteur de production employé par le modèle doit autoriser le
-   remplacement atomique ; son ancien snapshot reste cohérent et la nouvelle
-   lecture retrouve le favori. La partition temporaire garde son empreinte.
+La correction actuelle n'ouvre plus de flux du catalogue pour filtrer les
+notifications de répertoire. Les notifications de fichier forcent la relecture
+même quand les métadonnées sont identiques et réarment la surveillance après
+remplacement. QLockFile, QSaveFile, les fichiers de partitions et le schéma JSON
+ne changent pas. Le neuvième groupe vérifie l'ancien refus sous Windows puis
+QFileSystemWatcher réel : deux mutations atomiques de titres de même taille
+avec date forcée identique, événements reçus, réarmement, favori, score intact
+et filtrage de la seule activité du verrou.
 
-Le résultat attendu est **9/9 sur Qt6.10.2 Windows**. Les neuf scénarios ont
-déjà passé sous Linux/QtCore6.8.2, mais cela ne qualifie pas la branche Win32.
-Un succès de cette cible ne vaut ni succès de l'interface bibliothèque, ni
-test d'édition musicale, ni validation de l'installateur.
+Linux :9/9 groupes, modèle C++ON/OFF, génération MOC et C++ généré ON/OFF passent.
+Windows : à exécuter pour ces nouvelles sources. Aucun résultat de la cible
+QtCore ne valide gestes GUI, redémarrage, ouverture, édition musicale ou écoute.
+Le job lit aussi quatre logs stdout/stderr du précédent runGUI11 ; ils ont été
+observés vides et ne permettent pas une attribution exacte de son erreur.
 
-Le job lit aussi, sans lancer d'application, les stdout/stderr déjà retenus du
-run GUI échoué43123741624, artifact13902286323. Le bandeau visible et le favori
-restéfalse établissent l'anomalie ; ils ne suffisent pas à attribuer ce run
-au conflit d'ouverture. Une ligne `Local library: <detail>` serait une preuve
-supplémentaire. L'absence de détail dans ces logs doit rester explicite.
-
-MSVC2022 x64, SDK10.0.26100.0 et Qt6.10.2 sont les outils de cette cible. Ils
-ne constituent pas des dépendances nouvelles à installer par l'ami. Les
-résultats/logs sont conservés14jours comme artefacts CI expérimentaux, pas
-comme lien public du cadeau. Seul le parent publie ce pilote après revue.
-
-Sources du défaut :
-
-- [QFile Windows Qt6.10.2](https://github.com/qt/qtbase/blob/v6.10.2/src/corelib/io/qfsfileengine_win.cpp#L73)
-  ouvre avec partage lecture/écriture, sans partage DELETE.
-- [QFile::open(fd)](https://github.com/qt/qtbase/blob/v6.10.2/src/corelib/io/qfile.cpp#L1057)
-  permet d'adopter le descripteur après ouverture native autorisant DELETE.
-
-Les ajouts et copies de source gardent leurs mentions GPL-3.0-only. Les
-sources correspondantes complètes de l'application restent dans le dépôt
-produit ; ce petit jeu de test n'est pas une distribution installable.
+Publication autorisée uniquement dans cadence-studio/windows-build ; commit
+avec le marqueur `[cadence-packaging-only]`.
+Le workflow inchangé est cadence-library-store-probe.yml. Les artifacts sont
+expérimentaux et temporaires14jours, pas le lien de téléchargement du cadeau.

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "scope": "Compile and run the actual local library store/XML/snapshot sources with QtCore only; no Cadence application build or GUI",
-  "source_commit": "c2541128116014e512632da1656b140827acf4cd",
-  "source_tree": "06414fc46fbaafa4f3eaa5a6dc6081acfee8e85b",
+  "scope": "Compile and run actual store/XML/metadata-only watcher sources with QtCore; no full application or GUI",
+  "source_commit": "a07bd3af9bd8ba328363ccac80aaf77311433413",
+  "source_tree": "04bfc174a40158030b1a42cd131287d7a676659e",
   "expected_scenarios": 9,
   "required_qt_version": "6.10.2",
   "gui_failure_attribution_confirmed": false,
@@ -23,9 +23,9 @@
       "sha256": "83a54cf5faa8204ac40d80f621f0e4f79a3ee67cb12ff0249e34cb72c11dfd1a"
     },
     {
-      "path": "src/project/internal/localcatalogsnapshot.h",
-      "bytes": 2174,
-      "sha256": "470516c2662c42b8bbd44b3867f009f8c19a7906be89fa9ac2d274ff9d4b9fa6"
+      "path": "src/project/internal/localcatalogwatch.h",
+      "bytes": 1221,
+      "sha256": "de910933c3ca8222176205f95a382b2b4ee3d7efa935a3530afa959428bac40f"
     },
     {
       "path": "test/cadence/local_library_store/CMakeLists.txt",
@@ -34,8 +34,8 @@
     },
     {
       "path": "test/cadence/local_library_store/store_tests.cpp",
-      "bytes": 21861,
-      "sha256": "acfe2da8fd15236822fc67a5320867a39e4ebff666df1e5e9a711934fd18d062"
+      "bytes": 24398,
+      "sha256": "9655f5d966eedf95ee7c347718313083e46588eb944bbbdfba2f508c44c6033b"
     }
   ]
 }
