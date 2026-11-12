@@ -1,1 +1,51 @@
-Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAtb25seQovLyBDb3B5cmlnaHQgKEMpIDIwMjYgQ2FkZW5jZSBTdHVkaW8gY29udHJpYnV0b3JzCiNwcmFnbWEgb25jZQoKI2luY2x1ZGUgPFFCeXRlQXJyYXk+CiNpbmNsdWRlIDxRWG1sU3RyZWFtUmVhZGVyPgoKbmFtZXNwYWNlIG11Ojpwcm9qZWN0IHsKLy8gQSBjaGVhcCBzdHJ1Y3R1cmFsIGdhdGUgYmVmb3JlIGNhdGFsb2d1ZSBtZXRhZGF0YSBleHRyYWN0aW9uLiBUaGlzIGlzIG5vdCBhCi8vIG11c2ljYWwgdmFsaWRhdG9yIG9yIGEgcmVwbGFjZW1lbnQgZm9yIE11c2VTY29yZSdzIG5hdGl2ZSBzY29yZSByZWFkZXIuCmlubGluZSBib29sIGlzTmF0aXZlU2NvcmVYbWwoY29uc3QgUUJ5dGVBcnJheSYgeG1sKQp7CiAgICBpZiAoeG1sLnRyaW1tZWQoKS5pc0VtcHR5KCkpIHsKICAgICAgICByZXR1cm4gZmFsc2U7CiAgICB9CiAgICBRWG1sU3RyZWFtUmVhZGVyIHJlYWRlcih4bWwpOwogICAgYm9vbCByb290U2VlbiA9IGZhbHNlOwogICAgYm9vbCBzY29yZVNlZW4gPSBmYWxzZTsKICAgIGJvb2wgbGVnYWN5VmVyc2lvbiA9IGZhbHNlOwogICAgaW50IGRlcHRoID0gMDsKICAgIHdoaWxlICghcmVhZGVyLmF0RW5kKCkpIHsKICAgICAgICBjb25zdCBhdXRvIHRva2VuID0gcmVhZGVyLnJlYWROZXh0KCk7CiAgICAgICAgaWYgKHRva2VuID09IFFYbWxTdHJlYW1SZWFkZXI6OkRURCkgewogICAgICAgICAgICByZXR1cm4gZmFsc2U7CiAgICAgICAgfQogICAgICAgIGlmICh0b2tlbiA9PSBRWG1sU3RyZWFtUmVhZGVyOjpTdGFydEVsZW1lbnQpIHsKICAgICAgICAgICAgaWYgKCFyb290U2VlbikgewogICAgICAgICAgICAgICAgaWYgKHJlYWRlci5uYW1lKCkgIT0gUVN0cmluZ0xpdGVyYWwoIm11c2VTY29yZSIpKSB7CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgY29uc3QgUVN0cmluZyB2ZXJzaW9uID0gcmVhZGVyLmF0dHJpYnV0ZXMoKS52YWx1ZShRU3RyaW5nTGl0ZXJhbCgidmVyc2lvbiIpKS50b1N0cmluZygpLnRyaW1tZWQoKTsKICAgICAgICAgICAgICAgIGlmICh2ZXJzaW9uLmlzRW1wdHkoKSkgewogICAgICAgICAgICAgICAgICAgIHJldHVybiBmYWxzZTsKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIHJvb3RTZWVuID0gdHJ1ZTsKICAgICAgICAgICAgICAgIGJvb2wgbnVtZXJpYyA9IGZhbHNlOwogICAgICAgICAgICAgICAgbGVnYWN5VmVyc2lvbiA9IHZlcnNpb24uc2VjdGlvbihRTGF0aW4xQ2hhcignLicpLCAwLCAwKS50b0ludCgmbnVtZXJpYykgPT0gMSAmJiBudW1lcmljOwogICAgICAgICAgICB9IGVsc2UgaWYgKGRlcHRoID09IDEpIHsKICAgICAgICAgICAgICAgIGNvbnN0IFFTdHJpbmcgZXhwZWN0ZWQgPSBsZWdhY3lWZXJzaW9uID8gUVN0cmluZ0xpdGVyYWwoIlN0YWZmIikgOiBRU3RyaW5nTGl0ZXJhbCgiU2NvcmUiKTsKICAgICAgICAgICAgICAgIGlmIChyZWFkZXIubmFtZSgpID09IGV4cGVjdGVkKSB7CiAgICAgICAgICAgICAgICAgICAgc2NvcmVTZWVuID0gdHJ1ZTsKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQogICAgICAgICAgICArK2RlcHRoOwogICAgICAgIH0gZWxzZSBpZiAodG9rZW4gPT0gUVhtbFN0cmVhbVJlYWRlcjo6RW5kRWxlbWVudCkgewogICAgICAgICAgICAtLWRlcHRoOwogICAgICAgIH0KICAgIH0KICAgIHJldHVybiByb290U2VlbiAmJiBzY29yZVNlZW4gJiYgZGVwdGggPT0gMCAmJiAhcmVhZGVyLmhhc0Vycm9yKCk7Cn0KfQo=
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 Cadence Studio contributors
+#pragma once
+
+#include <QByteArray>
+#include <QXmlStreamReader>
+
+namespace mu::project {
+// A cheap structural gate before catalogue metadata extraction. This is not a
+// musical validator or a replacement for MuseScore's native score reader.
+inline bool isNativeScoreXml(const QByteArray& xml)
+{
+    if (xml.trimmed().isEmpty()) {
+        return false;
+    }
+    QXmlStreamReader reader(xml);
+    bool rootSeen = false;
+    bool scoreSeen = false;
+    bool legacyVersion = false;
+    int depth = 0;
+    while (!reader.atEnd()) {
+        const auto token = reader.readNext();
+        if (token == QXmlStreamReader::DTD) {
+            return false;
+        }
+        if (token == QXmlStreamReader::StartElement) {
+            if (!rootSeen) {
+                if (reader.name() != QStringLiteral("museScore")) {
+                    return false;
+                }
+                const QString version = reader.attributes().value(QStringLiteral("version")).toString().trimmed();
+                if (version.isEmpty()) {
+                    return false;
+                }
+                rootSeen = true;
+                bool numeric = false;
+                legacyVersion = version.section(QLatin1Char('.'), 0, 0).toInt(&numeric) == 1 && numeric;
+            } else if (depth == 1) {
+                const QString expected = legacyVersion ? QStringLiteral("Staff") : QStringLiteral("Score");
+                if (reader.name() == expected) {
+                    scoreSeen = true;
+                }
+            }
+            ++depth;
+        } else if (token == QXmlStreamReader::EndElement) {
+            --depth;
+        }
+    }
+    return rootSeen && scoreSeen && depth == 0 && !reader.hasError();
+}
+}

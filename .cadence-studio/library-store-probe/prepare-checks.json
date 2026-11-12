@@ -1,1 +1,31 @@
-ewogICJzY2hlbWFfdmVyc2lvbiI6IDEsCiAgInByZXBhcmVkX3V0YyI6ICIyMDI2LTExLTEyVDAwOjE4OjI5Ljg0MjM4OSswMDowMCIsCiAgInN0YXR1cyI6ICJwcmVwYXJlZC1mb3Itcm9vdC1yZXZpZXctbm90LVdpbmRvd3MtZXhlY3V0ZWQiLAogICJwcm9kdWN0aW9uX3NvdXJjZV9jb21taXQiOiAiYzI1NDExMjgxMTYwMTRlNTEyNjMyZGExNjU2YjE0MDgyN2FjZjRjZCIsCiAgImxpbnV4X3J1bnRpbWVfc2NlbmFyaW9zX3Bhc3NlZCI6IDksCiAgImxpbnV4X21vZGVsX3N5bnRheF9vbl9vZmZfcGFzc2VkIjogdHJ1ZSwKICAieWFtbF9zdGVwcyI6IDgsCiAgInBvd2Vyc2hlbGxfc2NyaXB0c19hbmRfc25pcHBldHNfcGFyc2VkIjogNCwKICAiYWN0dWFsX3NvdXJjZV9tYW5pZmVzdF9ibG9ja19saW51eF9jYXNlc19wYXNzZWQiOiA3LAogICJhY3R1YWxfc291cmNlX21hbmlmZXN0X2Jsb2NrX2xpbnV4X2Nhc2VzIjogWwogICAgInZhbGlkIiwKICAgICJjaGFuZ2VkIHNvdXJjZSBieXRlcyIsCiAgICAidHJhdmVyc2FsIiwKICAgICJkdXBsaWNhdGUiLAogICAgIndyb25nIHNjZW5hcmlvIGNvdW50IiwKICAgICJ3cm9uZyBTSEEyNTYiLAogICAgInN5bWxpbmsiCiAgXSwKICAibWFuaWZlc3Rfc291cmNlX2ZpbGVfY291bnQiOiA2LAogICJ3aW5kb3dzX2NvbXBpbGVkIjogZmFsc2UsCiAgImFwcGxpY2F0aW9uX2J1aWx0IjogZmFsc2UsCiAgImFwcGxpY2F0aW9uX2V4ZWN1dGVkIjogZmFsc2UsCiAgIndvcmtmbG93X3NoYTI1NiI6ICI5NzM1MDc2ZTY0OTJhOGI4OTI5YTRhN2U4ODI5NjJiZjUzNmZmYTFmYTRkYWU0YzA2ZjNmZGUwMzY2MzFkMzI3IiwKICAicnVuX3N0b3JlX3Byb2JlX3NoYTI1NiI6ICIzMGYxN2FmNzY3NGNmMDBmZDY4OTRmNmY2MzRhY2ZhYTJhODgwZmIxMjQxN2Y5YjVjMjA1ZDFkNWUxZmVhZTYyIiwKICAiZGlhZ25vc3RpY19zb3VyY2VfcnVuX2lkIjogNDMxMjM3NDE2MjQsCiAgImRpYWdub3N0aWNfc291cmNlX2FydGlmYWN0X2lkIjogMTM5MDIyODYzMjMsCiAgImZ1bGxfc291cmNlX2pzb25fdW50b3VjaGVkIjogdHJ1ZSwKICAicmV0YWluZWRfYXBwXzEwMDFfYW5kXzIwMDJfdW50b3VjaGVkIjogdHJ1ZSwKICAiYWN0dWFsX3dpbmRvd3NfeDY0X2FuZF9jaV9ndWFyZCI6IHRydWUKfQo=
+{
+  "schema_version": 1,
+  "prepared_utc": "2026-11-12T00:18:29.842389+00:00",
+  "status": "prepared-for-root-review-not-Windows-executed",
+  "production_source_commit": "c2541128116014e512632da1656b140827acf4cd",
+  "linux_runtime_scenarios_passed": 9,
+  "linux_model_syntax_on_off_passed": true,
+  "yaml_steps": 8,
+  "powershell_scripts_and_snippets_parsed": 4,
+  "actual_source_manifest_block_linux_cases_passed": 7,
+  "actual_source_manifest_block_linux_cases": [
+    "valid",
+    "changed source bytes",
+    "traversal",
+    "duplicate",
+    "wrong scenario count",
+    "wrong SHA256",
+    "symlink"
+  ],
+  "manifest_source_file_count": 6,
+  "windows_compiled": false,
+  "application_built": false,
+  "application_executed": false,
+  "workflow_sha256": "9735076e6492a8b8929a4a7e882962bf536ffa1fa4dae4c06f3fde036631d327",
+  "run_store_probe_sha256": "30f17af7674cf00fd6894f6f634acfaa2a880fb12417f9b5c205d1d5e1feae62",
+  "diagnostic_source_run_id": 43123741624,
+  "diagnostic_source_artifact_id": 13902286323,
+  "full_source_json_untouched": true,
+  "retained_app_1001_and_2002_untouched": true,
+  "actual_windows_x64_and_ci_guard": true
+}

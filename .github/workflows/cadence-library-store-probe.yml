@@ -1,1 +1,127 @@
-IyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTMuMC1vbmx5Cm5hbWU6ICdDYWRlbmNlIFN0dWRpbzogaXNvbGF0ZWQgV2luZG93cyBzdG9yZSByZWdyZXNzaW9uJwpvbjoKICBwdXNoOgogICAgYnJhbmNoZXM6IFsnY2FkZW5jZS1zdHVkaW8vd2luZG93cy1idWlsZCddCiAgICBwYXRoczoKICAgICAgLSAnLmNhZGVuY2Utc3R1ZGlvL2xpYnJhcnktc3RvcmUtcHJvYmUvKionCiAgICAgIC0gJy5naXRodWIvd29ya2Zsb3dzL2NhZGVuY2UtbGlicmFyeS1zdG9yZS1wcm9iZS55bWwnCiAgd29ya2Zsb3dfZGlzcGF0Y2g6CnBlcm1pc3Npb25zOgogIGNvbnRlbnRzOiByZWFkCiAgYWN0aW9uczogcmVhZApjb25jdXJyZW5jeToKICBncm91cDogY2FkZW5jZS1saWJyYXJ5LXN0b3JlLXByb2JlLSR7eyBnaXRodWIucmVmIH19CiAgY2FuY2VsLWluLXByb2dyZXNzOiBmYWxzZQpqb2JzOgogIHdpbmRvd3MtcXRjb3JlLXN0b3JlOgogICAgcnVucy1vbjogd2luZG93cy0yMDIyCiAgICB0aW1lb3V0LW1pbnV0ZXM6IDE1CiAgICBkZWZhdWx0czoKICAgICAgcnVuOgogICAgICAgIHNoZWxsOiBwd3NoCiAgICBzdGVwczoKICAgICAgLSB1c2VzOiBhY3Rpb25zL2NoZWNrb3V0QHY2CiAgICAgICAgd2l0aDoKICAgICAgICAgIHBhdGg6IGRyaXZlcgogICAgICAgICAgZmV0Y2gtZGVwdGg6IDEKICAgICAgICAgIHBlcnNpc3QtY3JlZGVudGlhbHM6IGZhbHNlCgogICAgICAtIG5hbWU6IERvd25sb2FkIG9ubHkgdGhlIGZhaWxlZCBVSSBydW4ncyByZXRhaW5lZCBsb2dzIGZvciByZWFkLW9ubHkgZGlhZ25vc2lzCiAgICAgICAgY29udGludWUtb24tZXJyb3I6IHRydWUKICAgICAgICB1c2VzOiBhY3Rpb25zL2Rvd25sb2FkLWFydGlmYWN0QHY0CiAgICAgICAgd2l0aDoKICAgICAgICAgIGFydGlmYWN0LWlkczogJzEzOTAyMjg2MzIzJwogICAgICAgICAgcnVuLWlkOiA0MzEyMzc0MTYyNAogICAgICAgICAgcmVwb3NpdG9yeTogYXN0cnlub21lLWJ5dGUvTXVzaWMKICAgICAgICAgIGdpdGh1Yi10b2tlbjogJHt7IGdpdGh1Yi50b2tlbiB9fQogICAgICAgICAgbWVyZ2UtbXVsdGlwbGU6IHRydWUKICAgICAgICAgIHBhdGg6ICR7eyBydW5uZXIudGVtcCB9fS9saWJyYXJ5LXN0b3JlLWRpYWdub3N0aWMtMTEKCiAgICAgIC0gbmFtZTogUHJpbnQgYXQgbW9zdCBmb3VyIGtub3duIGRpYWdub3N0aWMgbG9nIHRhaWxzIGZyb20gdGhhdCBhcnRpZmFjdAogICAgICAgIGlmOiBhbHdheXMoKQogICAgICAgIGNvbnRpbnVlLW9uLWVycm9yOiB0cnVlCiAgICAgICAgcnVuOiB8CiAgICAgICAgICAkcm9vdD1Kb2luLVBhdGggJGVudjpSVU5ORVJfVEVNUCAnbGlicmFyeS1zdG9yZS1kaWFnbm9zdGljLTExJwogICAgICAgICAgJG5vdGVzPVtDb2xsZWN0aW9ucy5HZW5lcmljLkxpc3Rbc3RyaW5nXV06Om5ldygpCiAgICAgICAgICAkcmVhZD1AKCkKICAgICAgICAgIGZvcmVhY2goJG5hbWUgaW4gQCgnYXBwbGljYXRpb24uc3Rkb3V0LmxvZycsJ2FwcGxpY2F0aW9uLnN0ZGVyci5sb2cnLCdwcm9iZS5zdGRvdXQubG9nJywncHJvYmUuc3RkZXJyLmxvZycpKSB7CiAgICAgICAgICAgICRtYXRjaGVzPUAoR2V0LUNoaWxkSXRlbSAtTGl0ZXJhbFBhdGggJHJvb3QgLVJlY3Vyc2UgLUZpbGUgLUZpbHRlciAkbmFtZSAtRXJyb3JBY3Rpb24gU2lsZW50bHlDb250aW51ZSB8CiAgICAgICAgICAgICAgV2hlcmUtT2JqZWN0IHsgJF8uTmFtZSAtY2VxICRuYW1lIC1hbmQgLW5vdCAoJF8uQXR0cmlidXRlcyAtYmFuZCBbSU8uRmlsZUF0dHJpYnV0ZXNdOjpSZXBhcnNlUG9pbnQpIH0gfCBTZWxlY3QtT2JqZWN0IC1GaXJzdCAyKQogICAgICAgICAgICBpZigkbWF0Y2hlcy5Db3VudCAtbmUgMSl7JG5vdGVzLkFkZCgnRXhwZWN0ZWQgZXhhY3RseSBvbmUgJyskbmFtZSsnOyBubyBhcmJpdHJhcnkgZmlsZSBjaG9zZW4uJyk7Y29udGludWV9CiAgICAgICAgICAgICRmaWxlPSRtYXRjaGVzWzBdCiAgICAgICAgICAgICRzdHJlYW09W0lPLkZpbGVdOjpPcGVuKCRmaWxlLkZ1bGxOYW1lLFtJTy5GaWxlTW9kZV06Ok9wZW4sW0lPLkZpbGVBY2Nlc3NdOjpSZWFkLFtJTy5GaWxlU2hhcmVdOjpSZWFkKQogICAgICAgICAgICB0cnkgewogICAgICAgICAgICAgIFt2b2lkXSRzdHJlYW0uU2VlayhbTWF0aF06Ok1heCgwTCwkc3RyZWFtLkxlbmd0aC0xNjM4NEwpLFtJTy5TZWVrT3JpZ2luXTo6QmVnaW4pCiAgICAgICAgICAgICAgJGJ5dGVzPVtieXRlW11dOjpuZXcoW2ludF1bTWF0aF06Ok1pbigxNjM4NEwsJHN0cmVhbS5MZW5ndGgpKQogICAgICAgICAgICAgICRjb3VudD0kc3RyZWFtLlJlYWQoJGJ5dGVzLDAsJGJ5dGVzLkxlbmd0aCkKICAgICAgICAgICAgICAkdGV4dD1bVGV4dC5FbmNvZGluZ106OlVURjguR2V0U3RyaW5nKCRieXRlcywwLCRjb3VudCkKICAgICAgICAgICAgfSBmaW5hbGx5IHskc3RyZWFtLkRpc3Bvc2UoKX0KICAgICAgICAgICAgJGRvY3VtZW50PVtvcmRlcmVkXUB7c291cmNlX3J1bl9pZD00MzEyMzc0MTYyNDtzb3VyY2VfYXJ0aWZhY3RfaWQ9MTM5MDIyODYzMjM7cGF0aD1bSU8uUGF0aF06OkdldFJlbGF0aXZlUGF0aCgkcm9vdCwkZmlsZS5GdWxsTmFtZSk7ZmlsZV9ieXRlcz0kZmlsZS5MZW5ndGg7dGFpbF9ieXRlcz0kY291bnQ7dGFpbF9vbmx5PSRmaWxlLkxlbmd0aCAtZ3QgJGNvdW50O3RleHQ9JHRleHQ7cmVhZGVyX29ubHk9JHRydWU7YXBwbGljYXRpb25fZXhlY3V0ZWQ9JGZhbHNlfQogICAgICAgICAgICBXcml0ZS1Ib3N0ICdDQURFTkNFX1NUT1JFX0RJQUdOT1NUSUNfTE9HX0JFR0lOJwogICAgICAgICAgICBXcml0ZS1Ib3N0ICgkZG9jdW1lbnR8Q29udmVydFRvLUpzb24gLURlcHRoIDUgLUNvbXByZXNzKQogICAgICAgICAgICBXcml0ZS1Ib3N0ICdDQURFTkNFX1NUT1JFX0RJQUdOT1NUSUNfTE9HX0VORCcKICAgICAgICAgICAgJHJlYWQgKz0gW29yZGVyZWRdQHtuYW1lPSRuYW1lO3RhaWxfYnl0ZXM9JGNvdW50fQogICAgICAgICAgfQogICAgICAgICAgJHN1bW1hcnk9W29yZGVyZWRdQHtzY2hlbWFfdmVyc2lvbj0xO3NvdXJjZV9ydW5faWQ9NDMxMjM3NDE2MjQ7c291cmNlX2FydGlmYWN0X2lkPTEzOTAyMjg2MzIzO3JlYWRlcl9vbmx5PSR0cnVlO2FwcGxpY2F0aW9uX2V4ZWN1dGVkPSRmYWxzZTtmaWxlc19yZWFkPSRyZWFkO25vdGVzPUAoJG5vdGVzLlRvQXJyYXkoKSl9CiAgICAgICAgICAkc3VtbWFyeXxDb252ZXJ0VG8tSnNvbiAtRGVwdGggNXxTZXQtQ29udGVudCAtTGl0ZXJhbFBhdGggKEpvaW4tUGF0aCAkZW52OlJVTk5FUl9URU1QICdsaWJyYXJ5LXN0b3JlLWRpYWdub3N0aWMtc3VtbWFyeS5qc29uJykgLUVuY29kaW5nIHV0ZjgKCiAgICAgIC0gbmFtZTogVXNlIG9ubHkgdGhlIG5hdGl2ZSBNU1ZDMjAyMiB4NjQgZGV2ZWxvcG1lbnQgdG9vbGNoYWluCiAgICAgICAgdXNlczogaWxhbW15L21zdmMtZGV2LWNtZEB2MQogICAgICAgIHdpdGg6CiAgICAgICAgICBhcmNoOiB4NjQKICAgICAgICAgIHZzdmVyc2lvbjogJzIwMjInCiAgICAgICAgICBzZGs6ICcxMC4wLjI2MTAwLjAnCgogICAgICAtIG5hbWU6IEluc3RhbGwgb3IgcmVzdG9yZSBvbmx5IHRoZSBRdCBiYXNlIGRldmVsb3BtZW50IGtpdAogICAgICAgIHVzZXM6IGp1cnBsZWwvaW5zdGFsbC1xdC1hY3Rpb25AdjQKICAgICAgICB3aXRoOgogICAgICAgICAgdmVyc2lvbjogJzYuMTAuMicKICAgICAgICAgIGhvc3Q6IHdpbmRvd3MKICAgICAgICAgIHRhcmdldDogZGVza3RvcAogICAgICAgICAgYXJjaDogd2luNjRfbXN2YzIwMjJfNjQKICAgICAgICAgIGFyY2hpdmVzOiAncXRiYXNlJwogICAgICAgICAgY2FjaGU6IHRydWUKICAgICAgICAgIGNhY2hlLWtleS1wcmVmaXg6ICdjYWRlbmNlLXF0YmFzZS1zdG9yZS1wcm9iZScKCiAgICAgIC0gbmFtZTogVmVyaWZ5IGV4YWN0IHNvdXJjZSBoYXNoZXMgYW5kIHJ1biBvbmx5IHRoZSBuaW5lIFF0Q29yZSBzdG9yYWdlL1hNTCBzY2VuYXJpb3MKICAgICAgICBydW46IHwKICAgICAgICAgICYgIiRlbnY6R0lUSFVCX1dPUktTUEFDRS9kcml2ZXIvLmNhZGVuY2Utc3R1ZGlvL2xpYnJhcnktc3RvcmUtcHJvYmUvUnVuLVN0b3JlUHJvYmUucHMxIiBgCiAgICAgICAgICAgIC1Tb3VyY2VQYXRoICIkZW52OkdJVEhVQl9XT1JLU1BBQ0UvZHJpdmVyLy5jYWRlbmNlLXN0dWRpby9saWJyYXJ5LXN0b3JlLXByb2JlIiBgCiAgICAgICAgICAgIC1RdFBhdGggJGVudjpRVF9ST09UX0RJUiBgCiAgICAgICAgICAgIC1PdXRwdXREaXJlY3RvcnkgIiRlbnY6UlVOTkVSX1RFTVAvbGlicmFyeS1zdG9yZS1wcm9iZS1yZXN1bHRzIgoKICAgICAgLSBuYW1lOiBQcmludCBib3VuZGVkIHNvdXJjZS9ydW50aW1lIGV2aWRlbmNlIGFuZCBsb2dzIGV2ZW4gYWZ0ZXIgZmFpbHVyZQogICAgICAgIGlmOiBhbHdheXMoKQogICAgICAgIHJ1bjogfAogICAgICAgICAgJHJvb3Q9Sm9pbi1QYXRoICRlbnY6UlVOTkVSX1RFTVAgJ2xpYnJhcnktc3RvcmUtcHJvYmUtcmVzdWx0cycKICAgICAgICAgICRidWRnZXQ9MjYyMTQ0TAogICAgICAgICAgaWYoVGVzdC1QYXRoIC1MaXRlcmFsUGF0aCAkcm9vdCAtUGF0aFR5cGUgQ29udGFpbmVyKXsKICAgICAgICAgICAgJGZpbGVzPUAoR2V0LUNoaWxkSXRlbSAtTGl0ZXJhbFBhdGggJHJvb3QgLUZpbGUgfCBXaGVyZS1PYmplY3QgeyAtbm90ICgkXy5BdHRyaWJ1dGVzIC1iYW5kIFtJTy5GaWxlQXR0cmlidXRlc106OlJlcGFyc2VQb2ludCkgLWFuZCAkXy5FeHRlbnNpb24gLWluIEAoJy5qc29uJywnLmxvZycpIH0gfAogICAgICAgICAgICAgIFNvcnQtT2JqZWN0IEB7RXhwcmVzc2lvbj17aWYoJF8uRXh0ZW5zaW9uIC1lcSAnLmpzb24nKXswfWVsc2V7MX19fSxOYW1lIHwgU2VsZWN0LU9iamVjdCAtRmlyc3QgMjApCiAgICAgICAgICAgIGZvcmVhY2goJGZpbGUgaW4gJGZpbGVzKXsKICAgICAgICAgICAgICAkbGltaXQ9W01hdGhdOjpNaW4oMzI3NjhMLCRidWRnZXQpCiAgICAgICAgICAgICAgaWYoJGxpbWl0IC1sZSAwKXticmVha30KICAgICAgICAgICAgICAkc3RyZWFtPVtJTy5GaWxlXTo6T3BlblJlYWQoJGZpbGUuRnVsbE5hbWUpCiAgICAgICAgICAgICAgdHJ5ewogICAgICAgICAgICAgICAgW3ZvaWRdJHN0cmVhbS5TZWVrKFtNYXRoXTo6TWF4KDBMLCRzdHJlYW0uTGVuZ3RoLSRsaW1pdCksW0lPLlNlZWtPcmlnaW5dOjpCZWdpbikKICAgICAgICAgICAgICAgICRieXRlcz1bYnl0ZVtdXTo6bmV3KFtpbnRdW01hdGhdOjpNaW4oJGxpbWl0LCRzdHJlYW0uTGVuZ3RoKSk7JGNvdW50PSRzdHJlYW0uUmVhZCgkYnl0ZXMsMCwkYnl0ZXMuTGVuZ3RoKQogICAgICAgICAgICAgICAgJHRleHQ9W1RleHQuRW5jb2RpbmddOjpVVEY4LkdldFN0cmluZygkYnl0ZXMsMCwkY291bnQpCiAgICAgICAgICAgICAgfWZpbmFsbHl7JHN0cmVhbS5EaXNwb3NlKCl9CiAgICAgICAgICAgICAgV3JpdGUtSG9zdCAnQ0FERU5DRV9TVE9SRV9QUk9CRV9FVklERU5DRV9CRUdJTicKICAgICAgICAgICAgICBXcml0ZS1Ib3N0IChbb3JkZXJlZF1Ae3BhdGg9JGZpbGUuTmFtZTtmaWxlX2J5dGVzPSRmaWxlLkxlbmd0aDtwcmludGVkX2J5dGVzPSRjb3VudDt0YWlsX29ubHk9JGZpbGUuTGVuZ3RoIC1ndCAkY291bnQ7dGV4dD0kdGV4dH18Q29udmVydFRvLUpzb24gLURlcHRoIDQgLUNvbXByZXNzKQogICAgICAgICAgICAgIFdyaXRlLUhvc3QgJ0NBREVOQ0VfU1RPUkVfUFJPQkVfRVZJREVOQ0VfRU5EJwogICAgICAgICAgICAgICRidWRnZXQtPSRjb3VudAogICAgICAgICAgICB9CiAgICAgICAgICB9ZWxzZXtXcml0ZS1Ib3N0ICdTdG9yZSBwcm9iZSBkaWQgbm90IGNyZWF0ZSByZXN1bHRzOyBubyBydW50aW1lIHN1Y2Nlc3MgaW5mZXJyZWQuJ30KCiAgICAgIC0gbmFtZTogUmV0YWluIHNvdXJjZSB2ZXJpZmljYXRpb24sIGNvbXBpbGVyL3J1bnRpbWUgbG9ncyBhbmQgZGlhZ25vc3RpYyBzdW1tYXJ5CiAgICAgICAgaWY6IGFsd2F5cygpCiAgICAgICAgdXNlczogYWN0aW9ucy91cGxvYWQtYXJ0aWZhY3RAdjQKICAgICAgICB3aXRoOgogICAgICAgICAgbmFtZTogY2FkZW5jZS1saWJyYXJ5LXN0b3JlLXByb2JlLSR7eyBnaXRodWIucnVuX251bWJlciB9fS0ke3sgZ2l0aHViLnJ1bl9hdHRlbXB0IH19CiAgICAgICAgICBwYXRoOiB8CiAgICAgICAgICAgICR7eyBydW5uZXIudGVtcCB9fS9saWJyYXJ5LXN0b3JlLXByb2JlLXJlc3VsdHMvKioKICAgICAgICAgICAgJHt7IHJ1bm5lci50ZW1wIH19L2xpYnJhcnktc3RvcmUtZGlhZ25vc3RpYy1zdW1tYXJ5Lmpzb24KICAgICAgICAgIHJldGVudGlvbi1kYXlzOiAxNAogICAgICAgICAgaWYtbm8tZmlsZXMtZm91bmQ6IHdhcm4K
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: isolated Windows store regression'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/library-store-probe/**'
+      - '.github/workflows/cadence-library-store-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-library-store-probe-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  windows-qtcore-store:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Download only the failed UI run's retained logs for read-only diagnosis
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '13902286323'
+          run-id: 43123741624
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/library-store-diagnostic-11
+
+      - name: Print at most four known diagnostic log tails from that artifact
+        if: always()
+        continue-on-error: true
+        run: |
+          $root=Join-Path $env:RUNNER_TEMP 'library-store-diagnostic-11'
+          $notes=[Collections.Generic.List[string]]::new()
+          $read=@()
+          foreach($name in @('application.stdout.log','application.stderr.log','probe.stdout.log','probe.stderr.log')) {
+            $matches=@(Get-ChildItem -LiteralPath $root -Recurse -File -Filter $name -ErrorAction SilentlyContinue |
+              Where-Object { $_.Name -ceq $name -and -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) } | Select-Object -First 2)
+            if($matches.Count -ne 1){$notes.Add('Expected exactly one '+$name+'; no arbitrary file chosen.');continue}
+            $file=$matches[0]
+            $stream=[IO.File]::Open($file.FullName,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::Read)
+            try {
+              [void]$stream.Seek([Math]::Max(0L,$stream.Length-16384L),[IO.SeekOrigin]::Begin)
+              $bytes=[byte[]]::new([int][Math]::Min(16384L,$stream.Length))
+              $count=$stream.Read($bytes,0,$bytes.Length)
+              $text=[Text.Encoding]::UTF8.GetString($bytes,0,$count)
+            } finally {$stream.Dispose()}
+            $document=[ordered]@{source_run_id=43123741624;source_artifact_id=13902286323;path=[IO.Path]::GetRelativePath($root,$file.FullName);file_bytes=$file.Length;tail_bytes=$count;tail_only=$file.Length -gt $count;text=$text;reader_only=$true;application_executed=$false}
+            Write-Host 'CADENCE_STORE_DIAGNOSTIC_LOG_BEGIN'
+            Write-Host ($document|ConvertTo-Json -Depth 5 -Compress)
+            Write-Host 'CADENCE_STORE_DIAGNOSTIC_LOG_END'
+            $read += [ordered]@{name=$name;tail_bytes=$count}
+          }
+          $summary=[ordered]@{schema_version=1;source_run_id=43123741624;source_artifact_id=13902286323;reader_only=$true;application_executed=$false;files_read=$read;notes=@($notes.ToArray())}
+          $summary|ConvertTo-Json -Depth 5|Set-Content -LiteralPath (Join-Path $env:RUNNER_TEMP 'library-store-diagnostic-summary.json') -Encoding utf8
+
+      - name: Use only the native MSVC2022 x64 development toolchain
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+
+      - name: Install or restore only the Qt base development kit
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.2'
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          archives: 'qtbase'
+          cache: true
+          cache-key-prefix: 'cadence-qtbase-store-probe'
+
+      - name: Verify exact source hashes and run only the nine QtCore storage/XML scenarios
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/library-store-probe/Run-StoreProbe.ps1" `
+            -SourcePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/library-store-probe" `
+            -QtPath $env:QT_ROOT_DIR `
+            -OutputDirectory "$env:RUNNER_TEMP/library-store-probe-results"
+
+      - name: Print bounded source/runtime evidence and logs even after failure
+        if: always()
+        run: |
+          $root=Join-Path $env:RUNNER_TEMP 'library-store-probe-results'
+          $budget=262144L
+          if(Test-Path -LiteralPath $root -PathType Container){
+            $files=@(Get-ChildItem -LiteralPath $root -File | Where-Object { -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) -and $_.Extension -in @('.json','.log') } |
+              Sort-Object @{Expression={if($_.Extension -eq '.json'){0}else{1}}},Name | Select-Object -First 20)
+            foreach($file in $files){
+              $limit=[Math]::Min(32768L,$budget)
+              if($limit -le 0){break}
+              $stream=[IO.File]::OpenRead($file.FullName)
+              try{
+                [void]$stream.Seek([Math]::Max(0L,$stream.Length-$limit),[IO.SeekOrigin]::Begin)
+                $bytes=[byte[]]::new([int][Math]::Min($limit,$stream.Length));$count=$stream.Read($bytes,0,$bytes.Length)
+                $text=[Text.Encoding]::UTF8.GetString($bytes,0,$count)
+              }finally{$stream.Dispose()}
+              Write-Host 'CADENCE_STORE_PROBE_EVIDENCE_BEGIN'
+              Write-Host ([ordered]@{path=$file.Name;file_bytes=$file.Length;printed_bytes=$count;tail_only=$file.Length -gt $count;text=$text}|ConvertTo-Json -Depth 4 -Compress)
+              Write-Host 'CADENCE_STORE_PROBE_EVIDENCE_END'
+              $budget-=$count
+            }
+          }else{Write-Host 'Store probe did not create results; no runtime success inferred.'}
+
+      - name: Retain source verification, compiler/runtime logs and diagnostic summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-library-store-probe-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/library-store-probe-results/**
+            ${{ runner.temp }}/library-store-diagnostic-summary.json
+          retention-days: 14
+          if-no-files-found: warn

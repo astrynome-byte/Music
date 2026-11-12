@@ -1,1 +1,2 @@
-IyBQcmVzZXJ2ZSBleGFjdCBieXRlcyBvZiB0aGUgcHJvZHVjdGlvbiBzb3VyY2Ugc25hcHNob3RzIGFuZCBwcm9iZXMgb24gV2luZG93cy4KKiAtdGV4dAo=
+# Preserve exact bytes of the production source snapshots and probes on Windows.
+* -text

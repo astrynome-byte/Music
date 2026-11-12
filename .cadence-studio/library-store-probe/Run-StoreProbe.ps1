@@ -1,1 +1,137 @@
-IyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTMuMC1vbmx5CltDbWRsZXRCaW5kaW5nKCldCnBhcmFtKAogICAgW1BhcmFtZXRlcihNYW5kYXRvcnkpXVtzdHJpbmddICRTb3VyY2VQYXRoLAogICAgW1BhcmFtZXRlcihNYW5kYXRvcnkpXVtzdHJpbmddICRRdFBhdGgsCiAgICBbUGFyYW1ldGVyKE1hbmRhdG9yeSldW3N0cmluZ10gJE91dHB1dERpcmVjdG9yeQopCiRFcnJvckFjdGlvblByZWZlcmVuY2UgPSAnU3RvcCcKU2V0LVN0cmljdE1vZGUgLVZlcnNpb24gTGF0ZXN0CmlmICgtbm90IFtPcGVyYXRpbmdTeXN0ZW1dOjpJc1dpbmRvd3MoKSAtb3IKICAgIFtSdW50aW1lLkludGVyb3BTZXJ2aWNlcy5SdW50aW1lSW5mb3JtYXRpb25dOjpPU0FyY2hpdGVjdHVyZSAtbmUgW1J1bnRpbWUuSW50ZXJvcFNlcnZpY2VzLkFyY2hpdGVjdHVyZV06Olg2NCAtb3IKICAgICRlbnY6T1MgLW5lICdXaW5kb3dzX05UJyAtb3IgLW5vdCBbRW52aXJvbm1lbnRdOjpJczY0Qml0UHJvY2VzcyAtb3IKICAgICRlbnY6R0lUSFVCX0FDVElPTlMgLW5lICd0cnVlJyAtb3IgJGVudjpDSSAtbmUgJ3RydWUnIC1vciAkZW52OlJVTk5FUl9FTlZJUk9OTUVOVCAtbmUgJ2dpdGh1Yi1ob3N0ZWQnKSB7CiAgICB0aHJvdyAnVGhpcyBwcm9iZSByZXF1aXJlcyBkaXNwb3NhYmxlIGhvc3RlZCBXaW5kb3dzIHg2NCBDSS4nCn0KJFNvdXJjZVBhdGggPSBbSU8uUGF0aF06OkdldEZ1bGxQYXRoKCRTb3VyY2VQYXRoKQokUXRQYXRoID0gW0lPLlBhdGhdOjpHZXRGdWxsUGF0aCgkUXRQYXRoKQokT3V0cHV0RGlyZWN0b3J5ID0gW0lPLlBhdGhdOjpHZXRGdWxsUGF0aCgkT3V0cHV0RGlyZWN0b3J5KQppZiAoLW5vdCAkZW52OlJVTk5FUl9URU1QKSB7IHRocm93ICdSVU5ORVJfVEVNUCBpcyByZXF1aXJlZC4nIH0KJHRlbXBvcmFyeVJvb3QgPSBbSU8uUGF0aF06OkdldEZ1bGxQYXRoKCRlbnY6UlVOTkVSX1RFTVApLlRyaW1FbmQoJ1wnLCcvJykgKyBbSU8uUGF0aF06OkRpcmVjdG9yeVNlcGFyYXRvckNoYXIKaWYgKC1ub3QgJE91dHB1dERpcmVjdG9yeS5TdGFydHNXaXRoKCR0ZW1wb3JhcnlSb290LFtTdHJpbmdDb21wYXJpc29uXTo6T3JkaW5hbElnbm9yZUNhc2UpIC1vciAoVGVzdC1QYXRoIC1MaXRlcmFsUGF0aCAkT3V0cHV0RGlyZWN0b3J5KSkgewogICAgdGhyb3cgJ091dHB1dERpcmVjdG9yeSBtdXN0IGJlIG5ldyBhbmQgc3RyaWN0bHkgYmVsb3cgUlVOTkVSX1RFTVAuJwp9Ck5ldy1JdGVtIC1JdGVtVHlwZSBEaXJlY3RvcnkgLVBhdGggJE91dHB1dERpcmVjdG9yeSB8IE91dC1OdWxsCiRyZXBvcnQgPSBbb3JkZXJlZF1AewogICAgc2NoZW1hX3ZlcnNpb249MTtzdGF0dXM9J3BlbmRpbmcnO3Bhc3NlZD0kZmFsc2U7c291cmNlX3BhdGg9JFNvdXJjZVBhdGg7cXRfcGF0aD0kUXRQYXRoCiAgICBzb3VyY2VfcnVuX2lkPSRlbnY6R0lUSFVCX1JVTl9JRDtkcml2ZXJfY29tbWl0PSRlbnY6R0lUSFVCX1NIQQogICAgc2NvcGU9J0NvbXBpbGUgYW5kIHJ1biBvbmx5IHRoZSByZWFsIFF0Q29yZSBwcm9kdWN0aW9uLXN0b3JlL1hNTC9zbmFwc2hvdCB0ZXN0cycKICAgIHNvdXJjZV9tYW5pZmVzdF92ZXJpZmllZD0kZmFsc2U7ZXhwZWN0ZWRfc2NlbmFyaW9zPTk7cnVudGltZV9zY2VuYXJpb3NfcGFzc2VkPSRudWxsCiAgICBhcHBsaWNhdGlvbl9idWlsdD0kZmFsc2U7YXBwbGljYXRpb25fZXhlY3V0ZWQ9JGZhbHNlO2d1aV90ZXN0ZWQ9JGZhbHNlO211c2ljYWxfZWRpdGluZ190ZXN0ZWQ9JGZhbHNlCiAgICBjdGVzdF9zdGFydGVkPSRmYWxzZTtjb21tYW5kcz1AKCk7ZXJyb3I9JG51bGw7c3RhcnRlZF91dGM9W0RhdGVUaW1lXTo6VXRjTm93LlRvU3RyaW5nKCdvJykKfQpmdW5jdGlvbiBBc3NlcnQtUGxhaW5GaWxlKFtzdHJpbmddICRQYXRoKSB7CiAgICAkaXRlbSA9IEdldC1JdGVtIC1MaXRlcmFsUGF0aCAkUGF0aAogICAgaWYgKCRpdGVtLlBTSXNDb250YWluZXIpIHsgdGhyb3cgIkEgZmlsZSB3YXMgcmVxdWlyZWQ6ICRQYXRoIiB9CiAgICBmb3IgKCRjdXJyZW50PSRpdGVtOyAkbnVsbCAtbmUgJGN1cnJlbnQ7ICRjdXJyZW50PSRjdXJyZW50LlBhcmVudCkgewogICAgICAgIGlmICgkY3VycmVudC5BdHRyaWJ1dGVzIC1iYW5kIFtJTy5GaWxlQXR0cmlidXRlc106OlJlcGFyc2VQb2ludCkgeyB0aHJvdyAiUmVwYXJzZSBwYXRoIHJlZnVzZWQ6ICRQYXRoIiB9CiAgICAgICAgaWYgKCRjdXJyZW50IC1pcyBbSU8uRmlsZUluZm9dKSB7ICRjdXJyZW50PSRjdXJyZW50LkRpcmVjdG9yeTsgaWYgKCRudWxsIC1lcSAkY3VycmVudCkgeyBicmVhayB9IH0KICAgICAgICBpZiAoJGN1cnJlbnQuQXR0cmlidXRlcyAtYmFuZCBbSU8uRmlsZUF0dHJpYnV0ZXNdOjpSZXBhcnNlUG9pbnQpIHsgdGhyb3cgIlJlcGFyc2UgYW5jZXN0b3IgcmVmdXNlZDogJFBhdGgiIH0KICAgIH0KfQpmdW5jdGlvbiBJbnZva2UtUHJvYmVDb21tYW5kKFtzdHJpbmddICROYW1lLCBbc3RyaW5nXSAkRXhlY3V0YWJsZSwgW3N0cmluZ1tdXSAkQXJndW1lbnRzLCBbaW50XSAkVGltZW91dE1pbGxpc2Vjb25kcykgewogICAgJHN0ZG91dFBhdGg9Sm9pbi1QYXRoICRPdXRwdXREaXJlY3RvcnkgKCROYW1lKycuc3Rkb3V0LmxvZycpCiAgICAkc3RkZXJyUGF0aD1Kb2luLVBhdGggJE91dHB1dERpcmVjdG9yeSAoJE5hbWUrJy5zdGRlcnIubG9nJykKICAgICRyZWNvcmQ9W29yZGVyZWRdQHtuYW1lPSROYW1lO2V4ZWN1dGFibGU9JEV4ZWN1dGFibGU7YXJndW1lbnRzPSRBcmd1bWVudHM7ZXhpdF9jb2RlPSRudWxsO3RpbWVkX291dD0kZmFsc2U7c3Rkb3V0X3BhdGg9JHN0ZG91dFBhdGg7c3RkZXJyX3BhdGg9JHN0ZGVyclBhdGh9CiAgICAkcmVwb3J0LmNvbW1hbmRzICs9ICRyZWNvcmQKICAgICRpbmZvPVtEaWFnbm9zdGljcy5Qcm9jZXNzU3RhcnRJbmZvXTo6bmV3KCkKICAgICRpbmZvLkZpbGVOYW1lPSRFeGVjdXRhYmxlOyRpbmZvLldvcmtpbmdEaXJlY3Rvcnk9JE91dHB1dERpcmVjdG9yeTskaW5mby5Vc2VTaGVsbEV4ZWN1dGU9JGZhbHNlCiAgICAkaW5mby5SZWRpcmVjdFN0YW5kYXJkT3V0cHV0PSR0cnVlOyRpbmZvLlJlZGlyZWN0U3RhbmRhcmRFcnJvcj0kdHJ1ZQogICAgZm9yZWFjaCgkYXJndW1lbnQgaW4gJEFyZ3VtZW50cyl7JGluZm8uQXJndW1lbnRMaXN0LkFkZCgkYXJndW1lbnQpfQogICAgJHByb2Nlc3M9W0RpYWdub3N0aWNzLlByb2Nlc3NdOjpuZXcoKTskcHJvY2Vzcy5TdGFydEluZm89JGluZm8KICAgIHRyeSB7CiAgICAgICAgaWYoLW5vdCAkcHJvY2Vzcy5TdGFydCgpKXt0aHJvdyAiQ291bGQgbm90IHN0YXJ0ICROYW1lLiJ9CiAgICAgICAgaWYoJE5hbWUgLWNlcSAnY3Rlc3QnKXskcmVwb3J0LmN0ZXN0X3N0YXJ0ZWQ9JHRydWV9CiAgICAgICAgJG91dD0kcHJvY2Vzcy5TdGFuZGFyZE91dHB1dC5SZWFkVG9FbmRBc3luYygpOyRlcnI9JHByb2Nlc3MuU3RhbmRhcmRFcnJvci5SZWFkVG9FbmRBc3luYygpCiAgICAgICAgaWYoLW5vdCAkcHJvY2Vzcy5XYWl0Rm9yRXhpdCgkVGltZW91dE1pbGxpc2Vjb25kcykpewogICAgICAgICAgICAkcmVjb3JkLnRpbWVkX291dD0kdHJ1ZTskcHJvY2Vzcy5LaWxsKCR0cnVlKQogICAgICAgICAgICBpZigtbm90ICRwcm9jZXNzLldhaXRGb3JFeGl0KDUwMDApKXt0aHJvdyAiT3duZWQgJE5hbWUgcHJvY2VzcyBkaWQgbm90IHN0b3AgYWZ0ZXIgaXRzIHRpbWVvdXQuIn0KICAgICAgICB9CiAgICAgICAgW0lPLkZpbGVdOjpXcml0ZUFsbFRleHQoJHN0ZG91dFBhdGgsJG91dC5HZXRBd2FpdGVyKCkuR2V0UmVzdWx0KCkpCiAgICAgICAgW0lPLkZpbGVdOjpXcml0ZUFsbFRleHQoJHN0ZGVyclBhdGgsJGVyci5HZXRBd2FpdGVyKCkuR2V0UmVzdWx0KCkpCiAgICAgICAgJHJlY29yZC5leGl0X2NvZGU9JHByb2Nlc3MuRXhpdENvZGUKICAgICAgICBXcml0ZS1Ib3N0ICgiezB9OiBleGl0IHsxfSwgdGltZW91dD17Mn0iIC1mICROYW1lLCRyZWNvcmQuZXhpdF9jb2RlLCRyZWNvcmQudGltZWRfb3V0KQogICAgICAgIGlmKCRyZWNvcmQudGltZWRfb3V0IC1vciAkcmVjb3JkLmV4aXRfY29kZSAtbmUgMCl7dGhyb3cgIiROYW1lIGZhaWxlZDsgaW5zcGVjdCBpdHMgcmV0YWluZWQgc3Rkb3V0L3N0ZGVyci4ifQogICAgfSBmaW5hbGx5IHsKICAgICAgICB0cnkgeyBpZigkcHJvY2Vzcy5JZCAtYW5kIC1ub3QgJHByb2Nlc3MuSGFzRXhpdGVkKXskcHJvY2Vzcy5LaWxsKCR0cnVlKTtbdm9pZF0kcHJvY2Vzcy5XYWl0Rm9yRXhpdCg1MDAwKX0gfSBjYXRjaCB7fQogICAgICAgICRwcm9jZXNzLkRpc3Bvc2UoKQogICAgfQp9CiRvcmlnaW5hbFBhdGg9JGVudjpQQVRICnRyeSB7CiAgICAkZXhwZWN0ZWQ9QCgKICAgICAgICAnc3JjL3Byb2plY3QvaW50ZXJuYWwvbG9jYWxzY29yZWxpYnJhcnlzdG9yZS5jcHAnLAogICAgICAgICdzcmMvcHJvamVjdC9pbnRlcm5hbC9sb2NhbHNjb3JlbGlicmFyeXN0b3JlLmgnLAogICAgICAgICdzcmMvcHJvamVjdC9pbnRlcm5hbC9sb2NhbHNjb3JleG1sY2hlY2suaCcsCiAgICAgICAgJ3NyYy9wcm9qZWN0L2ludGVybmFsL2xvY2FsY2F0YWxvZ3NuYXBzaG90LmgnLAogICAgICAgICd0ZXN0L2NhZGVuY2UvbG9jYWxfbGlicmFyeV9zdG9yZS9DTWFrZUxpc3RzLnR4dCcsCiAgICAgICAgJ3Rlc3QvY2FkZW5jZS9sb2NhbF9saWJyYXJ5X3N0b3JlL3N0b3JlX3Rlc3RzLmNwcCcKICAgICkKICAgICRtYW5pZmVzdFBhdGg9Sm9pbi1QYXRoICRTb3VyY2VQYXRoICdzb3VyY2UtbWFuaWZlc3QuanNvbicKICAgIEFzc2VydC1QbGFpbkZpbGUgJG1hbmlmZXN0UGF0aAogICAgaWYoKEdldC1JdGVtIC1MaXRlcmFsUGF0aCAkbWFuaWZlc3RQYXRoKS5MZW5ndGggLWd0IDY1NTM2KXt0aHJvdyAnU291cmNlIG1hbmlmZXN0IGV4Y2VlZHMgNjQgS2lCLid9CiAgICAkbWFuaWZlc3Q9R2V0LUNvbnRlbnQgLUxpdGVyYWxQYXRoICRtYW5pZmVzdFBhdGggLVJhd3xDb252ZXJ0RnJvbS1Kc29uIC1Bc0hhc2h0YWJsZQogICAgaWYoJG1hbmlmZXN0LnNjaGVtYV92ZXJzaW9uIC1uZSAxIC1vciAkbWFuaWZlc3QuZXhwZWN0ZWRfc2NlbmFyaW9zIC1uZSA5IC1vciBAKCRtYW5pZmVzdC5maWxlcykuQ291bnQgLW5lICRleHBlY3RlZC5Db3VudCl7dGhyb3cgJ0V4cGVjdGVkIHNjaGVtYTEgbWFuaWZlc3QgZm9yIGV4YWN0bHkgc2l4IHNvdXJjZXMgYW5kIG5pbmUgc2NlbmFyaW9zLid9CiAgICAkc2Vlbj1bQ29sbGVjdGlvbnMuR2VuZXJpYy5IYXNoU2V0W3N0cmluZ11dOjpuZXcoW1N0cmluZ0NvbXBhcmVyXTo6T3JkaW5hbCkKICAgICR2ZXJpZmllZD1AKCkKICAgIGZvcmVhY2goJGVudHJ5IGluICRtYW5pZmVzdC5maWxlcyl7CiAgICAgICAgaWYoJGVudHJ5LnBhdGggLWlzbm90IFtzdHJpbmddIC1vciAkZW50cnkucGF0aCAtY25vdGluICRleHBlY3RlZCAtb3IgLW5vdCAkc2Vlbi5BZGQoJGVudHJ5LnBhdGgpIC1vcgogICAgICAgICAgICAkZW50cnkuc2hhMjU2IC1pc25vdCBbc3RyaW5nXSAtb3IgJGVudHJ5LnNoYTI1NiAtY25vdG1hdGNoICdeWzAtOWEtZl17NjR9JCcgLW9yCiAgICAgICAgICAgICgkZW50cnkuYnl0ZXMgLWlzbm90IFtsb25nXSAtYW5kICRlbnRyeS5ieXRlcyAtaXNub3QgW2ludF0pKXt0aHJvdyAnSW52YWxpZCwgdW5leHBlY3RlZCBvciBkdXBsaWNhdGUgc291cmNlIG1hbmlmZXN0IGVudHJ5Lid9CiAgICAgICAgaWYoJGVudHJ5LmJ5dGVzIC1sZSAwIC1vciAkZW50cnkuYnl0ZXMgLWd0IDEwNDg1NzYpe3Rocm93ICdTb3VyY2UgbWFuaWZlc3Qgc2l6ZSBpcyBvdXRzaWRlIHRoZSBwZXJtaXR0ZWQgcmFuZ2UuJ30KICAgICAgICAkZmlsZT1Kb2luLVBhdGggJFNvdXJjZVBhdGggJGVudHJ5LnBhdGgKICAgICAgICBBc3NlcnQtUGxhaW5GaWxlICRmaWxlCiAgICAgICAgJGl0ZW09R2V0LUl0ZW0gLUxpdGVyYWxQYXRoICRmaWxlCiAgICAgICAgJGhhc2g9KEdldC1GaWxlSGFzaCAtTGl0ZXJhbFBhdGggJGZpbGUgLUFsZ29yaXRobSBTSEEyNTYpLkhhc2guVG9Mb3dlckludmFyaWFudCgpCiAgICAgICAgaWYoJGl0ZW0uTGVuZ3RoIC1uZSAkZW50cnkuYnl0ZXMgLW9yICRoYXNoIC1jbmUgJGVudHJ5LnNoYTI1Nil7dGhyb3cgIlNvdXJjZSBieXRlcy9TSEEtMjU2IG1pc21hdGNoIGJlZm9yZSBjb21waWxhdGlvbjogJCgkZW50cnkucGF0aCkifQogICAgICAgICR2ZXJpZmllZCArPSBbb3JkZXJlZF1Ae3BhdGg9JGVudHJ5LnBhdGg7Ynl0ZXM9JGl0ZW0uTGVuZ3RoO3NoYTI1Nj0kaGFzaH0KICAgIH0KICAgICR2ZXJpZmljYXRpb249W29yZGVyZWRdQHtzY2hlbWFfdmVyc2lvbj0xO3ZlcmlmaWVkPSR0cnVlO21hbmlmZXN0X3NoYTI1Nj0oR2V0LUZpbGVIYXNoIC1MaXRlcmFsUGF0aCAkbWFuaWZlc3RQYXRoIC1BbGdvcml0aG0gU0hBMjU2KS5IYXNoLlRvTG93ZXJJbnZhcmlhbnQoKTtmaWxlcz0kdmVyaWZpZWR9CiAgICAkdmVyaWZpY2F0aW9ufENvbnZlcnRUby1Kc29uIC1EZXB0aCA4fFNldC1Db250ZW50IC1MaXRlcmFsUGF0aCAoSm9pbi1QYXRoICRPdXRwdXREaXJlY3RvcnkgJ3NvdXJjZS12ZXJpZmljYXRpb24uanNvbicpIC1FbmNvZGluZyB1dGY4CiAgICBbSU8uRmlsZV06OkNvcHkoJG1hbmlmZXN0UGF0aCwoSm9pbi1QYXRoICRPdXRwdXREaXJlY3RvcnkgJ3NvdXJjZS1tYW5pZmVzdC5qc29uJyksJGZhbHNlKQogICAgJHJlcG9ydC5zb3VyY2VfbWFuaWZlc3RfdmVyaWZpZWQ9JHRydWUKICAgIGlmKCRlbnY6VlNDTURfQVJHX1RHVF9BUkNIIC1uZSAneDY0JyAtb3IgJGVudjpWU0NNRF9WRVIgLW5vdG1hdGNoICdeMTdcLicgLW9yICRlbnY6V2luZG93c1NES1ZlcnNpb24uVHJpbUVuZCgnXCcpIC1uZSAnMTAuMC4yNjEwMC4wJyl7dGhyb3cgJ01TVkMyMDIyIHg2NCBhbmQgU0RLMTAuMC4yNjEwMC4wIGFyZSByZXF1aXJlZC4nfQogICAgJGNtYWtlPShHZXQtQ29tbWFuZCBjbWFrZSAtQ29tbWFuZFR5cGUgQXBwbGljYXRpb24pLlNvdXJjZQogICAgJG5pbmphPShHZXQtQ29tbWFuZCBuaW5qYSAtQ29tbWFuZFR5cGUgQXBwbGljYXRpb24pLlNvdXJjZQogICAgJGNsPShHZXQtQ29tbWFuZCBjbCAtQ29tbWFuZFR5cGUgQXBwbGljYXRpb24pLlNvdXJjZQogICAgJHJlcG9ydC50b29sY2hhaW49W29yZGVyZWRdQHtjbWFrZT0kY21ha2U7bmluamE9JG5pbmphO2NsPSRjbDt2aXN1YWxfc3R1ZGlvPSRlbnY6VlNDTURfVkVSO3dpbmRvd3Nfc2RrPSRlbnY6V2luZG93c1NES1ZlcnNpb259CiAgICAkcW1ha2U9Sm9pbi1QYXRoICRRdFBhdGggJ2Jpbi9xbWFrZS5leGUnCiAgICBmb3JlYWNoKCRmaWxlIGluIEAoJHFtYWtlLChKb2luLVBhdGggJFF0UGF0aCAnYmluL1F0NkNvcmUuZGxsJyksKEpvaW4tUGF0aCAkUXRQYXRoICdsaWIvY21ha2UvUXQ2L1F0NkNvbmZpZy5jbWFrZScpKSl7aWYoLW5vdChUZXN0LVBhdGggLUxpdGVyYWxQYXRoICRmaWxlIC1QYXRoVHlwZSBMZWFmKSl7dGhyb3cgJ1RoZSBzdXBwbGllZCBRdCBiYXNlIGRldmVsb3BtZW50IGtpdCBpcyBpbmNvbXBsZXRlLid9fQogICAgJGVudjpQQVRIPShKb2luLVBhdGggJFF0UGF0aCAnYmluJykrJzsnKyRlbnY6UEFUSAogICAgSW52b2tlLVByb2JlQ29tbWFuZCAncXQtdmVyc2lvbicgJHFtYWtlIEAoJy1xdWVyeScsJ1FUX1ZFUlNJT04nKSAzMDAwMAogICAgaWYoKFtJTy5GaWxlXTo6UmVhZEFsbFRleHQoKEpvaW4tUGF0aCAkT3V0cHV0RGlyZWN0b3J5ICdxdC12ZXJzaW9uLnN0ZG91dC5sb2cnKSkpLlRyaW0oKSAtY25lICc2LjEwLjInKXt0aHJvdyAnVGhlIGFjdHVhbCBRdCBraXQgbXVzdCByZXBvcnQgZXhhY3RseTYuMTAuMi4nfQogICAgSW52b2tlLVByb2JlQ29tbWFuZCAnY21ha2UtdmVyc2lvbicgJGNtYWtlIEAoJy0tdmVyc2lvbicpIDMwMDAwCiAgICBJbnZva2UtUHJvYmVDb21tYW5kICduaW5qYS12ZXJzaW9uJyAkbmluamEgQCgnLS12ZXJzaW9uJykgMzAwMDAKICAgICRidWlsZD1Kb2luLVBhdGggJE91dHB1dERpcmVjdG9yeSAnYnVpbGQnCiAgICBJbnZva2UtUHJvYmVDb21tYW5kICdjb25maWd1cmUnICRjbWFrZSBAKCctUycsKEpvaW4tUGF0aCAkU291cmNlUGF0aCAndGVzdC9jYWRlbmNlL2xvY2FsX2xpYnJhcnlfc3RvcmUnKSwnLUInLCRidWlsZCwnLUcnLCdOaW5qYScsIi1EQ01BS0VfQ1hYX0NPTVBJTEVSPSRjbCIsJy1EQ01BS0VfQlVJTERfVFlQRT1SZWxlYXNlJywiLURDTUFLRV9QUkVGSVhfUEFUSD0kUXRQYXRoIiwiLURRdDZfRElSPSRRdFBhdGgvbGliL2NtYWtlL1F0NiIsIi1EUXQ2Q29yZV9ESVI9JFF0UGF0aC9saWIvY21ha2UvUXQ2Q29yZSIsJy1EQ01BS0VfQ1hYX0ZMQUdTPS91dGYtOCcpIDEyMDAwMAogICAgSW52b2tlLVByb2JlQ29tbWFuZCAnYnVpbGQnICRjbWFrZSBAKCctLWJ1aWxkJywkYnVpbGQsJy0tdGFyZ2V0JywnbG9jYWxfbGlicmFyeV9zdG9yZV90ZXN0cycsJy0tcGFyYWxsZWwnLCcyJykgMTgwMDAwCiAgICAkYmluYXJ5PUpvaW4tUGF0aCAkYnVpbGQgJ2xvY2FsX2xpYnJhcnlfc3RvcmVfdGVzdHMuZXhlJwogICAgaWYoLW5vdChUZXN0LVBhdGggLUxpdGVyYWxQYXRoICRiaW5hcnkgLVBhdGhUeXBlIExlYWYpKXt0aHJvdyAnVGhlIHJlYWwgc3RhbmRhbG9uZSB0ZXN0IGJpbmFyeSB3YXMgbm90IHByb2R1Y2VkLid9CiAgICAkcmVwb3J0LnRlc3RfZXhlY3V0YWJsZV9zaGEyNTY9KEdldC1GaWxlSGFzaCAtTGl0ZXJhbFBhdGggJGJpbmFyeSAtQWxnb3JpdGhtIFNIQTI1NikuSGFzaC5Ub0xvd2VySW52YXJpYW50KCkKICAgICRjdGVzdD1Kb2luLVBhdGggKFNwbGl0LVBhdGggLVBhcmVudCAkY21ha2UpICdjdGVzdC5leGUnCiAgICBJbnZva2UtUHJvYmVDb21tYW5kICdjdGVzdCcgJGN0ZXN0IEAoJy0tdGVzdC1kaXInLCRidWlsZCwnLS12ZXJib3NlJywnLS1vdXRwdXQtb24tZmFpbHVyZScsJy0tbm8tdGVzdHM9ZXJyb3InLCctLXRpbWVvdXQnLCc2MCcsJy1SJywnXmxvY2FsX2xpYnJhcnlfc3RvcmUkJykgMTIwMDAwCiAgICAkcnVudGltZT1bSU8uRmlsZV06OlJlYWRBbGxUZXh0KChKb2luLVBhdGggJE91dHB1dERpcmVjdG9yeSAnY3Rlc3Quc3Rkb3V0LmxvZycpKQogICAgaWYoJHJ1bnRpbWUgLW5vdG1hdGNoICcoP20pXig/OlxkKzpccyopPzkvOSBwcm9kdWN0aW9uLXN0b3JlIHJ1bnRpbWUgc2NlbmFyaW9zIHBhc3NlZCBcKFF0IDZcLjEwXC4yXClcLlxzKiQnIC1vcgogICAgICAgIFtyZWdleF06Ok1hdGNoZXMoJHJ1bnRpbWUsJyg/bSleKD86XGQrOlxzKik/UEFTUzonKS5Db3VudCAtbmUgOSAtb3IgJHJ1bnRpbWUgLW1hdGNoICcoP20pXig/OlxkKzpccyopP0ZBSUw6Jykge3Rocm93ICdDVGVzdCBkaWQgbm90IHJlcG9ydCB0aGUgYWN0dWFsIG5pbmUgcHJvZHVjdGlvbiBydW50aW1lIHNjZW5hcmlvcyBwYXNzaW5nIG9uIFF0Ni4xMC4yLid9CiAgICAjIFJlLXJlYWQgZXZlcnkgbWFuaWZlc3QgZW50cnkgYWZ0ZXIgY29tcGlsYXRpb24vZXhlY3V0aW9uIGFzIHdlbGwuCiAgICBmb3JlYWNoKCRlbnRyeSBpbiAkbWFuaWZlc3QuZmlsZXMpe2lmKChHZXQtRmlsZUhhc2ggLUxpdGVyYWxQYXRoIChKb2luLVBhdGggJFNvdXJjZVBhdGggJGVudHJ5LnBhdGgpIC1BbGdvcml0aG0gU0hBMjU2KS5IYXNoLlRvTG93ZXJJbnZhcmlhbnQoKSAtY25lICRlbnRyeS5zaGEyNTYpe3Rocm93ICdBIHByb2R1Y3Rpb24gc291cmNlIGNoYW5nZWQgZHVyaW5nIHRoZSBwcm9iZS4nfX0KICAgICRyZXBvcnQucnVudGltZV9zY2VuYXJpb3NfcGFzc2VkPTk7JHJlcG9ydC5wYXNzZWQ9JHRydWU7JHJlcG9ydC5zdGF0dXM9J25pbmVfcHJvZHVjdGlvbl9ydW50aW1lX3NjZW5hcmlvc19wYXNzZWQnCn0gY2F0Y2ggewogICAgJHJlcG9ydC5zdGF0dXM9J2ZhaWxlZCc7JHJlcG9ydC5lcnJvcj0kXy5FeGNlcHRpb24uTWVzc2FnZQp9IGZpbmFsbHkgewogICAgJGVudjpQQVRIPSRvcmlnaW5hbFBhdGgKICAgICRyZXBvcnQuZmluaXNoZWRfdXRjPVtEYXRlVGltZV06OlV0Y05vdy5Ub1N0cmluZygnbycpCiAgICAkcmVwb3J0fENvbnZlcnRUby1Kc29uIC1EZXB0aCAxMnxTZXQtQ29udGVudCAtTGl0ZXJhbFBhdGggKEpvaW4tUGF0aCAkT3V0cHV0RGlyZWN0b3J5ICdzdG9yZS1wcm9iZS1yZXBvcnQuanNvbicpIC1FbmNvZGluZyB1dGY4CiAgICBXcml0ZS1Ib3N0ICgkcmVwb3J0fENvbnZlcnRUby1Kc29uIC1EZXB0aCAxMiAtQ29tcHJlc3MpCn0KaWYoLW5vdCAkcmVwb3J0LnBhc3NlZCl7dGhyb3cgJ1RoZSByZWFsIFdpbmRvd3MgUXRDb3JlIHN0b3JlIHByb2JlIGRpZCBub3QgcGFzczsgaW5zcGVjdCByZXRhaW5lZCBldmlkZW5jZS4nfQo=
+# SPDX-License-Identifier: GPL-3.0-only
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory)][string] $SourcePath,
+    [Parameter(Mandatory)][string] $QtPath,
+    [Parameter(Mandatory)][string] $OutputDirectory
+)
+$ErrorActionPreference = 'Stop'
+Set-StrictMode -Version Latest
+if (-not [OperatingSystem]::IsWindows() -or
+    [Runtime.InteropServices.RuntimeInformation]::OSArchitecture -ne [Runtime.InteropServices.Architecture]::X64 -or
+    $env:OS -ne 'Windows_NT' -or -not [Environment]::Is64BitProcess -or
+    $env:GITHUB_ACTIONS -ne 'true' -or $env:CI -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') {
+    throw 'This probe requires disposable hosted Windows x64 CI.'
+}
+$SourcePath = [IO.Path]::GetFullPath($SourcePath)
+$QtPath = [IO.Path]::GetFullPath($QtPath)
+$OutputDirectory = [IO.Path]::GetFullPath($OutputDirectory)
+if (-not $env:RUNNER_TEMP) { throw 'RUNNER_TEMP is required.' }
+$temporaryRoot = [IO.Path]::GetFullPath($env:RUNNER_TEMP).TrimEnd('\','/') + [IO.Path]::DirectorySeparatorChar
+if (-not $OutputDirectory.StartsWith($temporaryRoot,[StringComparison]::OrdinalIgnoreCase) -or (Test-Path -LiteralPath $OutputDirectory)) {
+    throw 'OutputDirectory must be new and strictly below RUNNER_TEMP.'
+}
+New-Item -ItemType Directory -Path $OutputDirectory | Out-Null
+$report = [ordered]@{
+    schema_version=1;status='pending';passed=$false;source_path=$SourcePath;qt_path=$QtPath
+    source_run_id=$env:GITHUB_RUN_ID;driver_commit=$env:GITHUB_SHA
+    scope='Compile and run only the real QtCore production-store/XML/snapshot tests'
+    source_manifest_verified=$false;expected_scenarios=9;runtime_scenarios_passed=$null
+    application_built=$false;application_executed=$false;gui_tested=$false;musical_editing_tested=$false
+    ctest_started=$false;commands=@();error=$null;started_utc=[DateTime]::UtcNow.ToString('o')
+}
+function Assert-PlainFile([string] $Path) {
+    $item = Get-Item -LiteralPath $Path
+    if ($item.PSIsContainer) { throw "A file was required: $Path" }
+    for ($current=$item; $null -ne $current; $current=$current.Parent) {
+        if ($current.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "Reparse path refused: $Path" }
+        if ($current -is [IO.FileInfo]) { $current=$current.Directory; if ($null -eq $current) { break } }
+        if ($current.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "Reparse ancestor refused: $Path" }
+    }
+}
+function Invoke-ProbeCommand([string] $Name, [string] $Executable, [string[]] $Arguments, [int] $TimeoutMilliseconds) {
+    $stdoutPath=Join-Path $OutputDirectory ($Name+'.stdout.log')
+    $stderrPath=Join-Path $OutputDirectory ($Name+'.stderr.log')
+    $record=[ordered]@{name=$Name;executable=$Executable;arguments=$Arguments;exit_code=$null;timed_out=$false;stdout_path=$stdoutPath;stderr_path=$stderrPath}
+    $report.commands += $record
+    $info=[Diagnostics.ProcessStartInfo]::new()
+    $info.FileName=$Executable;$info.WorkingDirectory=$OutputDirectory;$info.UseShellExecute=$false
+    $info.RedirectStandardOutput=$true;$info.RedirectStandardError=$true
+    foreach($argument in $Arguments){$info.ArgumentList.Add($argument)}
+    $process=[Diagnostics.Process]::new();$process.StartInfo=$info
+    try {
+        if(-not $process.Start()){throw "Could not start $Name."}
+        if($Name -ceq 'ctest'){$report.ctest_started=$true}
+        $out=$process.StandardOutput.ReadToEndAsync();$err=$process.StandardError.ReadToEndAsync()
+        if(-not $process.WaitForExit($TimeoutMilliseconds)){
+            $record.timed_out=$true;$process.Kill($true)
+            if(-not $process.WaitForExit(5000)){throw "Owned $Name process did not stop after its timeout."}
+        }
+        [IO.File]::WriteAllText($stdoutPath,$out.GetAwaiter().GetResult())
+        [IO.File]::WriteAllText($stderrPath,$err.GetAwaiter().GetResult())
+        $record.exit_code=$process.ExitCode
+        Write-Host ("{0}: exit {1}, timeout={2}" -f $Name,$record.exit_code,$record.timed_out)
+        if($record.timed_out -or $record.exit_code -ne 0){throw "$Name failed; inspect its retained stdout/stderr."}
+    } finally {
+        try { if($process.Id -and -not $process.HasExited){$process.Kill($true);[void]$process.WaitForExit(5000)} } catch {}
+        $process.Dispose()
+    }
+}
+$originalPath=$env:PATH
+try {
+    $expected=@(
+        'src/project/internal/localscorelibrarystore.cpp',
+        'src/project/internal/localscorelibrarystore.h',
+        'src/project/internal/localscorexmlcheck.h',
+        'src/project/internal/localcatalogsnapshot.h',
+        'test/cadence/local_library_store/CMakeLists.txt',
+        'test/cadence/local_library_store/store_tests.cpp'
+    )
+    $manifestPath=Join-Path $SourcePath 'source-manifest.json'
+    Assert-PlainFile $manifestPath
+    if((Get-Item -LiteralPath $manifestPath).Length -gt 65536){throw 'Source manifest exceeds 64 KiB.'}
+    $manifest=Get-Content -LiteralPath $manifestPath -Raw|ConvertFrom-Json -AsHashtable
+    if($manifest.schema_version -ne 1 -or $manifest.expected_scenarios -ne 9 -or @($manifest.files).Count -ne $expected.Count){throw 'Expected schema1 manifest for exactly six sources and nine scenarios.'}
+    $seen=[Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+    $verified=@()
+    foreach($entry in $manifest.files){
+        if($entry.path -isnot [string] -or $entry.path -cnotin $expected -or -not $seen.Add($entry.path) -or
+            $entry.sha256 -isnot [string] -or $entry.sha256 -cnotmatch '^[0-9a-f]{64}$' -or
+            ($entry.bytes -isnot [long] -and $entry.bytes -isnot [int])){throw 'Invalid, unexpected or duplicate source manifest entry.'}
+        if($entry.bytes -le 0 -or $entry.bytes -gt 1048576){throw 'Source manifest size is outside the permitted range.'}
+        $file=Join-Path $SourcePath $entry.path
+        Assert-PlainFile $file
+        $item=Get-Item -LiteralPath $file
+        $hash=(Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant()
+        if($item.Length -ne $entry.bytes -or $hash -cne $entry.sha256){throw "Source bytes/SHA-256 mismatch before compilation: $($entry.path)"}
+        $verified += [ordered]@{path=$entry.path;bytes=$item.Length;sha256=$hash}
+    }
+    $verification=[ordered]@{schema_version=1;verified=$true;manifest_sha256=(Get-FileHash -LiteralPath $manifestPath -Algorithm SHA256).Hash.ToLowerInvariant();files=$verified}
+    $verification|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $OutputDirectory 'source-verification.json') -Encoding utf8
+    [IO.File]::Copy($manifestPath,(Join-Path $OutputDirectory 'source-manifest.json'),$false)
+    $report.source_manifest_verified=$true
+    if($env:VSCMD_ARG_TGT_ARCH -ne 'x64' -or $env:VSCMD_VER -notmatch '^17\.' -or $env:WindowsSDKVersion.TrimEnd('\') -ne '10.0.26100.0'){throw 'MSVC2022 x64 and SDK10.0.26100.0 are required.'}
+    $cmake=(Get-Command cmake -CommandType Application).Source
+    $ninja=(Get-Command ninja -CommandType Application).Source
+    $cl=(Get-Command cl -CommandType Application).Source
+    $report.toolchain=[ordered]@{cmake=$cmake;ninja=$ninja;cl=$cl;visual_studio=$env:VSCMD_VER;windows_sdk=$env:WindowsSDKVersion}
+    $qmake=Join-Path $QtPath 'bin/qmake.exe'
+    foreach($file in @($qmake,(Join-Path $QtPath 'bin/Qt6Core.dll'),(Join-Path $QtPath 'lib/cmake/Qt6/Qt6Config.cmake'))){if(-not(Test-Path -LiteralPath $file -PathType Leaf)){throw 'The supplied Qt base development kit is incomplete.'}}
+    $env:PATH=(Join-Path $QtPath 'bin')+';'+$env:PATH
+    Invoke-ProbeCommand 'qt-version' $qmake @('-query','QT_VERSION') 30000
+    if(([IO.File]::ReadAllText((Join-Path $OutputDirectory 'qt-version.stdout.log'))).Trim() -cne '6.10.2'){throw 'The actual Qt kit must report exactly6.10.2.'}
+    Invoke-ProbeCommand 'cmake-version' $cmake @('--version') 30000
+    Invoke-ProbeCommand 'ninja-version' $ninja @('--version') 30000
+    $build=Join-Path $OutputDirectory 'build'
+    Invoke-ProbeCommand 'configure' $cmake @('-S',(Join-Path $SourcePath 'test/cadence/local_library_store'),'-B',$build,'-G','Ninja',"-DCMAKE_CXX_COMPILER=$cl",'-DCMAKE_BUILD_TYPE=Release',"-DCMAKE_PREFIX_PATH=$QtPath","-DQt6_DIR=$QtPath/lib/cmake/Qt6","-DQt6Core_DIR=$QtPath/lib/cmake/Qt6Core",'-DCMAKE_CXX_FLAGS=/utf-8') 120000
+    Invoke-ProbeCommand 'build' $cmake @('--build',$build,'--target','local_library_store_tests','--parallel','2') 180000
+    $binary=Join-Path $build 'local_library_store_tests.exe'
+    if(-not(Test-Path -LiteralPath $binary -PathType Leaf)){throw 'The real standalone test binary was not produced.'}
+    $report.test_executable_sha256=(Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash.ToLowerInvariant()
+    $ctest=Join-Path (Split-Path -Parent $cmake) 'ctest.exe'
+    Invoke-ProbeCommand 'ctest' $ctest @('--test-dir',$build,'--verbose','--output-on-failure','--no-tests=error','--timeout','60','-R','^local_library_store$') 120000
+    $runtime=[IO.File]::ReadAllText((Join-Path $OutputDirectory 'ctest.stdout.log'))
+    if($runtime -notmatch '(?m)^(?:\d+:\s*)?9/9 production-store runtime scenarios passed \(Qt 6\.10\.2\)\.\s*$' -or
+        [regex]::Matches($runtime,'(?m)^(?:\d+:\s*)?PASS:').Count -ne 9 -or $runtime -match '(?m)^(?:\d+:\s*)?FAIL:') {throw 'CTest did not report the actual nine production runtime scenarios passing on Qt6.10.2.'}
+    # Re-read every manifest entry after compilation/execution as well.
+    foreach($entry in $manifest.files){if((Get-FileHash -LiteralPath (Join-Path $SourcePath $entry.path) -Algorithm SHA256).Hash.ToLowerInvariant() -cne $entry.sha256){throw 'A production source changed during the probe.'}}
+    $report.runtime_scenarios_passed=9;$report.passed=$true;$report.status='nine_production_runtime_scenarios_passed'
+} catch {
+    $report.status='failed';$report.error=$_.Exception.Message
+} finally {
+    $env:PATH=$originalPath
+    $report.finished_utc=[DateTime]::UtcNow.ToString('o')
+    $report|ConvertTo-Json -Depth 12|Set-Content -LiteralPath (Join-Path $OutputDirectory 'store-probe-report.json') -Encoding utf8
+    Write-Host ($report|ConvertTo-Json -Depth 12 -Compress)
+}
+if(-not $report.passed){throw 'The real Windows QtCore store probe did not pass; inspect retained evidence.'}

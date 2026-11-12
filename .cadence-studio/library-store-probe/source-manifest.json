@@ -1,1 +1,41 @@
-ewogICJzY2hlbWFfdmVyc2lvbiI6IDEsCiAgInNjb3BlIjogIkNvbXBpbGUgYW5kIHJ1biB0aGUgYWN0dWFsIGxvY2FsIGxpYnJhcnkgc3RvcmUvWE1ML3NuYXBzaG90IHNvdXJjZXMgd2l0aCBRdENvcmUgb25seTsgbm8gQ2FkZW5jZSBhcHBsaWNhdGlvbiBidWlsZCBvciBHVUkiLAogICJzb3VyY2VfY29tbWl0IjogImMyNTQxMTI4MTE2MDE0ZTUxMjYzMmRhMTY1NmIxNDA4MjdhY2Y0Y2QiLAogICJzb3VyY2VfdHJlZSI6ICIwNjQxNGZjNDZmYmFhZmE0ZjNlYWE1YTZkYzYwODFhY2ZlZThlODViIiwKICAiZXhwZWN0ZWRfc2NlbmFyaW9zIjogOSwKICAicmVxdWlyZWRfcXRfdmVyc2lvbiI6ICI2LjEwLjIiLAogICJndWlfZmFpbHVyZV9hdHRyaWJ1dGlvbl9jb25maXJtZWQiOiBmYWxzZSwKICAiZmlsZXMiOiBbCiAgICB7CiAgICAgICJwYXRoIjogInNyYy9wcm9qZWN0L2ludGVybmFsL2xvY2Fsc2NvcmVsaWJyYXJ5c3RvcmUuY3BwIiwKICAgICAgImJ5dGVzIjogMTEwNzksCiAgICAgICJzaGEyNTYiOiAiNDQ0OWY0YzNmYTdmNzY0NzllMjFkYjNlNzNhNzU3MWQ1ZWM3M2UzNTE1N2I0NjMwMTYxNDFjN2E2ZDE0MDc3NiIKICAgIH0sCiAgICB7CiAgICAgICJwYXRoIjogInNyYy9wcm9qZWN0L2ludGVybmFsL2xvY2Fsc2NvcmVsaWJyYXJ5c3RvcmUuaCIsCiAgICAgICJieXRlcyI6IDEzMzUsCiAgICAgICJzaGEyNTYiOiAiZGY1MDc4YTA1NDM0NTUyMDIyNzgyYzcxMmYxMThlZWRjZDkwZDk1YTgwMzliZDZiZjBiYTdkMTE1NmE1NGE3NiIKICAgIH0sCiAgICB7CiAgICAgICJwYXRoIjogInNyYy9wcm9qZWN0L2ludGVybmFsL2xvY2Fsc2NvcmV4bWxjaGVjay5oIiwKICAgICAgImJ5dGVzIjogMTc5MywKICAgICAgInNoYTI1NiI6ICI4M2E1NGNmNWZhYTgyMDRhYzQwZDgwZjYyMWYwZTRmNzlhM2VlNjdjYjEyZmYwMjQ5ZTM0Y2I3MmMxMWRmZDFhIgogICAgfSwKICAgIHsKICAgICAgInBhdGgiOiAic3JjL3Byb2plY3QvaW50ZXJuYWwvbG9jYWxjYXRhbG9nc25hcHNob3QuaCIsCiAgICAgICJieXRlcyI6IDIxNzQsCiAgICAgICJzaGEyNTYiOiAiNDcwNTE2YzI2NjJjNDJiOGJiZDQ0YjM4NjdmMDA5ZjhjMTlhNzkwNmJlODlmYTlhYzJkMjc0ZmY5ZDRiOWZhNiIKICAgIH0sCiAgICB7CiAgICAgICJwYXRoIjogInRlc3QvY2FkZW5jZS9sb2NhbF9saWJyYXJ5X3N0b3JlL0NNYWtlTGlzdHMudHh0IiwKICAgICAgImJ5dGVzIjogODk1LAogICAgICAic2hhMjU2IjogImQzZTJkMzFlYjFiMGE4NzU1Y2YwNjZiM2YwNjYyNTVjOTc0YjNlNWFjMzNmY2QxOTg3Njg5NzQ0MTNlYzhmZjQiCiAgICB9LAogICAgewogICAgICAicGF0aCI6ICJ0ZXN0L2NhZGVuY2UvbG9jYWxfbGlicmFyeV9zdG9yZS9zdG9yZV90ZXN0cy5jcHAiLAogICAgICAiYnl0ZXMiOiAyMTg2MSwKICAgICAgInNoYTI1NiI6ICJhY2ZlMmRhOGZkMTUyMzY4MjJmYzY3YTUzMjA4NjdhMzllNGViZmY2NjZkZjFlNWU5YTcxMTkzNGZkMThkMDYyIgogICAgfQogIF0KfQo=
+{
+  "schema_version": 1,
+  "scope": "Compile and run the actual local library store/XML/snapshot sources with QtCore only; no Cadence application build or GUI",
+  "source_commit": "c2541128116014e512632da1656b140827acf4cd",
+  "source_tree": "06414fc46fbaafa4f3eaa5a6dc6081acfee8e85b",
+  "expected_scenarios": 9,
+  "required_qt_version": "6.10.2",
+  "gui_failure_attribution_confirmed": false,
+  "files": [
+    {
+      "path": "src/project/internal/localscorelibrarystore.cpp",
+      "bytes": 11079,
+      "sha256": "4449f4c3fa7f76479e21db3e73a7571d5ec73e35157b463016141c7a6d140776"
+    },
+    {
+      "path": "src/project/internal/localscorelibrarystore.h",
+      "bytes": 1335,
+      "sha256": "df5078a05434552022782c712f118eedcd90d95a8039bd6bf0ba7d1156a54a76"
+    },
+    {
+      "path": "src/project/internal/localscorexmlcheck.h",
+      "bytes": 1793,
+      "sha256": "83a54cf5faa8204ac40d80f621f0e4f79a3ee67cb12ff0249e34cb72c11dfd1a"
+    },
+    {
+      "path": "src/project/internal/localcatalogsnapshot.h",
+      "bytes": 2174,
+      "sha256": "470516c2662c42b8bbd44b3867f009f8c19a7906be89fa9ac2d274ff9d4b9fa6"
+    },
+    {
+      "path": "test/cadence/local_library_store/CMakeLists.txt",
+      "bytes": 895,
+      "sha256": "d3e2d31eb1b0a8755cf066b3f066255c974b3e5ac33fcd198768974413ec8ff4"
+    },
+    {
+      "path": "test/cadence/local_library_store/store_tests.cpp",
+      "bytes": 21861,
+      "sha256": "acfe2da8fd15236822fc67a5320867a39e4ebff666df1e5e9a711934fd18d062"
+    }
+  ]
+}

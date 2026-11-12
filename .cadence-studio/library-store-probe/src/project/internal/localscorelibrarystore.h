@@ -1,1 +1,47 @@
-Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAtb25seQovLyBDb3B5cmlnaHQgKEMpIDIwMjYgQ2FkZW5jZSBTdHVkaW8gY29udHJpYnV0b3JzCiNwcmFnbWEgb25jZQoKI2luY2x1ZGUgPFFMaXN0PgojaW5jbHVkZSA8UVN0cmluZz4KCiNpbmNsdWRlIDxmdW5jdGlvbmFsPgoKbmFtZXNwYWNlIG11Ojpwcm9qZWN0IHsKc3RydWN0IExvY2FsTGlicmFyeUVudHJ5IHsKICAgIFFTdHJpbmcgaWQ7CiAgICBRU3RyaW5nIHBhdGg7CiAgICBRU3RyaW5nIHRpdGxlOwogICAgUVN0cmluZyBjb21wb3NlcjsKICAgIGJvb2wgZmF2b3JpdGUgPSBmYWxzZTsKfTsKCnN0cnVjdCBMb2NhbExpYnJhcnlSZXN1bHQgewogICAgYm9vbCBvayA9IGZhbHNlOwogICAgUVN0cmluZyBlcnJvcjsKICAgIFFMaXN0PExvY2FsTGlicmFyeUVudHJ5PiBlbnRyaWVzOwp9OwoKLy8gT3ducyBvbmx5IHRoZSBjYXRhbG9ndWUsIG5ldmVyIHRoZSBzY29yZSBmaWxlcyByZWZlcmVuY2VkIGJ5IGl0LiBFdmVyeSBtdXRhdGlvbgovLyByZS1yZWFkcyB0aGUgY2F0YWxvZ3VlIHVuZGVyIHRoZSBzYW1lIGludGVycHJvY2VzcyBsb2NrIHVzZWQgZm9yIGl0cyBjb21taXQuCi8vIEFuIGludmFsaWQgb3IgbmV3ZXIgY2F0YWxvZ3VlIGlzIHJldHVybmVkIGFzIGFuIGVycm9yLCBuZXZlciByZXNldCB0byBlbXB0eS4KY2xhc3MgTG9jYWxTY29yZUxpYnJhcnlTdG9yZQp7CnB1YmxpYzoKICAgIGV4cGxpY2l0IExvY2FsU2NvcmVMaWJyYXJ5U3RvcmUoUVN0cmluZyBmaWxlUGF0aCk7CgogICAgTG9jYWxMaWJyYXJ5UmVzdWx0IGxvYWQoKSBjb25zdDsKICAgIExvY2FsTGlicmFyeVJlc3VsdCBhZGQoY29uc3QgUUxpc3Q8TG9jYWxMaWJyYXJ5RW50cnk+JiBlbnRyaWVzKTsKICAgIExvY2FsTGlicmFyeVJlc3VsdCBzZXRGYXZvcml0ZShjb25zdCBRU3RyaW5nJiBpZCwgYm9vbCBmYXZvcml0ZSk7CiAgICBMb2NhbExpYnJhcnlSZXN1bHQgcmVtb3ZlKGNvbnN0IFFTdHJpbmcmIGlkKTsKICAgIExvY2FsTGlicmFyeVJlc3VsdCByZWxpbmsoY29uc3QgUVN0cmluZyYgaWQsIGNvbnN0IExvY2FsTGlicmFyeUVudHJ5JiByZXBsYWNlbWVudCk7CiAgICBRU3RyaW5nIGZpbGVQYXRoKCkgY29uc3Q7Cgpwcml2YXRlOgogICAgdXNpbmcgTXV0YXRpb24gPSBzdGQ6OmZ1bmN0aW9uPGJvb2woUUxpc3Q8TG9jYWxMaWJyYXJ5RW50cnk+JiwgUVN0cmluZyYpPjsKICAgIExvY2FsTGlicmFyeVJlc3VsdCBtdXRhdGUoY29uc3QgTXV0YXRpb24mIG11dGF0aW9uKTsKICAgIExvY2FsTGlicmFyeVJlc3VsdCByZWFkVW5sb2NrZWQoKSBjb25zdDsKCiAgICBRU3RyaW5nIG1fZmlsZVBhdGg7Cn07Cn0K
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 Cadence Studio contributors
+#pragma once
+
+#include <QList>
+#include <QString>
+
+#include <functional>
+
+namespace mu::project {
+struct LocalLibraryEntry {
+    QString id;
+    QString path;
+    QString title;
+    QString composer;
+    bool favorite = false;
+};
+
+struct LocalLibraryResult {
+    bool ok = false;
+    QString error;
+    QList<LocalLibraryEntry> entries;
+};
+
+// Owns only the catalogue, never the score files referenced by it. Every mutation
+// re-reads the catalogue under the same interprocess lock used for its commit.
+// An invalid or newer catalogue is returned as an error, never reset to empty.
+class LocalScoreLibraryStore
+{
+public:
+    explicit LocalScoreLibraryStore(QString filePath);
+
+    LocalLibraryResult load() const;
+    LocalLibraryResult add(const QList<LocalLibraryEntry>& entries);
+    LocalLibraryResult setFavorite(const QString& id, bool favorite);
+    LocalLibraryResult remove(const QString& id);
+    LocalLibraryResult relink(const QString& id, const LocalLibraryEntry& replacement);
+    QString filePath() const;
+
+private:
+    using Mutation = std::function<bool(QList<LocalLibraryEntry>&, QString&)>;
+    LocalLibraryResult mutate(const Mutation& mutation);
+    LocalLibraryResult readUnlocked() const;
+
+    QString m_filePath;
+};
+}

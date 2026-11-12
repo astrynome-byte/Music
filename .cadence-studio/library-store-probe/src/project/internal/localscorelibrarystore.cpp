@@ -1,1 +1,286 @@
-Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAtb25seQovLyBDb3B5cmlnaHQgKEMpIDIwMjYgQ2FkZW5jZSBTdHVkaW8gY29udHJpYnV0b3JzCiNpbmNsdWRlICJsb2NhbHNjb3JlbGlicmFyeXN0b3JlLmgiCgojaW5jbHVkZSA8UURpcj4KI2luY2x1ZGUgPFFGaWxlPgojaW5jbHVkZSA8UUZpbGVJbmZvPgojaW5jbHVkZSA8UUpzb25BcnJheT4KI2luY2x1ZGUgPFFKc29uRG9jdW1lbnQ+CiNpbmNsdWRlIDxRSnNvbk9iamVjdD4KI2luY2x1ZGUgPFFKc29uUGFyc2VFcnJvcj4KI2luY2x1ZGUgPFFMb2NrRmlsZT4KI2luY2x1ZGUgPFFTYXZlRmlsZT4KI2luY2x1ZGUgPFFTZXQ+CiNpbmNsdWRlIDxRVXVpZD4KCiNpbmNsdWRlIDxhbGdvcml0aG0+CiNpbmNsdWRlIDx1dGlsaXR5PgoKbmFtZXNwYWNlIG11Ojpwcm9qZWN0IHsKbmFtZXNwYWNlIHsKY29uc3RleHByIGludCBMT0NLX1RJTUVPVVRfTVMgPSAyMDAwOwoKTG9jYWxMaWJyYXJ5UmVzdWx0IGZhaWx1cmUoY29uc3QgUVN0cmluZyYgZXJyb3IpCnsKICAgIHJldHVybiB7IGZhbHNlLCBlcnJvciwge30gfTsKfQoKUVN0cmluZyBhYnNvbHV0ZVBhdGgoY29uc3QgUVN0cmluZyYgcGF0aCkKewogICAgcmV0dXJuIFFEaXI6OmNsZWFuUGF0aChRRmlsZUluZm8ocGF0aCkuYWJzb2x1dGVGaWxlUGF0aCgpKTsKfQoKUVN0cmluZyBwYXRoS2V5KGNvbnN0IFFTdHJpbmcmIHBhdGgpCnsKICAgIGNvbnN0IFFGaWxlSW5mbyBmaWxlKHBhdGgpOwogICAgUVN0cmluZyBrZXkgPSBmaWxlLmNhbm9uaWNhbEZpbGVQYXRoKCk7CiAgICBpZiAoa2V5LmlzRW1wdHkoKSkgewogICAgICAgIGtleSA9IGFic29sdXRlUGF0aChwYXRoKTsKICAgIH0KI2lmZGVmIFFfT1NfV0lOCiAgICBrZXkgPSBrZXkudG9DYXNlRm9sZGVkKCk7CiNlbmRpZgogICAgcmV0dXJuIGtleTsKfQoKYm9vbCBpc05hdGl2ZVBhdGgoY29uc3QgUVN0cmluZyYgcGF0aCkKewogICAgY29uc3QgUVN0cmluZyBzdWZmaXggPSBRRmlsZUluZm8ocGF0aCkuc3VmZml4KCkudG9Mb3dlcigpOwogICAgcmV0dXJuIHN1ZmZpeCA9PSBRU3RyaW5nTGl0ZXJhbCgibXNjeiIpIHx8IHN1ZmZpeCA9PSBRU3RyaW5nTGl0ZXJhbCgibXNjeCIpOwp9Cgpib29sIHZhbGlkYXRlU2VsZWN0ZWRGaWxlKGNvbnN0IFFTdHJpbmcmIHBhdGgsIGNvbnN0IFFTdHJpbmcmIGNhdGFsb2d1ZVBhdGgsIFFTdHJpbmcmIGVycm9yKQp7CiAgICBpZiAocGF0aC5pc0VtcHR5KCkgfHwgIVFGaWxlSW5mbyhwYXRoKS5pc0Fic29sdXRlKCkgfHwgIWlzTmF0aXZlUGF0aChwYXRoKSkgewogICAgICAgIGVycm9yID0gUVN0cmluZ0xpdGVyYWwoIkNob29zZSBhbiBleGlzdGluZyBNU0NaIG9yIE1TQ1ggc2NvcmUgdXNpbmcgYW4gYWJzb2x1dGUgcGF0aC4iKTsKICAgICAgICByZXR1cm4gZmFsc2U7CiAgICB9CiAgICBpZiAocGF0aEtleShwYXRoKSA9PSBwYXRoS2V5KGNhdGFsb2d1ZVBhdGgpKSB7CiAgICAgICAgZXJyb3IgPSBRU3RyaW5nTGl0ZXJhbCgiVGhlIGxpYnJhcnkgY2F0YWxvZ3VlIGNhbm5vdCBhbHNvIGJlIGEgc2NvcmUgZW50cnkuIik7CiAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgfQogICAgUUZpbGUgZmlsZShwYXRoKTsKICAgIGlmICghUUZpbGVJbmZvKHBhdGgpLmlzRmlsZSgpIHx8ICFmaWxlLm9wZW4oUUlPRGV2aWNlOjpSZWFkT25seSkpIHsKICAgICAgICBlcnJvciA9IFFTdHJpbmdMaXRlcmFsKCJUaGUgc2VsZWN0ZWQgc2NvcmUgaXMgbWlzc2luZyBvciB1bnJlYWRhYmxlOiAlMSIpLmFyZyhwYXRoKTsKICAgICAgICByZXR1cm4gZmFsc2U7CiAgICB9CiAgICByZXR1cm4gdHJ1ZTsKfQoKUUJ5dGVBcnJheSBzZXJpYWxpemUoY29uc3QgUUxpc3Q8TG9jYWxMaWJyYXJ5RW50cnk+JiBlbnRyaWVzKQp7CiAgICBRSnNvbkFycmF5IGFycmF5OwogICAgZm9yIChjb25zdCBMb2NhbExpYnJhcnlFbnRyeSYgZW50cnkgOiBlbnRyaWVzKSB7CiAgICAgICAgYXJyYXkuYXBwZW5kKFFKc29uT2JqZWN0IHsKICAgICAgICAgICAgeyBRU3RyaW5nTGl0ZXJhbCgiaWQiKSwgZW50cnkuaWQgfSwKICAgICAgICAgICAgeyBRU3RyaW5nTGl0ZXJhbCgicGF0aCIpLCBlbnRyeS5wYXRoIH0sCiAgICAgICAgICAgIHsgUVN0cmluZ0xpdGVyYWwoInRpdGxlIiksIGVudHJ5LnRpdGxlIH0sCiAgICAgICAgICAgIHsgUVN0cmluZ0xpdGVyYWwoImNvbXBvc2VyIiksIGVudHJ5LmNvbXBvc2VyIH0sCiAgICAgICAgICAgIHsgUVN0cmluZ0xpdGVyYWwoImZhdm9yaXRlIiksIGVudHJ5LmZhdm9yaXRlIH0KICAgICAgICB9KTsKICAgIH0KICAgIHJldHVybiBRSnNvbkRvY3VtZW50KFFKc29uT2JqZWN0IHsKICAgICAgICB7IFFTdHJpbmdMaXRlcmFsKCJzY2hlbWFfdmVyc2lvbiIpLCAxIH0sCiAgICAgICAgeyBRU3RyaW5nTGl0ZXJhbCgiZW50cmllcyIpLCBhcnJheSB9CiAgICB9KS50b0pzb24oUUpzb25Eb2N1bWVudDo6SW5kZW50ZWQpOwp9CgpRU3RyaW5nIGxvY2tFcnJvcihjb25zdCBRTG9ja0ZpbGUmIGxvY2spCnsKICAgIGlmIChsb2NrLmVycm9yKCkgPT0gUUxvY2tGaWxlOjpMb2NrRmFpbGVkRXJyb3IpIHsKICAgICAgICByZXR1cm4gUVN0cmluZ0xpdGVyYWwoIlRoZSBsb2NhbCBsaWJyYXJ5IGlzIGJ1c3kgaW4gYW5vdGhlciB3aW5kb3cuIFRyeSBhZ2Fpbi4iKTsKICAgIH0KICAgIHJldHVybiBRU3RyaW5nTGl0ZXJhbCgiQ2Fubm90IGxvY2sgdGhlIGxvY2FsIGxpYnJhcnkuIENoZWNrIHRoZSBjYXRhbG9ndWUgZm9sZGVyIHBlcm1pc3Npb25zLiIpOwp9Cn0KCkxvY2FsU2NvcmVMaWJyYXJ5U3RvcmU6OkxvY2FsU2NvcmVMaWJyYXJ5U3RvcmUoUVN0cmluZyBmaWxlUGF0aCkKICAgIDogbV9maWxlUGF0aChhYnNvbHV0ZVBhdGgoc3RkOjptb3ZlKGZpbGVQYXRoKSkpCnsKfQoKUVN0cmluZyBMb2NhbFNjb3JlTGlicmFyeVN0b3JlOjpmaWxlUGF0aCgpIGNvbnN0CnsKICAgIHJldHVybiBtX2ZpbGVQYXRoOwp9CgpMb2NhbExpYnJhcnlSZXN1bHQgTG9jYWxTY29yZUxpYnJhcnlTdG9yZTo6cmVhZFVubG9ja2VkKCkgY29uc3QKewogICAgY29uc3QgUUZpbGVJbmZvIGluZm8obV9maWxlUGF0aCk7CiAgICAvLyBBYnNlbmNlIGlzIGFuIGVtcHR5IG5ldyBjYXRhbG9ndWU7IHVucmVhZGFibGUvY29ycnVwdCBkYXRhIGlzIG5vdCBhYnNlbmNlLgogICAgaWYgKCFpbmZvLmV4aXN0cygpICYmICFpbmZvLmlzU3ltTGluaygpKSB7CiAgICAgICAgcmV0dXJuIHsgdHJ1ZSwge30sIHt9IH07CiAgICB9CiAgICBRRmlsZSBmaWxlKG1fZmlsZVBhdGgpOwogICAgaWYgKCFpbmZvLmlzRmlsZSgpIHx8ICFmaWxlLm9wZW4oUUlPRGV2aWNlOjpSZWFkT25seSkpIHsKICAgICAgICByZXR1cm4gZmFpbHVyZShRU3RyaW5nTGl0ZXJhbCgiQ2Fubm90IHJlYWQgdGhlIGxvY2FsIGxpYnJhcnkgY2F0YWxvZ3VlOiAlMSIpLmFyZyhmaWxlLmVycm9yU3RyaW5nKCkpKTsKICAgIH0KICAgIGNvbnN0IFFCeXRlQXJyYXkgYnl0ZXMgPSBmaWxlLnJlYWRBbGwoKTsKICAgIGlmIChmaWxlLmVycm9yKCkgIT0gUUZpbGVEZXZpY2U6Ok5vRXJyb3IpIHsKICAgICAgICByZXR1cm4gZmFpbHVyZShRU3RyaW5nTGl0ZXJhbCgiUmVhZGluZyB0aGUgbG9jYWwgbGlicmFyeSBmYWlsZWQ6ICUxIikuYXJnKGZpbGUuZXJyb3JTdHJpbmcoKSkpOwogICAgfQogICAgUUpzb25QYXJzZUVycm9yIHBhcnNlRXJyb3I7CiAgICBjb25zdCBRSnNvbkRvY3VtZW50IGRvY3VtZW50ID0gUUpzb25Eb2N1bWVudDo6ZnJvbUpzb24oYnl0ZXMsICZwYXJzZUVycm9yKTsKICAgIGlmIChwYXJzZUVycm9yLmVycm9yICE9IFFKc29uUGFyc2VFcnJvcjo6Tm9FcnJvciB8fCAhZG9jdW1lbnQuaXNPYmplY3QoKSkgewogICAgICAgIHJldHVybiBmYWlsdXJlKFFTdHJpbmdMaXRlcmFsKCJUaGUgbG9jYWwgbGlicmFyeSBjYXRhbG9ndWUgaXMgaW52YWxpZDsgaXQgd2FzIGxlZnQgdW5jaGFuZ2VkLiAlMSIpCiAgICAgICAgICAgICAgICAgICAgICAgLmFyZyhwYXJzZUVycm9yLmVycm9yU3RyaW5nKCkpKTsKICAgIH0KICAgIGNvbnN0IFFKc29uT2JqZWN0IHJvb3QgPSBkb2N1bWVudC5vYmplY3QoKTsKICAgIGlmIChyb290LnNpemUoKSAhPSAyIHx8ICFyb290LnZhbHVlKFFTdHJpbmdMaXRlcmFsKCJzY2hlbWFfdmVyc2lvbiIpKS5pc0RvdWJsZSgpCiAgICAgICAgfHwgcm9vdC52YWx1ZShRU3RyaW5nTGl0ZXJhbCgic2NoZW1hX3ZlcnNpb24iKSkudG9Eb3VibGUoKSAhPSAxLjAKICAgICAgICB8fCAhcm9vdC52YWx1ZShRU3RyaW5nTGl0ZXJhbCgiZW50cmllcyIpKS5pc0FycmF5KCkpIHsKICAgICAgICByZXR1cm4gZmFpbHVyZShRU3RyaW5nTGl0ZXJhbCgiVW5zdXBwb3J0ZWQgb3IgaW52YWxpZCBsb2NhbCBsaWJyYXJ5IHNjaGVtYTsgdGhlIGNhdGFsb2d1ZSB3YXMgbGVmdCB1bmNoYW5nZWQuIikpOwogICAgfQogICAgUUxpc3Q8TG9jYWxMaWJyYXJ5RW50cnk+IGVudHJpZXM7CiAgICBRU2V0PFFTdHJpbmc+IGlkczsKICAgIFFTZXQ8UVN0cmluZz4gcGF0aHM7CiAgICBmb3IgKGNvbnN0IFFKc29uVmFsdWUmIHZhbHVlIDogcm9vdC52YWx1ZShRU3RyaW5nTGl0ZXJhbCgiZW50cmllcyIpKS50b0FycmF5KCkpIHsKICAgICAgICBpZiAoIXZhbHVlLmlzT2JqZWN0KCkpIHsKICAgICAgICAgICAgcmV0dXJuIGZhaWx1cmUoUVN0cmluZ0xpdGVyYWwoIkludmFsaWQgbG9jYWwgbGlicmFyeSBlbnRyeTsgdGhlIGNhdGFsb2d1ZSB3YXMgbGVmdCB1bmNoYW5nZWQuIikpOwogICAgICAgIH0KICAgICAgICBjb25zdCBRSnNvbk9iamVjdCBvYmplY3QgPSB2YWx1ZS50b09iamVjdCgpOwogICAgICAgIGlmIChvYmplY3Quc2l6ZSgpICE9IDUgfHwgIW9iamVjdC52YWx1ZShRU3RyaW5nTGl0ZXJhbCgiaWQiKSkuaXNTdHJpbmcoKQogICAgICAgICAgICB8fCAhb2JqZWN0LnZhbHVlKFFTdHJpbmdMaXRlcmFsKCJwYXRoIikpLmlzU3RyaW5nKCkgfHwgIW9iamVjdC52YWx1ZShRU3RyaW5nTGl0ZXJhbCgidGl0bGUiKSkuaXNTdHJpbmcoKQogICAgICAgICAgICB8fCAhb2JqZWN0LnZhbHVlKFFTdHJpbmdMaXRlcmFsKCJjb21wb3NlciIpKS5pc1N0cmluZygpIHx8ICFvYmplY3QudmFsdWUoUVN0cmluZ0xpdGVyYWwoImZhdm9yaXRlIikpLmlzQm9vbCgpKSB7CiAgICAgICAgICAgIHJldHVybiBmYWlsdXJlKFFTdHJpbmdMaXRlcmFsKCJJbnZhbGlkIGxvY2FsIGxpYnJhcnkgZW50cnkgZmllbGRzOyB0aGUgY2F0YWxvZ3VlIHdhcyBsZWZ0IHVuY2hhbmdlZC4iKSk7CiAgICAgICAgfQogICAgICAgIExvY2FsTGlicmFyeUVudHJ5IGVudHJ5IHsgb2JqZWN0LnZhbHVlKFFTdHJpbmdMaXRlcmFsKCJpZCIpKS50b1N0cmluZygpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb2JqZWN0LnZhbHVlKFFTdHJpbmdMaXRlcmFsKCJwYXRoIikpLnRvU3RyaW5nKCksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBvYmplY3QudmFsdWUoUVN0cmluZ0xpdGVyYWwoInRpdGxlIikpLnRvU3RyaW5nKCksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBvYmplY3QudmFsdWUoUVN0cmluZ0xpdGVyYWwoImNvbXBvc2VyIikpLnRvU3RyaW5nKCksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBvYmplY3QudmFsdWUoUVN0cmluZ0xpdGVyYWwoImZhdm9yaXRlIikpLnRvQm9vbCgpIH07CiAgICAgICAgY29uc3QgUVV1aWQgaWQoZW50cnkuaWQpOwogICAgICAgIGNvbnN0IFFTdHJpbmcgaWRLZXkgPSBpZC50b1N0cmluZyhRVXVpZDo6V2l0aG91dEJyYWNlcyk7CiAgICAgICAgY29uc3QgUVN0cmluZyBrZXkgPSBwYXRoS2V5KGVudHJ5LnBhdGgpOwogICAgICAgIGlmIChpZC5pc051bGwoKSB8fCBlbnRyeS5wYXRoLmlzRW1wdHkoKSB8fCAhUUZpbGVJbmZvKGVudHJ5LnBhdGgpLmlzQWJzb2x1dGUoKSB8fCAhaXNOYXRpdmVQYXRoKGVudHJ5LnBhdGgpCiAgICAgICAgICAgIHx8IGtleSA9PSBwYXRoS2V5KG1fZmlsZVBhdGgpIHx8IGlkcy5jb250YWlucyhpZEtleSkgfHwgcGF0aHMuY29udGFpbnMoa2V5KSkgewogICAgICAgICAgICByZXR1cm4gZmFpbHVyZShRU3RyaW5nTGl0ZXJhbCgiRHVwbGljYXRlIG9yIGludmFsaWQgbG9jYWwgbGlicmFyeSBpZGVudGlmaWVycy9wYXRoczsgdGhlIGNhdGFsb2d1ZSB3YXMgbGVmdCB1bmNoYW5nZWQuIikpOwogICAgICAgIH0KICAgICAgICBpZHMuaW5zZXJ0KGlkS2V5KTsKICAgICAgICBwYXRocy5pbnNlcnQoa2V5KTsKICAgICAgICBlbnRyaWVzLmFwcGVuZChzdGQ6Om1vdmUoZW50cnkpKTsKICAgIH0KICAgIHJldHVybiB7IHRydWUsIHt9LCBlbnRyaWVzIH07Cn0KCkxvY2FsTGlicmFyeVJlc3VsdCBMb2NhbFNjb3JlTGlicmFyeVN0b3JlOjpsb2FkKCkgY29uc3QKewogICAgLy8gQ2hlY2tpbmcgZXhpc3RzKCkgYWxvbmUgd291bGQgbWlzdGFrZSBhbiBpbmFjY2Vzc2libGUgYW5jZXN0b3IgZm9yIGEgbmV3CiAgICAvLyBlbXB0eSBjYXRhbG9ndWUuIENyZWF0aW5nL2FjY2Vzc2luZyBvbmx5IG91ciBvd24gcHJvZmlsZSBmb2xkZXIgbGV0cyB0aGF0CiAgICAvLyBlcnJvciBzdXJmYWNlIGJlZm9yZSB0aGUgbG9ja2VkIHJlYWQ7IHNjb3JlIGZvbGRlcnMgYXJlIG5ldmVyIGNyZWF0ZWQuCiAgICBpZiAoIVFEaXIoKS5ta3BhdGgoUUZpbGVJbmZvKG1fZmlsZVBhdGgpLmFic29sdXRlUGF0aCgpKSkgewogICAgICAgIHJldHVybiBmYWlsdXJlKFFTdHJpbmdMaXRlcmFsKCJDYW5ub3QgYWNjZXNzIG9yIGNyZWF0ZSB0aGUgbG9jYWwgbGlicmFyeSBmb2xkZXIuIikpOwogICAgfQogICAgUUxvY2tGaWxlIGxvY2sobV9maWxlUGF0aCArIFFTdHJpbmdMaXRlcmFsKCIubG9jayIpKTsKICAgIGlmICghbG9jay50cnlMb2NrKExPQ0tfVElNRU9VVF9NUykpIHsKICAgICAgICByZXR1cm4gZmFpbHVyZShsb2NrRXJyb3IobG9jaykpOwogICAgfQogICAgcmV0dXJuIHJlYWRVbmxvY2tlZCgpOwp9CgpMb2NhbExpYnJhcnlSZXN1bHQgTG9jYWxTY29yZUxpYnJhcnlTdG9yZTo6bXV0YXRlKGNvbnN0IE11dGF0aW9uJiBtdXRhdGlvbikKewogICAgaWYgKCFRRGlyKCkubWtwYXRoKFFGaWxlSW5mbyhtX2ZpbGVQYXRoKS5hYnNvbHV0ZVBhdGgoKSkpIHsKICAgICAgICByZXR1cm4gZmFpbHVyZShRU3RyaW5nTGl0ZXJhbCgiQ2Fubm90IGNyZWF0ZSB0aGUgbG9jYWwgbGlicmFyeSBmb2xkZXIuIikpOwogICAgfQogICAgUUxvY2tGaWxlIGxvY2sobV9maWxlUGF0aCArIFFTdHJpbmdMaXRlcmFsKCIubG9jayIpKTsKICAgIGlmICghbG9jay50cnlMb2NrKExPQ0tfVElNRU9VVF9NUykpIHsKICAgICAgICByZXR1cm4gZmFpbHVyZShsb2NrRXJyb3IobG9jaykpOwogICAgfQogICAgTG9jYWxMaWJyYXJ5UmVzdWx0IHJlc3VsdCA9IHJlYWRVbmxvY2tlZCgpOwogICAgaWYgKCFyZXN1bHQub2spIHsKICAgICAgICByZXR1cm4gcmVzdWx0OwogICAgfQogICAgUVN0cmluZyBlcnJvcjsKICAgIGlmICghbXV0YXRpb24ocmVzdWx0LmVudHJpZXMsIGVycm9yKSkgewogICAgICAgIHJldHVybiBmYWlsdXJlKGVycm9yKTsKICAgIH0KICAgIC8vIE5ldmVyIGZhbGwgYmFjayB0byBpbi1wbGFjZSB0cnVuY2F0aW9uIGlmIGF0b21pYyByZXBsYWNlbWVudCBpcyBkZW5pZWQuCiAgICBRU2F2ZUZpbGUgZmlsZShtX2ZpbGVQYXRoKTsKICAgIGZpbGUuc2V0RGlyZWN0V3JpdGVGYWxsYmFjayhmYWxzZSk7CiAgICBjb25zdCBRQnl0ZUFycmF5IGJ5dGVzID0gc2VyaWFsaXplKHJlc3VsdC5lbnRyaWVzKTsKICAgIGlmICghZmlsZS5vcGVuKFFJT0RldmljZTo6V3JpdGVPbmx5KSB8fCBmaWxlLndyaXRlKGJ5dGVzKSAhPSBieXRlcy5zaXplKCkgfHwgIWZpbGUuY29tbWl0KCkpIHsKICAgICAgICBmaWxlLmNhbmNlbFdyaXRpbmcoKTsKICAgICAgICByZXR1cm4gZmFpbHVyZShRU3RyaW5nTGl0ZXJhbCgiQ2Fubm90IHNhdmUgdGhlIGxvY2FsIGxpYnJhcnk7IHRoZSBwcmV2aW91cyBjYXRhbG9ndWUgd2FzIHByZXNlcnZlZC4gJTEiKQogICAgICAgICAgICAgICAgICAgICAgIC5hcmcoZmlsZS5lcnJvclN0cmluZygpKSk7CiAgICB9CiAgICByZXR1cm4gcmVzdWx0Owp9CgpMb2NhbExpYnJhcnlSZXN1bHQgTG9jYWxTY29yZUxpYnJhcnlTdG9yZTo6YWRkKGNvbnN0IFFMaXN0PExvY2FsTGlicmFyeUVudHJ5PiYgYWRkaXRpb25zKQp7CiAgICByZXR1cm4gbXV0YXRlKFt0aGlzLCBhZGRpdGlvbnNdKFFMaXN0PExvY2FsTGlicmFyeUVudHJ5PiYgZW50cmllcywgUVN0cmluZyYgZXJyb3IpIHsKICAgICAgICBmb3IgKGNvbnN0IExvY2FsTGlicmFyeUVudHJ5JiBjYW5kaWRhdGUgOiBhZGRpdGlvbnMpIHsKICAgICAgICAgICAgaWYgKCF2YWxpZGF0ZVNlbGVjdGVkRmlsZShjYW5kaWRhdGUucGF0aCwgbV9maWxlUGF0aCwgZXJyb3IpKSB7CiAgICAgICAgICAgICAgICByZXR1cm4gZmFsc2U7CiAgICAgICAgICAgIH0KICAgICAgICAgICAgY29uc3QgUVN0cmluZyBrZXkgPSBwYXRoS2V5KGNhbmRpZGF0ZS5wYXRoKTsKICAgICAgICAgICAgaWYgKHN0ZDo6YW55X29mKGVudHJpZXMuY2JlZ2luKCksIGVudHJpZXMuY2VuZCgpLCBbJmtleV0oY29uc3QgTG9jYWxMaWJyYXJ5RW50cnkmIGVudHJ5KSB7CiAgICAgICAgICAgICAgICByZXR1cm4gcGF0aEtleShlbnRyeS5wYXRoKSA9PSBrZXk7CiAgICAgICAgICAgIH0pKSB7CiAgICAgICAgICAgICAgICBjb250aW51ZTsgLy8gS2VlcCB0aGUgZXhpc3Rpbmcgc3RhYmxlIGlkLCBmYXZvdXJpdGUgYW5kIG1ldGFkYXRhLgogICAgICAgICAgICB9CiAgICAgICAgICAgIExvY2FsTGlicmFyeUVudHJ5IGVudHJ5ID0gY2FuZGlkYXRlOwogICAgICAgICAgICBlbnRyeS5wYXRoID0gYWJzb2x1dGVQYXRoKGVudHJ5LnBhdGgpOwogICAgICAgICAgICBlbnRyeS5pZCA9IFFVdWlkOjpjcmVhdGVVdWlkKCkudG9TdHJpbmcoUVV1aWQ6OldpdGhvdXRCcmFjZXMpOwogICAgICAgICAgICBlbnRyaWVzLmFwcGVuZChzdGQ6Om1vdmUoZW50cnkpKTsKICAgICAgICB9CiAgICAgICAgcmV0dXJuIHRydWU7CiAgICB9KTsKfQoKTG9jYWxMaWJyYXJ5UmVzdWx0IExvY2FsU2NvcmVMaWJyYXJ5U3RvcmU6OnNldEZhdm9yaXRlKGNvbnN0IFFTdHJpbmcmIGlkLCBib29sIGZhdm9yaXRlKQp7CiAgICByZXR1cm4gbXV0YXRlKFsmaWQsIGZhdm9yaXRlXShRTGlzdDxMb2NhbExpYnJhcnlFbnRyeT4mIGVudHJpZXMsIFFTdHJpbmcmIGVycm9yKSB7CiAgICAgICAgZm9yIChMb2NhbExpYnJhcnlFbnRyeSYgZW50cnkgOiBlbnRyaWVzKSB7CiAgICAgICAgICAgIGlmIChlbnRyeS5pZCA9PSBpZCkgewogICAgICAgICAgICAgICAgZW50cnkuZmF2b3JpdGUgPSBmYXZvcml0ZTsKICAgICAgICAgICAgICAgIHJldHVybiB0cnVlOwogICAgICAgICAgICB9CiAgICAgICAgfQogICAgICAgIGVycm9yID0gUVN0cmluZ0xpdGVyYWwoIlRoZSBsaWJyYXJ5IGVudHJ5IG5vIGxvbmdlciBleGlzdHMuIFJlZnJlc2ggdGhlIGxpYnJhcnkuIik7CiAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgfSk7Cn0KCkxvY2FsTGlicmFyeVJlc3VsdCBMb2NhbFNjb3JlTGlicmFyeVN0b3JlOjpyZW1vdmUoY29uc3QgUVN0cmluZyYgaWQpCnsKICAgIHJldHVybiBtdXRhdGUoWyZpZF0oUUxpc3Q8TG9jYWxMaWJyYXJ5RW50cnk+JiBlbnRyaWVzLCBRU3RyaW5nJiBlcnJvcikgewogICAgICAgIGZvciAoYXV0byBpdCA9IGVudHJpZXMuYmVnaW4oKTsgaXQgIT0gZW50cmllcy5lbmQoKTsgKytpdCkgewogICAgICAgICAgICBpZiAoaXQtPmlkID09IGlkKSB7CiAgICAgICAgICAgICAgICBlbnRyaWVzLmVyYXNlKGl0KTsgLy8gT25seSB0aGUgY2F0YWxvZ3VlIGVudHJ5IGlzIHJlbW92ZWQuCiAgICAgICAgICAgICAgICByZXR1cm4gdHJ1ZTsKICAgICAgICAgICAgfQogICAgICAgIH0KICAgICAgICBlcnJvciA9IFFTdHJpbmdMaXRlcmFsKCJUaGUgbGlicmFyeSBlbnRyeSBubyBsb25nZXIgZXhpc3RzLiBSZWZyZXNoIHRoZSBsaWJyYXJ5LiIpOwogICAgICAgIHJldHVybiBmYWxzZTsKICAgIH0pOwp9CgpMb2NhbExpYnJhcnlSZXN1bHQgTG9jYWxTY29yZUxpYnJhcnlTdG9yZTo6cmVsaW5rKGNvbnN0IFFTdHJpbmcmIGlkLCBjb25zdCBMb2NhbExpYnJhcnlFbnRyeSYgcmVwbGFjZW1lbnQpCnsKICAgIHJldHVybiBtdXRhdGUoW3RoaXMsICZpZCwgJnJlcGxhY2VtZW50XShRTGlzdDxMb2NhbExpYnJhcnlFbnRyeT4mIGVudHJpZXMsIFFTdHJpbmcmIGVycm9yKSB7CiAgICAgICAgaWYgKCF2YWxpZGF0ZVNlbGVjdGVkRmlsZShyZXBsYWNlbWVudC5wYXRoLCBtX2ZpbGVQYXRoLCBlcnJvcikpIHsKICAgICAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgICAgIH0KICAgICAgICBjb25zdCBRU3RyaW5nIGtleSA9IHBhdGhLZXkocmVwbGFjZW1lbnQucGF0aCk7CiAgICAgICAgZm9yIChjb25zdCBMb2NhbExpYnJhcnlFbnRyeSYgZW50cnkgOiBlbnRyaWVzKSB7CiAgICAgICAgICAgIGlmIChlbnRyeS5pZCAhPSBpZCAmJiBwYXRoS2V5KGVudHJ5LnBhdGgpID09IGtleSkgewogICAgICAgICAgICAgICAgZXJyb3IgPSBRU3RyaW5nTGl0ZXJhbCgiVGhhdCBzY29yZSBpcyBhbHJlYWR5IHJlZ2lzdGVyZWQgaW4gdGhlIGxvY2FsIGxpYnJhcnkuIik7CiAgICAgICAgICAgICAgICByZXR1cm4gZmFsc2U7CiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICAgICAgZm9yIChMb2NhbExpYnJhcnlFbnRyeSYgZW50cnkgOiBlbnRyaWVzKSB7CiAgICAgICAgICAgIGlmIChlbnRyeS5pZCA9PSBpZCkgewogICAgICAgICAgICAgICAgZW50cnkucGF0aCA9IGFic29sdXRlUGF0aChyZXBsYWNlbWVudC5wYXRoKTsKICAgICAgICAgICAgICAgIGVudHJ5LnRpdGxlID0gcmVwbGFjZW1lbnQudGl0bGU7CiAgICAgICAgICAgICAgICBlbnRyeS5jb21wb3NlciA9IHJlcGxhY2VtZW50LmNvbXBvc2VyOwogICAgICAgICAgICAgICAgcmV0dXJuIHRydWU7IC8vIFN0YWJsZSBpZCBhbmQgZmF2b3VyaXRlIHN1cnZpdmUgcmVsb2NhdGlvbi4KICAgICAgICAgICAgfQogICAgICAgIH0KICAgICAgICBlcnJvciA9IFFTdHJpbmdMaXRlcmFsKCJUaGUgbGlicmFyeSBlbnRyeSBubyBsb25nZXIgZXhpc3RzLiBSZWZyZXNoIHRoZSBsaWJyYXJ5LiIpOwogICAgICAgIHJldHVybiBmYWxzZTsKICAgIH0pOwp9Cn0K
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 Cadence Studio contributors
+#include "localscorelibrarystore.h"
+
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonParseError>
+#include <QLockFile>
+#include <QSaveFile>
+#include <QSet>
+#include <QUuid>
+
+#include <algorithm>
+#include <utility>
+
+namespace mu::project {
+namespace {
+constexpr int LOCK_TIMEOUT_MS = 2000;
+
+LocalLibraryResult failure(const QString& error)
+{
+    return { false, error, {} };
+}
+
+QString absolutePath(const QString& path)
+{
+    return QDir::cleanPath(QFileInfo(path).absoluteFilePath());
+}
+
+QString pathKey(const QString& path)
+{
+    const QFileInfo file(path);
+    QString key = file.canonicalFilePath();
+    if (key.isEmpty()) {
+        key = absolutePath(path);
+    }
+#ifdef Q_OS_WIN
+    key = key.toCaseFolded();
+#endif
+    return key;
+}
+
+bool isNativePath(const QString& path)
+{
+    const QString suffix = QFileInfo(path).suffix().toLower();
+    return suffix == QStringLiteral("mscz") || suffix == QStringLiteral("mscx");
+}
+
+bool validateSelectedFile(const QString& path, const QString& cataloguePath, QString& error)
+{
+    if (path.isEmpty() || !QFileInfo(path).isAbsolute() || !isNativePath(path)) {
+        error = QStringLiteral("Choose an existing MSCZ or MSCX score using an absolute path.");
+        return false;
+    }
+    if (pathKey(path) == pathKey(cataloguePath)) {
+        error = QStringLiteral("The library catalogue cannot also be a score entry.");
+        return false;
+    }
+    QFile file(path);
+    if (!QFileInfo(path).isFile() || !file.open(QIODevice::ReadOnly)) {
+        error = QStringLiteral("The selected score is missing or unreadable: %1").arg(path);
+        return false;
+    }
+    return true;
+}
+
+QByteArray serialize(const QList<LocalLibraryEntry>& entries)
+{
+    QJsonArray array;
+    for (const LocalLibraryEntry& entry : entries) {
+        array.append(QJsonObject {
+            { QStringLiteral("id"), entry.id },
+            { QStringLiteral("path"), entry.path },
+            { QStringLiteral("title"), entry.title },
+            { QStringLiteral("composer"), entry.composer },
+            { QStringLiteral("favorite"), entry.favorite }
+        });
+    }
+    return QJsonDocument(QJsonObject {
+        { QStringLiteral("schema_version"), 1 },
+        { QStringLiteral("entries"), array }
+    }).toJson(QJsonDocument::Indented);
+}
+
+QString lockError(const QLockFile& lock)
+{
+    if (lock.error() == QLockFile::LockFailedError) {
+        return QStringLiteral("The local library is busy in another window. Try again.");
+    }
+    return QStringLiteral("Cannot lock the local library. Check the catalogue folder permissions.");
+}
+}
+
+LocalScoreLibraryStore::LocalScoreLibraryStore(QString filePath)
+    : m_filePath(absolutePath(std::move(filePath)))
+{
+}
+
+QString LocalScoreLibraryStore::filePath() const
+{
+    return m_filePath;
+}
+
+LocalLibraryResult LocalScoreLibraryStore::readUnlocked() const
+{
+    const QFileInfo info(m_filePath);
+    // Absence is an empty new catalogue; unreadable/corrupt data is not absence.
+    if (!info.exists() && !info.isSymLink()) {
+        return { true, {}, {} };
+    }
+    QFile file(m_filePath);
+    if (!info.isFile() || !file.open(QIODevice::ReadOnly)) {
+        return failure(QStringLiteral("Cannot read the local library catalogue: %1").arg(file.errorString()));
+    }
+    const QByteArray bytes = file.readAll();
+    if (file.error() != QFileDevice::NoError) {
+        return failure(QStringLiteral("Reading the local library failed: %1").arg(file.errorString()));
+    }
+    QJsonParseError parseError;
+    const QJsonDocument document = QJsonDocument::fromJson(bytes, &parseError);
+    if (parseError.error != QJsonParseError::NoError || !document.isObject()) {
+        return failure(QStringLiteral("The local library catalogue is invalid; it was left unchanged. %1")
+                       .arg(parseError.errorString()));
+    }
+    const QJsonObject root = document.object();
+    if (root.size() != 2 || !root.value(QStringLiteral("schema_version")).isDouble()
+        || root.value(QStringLiteral("schema_version")).toDouble() != 1.0
+        || !root.value(QStringLiteral("entries")).isArray()) {
+        return failure(QStringLiteral("Unsupported or invalid local library schema; the catalogue was left unchanged."));
+    }
+    QList<LocalLibraryEntry> entries;
+    QSet<QString> ids;
+    QSet<QString> paths;
+    for (const QJsonValue& value : root.value(QStringLiteral("entries")).toArray()) {
+        if (!value.isObject()) {
+            return failure(QStringLiteral("Invalid local library entry; the catalogue was left unchanged."));
+        }
+        const QJsonObject object = value.toObject();
+        if (object.size() != 5 || !object.value(QStringLiteral("id")).isString()
+            || !object.value(QStringLiteral("path")).isString() || !object.value(QStringLiteral("title")).isString()
+            || !object.value(QStringLiteral("composer")).isString() || !object.value(QStringLiteral("favorite")).isBool()) {
+            return failure(QStringLiteral("Invalid local library entry fields; the catalogue was left unchanged."));
+        }
+        LocalLibraryEntry entry { object.value(QStringLiteral("id")).toString(),
+                                  object.value(QStringLiteral("path")).toString(),
+                                  object.value(QStringLiteral("title")).toString(),
+                                  object.value(QStringLiteral("composer")).toString(),
+                                  object.value(QStringLiteral("favorite")).toBool() };
+        const QUuid id(entry.id);
+        const QString idKey = id.toString(QUuid::WithoutBraces);
+        const QString key = pathKey(entry.path);
+        if (id.isNull() || entry.path.isEmpty() || !QFileInfo(entry.path).isAbsolute() || !isNativePath(entry.path)
+            || key == pathKey(m_filePath) || ids.contains(idKey) || paths.contains(key)) {
+            return failure(QStringLiteral("Duplicate or invalid local library identifiers/paths; the catalogue was left unchanged."));
+        }
+        ids.insert(idKey);
+        paths.insert(key);
+        entries.append(std::move(entry));
+    }
+    return { true, {}, entries };
+}
+
+LocalLibraryResult LocalScoreLibraryStore::load() const
+{
+    // Checking exists() alone would mistake an inaccessible ancestor for a new
+    // empty catalogue. Creating/accessing only our own profile folder lets that
+    // error surface before the locked read; score folders are never created.
+    if (!QDir().mkpath(QFileInfo(m_filePath).absolutePath())) {
+        return failure(QStringLiteral("Cannot access or create the local library folder."));
+    }
+    QLockFile lock(m_filePath + QStringLiteral(".lock"));
+    if (!lock.tryLock(LOCK_TIMEOUT_MS)) {
+        return failure(lockError(lock));
+    }
+    return readUnlocked();
+}
+
+LocalLibraryResult LocalScoreLibraryStore::mutate(const Mutation& mutation)
+{
+    if (!QDir().mkpath(QFileInfo(m_filePath).absolutePath())) {
+        return failure(QStringLiteral("Cannot create the local library folder."));
+    }
+    QLockFile lock(m_filePath + QStringLiteral(".lock"));
+    if (!lock.tryLock(LOCK_TIMEOUT_MS)) {
+        return failure(lockError(lock));
+    }
+    LocalLibraryResult result = readUnlocked();
+    if (!result.ok) {
+        return result;
+    }
+    QString error;
+    if (!mutation(result.entries, error)) {
+        return failure(error);
+    }
+    // Never fall back to in-place truncation if atomic replacement is denied.
+    QSaveFile file(m_filePath);
+    file.setDirectWriteFallback(false);
+    const QByteArray bytes = serialize(result.entries);
+    if (!file.open(QIODevice::WriteOnly) || file.write(bytes) != bytes.size() || !file.commit()) {
+        file.cancelWriting();
+        return failure(QStringLiteral("Cannot save the local library; the previous catalogue was preserved. %1")
+                       .arg(file.errorString()));
+    }
+    return result;
+}
+
+LocalLibraryResult LocalScoreLibraryStore::add(const QList<LocalLibraryEntry>& additions)
+{
+    return mutate([this, additions](QList<LocalLibraryEntry>& entries, QString& error) {
+        for (const LocalLibraryEntry& candidate : additions) {
+            if (!validateSelectedFile(candidate.path, m_filePath, error)) {
+                return false;
+            }
+            const QString key = pathKey(candidate.path);
+            if (std::any_of(entries.cbegin(), entries.cend(), [&key](const LocalLibraryEntry& entry) {
+                return pathKey(entry.path) == key;
+            })) {
+                continue; // Keep the existing stable id, favourite and metadata.
+            }
+            LocalLibraryEntry entry = candidate;
+            entry.path = absolutePath(entry.path);
+            entry.id = QUuid::createUuid().toString(QUuid::WithoutBraces);
+            entries.append(std::move(entry));
+        }
+        return true;
+    });
+}
+
+LocalLibraryResult LocalScoreLibraryStore::setFavorite(const QString& id, bool favorite)
+{
+    return mutate([&id, favorite](QList<LocalLibraryEntry>& entries, QString& error) {
+        for (LocalLibraryEntry& entry : entries) {
+            if (entry.id == id) {
+                entry.favorite = favorite;
+                return true;
+            }
+        }
+        error = QStringLiteral("The library entry no longer exists. Refresh the library.");
+        return false;
+    });
+}
+
+LocalLibraryResult LocalScoreLibraryStore::remove(const QString& id)
+{
+    return mutate([&id](QList<LocalLibraryEntry>& entries, QString& error) {
+        for (auto it = entries.begin(); it != entries.end(); ++it) {
+            if (it->id == id) {
+                entries.erase(it); // Only the catalogue entry is removed.
+                return true;
+            }
+        }
+        error = QStringLiteral("The library entry no longer exists. Refresh the library.");
+        return false;
+    });
+}
+
+LocalLibraryResult LocalScoreLibraryStore::relink(const QString& id, const LocalLibraryEntry& replacement)
+{
+    return mutate([this, &id, &replacement](QList<LocalLibraryEntry>& entries, QString& error) {
+        if (!validateSelectedFile(replacement.path, m_filePath, error)) {
+            return false;
+        }
+        const QString key = pathKey(replacement.path);
+        for (const LocalLibraryEntry& entry : entries) {
+            if (entry.id != id && pathKey(entry.path) == key) {
+                error = QStringLiteral("That score is already registered in the local library.");
+                return false;
+            }
+        }
+        for (LocalLibraryEntry& entry : entries) {
+            if (entry.id == id) {
+                entry.path = absolutePath(replacement.path);
+                entry.title = replacement.title;
+                entry.composer = replacement.composer;
+                return true; // Stable id and favourite survive relocation.
+            }
+        }
+        error = QStringLiteral("The library entry no longer exists. Refresh the library.");
+        return false;
+    });
+}
+}

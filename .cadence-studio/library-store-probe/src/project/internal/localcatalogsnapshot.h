@@ -1,1 +1,56 @@
-Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAtb25seQovLyBDb3B5cmlnaHQgKEMpIDIwMjYgQ2FkZW5jZSBTdHVkaW8gY29udHJpYnV0b3JzCiNwcmFnbWEgb25jZQoKI2luY2x1ZGUgPFFEaXI+CiNpbmNsdWRlIDxRRmlsZT4KI2luY2x1ZGUgPFFGaWxlSW5mbz4KCiNpZmRlZiBRX09TX1dJTgojaW5jbHVkZSA8cXRfd2luZG93cy5oPgojaW5jbHVkZSA8ZmNudGwuaD4KI2luY2x1ZGUgPGlvLmg+CiNlbmRpZgoKbmFtZXNwYWNlIG11Ojpwcm9qZWN0IHsKLy8gQSByZWFkLW9ubHkgY2F0YWxvZ3VlIHNuYXBzaG90IG11c3Qgbm90IHByZXZlbnQgUVNhdmVGaWxlIGZyb20gYXRvbWljYWxseQovLyByZXBsYWNpbmcgdGhhdCBjYXRhbG9ndWUgaW4gYW5vdGhlciB3b3JrZXIvd2luZG93LiBRdCdzIG5vcm1hbCBXaW5kb3dzCi8vIFFGaWxlIG9wZW4gc2hhcmVzIHJlYWRzL3dyaXRlcywgYnV0IG5vdCBkZWxldGlvbi9yZXBsYWNlbWVudC4gQWRvcHQgYSBDUlQKLy8gZGVzY3JpcHRvciB3aG9zZSB1bmRlcmx5aW5nIGhhbmRsZSBhbHNvIHNoYXJlcyBERUxFVEU7IFFGaWxlIG93bnMgaXQgb25seQovLyBhZnRlciBhIHN1Y2Nlc3NmdWwgb3Blbi4gTm8gc2NvcmUgZmlsZSBpcyBvcGVuZWQgYnkgdGhpcyBoZWxwZXIuCmlubGluZSBib29sIG9wZW5Mb2NhbExpYnJhcnlTbmFwc2hvdChRRmlsZSYgZmlsZSwgY29uc3QgUVN0cmluZyYgYWJzb2x1dGVQYXRoKQp7CiAgICBpZiAoZmlsZS5pc09wZW4oKSB8fCAhUUZpbGVJbmZvKGFic29sdXRlUGF0aCkuaXNBYnNvbHV0ZSgpKSB7CiAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgfQojaWZkZWYgUV9PU19XSU4KICAgIFFTdHJpbmcgbmF0aXZlUGF0aCA9IFFEaXI6OnRvTmF0aXZlU2VwYXJhdG9ycyhRRGlyOjpjbGVhblBhdGgoYWJzb2x1dGVQYXRoKSk7CiAgICAvLyBQcmVzZXJ2ZSBVbmljb2RlLCBVTkMgYW5kIGxvbmcgYWJzb2x1dGUgcGF0aHMgd2l0aG91dCBkZXBlbmRpbmcgb24gdGhlCiAgICAvLyBtYWNoaW5lJ3MgTUFYX1BBVEggcG9saWN5LiBUaGUgaW5wdXQgaXMgYWxyZWFkeSBhbiBhYnNvbHV0ZSwgY2xlYW4gcGF0aC4KICAgIGlmICghbmF0aXZlUGF0aC5zdGFydHNXaXRoKFFTdHJpbmdMaXRlcmFsKCJcXFxcP1xcIikpKSB7CiAgICAgICAgbmF0aXZlUGF0aCA9IG5hdGl2ZVBhdGguc3RhcnRzV2l0aChRU3RyaW5nTGl0ZXJhbCgiXFxcXCIpKQogICAgICAgICAgICAgICAgICAgICA/IFFTdHJpbmdMaXRlcmFsKCJcXFxcP1xcVU5DXFwiKSArIG5hdGl2ZVBhdGgubWlkKDIpCiAgICAgICAgICAgICAgICAgICAgIDogUVN0cmluZ0xpdGVyYWwoIlxcXFw/XFwiKSArIG5hdGl2ZVBhdGg7CiAgICB9CiAgICBIQU5ETEUgaGFuZGxlID0gQ3JlYXRlRmlsZVcocmVpbnRlcnByZXRfY2FzdDxMUENXU1RSPihuYXRpdmVQYXRoLnV0ZjE2KCkpLCBHRU5FUklDX1JFQUQsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgRklMRV9TSEFSRV9SRUFEIHwgRklMRV9TSEFSRV9XUklURSB8IEZJTEVfU0hBUkVfREVMRVRFLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG51bGxwdHIsIE9QRU5fRVhJU1RJTkcsIEZJTEVfQVRUUklCVVRFX05PUk1BTCwgbnVsbHB0cik7CiAgICBpZiAoaGFuZGxlID09IElOVkFMSURfSEFORExFX1ZBTFVFKSB7CiAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgfQogICAgY29uc3QgaW50IGRlc2NyaXB0b3IgPSBfb3Blbl9vc2ZoYW5kbGUocmVpbnRlcnByZXRfY2FzdDxpbnRwdHJfdD4oaGFuZGxlKSwgX09fUkRPTkxZIHwgX09fQklOQVJZKTsKICAgIGlmIChkZXNjcmlwdG9yID09IC0xKSB7CiAgICAgICAgQ2xvc2VIYW5kbGUoaGFuZGxlKTsKICAgICAgICByZXR1cm4gZmFsc2U7CiAgICB9CiAgICBpZiAoIWZpbGUub3BlbihkZXNjcmlwdG9yLCBRSU9EZXZpY2U6OlJlYWRPbmx5LCBRRmlsZURldmljZTo6QXV0b0Nsb3NlSGFuZGxlKSkgewogICAgICAgIF9jbG9zZShkZXNjcmlwdG9yKTsgLy8gVGhlIENSVCBkZXNjcmlwdG9yIG93bnMgdGhlIG5hdGl2ZSBoYW5kbGUgbm93LgogICAgICAgIHJldHVybiBmYWxzZTsKICAgIH0KICAgIHJldHVybiB0cnVlOwojZWxzZQogICAgZmlsZS5zZXRGaWxlTmFtZShhYnNvbHV0ZVBhdGgpOwogICAgcmV0dXJuIGZpbGUub3BlbihRSU9EZXZpY2U6OlJlYWRPbmx5KTsKI2VuZGlmCn0KfQo=
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 Cadence Studio contributors
+#pragma once
+
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#include <fcntl.h>
+#include <io.h>
+#endif
+
+namespace mu::project {
+// A read-only catalogue snapshot must not prevent QSaveFile from atomically
+// replacing that catalogue in another worker/window. Qt's normal Windows
+// QFile open shares reads/writes, but not deletion/replacement. Adopt a CRT
+// descriptor whose underlying handle also shares DELETE; QFile owns it only
+// after a successful open. No score file is opened by this helper.
+inline bool openLocalLibrarySnapshot(QFile& file, const QString& absolutePath)
+{
+    if (file.isOpen() || !QFileInfo(absolutePath).isAbsolute()) {
+        return false;
+    }
+#ifdef Q_OS_WIN
+    QString nativePath = QDir::toNativeSeparators(QDir::cleanPath(absolutePath));
+    // Preserve Unicode, UNC and long absolute paths without depending on the
+    // machine's MAX_PATH policy. The input is already an absolute, clean path.
+    if (!nativePath.startsWith(QStringLiteral("\\\\?\\"))) {
+        nativePath = nativePath.startsWith(QStringLiteral("\\\\"))
+                     ? QStringLiteral("\\\\?\\UNC\\") + nativePath.mid(2)
+                     : QStringLiteral("\\\\?\\") + nativePath;
+    }
+    HANDLE handle = CreateFileW(reinterpret_cast<LPCWSTR>(nativePath.utf16()), GENERIC_READ,
+                                FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+                                nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+    if (handle == INVALID_HANDLE_VALUE) {
+        return false;
+    }
+    const int descriptor = _open_osfhandle(reinterpret_cast<intptr_t>(handle), _O_RDONLY | _O_BINARY);
+    if (descriptor == -1) {
+        CloseHandle(handle);
+        return false;
+    }
+    if (!file.open(descriptor, QIODevice::ReadOnly, QFileDevice::AutoCloseHandle)) {
+        _close(descriptor); // The CRT descriptor owns the native handle now.
+        return false;
+    }
+    return true;
+#else
+    file.setFileName(absolutePath);
+    return file.open(QIODevice::ReadOnly);
+#endif
+}
+}
