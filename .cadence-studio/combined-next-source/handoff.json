@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "prepared_only": true,
+  "source_commit": "404f6350d64cb285e6f2b79cd53e56c278f2a022",
+  "source_tree": "b57e389132141174b389440a3ce5d5cbd1833a3f",
+  "upstream_commit": "96480d58445e3b24b230a3fe7d4725d639aa2eb3",
+  "compressed_patch_sha256": "df5e4227ed8c661f4b25df93c138dbe112a444a05e8967bf3958d0ccd4bfd7e6",
+  "compressed_patch_git_blob": "9e02f43c2eeb66a34d8287e7c8863fef73b0bb1f",
+  "compressed_patch_bytes": 1147495,
+  "expanded_patch_bytes": 5302575,
+  "isolated_index_restored_exact_tree": true,
+  "code_qualified_source": "5dfceb25d9995d2b6f5b9c5a4c7f57429fc41579",
+  "linux_python_tests_passed": 34,
+  "linux_store_scenarios_passed": 13,
+  "windows_store_scenarios_passed": 13,
+  "windows_store_run_id": 43194829263,
+  "full_windows_application_built_from_this_tree": false,
+  "human_listening": false,
+  "mp4_qualified": false,
+  "gift_release": false,
+  "retention_days": 14,
+  "legacy_namespaces_modified": false,
+  "expected_installer_build": 2003,
+  "distribution_compliance_ready": false,
+  "remaining_binary_origins_audit": [
+    "exact Qt SDK build options and patches",
+    "deployed special DLLs and MSVC runtime mapping"
+  ]
+}

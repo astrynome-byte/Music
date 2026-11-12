@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "purpose": "Local preflight before future2003; these old bytes must remain unchanged",
+  "files": {
+    "combined-source/.gitattributes": "abeba78466be388a1c5f3cb4ad595b915a0aa9402d1d87e37dfe42762e5b91c5",
+    "combined-source/Bootstrap.ps1": "50c4b71210c24d9503742d0d6c993b8af4b8f4eef82f4741db02fe4906e3e2d8",
+    "combined-source/README.md": "225bf2a736fc95ab3b72119778d68c72e2776c62f86f393a0ee6908bdb0387f7",
+    "combined-source/SHA256SUMS.txt": "760c467ddbb34dadddff13edff5407d5df15e0bbab229baeb44e35b57cf95ce2",
+    "combined-source/changes.patch.gz": "008125f148c725a88a3bc56a3cdf283a973dfb38554b779e3c68b74a669a08f2",
+    "combined-source/check_app_aac.py": "fcc33ce311471ffa2139e3b413be035b54dcf0f1da9dfa537f0dd2edcc40dad5",
+    "combined-source/check_backend.py": "162bda2ce1d90cd4a67e84938c9472fa6674f3ae2df6576ebfa6af5b06302c60",
+    "combined-source/compare_reference.py": "ea5e8770ab32835d11c199ab08200425a7e2e25d295eb9f5d383d7dbccd3e16d",
+    "combined-source/expected-reference.json": "e47a0df3af2f0af6b15df3ed625a0f76768020e06387705d60ec7ca52ddbf036",
+    "combined-source/handoff.json": "a90332c3a53737ce951a544402bacb0c3095795396ef1add15bf238a8a45b977",
+    "combined-source/prepare_zlib_package.py": "7e897469fb313453b6ac7ea22940db358146add5219039bca4df96af87c0bffd",
+    "combined-source/source.json": "b84abaddfd9d6ce8741b03e0e0b08024f7e6986e0f6faadfa3df7fbb28f91714",
+    "combined-retained/.gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+    "combined-retained/CMakeLists.txt": "e99c1a5bfc956fe0b8491fcb280ced3309647589d0571c7d41c1f1ebef0618d5",
+    "combined-retained/Package-CombinedStage.ps1": "5872f4712cda0848c554f776dc490156716145fbda5f40d60d9d56e2d5300404",
+    "combined-retained/README.md": "c6c767cf11ca564386e8377f6f0089f293a9e9e276142e841c6e6e7cd518e687",
+    "combined-retained/Test-ReadyGui.ps1": "3e695d30bc159c0a1242b2309b6c6f00d156b1344dce493aa792818b7d617fd7",
+    "combined-retained/Test-VideoUnavailable.py": "21b633ec8c9de8d4d1b64b4524aa345ca60829fdc8ff13eb94b0bc34c6e696d0",
+    "combined-retained/UiReadyProbe.cpp": "64b3a594ad35c366deb442441516e521fdc0fa907eac17b487dac9a9ab1d9b1a"
+  }
+}

@@ -30,6 +30,15 @@ STATE_SHA='e4b37b0426712abd5fe29bdee95f2818cea26edcb4561ca11413a48f36b7bb01'
 WAV_TOOL_SHA='f701874e7a37b8d3148f0bb99477b60b96865e804ed238372d75c06598027d82'
 
 
+class OwnedDebuggerCollectionError(RuntimeError):
+    pass
+
+
+def native_failure_observed(commands):
+    return any((item.get('native_exit_observed') not in (None,0)) if item.get('execution_wrapper')=='owned_debugger'
+               else (item.get('exit_code') not in (None,0) or item.get('timed_out',False)) for item in commands)
+
+
 def sha(path):
     with path.open('rb') as stream:return hashlib.file_digest(stream,'sha256').hexdigest()
 
@@ -69,6 +78,15 @@ def log_delta(before,after):
                        for name,data in after.items()).decode('utf-8',errors='replace')
 
 
+def has_exact_export_shutdown_signature(item,diagnostics,expected_path):
+    """Continue diagnostics only; a recognized crash remains a failed native exit."""
+    if item['timed_out'] or item['exit_code']!=1:return False
+    text=diagnostics.replace('\\','/').lower()
+    saved=any('successfully saved sound track by path:' in line and str(expected_path).replace('\\','/').lower() in line for line in text.splitlines())
+    goodbye=text.rfind('goodbye!! code: 0');crash=text.rfind('application crashed with signal: [11]')
+    return saved and goodbye>=0 and crash>goodbye and 'sigsegv-invalid memory reference' in text[crash:]
+
+
 def native_audio(path):
     with zipfile.ZipFile(path) as archive:return json.loads(archive.read('audiosettings.json'))
 
@@ -96,6 +114,7 @@ def assign_plugin(base,target,registered,patch,state):
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--phase',choices=('scan','render'),required=True)
     p.add_argument('--stage',type=Path,required=True);p.add_argument('--assets',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--debug-export-tool',type=Path)
     args=p.parse_args()
     if os.name!='nt' or platform.machine().lower() not in ('amd64','x86_64') or os.environ.get('GITHUB_ACTIONS')!='true' or os.environ.get('CI')!='true' or os.environ.get('RUNNER_ENVIRONMENT')!='github-hosted':
         raise ValueError('Only disposable native Windows x64 GitHub-hosted runners allowed')
@@ -123,22 +142,67 @@ def main():
         if report['status']!='passed_actual_reader_scan' or report['reader_bundle']!=str(bundle) or not registry.is_file():raise ValueError('Successfully completed owned scan must precede render')
         if sha(registry)!=report['registered_plugins_sha256']:raise ValueError('Real scan registry changed before render')
         report['status']='running_render';report['error']=None
+    debug_tool=None
+    if args.debug_export_tool is not None:
+        if args.phase!='render':raise ValueError('Owned debugging is scoped only to controlled exports')
+        debug_tool=owned(args.debug_export_tool)
+        build=json.loads((debug_tool.parent/'debugger-build-report.json').read_text(encoding='utf-8-sig'))
+        source_pin=json.loads((Path(__file__).parent/'debugger/source-pin.json').read_text())
+        if build.get('status')!='compiled_native_debugger_only' or build.get('source')!=source_pin or sha(debug_tool)!=build.get('executable_sha256'):
+            raise ValueError('Only the exact reviewed debugger compiled by this job is allowed')
+        report['owned_debugger_source']=source_pin;report['owned_debugger_executable_sha256']=sha(debug_tool)
+    report['owned_debugger_used_for_exports']=debug_tool is not None
+    report['debugger_changes_process_timing']=debug_tool is not None
+    if debug_tool is not None:report['un_debugged_stability_validated_by_this_run']=False
     env={key:value for key,value in os.environ.items() if not key.startswith(('QT_','QML_'))}
     env['PATH']=str(executable.parent)+';'+str(Path(os.environ['SystemRoot'])/'System32')
     report['child_PATH']=env['PATH'];report['inherited_Qt_QML_environment_removed']=True
-    def run(name,arguments):
+    def run(name,arguments,expected_export=None):
         before=snapshot(logs);start=time.monotonic();item={'name':name,'exit_code':None,'timed_out':False,'pid':None};report['commands'].append(item)
         with (output/(name+'.stdout.txt')).open('xb') as out,(output/(name+'.stderr.txt')).open('xb') as err:
-            process=subprocess.Popen([str(executable),*map(str,arguments)],cwd=output,env=env,stdout=out,stderr=err,creationflags=subprocess.CREATE_NO_WINDOW)
-            item['pid']=process.pid
+            command=[str(executable),*map(str,arguments)];events_path=None
+            if debug_tool is not None and expected_export is not None:
+                events_path=output/(name+'.debug-events.jsonl')
+                item['execution_wrapper']='owned_debugger'
+            else:item['execution_wrapper']='direct_native'
+            if events_path is not None:
+                command=[str(debug_tool),str(executable),str(output),str(events_path),str(expected_export),str(arguments[-1])]
+            process=subprocess.Popen(command,cwd=output,env=env,stdin=subprocess.DEVNULL,stdout=out,stderr=err,creationflags=subprocess.CREATE_NO_WINDOW)
+            item['pid']=process.pid;item['launcher_pid']=process.pid
+            if events_path is None:item['native_pid']=process.pid
             try:item['exit_code']=process.wait(timeout=90)
             except subprocess.TimeoutExpired:item['timed_out']=True;process.kill();item['exit_code']=process.wait(timeout=10)
         item['seconds']=time.monotonic()-start;delta=log_delta(before,snapshot(logs));(output/(name+'.cadence-log.txt')).write_text(delta,encoding='utf-8')
-        if item['timed_out'] or item['exit_code']!=0:raise RuntimeError('Owned native command failed: '+name)
         stdout_path=output/(name+'.stdout.txt');stderr_path=output/(name+'.stderr.txt')
         item['stdout_bytes']=stdout_path.stat().st_size;item['stderr_bytes']=stderr_path.stat().st_size
         if item['stdout_bytes']>16777216 or item['stderr_bytes']>16777216:raise RuntimeError('Owned process diagnostics exceeded their bound')
-        return delta+'\n'+stdout_path.read_text(encoding='utf-8',errors='replace')+'\n'+stderr_path.read_text(encoding='utf-8',errors='replace')
+        diagnostics=delta+'\n'+stdout_path.read_text(encoding='utf-8',errors='replace')+'\n'+stderr_path.read_text(encoding='utf-8',errors='replace')
+        if events_path is not None:
+            if not events_path.is_file() or events_path.stat().st_size>1048576:raise OwnedDebuggerCollectionError('Owned debugger event file missing or oversized')
+            try:events=[json.loads(line) for line in events_path.read_text(encoding='utf-8').splitlines()]
+            except (OSError,UnicodeError,json.JSONDecodeError) as error:raise OwnedDebuggerCollectionError('Owned debugger metadata could not be decoded') from error
+            allowed={
+                'owned_process_started':{'event','pid','debug_only_this_process','environment_allowlist','memory_dump_created','data_memory_captured'},
+                'module_loaded':{'event','module','base','image_bytes'},'module_unloaded':{'event','base'},
+                'initial_loader_breakpoint':{'event','thread_id','first_chance','module_identified','module','module_state','module_offset'},
+                'exception':{'event','thread_id','code','first_chance','instruction_pointer','context_RIP','module','module_state','module_offset'},
+                'owned_process_exit':{'event','pid','exit_code'},
+                'owned_process_timeout':{'event','termination_request_succeeded','exit_observed_within_5s'},'debugger_tool_failed':{'event'}}
+            if len(events)>1024 or any(value.get('event') not in allowed or set(value)!=allowed[value['event']] for value in events):raise OwnedDebuggerCollectionError('Unexpected owned-debugger data schema')
+            starts=[value for value in events if value['event']=='owned_process_started'];exits=[value for value in events if value['event']=='owned_process_exit']
+            item['native_pid']=starts[0]['pid'] if len(starts)==1 else None
+            item['native_exit_observed']=exits[0]['exit_code'] if len(exits)==1 else None
+            item['owned_debugger_events']={'file':events_path.name,'sha256':sha(events_path),'count':len(events),
+                'native_process_start':starts,'native_process_exit':exits,'exceptions':[value for value in events if value['event']=='exception'],
+                'module_load_count':sum(value['event']=='module_loaded' for value in events),'module_unload_count':sum(value['event']=='module_unloaded' for value in events)}
+            if len(starts)!=1 or len(exits)!=1 or starts[0]['pid']!=exits[0]['pid'] or exits[0]['exit_code']!=item['exit_code'] or not starts[0]['debug_only_this_process'] or not starts[0]['environment_allowlist'] or starts[0]['memory_dump_created'] or starts[0]['data_memory_captured']:
+                raise OwnedDebuggerCollectionError('Owned debugger did not confirm the real native process exit and restricted collection')
+        if item['timed_out'] or item['exit_code']!=0:
+            item['terminal_shutdown_crash_after_export']=expected_export is not None and expected_export.is_file() and has_exact_export_shutdown_signature(item,diagnostics,expected_export)
+            if not item['terminal_shutdown_crash_after_export']:raise RuntimeError('Owned native command failed: '+name)
+            # Collect the other controlled cases, but never turn this exit into success.
+            report.setdefault('native_exit_failures',[]).append({'name':name,'exit_code':item['exit_code'],'terminal_shutdown_crash_after_export':True})
+        return diagnostics
     try:
         if args.phase=='scan':
             run('reader-register',['--register-audio-plugin',bundle])
@@ -174,13 +238,14 @@ def main():
                 patch=owned(Path(sample['patches'][patch_name]));native=output/(label+'.mscz')
                 if root not in patch.parents:raise ValueError('Patch outside owned CC0 subset')
                 tracks=assign_plugin(base,native,report['registered_plugin'],patch,state);before=sha(native);wav=output/(label+'.wav')
-                delta=run(label+'-render',['-o',wav,native]);audio=wavtool.inspect_wav(wav)
+                delta=run(label+'-render',['-o',wav,native],expected_export=wav);audio=wavtool.inspect_wav(wav)
                 bad=[text for text in diagnostic_errors if text.lower() in delta.lower()]
                 value={'variant':label,'SFZ':patch_name,'requested_master_gain_db':-12.0,'requested_tracks':len(tracks),
                        'audio':audio,'wav_sha256':sha(wav),'native_source_sha256':before,'native_source_unchanged':sha(native)==before,
                        'vst_load_or_state_error_markers':bad,'SFZ_sample_load_not_inferred_from_nonquiet_audio_alone':True}
                 report['cases'].append(value)
-                if bad or not audio['passed'] or audio['channels']!=2 or not value['native_source_unchanged']:raise RuntimeError('VST load diagnostic or WAV/source validation failed')
+                value['audio_and_load_checks_passed']=not bad and audio['passed'] and audio['channels']==2 and value['native_source_unchanged']
+                if not value['native_source_unchanged']:raise RuntimeError('Controlled native source changed')
                 saved=output/(label+'-save-only.mscz');run(label+'-save-only',['-o',saved,native]);saved_tracks=native_audio(saved).get('tracks',[])
                 wanted={(item['partId'],item['instrumentId']):item['in'] for item in tracks}
                 actual={(item.get('partId'),item.get('instrumentId')):item.get('in',{}) for item in saved_tracks}
@@ -188,19 +253,26 @@ def main():
                 if not value['save_only_track_resource_and_raw_state_preserved'] or sha(native)!=before:raise RuntimeError('Save-only VST identity/state or source preservation failed')
                 encoded=tracks[0]['in']['unitConfiguration']['componentState'];decoded=state.read_component_state(base64.b64decode(encoded,validate=True))
                 value['requested_component_state']={'bytes':len(base64.b64decode(encoded)),'sha256':hashlib.sha256(base64.b64decode(encoded)).hexdigest(),'decoded':decoded}
-            flute,violin,quiet=report['cases'];ratio=quiet['audio']['rms']/flute['audio']['rms'];expected=10**(-18.0/20.0)
+            flute,violin,quiet=report['cases'];ratio=quiet['audio']['rms']/flute['audio']['rms'] if flute['audio']['rms']>0 else None;expected=10**(-18.0/20.0)
             same_shape=all(flute['audio'][key]==quiet['audio'][key] for key in ('encoding','bits','channels','sample_rate','duration_seconds'))
             proof={'region_gain_delta_db':-18.0,'expected_rms_ratio':expected,'actual_rms_ratio':ratio,'relative_tolerance':0.03,
-                   'matching_WAV_shape':same_shape,'gain_ratio_matches':abs(ratio/expected-1.0)<=0.03,
+                   'matching_WAV_shape':same_shape,'gain_ratio_matches':ratio is not None and abs(ratio/expected-1.0)<=0.03,
                    'flute_and_violin_WAV_differ':flute['wav_sha256']!=violin['wav_sha256'],
-                   'raw_SFZ_direct_support_claimed':False,'proof_scope':'The registered real VST3 consumed the controlled SFZ gain change; ordinary nonquiet audio alone would not establish sample loading.'}
+                   'raw_SFZ_direct_support_claimed':False,'proof_scope':'This tests whether the registered real VST3 consumed the controlled SFZ gain change; ordinary nonquiet audio alone does not establish sample loading. Assess gain_ratio_matches and all case audio checks.'}
             report['controlled_SFZ_load_proof']=proof
-            if not same_shape or not proof['gain_ratio_matches'] or not proof['flute_and_violin_WAV_differ']:raise RuntimeError('SFZ controlled-gain proof failed; default sine or another fallback is not accepted')
+            report['controlled_audio_checks_passed']=same_shape and proof['gain_ratio_matches'] and proof['flute_and_violin_WAV_differ'] and all(value['audio_and_load_checks_passed'] for value in report['cases'])
             report['registered_plugins_unchanged_after_render']=sha(registry)==report['registered_plugins_sha256']
             report['originals_and_reader_unchanged']=check_assets() and sha(copied)==pin and sha(fixture)==pin and report['registered_plugins_unchanged_after_render']
             if not report['originals_and_reader_unchanged']:raise RuntimeError('Original CC0 assets or reader changed')
-            report['SFZ_sample_load_tested']=True;report['status']='passed_actual_sfizz_VST3_SFZ_controlled_render_and_save_only_checks'
-    except Exception as error:report['status']='failed_or_blocked';report['error']=str(error)
+            report['SFZ_sample_load_tested']=True;report['SFZ_controlled_load_validated']=report['controlled_audio_checks_passed']
+            if report.get('native_exit_failures'):
+                report['status']='failed_native_exit';report['error']='Actual native process exit failed after export; audio diagnostics do not validate stability.'
+            elif not report['controlled_audio_checks_passed']:
+                report['status']='failed_audio_checks';report['error']='Controlled SFZ gain or WAV checks failed; fallback audio is not accepted.'
+            else:report['status']='passed_actual_sfizz_VST3_SFZ_controlled_render_and_save_only_checks'
+    except Exception as error:
+        report['status']='failed_debugger_collection' if isinstance(error,OwnedDebuggerCollectionError) else 'failed_native_exit' if native_failure_observed(report['commands']) else 'failed_or_blocked'
+        report['error']=str(error)
     finally:
         (output/'sfz-host-report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
         print('CADENCE_SFZ_HOST_REPORT_BEGIN');print(json.dumps(report,ensure_ascii=False));print('CADENCE_SFZ_HOST_REPORT_END')

@@ -29,6 +29,17 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
+      - name: Select only the existing MSVC2022 x64 tools for the small metadata-only debugger
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+      - name: Compile the reviewed owned-child debugger without rebuilding Cadence
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/vsco-sfizz-qa/debugger/Build-OwnedExportDebugger.ps1" `
+            -SourcePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/vsco-sfizz-qa/debugger/OwnedExportDebugEvents.cpp" `
+            -OutputDirectory "$env:RUNNER_TEMP/sfz-debugger-build"
       - name: Download only the immutable already compiled combined2002 stage
         uses: actions/download-artifact@v4
         with:
@@ -63,16 +74,17 @@ jobs:
       - name: Require native VST3 state restoration, real SFZ gain response and save-only persistence
         run: |
           python -I -X utf8 "$env:GITHUB_WORKSPACE/driver/.cadence-studio/vsco-sfizz-qa/Test-SfzHost.py" `
-            --phase render --stage "$env:RUNNER_TEMP/sfz-stage" `
+            --phase render --debug-export-tool "$env:RUNNER_TEMP/sfz-debugger-build/OwnedExportDebugEvents.exe" `
+            --stage "$env:RUNNER_TEMP/sfz-stage" `
             --assets "$env:RUNNER_TEMP/sfz-owned-assets" --output "$env:RUNNER_TEMP/sfz-results"
           if ($LASTEXITCODE -ne 0) { throw 'Actual SFZ host or controlled gain proof failed.' }
       - name: Print bounded reports and actual native logs even after failure
         if: always()
         run: |
           $budget=393216L
-          foreach($root in @("$env:RUNNER_TEMP/sfz-owned-assets","$env:RUNNER_TEMP/sfz-results")) {
+          foreach($root in @("$env:RUNNER_TEMP/sfz-debugger-build","$env:RUNNER_TEMP/sfz-owned-assets","$env:RUNNER_TEMP/sfz-results")) {
             if(-not(Test-Path -LiteralPath $root -PathType Container)){continue}
-            $files=@(Get-ChildItem -LiteralPath $root -File|Where-Object{$_.Extension -eq '.json' -or $_.Name -match '\.(stdout|stderr|cadence-log)\.(txt|log)$'}|Sort-Object Name)
+            $files=@(Get-ChildItem -LiteralPath $root -File|Where-Object{$_.Extension -in @('.json','.jsonl') -or $_.Name -match '\.(stdout|stderr|cadence-log)\.(txt|log)$'}|Sort-Object Name)
             foreach($file in $files) {
               if($budget -le 0){break};$limit=[Math]::Min(65536L,$budget)
               $stream=[IO.File]::OpenRead($file.FullName)
@@ -88,6 +100,9 @@ jobs:
         with:
           name: cadence-vsco-sfizz-qa-${{ github.run_number }}-${{ github.run_attempt }}
           path: |
+            ${{ runner.temp }}/sfz-debugger-build/debugger-build-report.json
+            ${{ runner.temp }}/sfz-debugger-build/compiler.stdout.log
+            ${{ runner.temp }}/sfz-debugger-build/compiler.stderr.log
             ${{ runner.temp }}/sfz-restoration.json
             ${{ runner.temp }}/sfz-results/**
             ${{ runner.temp }}/sfz-owned-assets/reader-assets.json

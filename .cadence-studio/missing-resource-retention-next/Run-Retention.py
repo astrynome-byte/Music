@@ -26,7 +26,10 @@ FIXTURE_HASH='10ae5eb1fae2679d9ad32aa0b721fef06119ef24b78b4f8b9bd6b770582c289f'
 BASIC_HASH='5ea2375e8bd7d8e71def1036978c1621e85b66934169b6a2744b27b9b3c2d99c'
 SOURCE='0e05d04acbeee32f1b561f24493d7ef41c322081'
 TREE='f95b7097a55dddf9c7f697fc826b95721071231a'
-URI='musescore://extensions/cadence/resource-retention-qa'
+# QA-only workaround for retained 0e performPoint(): it constructs action://
+# then looks up that exact URI without converting back to musescore://.
+# Kept hidden: this diagnostic namespace is not a normal distributable extension.
+URI='action://extensions/cadence/resource-retention-qa'
 MISSING_SF='Cadence-QA-Missing-SF-Retention-d92450af'
 
 
@@ -163,7 +166,7 @@ def main():
     report={'schema_version':1,'status':'running','source_commit':SOURCE,'source_tree':TREE,'build_number':2002,'executable_sha256':EXE_HASH,
             'scope':'Same GUI project renders actual audio, then native project file-save; own copied result was created before GUI opening',
             'profiles_were_absent':True,'first_launch_setup_seeded':True,'onboarding_tested':False,'seed_settings_sha256':seed_hash,
-            'diagnostic_notation_extension_installed':True,'external_audio_plugins_installed':False,'human_listening_performed':False,
+            'diagnostic_notation_extension_installed':True,'diagnostic_extension_uri':URI,'auto_hook_uri_workaround':True,'external_audio_plugins_installed':False,'human_listening_performed':False,
             'live_interactive_playback_tested':False,'gui_warning_tested':False,'keyboard_or_mouse_injection_used':False,
             'gui_close_policy':'WM_CLOSE only to the one enabled visible unowned top-level Qt Cadence window rechecked for the owned child PID; no global quit action',
             'commands':[],'cases':[],'error':None,'preservation_failures':[]}
