@@ -81,6 +81,7 @@ def compare_archive(archive_path,archive_record,file_records):
         if name in expected and expected[name]!=checks:conflicts.append(name)
         expected[name]=checks
     matched=[];mismatch=[];seen=set();checked_bytes=0
+    eol_equivalent=[];unexplained=[];mismatch_details=[]
     with tarfile.open(archive_path,'r:gz') as archive:
         for item in archive:
             if not item.isfile():continue
@@ -91,18 +92,39 @@ def compare_archive(archive_path,archive_record,file_records):
             if name in seen or item.size>32*1024**2:raise ValueError('Unexpected duplicate/oversized source member')
             seen.add(name);checked_bytes+=item.size
             if checked_bytes>1024**3:raise ValueError('Source comparison bound exceeded')
-            stream=archive.extractfile(item)
-            algorithms={a:hashlib.new(a) for a in expected[name]}
-            for block in iter(lambda:stream.read(65536),b''):
-                for digest in algorithms.values():digest.update(block)
-            if all(algorithms[a].hexdigest()==value for a,value in expected[name].items()):matched.append(name)
-            else:mismatch.append(name)
+            with archive.extractfile(item) as stream:data=stream.read(item.size+1)
+            if len(data)!=item.size:raise ValueError('Source archive stream length differs')
+            actual={a:hashlib.new(a,data).hexdigest() for a in expected[name]}
+            if actual==expected[name]:matched.append(name)
+            else:
+                mismatch.append(name);variants={}
+                # Diagnose only deterministic byte transforms, without changing
+                # the raw gate. No Unicode decoding or generic whitespace trim.
+                if b'\0' not in data:
+                    lf=data.replace(b'\r\n',b'\n')
+                    for label,candidate in [('LF',lf),('CRLF',lf.replace(b'\n',b'\r\n'))]:
+                        variants[label]={a:hashlib.new(a,candidate).hexdigest() for a in expected[name]}
+                equal=[label for label,values in variants.items() if values==expected[name]]
+                if equal:eol_equivalent.append(name)
+                else:unexplained.append(name)
+                if len(mismatch_details)<12:mismatch_details.append({'path':name,'expected':expected[name],
+                    'archive_raw':actual,'deterministic_EOL_variants':variants,'matching_EOL_variants':equal,
+                    'source_contains_NUL':b'\0' in data,'archive_bytes':len(data)})
     missing=sorted(set(expected)-seen)
+    missing_metadata=[name for name in missing if PurePosixPath(name).name in ('.gitignore','.gitattributes')]
+    missing_other=[name for name in missing if name not in missing_metadata]
     return {'module':archive_record['id'],'archive_sha256':archive_record['sha256'],'source_commit':archive_record['commit'],
             'SPDX_file_records':len(file_records),'normalized_checksum_records':len(expected),'matching_original_files':len(matched),
             'mismatch_count':len(mismatch),'missing_count':len(missing),'unmapped_record_count':unmapped_count,
             'conflicting_checksum_count':len(conflicts),'conflicting_checksum_paths':conflicts[:30],
             'mismatch_examples':mismatch[:30],'missing_examples':missing[:30],'unmapped_examples':unmapped,
+            'raw_mismatches_explained_by_deterministic_EOL':len(eol_equivalent),
+            'raw_mismatches_unexplained':len(unexplained),'unexplained_examples':unexplained[:30],
+            'raw_mismatch_checksum_evidence':mismatch_details,
+            'missing_git_metadata_records':len(missing_metadata),'missing_other_records':len(missing_other),
+            'missing_other_examples':missing_other[:30],
+            'all_present_file_records_raw_or_EOL_equivalent':bool(seen) and not unexplained and not conflicts,
+            'raw_correspondence_gate_relaxed':False,
             'original_bytes_compared':checked_bytes,'all_normalized_records_matched':bool(expected) and not mismatch and not missing and not conflicts,
             'all_original_file_records_accounted_for':bool(expected) and not mismatch and not missing and not conflicts and not unmapped_count,
             'scope':'Original source file checksums compared, not a byte-reproducible Qt binary build'}
@@ -130,6 +152,7 @@ def main():
     output.mkdir();originals=output/'qt-sdk-sbom-originals';originals.mkdir();configs=output/'qt-sdk-config-originals';configs.mkdir()
     shutil.copyfile(origin_path,output/'binary-origin-metadata.original.json')
     report={'schema_version':1,'status':'read-and-measure-original-SDK-material','producer_run_id':43207550870,'executable_sha256':origin['executable_sha256'],
+            'correspondence_diagnostic_version':2,'raw_correspondence_gate_relaxed':False,
             'original_collector_file_sha256':sha(origin_path),'original_collector_semantically_matches_authenticated_capture':True,
             'expected_profile_sha256':sha(expected_path),'Qt_runtime_DLLs_compared':35,'Qt_runtime_DLLs_identical_to_exact_SDK':35,
             'runtime_source_mapping_counts':dict(Counter(x['source_archive_id'] for x in expected['qt_runtime_source_map'])),
@@ -194,6 +217,10 @@ def main():
     console['binary_module_packages']=concise({module:rows[:16] for module,rows in report['binary_module_packages'].items()})
     console['interesting_third_party_package_count']=len(report['interesting_third_party_packages'])
     console['interesting_third_party_packages']=concise(report['interesting_third_party_packages'][:40])
+    if len(report['interesting_third_party_packages'])>256:raise ValueError('Compact third-party license table exceeds bound')
+    console['all_interesting_package_license_rows']=[{'document':row['document'],
+        **{key:row['package'][key] for key in ('name','versionInfo','licenseConcluded','licenseDeclared','downloadLocation') if key in row['package']}}
+        for row in report['interesting_third_party_packages']]
     console['source_file_comparisons']=concise(report['source_file_comparisons'])
     console['runtime_file_SBOM_entries']=report['runtime_file_SBOM_entries'][:50]
     text=json.dumps(console,ensure_ascii=False,indent=2)
