@@ -1,0 +1,39 @@
+name: Cadence existing tools GUI3 complete reports readback
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/retained-2005-tools-gui-readback/**'
+      - '.github/workflows/cadence-tools-gui3-readback.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  read-existing-data:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: 13953546227
+          run-id: 43236835262
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/original-tools-gui3
+      - name: Read only the two pinned complete JSON reports, without app or SDK
+        shell: bash
+        run: |
+          python3 -I .cadence-studio/retained-2005-tools-gui-readback/read_reports.py \
+            --directory "$RUNNER_TEMP/original-tools-gui3" \
+            --output "$RUNNER_TEMP/tools-gui3-readback"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cadence-tools-gui3-complete-readback-${{ github.run_number }}
+          path: ${{ runner.temp }}/tools-gui3-readback/**
+          retention-days: 14
+          if-no-files-found: warn
