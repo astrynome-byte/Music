@@ -86,6 +86,8 @@ static bool noteFocusText(IUIAutomation* automation, const std::filesystem::path
     // No modification to the numeric reference: Down only, from exact roles.
     return moveCollectionFocus(automation, output, VK_DOWN, noteSelector, UIA_ComboBoxControlTypeId,
                                measure, UIA_SpinnerControlTypeId, "observe_note_measure_without_editing")
+        && collectionKey(automation, output, VK_ESCAPE, measure, UIA_SpinnerControlTypeId,
+                         "finish_note_measure_edit_without_changing_value")
         && moveCollectionFocus(automation, output, VK_DOWN, measure, UIA_SpinnerControlTypeId,
                                noteTextLabel, UIA_EditControlTypeId, "focus_private_note_text");
 }
