@@ -25,9 +25,6 @@ jobs:
           path: driver
           fetch-depth: 1
           persist-credentials: false
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
       - name: Use native MSVC 2022 x64 and SDK 26100
         uses: ilammy/msvc-dev-cmd@v1
         with:
@@ -44,6 +41,9 @@ jobs:
           archives: 'qtbase'
           cache: true
           cache-key-prefix: 'cadence-qtbase-free-sound-installer'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
       - name: Rebuild exact CC0 banks and execute only the 8 plus 13 native installer scenarios
         run: |
           & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/vsco-installer-probe/Run-VscoInstallerProbe.ps1" `
