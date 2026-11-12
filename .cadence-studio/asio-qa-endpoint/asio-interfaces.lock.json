@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "version": "ASIO-SDK_2.3.4_2025-10-15",
+  "archive_sha256": "d5ebf0c20dd2c5f43771fd0c1418f4b361bf52434ee670097cfa6b3a335e2eca",
+  "license_selected": "GPL-3.0-only",
+  "headers_unmodified": true,
+  "files": [
+    {
+      "path": "third_party/asio/asio.h",
+      "sdk_path": "ASIOSDK/common/asio.h",
+      "bytes": 44265,
+      "sha256": "93d2f80d49b4ac9c963514e7c1307ab5111d8104246192233745beb058534ea1"
+    },
+    {
+      "path": "third_party/asio/asiosys.h",
+      "sdk_path": "ASIOSDK/common/asiosys.h",
+      "bytes": 2165,
+      "sha256": "f44a1ed0fd7c056ff047aeebc4c05a8c185f0585a24d8debc55c70107777dbef"
+    },
+    {
+      "path": "third_party/asio/iasiodrv.h",
+      "sdk_path": "ASIOSDK/common/iasiodrv.h",
+      "bytes": 2379,
+      "sha256": "86ad4788452c74823653cf57d4bd557c48bb6542d7e6eb7fff80102c705a066d"
+    },
+    {
+      "path": "third_party/asio/LICENSE.txt",
+      "sdk_path": "ASIOSDK/common/LICENSE.txt",
+      "bytes": 2640,
+      "sha256": "61e56814f24b32216884b2db0b4dcc317111a5ab354d54d19dd9fc13d71b1c7a"
+    }
+  ]
+}

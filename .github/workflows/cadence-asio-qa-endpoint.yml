@@ -1,0 +1,33 @@
+name: Cadence QA Clock endpoint - direct COM factory only
+on:
+  workflow_dispatch:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths:
+      - '.cadence-studio/asio-qa-endpoint/**'
+      - '.github/workflows/cadence-asio-qa-endpoint.yml'
+permissions:
+  contents: read
+jobs:
+  direct-factory-only:
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+      - name: Compile and test only the independent QA DLL and harness
+        shell: pwsh
+        run: |
+          & ./.cadence-studio/asio-qa-endpoint/Build-And-Test.ps1 `
+            -SourcePath (Join-Path $env:GITHUB_WORKSPACE '.cadence-studio/asio-qa-endpoint') `
+            -WorkPath (Join-Path $env:RUNNER_TEMP 'cadence-qa-clock')
+      - name: Retain QA evidence without claiming hardware or application tests
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-qa-clock-direct-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cadence-qa-clock/evidence
+          if-no-files-found: warn
+          retention-days: 14

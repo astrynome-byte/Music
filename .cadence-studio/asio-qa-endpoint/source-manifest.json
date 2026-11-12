@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "status": "source-prepared-not-Windows-qualified",
+  "license": "GPL-3.0-only",
+  "physical_audio_output": false,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "Build-And-Test.ps1",
+      "bytes": 7944,
+      "sha256": "99d24e1324857215163695519d30645c99aa0b0f508badac61dabcebe31eb89b"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 1061,
+      "sha256": "df061338770cf01976dd2666f0072e88a489f7a7b766215084f1a4f45ca756ef"
+    },
+    {
+      "path": "LICENSE.txt",
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "QaRegistryScope.psm1",
+      "bytes": 9607,
+      "sha256": "0a8ae02d584f4e4a073e24c838c26cc0158a51f3ece9a184d6e0193ec51a3995"
+    },
+    {
+      "path": "README-FR.md",
+      "bytes": 9081,
+      "sha256": "e5a21549442ba603b5cfbfabfbb18623b3586466cce01ec6071096b25845c35b"
+    },
+    {
+      "path": "asio-interfaces.lock.json",
+      "bytes": 1070,
+      "sha256": "7149abed4ce075d317827d96e8433a0cac64fed79d67d6c003579fce0e8104cc"
+    },
+    {
+      "path": "cadence-asio-qa-endpoint.yml",
+      "bytes": 1181,
+      "sha256": "07592af6e0d67f56d0ca0eb7342e6731cd450f7d4ebd4cbb07e30f0b5a3f93db"
+    },
+    {
+      "path": "harness.cpp",
+      "bytes": 9454,
+      "sha256": "72b7fa2a3017dbb97b452a298b18e4340750af043dc1357f2adb44d0c51f6cce"
+    },
+    {
+      "path": "metrics_test.cpp",
+      "bytes": 1221,
+      "sha256": "af5a75eefa8cfcebe907ecf8dc3e8674ad9ad4d491997bbc2112c31a8a97133d"
+    },
+    {
+      "path": "qa_clock.cpp",
+      "bytes": 20874,
+      "sha256": "b7f3c6fef97df3228dd082fdabbe31625d4fe26a66081fd67f60038eb5d2b233"
+    },
+    {
+      "path": "qa_clock.def",
+      "bytes": 73,
+      "sha256": "75a44897534524f911fe43b13c4dcd68e4d2d14798b4649057b878de45e35ed3"
+    },
+    {
+      "path": "qa_clock_api.h",
+      "bytes": 1291,
+      "sha256": "77b4b1c2619ee4ee9ab5a279b7418fef458494a949ca12e39d32584f5c758d32"
+    },
+    {
+      "path": "qa_environment.h",
+      "bytes": 2435,
+      "sha256": "fcfd0813fd06bd5b8261c72d80939ed75a5ac459b64a12d9bc4aa014057a6cb5"
+    },
+    {
+      "path": "sample_metrics.h",
+      "bytes": 943,
+      "sha256": "42b2ee96418886a4ef6c2436958e4f74942e5145bae1d8e1de49b1a47337f257"
+    },
+    {
+      "path": "third_party/asio/LICENSE.txt",
+      "bytes": 2640,
+      "sha256": "61e56814f24b32216884b2db0b4dcc317111a5ab354d54d19dd9fc13d71b1c7a"
+    },
+    {
+      "path": "third_party/asio/asio.h",
+      "bytes": 44265,
+      "sha256": "93d2f80d49b4ac9c963514e7c1307ab5111d8104246192233745beb058534ea1"
+    },
+    {
+      "path": "third_party/asio/asiosys.h",
+      "bytes": 2165,
+      "sha256": "f44a1ed0fd7c056ff047aeebc4c05a8c185f0585a24d8debc55c70107777dbef"
+    },
+    {
+      "path": "third_party/asio/iasiodrv.h",
+      "bytes": 2379,
+      "sha256": "86ad4788452c74823653cf57d4bd557c48bb6542d7e6eb7fff80102c705a066d"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+LIBRARY CadenceQaClock
+EXPORTS
+    DllGetClassObject
+    DllCanUnloadNow
