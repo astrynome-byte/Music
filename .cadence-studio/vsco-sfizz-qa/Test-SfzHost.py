@@ -38,6 +38,10 @@ class OwnedDebuggerCollectionError(RuntimeError):
     pass
 
 
+def valid_fast_fail_code(value):
+    return value is None or (type(value) is int and 0<=value<=65535)
+
+
 def native_failure_observed(commands):
     return any((item.get('native_exit_observed') not in (None,0)) if item.get('execution_wrapper')=='owned_debugger'
                else (item.get('exit_code') not in (None,0) or item.get('timed_out',False)) for item in commands)
@@ -213,10 +217,11 @@ def main():
                 'owned_process_started':{'event','pid','debug_only_this_process','environment_allowlist','memory_dump_created','data_memory_captured'},
                 'module_loaded':{'event','module','base','image_bytes'},'module_unloaded':{'event','base'},
                 'initial_loader_breakpoint':{'event','thread_id','first_chance','module_identified','module','module_state','module_offset'},
-                'exception':{'event','thread_id','code','first_chance','instruction_pointer','context_RIP','module','module_state','module_offset'},
+                'exception':{'event','thread_id','code','first_chance','instruction_pointer','context_RIP','fast_fail_code','module','module_state','module_offset'},
                 'owned_process_exit':{'event','pid','exit_code'},
                 'owned_process_timeout':{'event','termination_request_succeeded','exit_observed_within_5s'},'debugger_tool_failed':{'event'}}
             if len(events)>1024 or any(value.get('event') not in allowed or set(value)!=allowed[value['event']] for value in events):raise OwnedDebuggerCollectionError('Unexpected owned-debugger data schema')
+            if any(value['event']=='exception' and not valid_fast_fail_code(value['fast_fail_code']) for value in events):raise OwnedDebuggerCollectionError('Unexpected fast-fail metadata type or range')
             starts=[value for value in events if value['event']=='owned_process_started'];exits=[value for value in events if value['event']=='owned_process_exit']
             item['native_pid']=starts[0]['pid'] if len(starts)==1 else None
             item['native_exit_observed']=exits[0]['exit_code'] if len(exits)==1 else None

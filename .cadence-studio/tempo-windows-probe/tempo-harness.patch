@@ -1,0 +1,15 @@
+diff --git a/test/cadence/test_tempo_change_position.py b/test/cadence/test_tempo_change_position.py
+--- a/test/cadence/test_tempo_change_position.py
++++ b/test/cadence/test_tempo_change_position.py
+@@ -132,9 +132,11 @@
+             if msvc:
+                 command=compiler+["/nologo","/std:c++17","/EHsc","/W3","/utf-8","/DNDEBUG","/DNO_QT_SUPPORT",
+                                   "/D_CRT_SECURE_NO_WARNINGS","/DNOMINMAX","/FImemory"]
++                if os.name=="nt":command += ["/DWIN32","/DUNICODE","/D_UNICODE"]
+                 command += ["/I"+str(p) for p in includes]+[str(p) for p in sources]+["/Fe"+str(binary)]
+             else:
+                 command=compiler+["-std=c++17","-Wall","-Wextra","-Werror","-DNDEBUG","-DNO_QT_SUPPORT","-include","memory","-pthread"]
++                if os.name=="nt":command += ["-DWIN32","-DUNICODE","-D_UNICODE"]
+                 for path in includes:command += ["-I",str(path)]
+                 command += [str(p) for p in sources]+["-o",str(binary)]
+             compiled=subprocess.run(command,cwd=temporary,capture_output=True,text=True,timeout=90)

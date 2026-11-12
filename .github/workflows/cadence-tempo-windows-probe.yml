@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: real Windows tempo test with GNU and MSVC'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/tempo-windows-probe/**'
+      - '.github/workflows/cadence-tempo-windows-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cadence-tempo-windows-probe-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  windows-tempo-compilers:
+    runs-on: windows-2022
+    timeout-minutes: 12
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+      - name: Reconstruct exact source053 plus reviewed test-only fix and run both real compilers
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/tempo-windows-probe/Run-TempoWindowsProbe.ps1" `
+            -FrozenDriverPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2004-source" `
+            -OutputDirectory "$env:RUNNER_TEMP/tempo-windows-evidence"
+      - name: Retain exact source and two real musical property test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-tempo-windows-probe-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/tempo-windows-evidence/**
+          retention-days: 14
+          if-no-files-found: warn

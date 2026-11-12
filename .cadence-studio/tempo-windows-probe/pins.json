@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "original_source_commit": "053a1fd223256a23bcc954b9acd92a2a54ee14d1",
+  "original_source_tree": "a9d0200ef656c7016d750114f70490756aa63b72",
+  "candidate_source_commit": "fcec2022f66c3c0e36265c26db07407420682096",
+  "candidate_source_tree": "0ea5615bd2a69f61349c2569915a0c542ce48c2e",
+  "source_json_sha256": "7a83232df7a818da5e064369326cee40ce66a5a86f1ddbe3100e99f80e4bf73f",
+  "original_patch_sha256": "1dcdf67a32bc9f8645d0e219c3615880bd315b83353545ecc35f3e6648d3dab9",
+  "bootstrap_sha256": "ba1f2d819e16317b9469091d9a6f9caf7f8a0cfc627d18f7e9aa2273c240089c",
+  "test_patch_sha256": "2606f697d82f7a22d5ffc6babf155b0495cdbc918f7bace57d734a285e354a13"
+}

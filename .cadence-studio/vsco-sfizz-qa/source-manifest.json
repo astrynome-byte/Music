@@ -18,8 +18,8 @@
     },
     {
       "path": "Test-SfzHost.py",
-      "bytes": 27689,
-      "sha256": "d72dc0abcf0c14cad3c2804cf3617a0e301a9f20e8b2e12b44bf027691a71cda"
+      "bytes": 28014,
+      "sha256": "3c8c328996c0ff98a0e24a02511da799c2832291b32857802cb9d74472a084e3"
     },
     {
       "path": "VSCO-CC0-LICENSE.txt",
@@ -63,8 +63,8 @@
     },
     {
       "path": "debugger/OwnedExportDebugEvents.cpp",
-      "bytes": 16673,
-      "sha256": "bcc0e341c97b4722545ea8c1693f7a0cefa7b8d18a2417188b0ba710b7c33150"
+      "bytes": 17458,
+      "sha256": "f3694d411d81dc2bfedc1e04f8021d9059ee4a8b41d980b1048ce8d58e369613"
     },
     {
       "path": "debugger/Build-OwnedExportDebugger.ps1",
@@ -74,7 +74,7 @@
     {
       "path": "debugger/source-pin.json",
       "bytes": 164,
-      "sha256": "90c483da5334950e8013e564f3510278ee06a9c508e3c863e2e4693159a2f66a"
+      "sha256": "91f78227a752b3ee2d42590bb39e4fc4b1958a64a5c84d3e75ed0c114dd4994d"
     }
   ]
 }

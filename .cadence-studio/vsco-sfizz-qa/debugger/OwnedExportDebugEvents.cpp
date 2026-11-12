@@ -189,11 +189,18 @@ int wmain(int argc,wchar_t** argv) {
                 }
                 else {
                     continuation=DBG_EXCEPTION_NOT_HANDLED;
-                    if (code==EXCEPTION_ACCESS_VIOLATION || code==EXCEPTION_ILLEGAL_INSTRUCTION || code==EXCEPTION_STACK_OVERFLOW || code==EXCEPTION_IN_PAGE_ERROR) {
+                    if (code==EXCEPTION_ACCESS_VIOLATION || code==EXCEPTION_ILLEGAL_INSTRUCTION || code==EXCEPTION_STACK_OVERFLOW || code==EXCEPTION_IN_PAGE_ERROR ||
+                        code==0xC0000409UL || code==0xC0000374UL || code==0xC0000602UL || code==0xC0000417UL || code==0x40000015UL || code==EXCEPTION_BREAKPOINT) {
+                        // STATUS_STACK_BUFFER_OVERRUN carries a documented FAST_FAIL
+                        // reason in parameter0. Emit only a bounded small identifier,
+                        // never arbitrary exception arguments or addresses/data.
+                        std::string fastFailCode="null";
+                        if (code==0xC0000409UL && info.ExceptionRecord.NumberParameters>=1 && info.ExceptionRecord.ExceptionInformation[0]<=65535)
+                            fastFailCode=std::to_string(static_cast<unsigned>(info.ExceptionRecord.ExceptionInformation[0]));
                         std::string context="null"; Handle thread(OpenThread(THREAD_GET_CONTEXT|THREAD_QUERY_INFORMATION,FALSE,event.dwThreadId));
                         CONTEXT registers{};registers.ContextFlags=CONTEXT_CONTROL;
                         if (thread.value && GetThreadContext(thread.value,&registers)) context=jsonString(hex(registers.Rip));
-                        emit("{\"event\":\"exception\",\"thread_id\":"+std::to_string(event.dwThreadId)+",\"code\":"+jsonString(hex(code))+",\"first_chance\":"+(info.dwFirstChance?"true":"false")+",\"instruction_pointer\":"+jsonString(hex(address))+",\"context_RIP\":"+context+","+location(modules,address)+"}");
+                        emit("{\"event\":\"exception\",\"thread_id\":"+std::to_string(event.dwThreadId)+",\"code\":"+jsonString(hex(code))+",\"first_chance\":"+(info.dwFirstChance?"true":"false")+",\"instruction_pointer\":"+jsonString(hex(address))+",\"context_RIP\":"+context+",\"fast_fail_code\":"+fastFailCode+","+location(modules,address)+"}");
                     }
                 }
             } else if (event.dwDebugEventCode == EXIT_PROCESS_DEBUG_EVENT) {
