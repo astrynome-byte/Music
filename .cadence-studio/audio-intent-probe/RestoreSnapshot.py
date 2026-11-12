@@ -14,13 +14,13 @@ import shutil
 import stat
 import zipfile
 
-SOURCE_COMMIT = '88f49ea89ba96471fb00abd4e3074488239648aa'
-SOURCE_TREE = '4c63daf6fd5d5fd44f9fb6a05f9fec18236b80a9'
+SOURCE_COMMIT = '0f1b61397d7b00714f135ecc737c48cdc380c930'
+SOURCE_TREE = '34bd415cc77469c6439e6274c8c8c556391ae7e1'
 CONTROL_COMMIT = 'b02b41f4cbb31f43df073d6cdf5249a18d425a7e'
-MANIFEST_SHA = '26fb0c02cf17d8e065431cc3dc23dc39be3865810b6487894c145ada62bf5b8c'
-ARCHIVE_SHA = '126959e3b82f29ffe47199bdca682d42b7c4b4e9cc2753f9386c1f4c118b0e47'
-BASE64_SHA = 'c3b0610f24f0760e27655d6767d1cdfba3a2616e78e9267850f24ba6eccfe3b5'
-SUMS_SHA = '17db43663f85a592618be5b2a9fc84b660726be3a94bf32bcfb539351bac831b'
+MANIFEST_SHA = '842c8b2e4b62ffde1032d840830f024f9e31aa1ea86fc2a4edfc9b81ba490c62'
+ARCHIVE_SHA = '9c9dc097241dcbdc3a00bb903b1ec916683df576604d37440b2139fc334139e7'
+BASE64_SHA = '00a7718bdfe47c845f982d504232da11d9f826c96d5ca7a82452b2b8c866eefc'
+SUMS_SHA = '47398d2ef949b75ed1a92b7228c50cafb96179fd37c2b799110e33a1f9de8836'
 
 def sha(data):
     return hashlib.sha256(data).hexdigest()
@@ -45,8 +45,8 @@ def load_manifest(data):
         raise ValueError('Pinned source manifest differs')
     obj = json.loads(data)
     if obj.get('source_commit') != SOURCE_COMMIT or obj.get('source_tree') != SOURCE_TREE or \
-       obj.get('control_commit') != CONTROL_COMMIT or obj.get('candidate_files') != 170 or obj.get('control_files') != 6 or \
-       len(obj.get('files', [])) != 176 or obj.get('translation_unit_count') != 34:
+       obj.get('control_commit') != CONTROL_COMMIT or obj.get('candidate_files') != 180 or obj.get('control_files') != 6 or \
+       len(obj.get('files', [])) != 186 or obj.get('translation_unit_count') != 39:
         raise ValueError('Source identity/count differs')
     seen = set()
     for row in obj['files']:
@@ -106,7 +106,7 @@ def verify(snapshot, old_tree):
     return dict(schema_version=1, verified=True, source_commit=SOURCE_COMMIT, source_tree=SOURCE_TREE,
                 old_engine_commit=CONTROL_COMMIT, source_manifest_sha256=MANIFEST_SHA,
                 snapshot_files=snapshot_checked, old_source_tree_files=old_checked,
-                candidate_file_count=170, old_engine_overlays=6, old_tree_file_count=170,
+                candidate_file_count=180, old_engine_overlays=6, old_tree_file_count=180,
                 old_tree_scope='Six exact frozen engine files plus unchanged candidate dependencies, current tests and constructor friend')
 
 def restore(encoded_file, snapshot, old_tree):
@@ -116,14 +116,14 @@ def restore(encoded_file, snapshot, old_tree):
     if snapshot.resolve().is_relative_to(old_tree.resolve()) or old_tree.resolve().is_relative_to(snapshot.resolve()):
         raise ValueError('Snapshot/control output directories must be disjoint')
     encoded = plain_file(encoded_file).read_bytes()
-    if len(encoded) != 496394 or sha(encoded) != BASE64_SHA:
+    if len(encoded) != 626891 or sha(encoded) != BASE64_SHA:
         raise ValueError('Reviewed source archive transport differs')
     raw = base64.b64decode(b''.join(encoded.split()), validate=True)
-    if len(raw) != 368456 or sha(raw) != ARCHIVE_SHA:
+    if len(raw) != 465321 or sha(raw) != ARCHIVE_SHA:
         raise ValueError('Reviewed source archive differs')
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
         infos = archive.infolist()
-        if len(infos) != 178 or len({x.filename.casefold() for x in infos}) != 178:
+        if len(infos) != 188 or len({x.filename.casefold() for x in infos}) != 188:
             raise ValueError('Unexpected/colliding archive member count')
         manifest_bytes = archive.read('source-manifest.json')
         manifest = load_manifest(manifest_bytes)
@@ -172,7 +172,7 @@ def main():
     with args.report.open('x', encoding='utf8') as output:
         json.dump(report, output, indent=2)
         output.write('\n')
-    print(json.dumps(dict(verified=True, candidate_files=170, frozen_engine_files=6,
+    print(json.dumps(dict(verified=True, candidate_files=180, frozen_engine_files=6,
                          source_manifest_sha256=MANIFEST_SHA)))
 
 if __name__ == '__main__':

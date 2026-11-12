@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "source_commit": "88f49ea89ba96471fb00abd4e3074488239648aa",
-  "source_tree": "4c63daf6fd5d5fd44f9fb6a05f9fec18236b80a9",
+  "source_commit": "0f1b61397d7b00714f135ecc737c48cdc380c930",
+  "source_tree": "34bd415cc77469c6439e6274c8c8c556391ae7e1",
   "old_engine_commit": "b02b41f4cbb31f43df073d6cdf5249a18d425a7e",
   "expected_ON_groups": 10,
   "expected_OFF_groups": 3,
@@ -16,18 +16,18 @@
   "files": [
     {
       "path": "source-snapshot.zip.base64",
-      "bytes": 496394,
-      "sha256": "c3b0610f24f0760e27655d6767d1cdfba3a2616e78e9267850f24ba6eccfe3b5"
+      "bytes": 626891,
+      "sha256": "00a7718bdfe47c845f982d504232da11d9f826c96d5ca7a82452b2b8c866eefc"
     },
     {
       "path": "snapshot-contract.json",
       "bytes": 687,
-      "sha256": "620205669dc11b24cb8be3d1abb5f3075ad247165b18ce4820748965f933339d"
+      "sha256": "54fc7d73046e15c82e72c2b5eb3198e0511ba40be6a91d7fd7350248d9096a38"
     },
     {
       "path": "RestoreSnapshot.py",
       "bytes": 9529,
-      "sha256": "55b018b7fe2d8006596c97de38cde741c71358b35b6751de7089638599023fde"
+      "sha256": "83c3df654c191e3a174826854876665375187415d346f11e8125e02ace4d1a94"
     },
     {
       "path": "CMakeLists.txt",

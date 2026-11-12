@@ -33,14 +33,14 @@ function Assert-PlainFile([string] $Path){
 }
 function Get-VerifiedQaFiles([string] $Root){
     $manifestFile=Join-Path $Root 'qa-manifest.json';Assert-PlainFile $manifestFile
-    if((Get-Item -LiteralPath $manifestFile).Length -gt 65536 -or (Hash $manifestFile) -cne '8901b4ea71e407838a74f5344f0ccb2f03ebc135abd82c4a32af5c8a9a14c5fa'){
+    if((Get-Item -LiteralPath $manifestFile).Length -gt 65536 -or (Hash $manifestFile) -cne '4a94391a6ced2f2904cbf398d04f73b7ce4695405cc15500bef8605372231839'){
         throw 'Reviewed QA manifest differs.'
     }
     $manifest=Get-Content -LiteralPath $manifestFile -Raw|ConvertFrom-Json -AsHashtable
     $allowed=@('source-snapshot.zip.base64','snapshot-contract.json','RestoreSnapshot.py','CMakeLists.txt',
         'GenerateProbeConfig.cmake','prepare_zlib_package.py','Validate-OpenSourceZlib.ps1','zlib-source-profile.lock.json')
-    if($manifest.schema_version -ne 1 -or $manifest.source_commit -cne '88f49ea89ba96471fb00abd4e3074488239648aa' -or
-       $manifest.source_tree -cne '4c63daf6fd5d5fd44f9fb6a05f9fec18236b80a9' -or
+    if($manifest.schema_version -ne 1 -or $manifest.source_commit -cne '0f1b61397d7b00714f135ecc737c48cdc380c930' -or
+       $manifest.source_tree -cne '34bd415cc77469c6439e6274c8c8c556391ae7e1' -or
        $manifest.old_engine_commit -cne 'b02b41f4cbb31f43df073d6cdf5249a18d425a7e' -or
        $manifest.expected_ON_groups -ne 10 -or $manifest.expected_OFF_groups -ne 3 -or @($manifest.files).Count -ne $allowed.Count){
         throw 'Unexpected source identity or scenario accounting.'
@@ -73,8 +73,8 @@ function Assert-ExpectedOldFailure([string] $ErrorText,[string] $Expected){
 }
 [void][IO.Directory]::CreateDirectory($OutputDirectory)
 $report=[ordered]@{
-    schema_version=1;status='running';passed=$false;source_commit='88f49ea89ba96471fb00abd4e3074488239648aa'
-    source_tree='4c63daf6fd5d5fd44f9fb6a05f9fec18236b80a9';old_engine_commit='b02b41f4cbb31f43df073d6cdf5249a18d425a7e'
+    schema_version=1;status='running';passed=$false;source_commit='0f1b61397d7b00714f135ecc737c48cdc380c930'
+    source_tree='34bd415cc77469c6439e6274c8c8c556391ae7e1';old_engine_commit='b02b41f4cbb31f43df073d6cdf5249a18d425a7e'
     driver_commit=$env:GITHUB_SHA;run_id=$env:GITHUB_RUN_ID;scope='Real engine and same native project-settings writer; external synth/FX doubles only'
     source_verified_before=$false;source_verified_after=$false;qa_verified_before=$false;qa_verified_after=$false
     ON_groups=0;OFF_groups=0;old_getter_failure_observed=$false;old_native_save_failure_observed=$false
