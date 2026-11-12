@@ -1,0 +1,48 @@
+name: Cadence retained2005 ICU system resolution and existing corpus comparison
+on:
+  workflow_dispatch:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths:
+      - '.cadence-studio/redist-stage-qa/**'
+      - '.github/workflows/cadence-icu-system-qa.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  exact-copy-system-icu:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Retrieve only the exact retained complete2005 stage
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: astrynome-byte/Music
+          run-id: '43207550870'
+          artifact-ids: '13943781621'
+          merge-multiple: true
+          path: ${{ runner.temp }}/icu-original-artifact
+      - name: Prove system exports then compare one private omission copy with unchanged baseline
+        shell: pwsh
+        run: |
+          & ./.cadence-studio/redist-stage-qa/Invoke-IcuOmission.ps1 `
+            -ArtifactDirectory (Join-Path $env:RUNNER_TEMP 'icu-original-artifact') `
+            -BaselineStage (Join-Path $env:RUNNER_TEMP 'icu-baseline2005') `
+            -CandidateStage (Join-Path $env:RUNNER_TEMP 'icu-copy-without-local-forwarder') `
+            -OutputDirectory (Join-Path $env:RUNNER_TEMP 'icu-omission-evidence')
+      - name: Retain reports and copied corpus exports, never another application or installer
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-icu-system-qa-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/icu-omission-evidence/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14

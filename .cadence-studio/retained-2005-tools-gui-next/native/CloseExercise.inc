@@ -71,7 +71,7 @@ static bool elementBelowModal(IUIAutomation* automation, IUIAutomationElement* e
 static int closeOwnedExercise(const std::filesystem::path& output)
 {
     deadline = Clock::now() + std::chrono::seconds(25);
-    bool requested = false, observed = false, delivered = false, exited = false, modalSeen = false;
+    bool requested = false, observed = false, delivered = false, exited = false, modalSeen = false, exposureAttempted = false, exposureDelivered = false;
     DWORD exitCode = STILL_ACTIVE;
     std::wstring initialCaption, initialClass, observedModalCaption, observedDiscardLabel;
     std::string method = "none", reason = "blocked_com_or_owned_exercise_unavailable";
@@ -121,7 +121,38 @@ static int closeOwnedExercise(const std::filesystem::path& output)
                     discard = &node;
                 }
                 if (ambiguous) { reason = "blocked_ambiguous_discard_buttons"; break; }
-                if (!discard) { reason = "blocked_exact_discard_button_unavailable"; Sleep(120); continue; }
+                if (!discard) {
+                    reason = "blocked_exact_discard_button_unavailable";
+                    if (!exposureAttempted) {
+                        exposureAttempted = true;
+                        const std::wstring modalClass = closeWindowClass(modal);
+                        const HWND foreground = GetForegroundWindow();
+                        DWORD modalPid = 0;
+                        const DWORD thread = GetWindowThreadProcessId(modal, &modalPid);
+                        GUITHREADINFO focusInfo {}; focusInfo.cbSize = static_cast<DWORD>(sizeof(focusInfo));
+                        const bool focusRead = thread && GetGUIThreadInfo(thread, &focusInfo);
+                        const bool guarded = modalOfExercise(modal, exercise) && modalPid == targetPid
+                            && modalClass.rfind(L"Qt", 0) == 0 && modalClass.find(L"QWindow") != std::wstring::npos
+                            && foreground == modal && focusRead && focusInfo.hwndFocus
+                            && GetAncestor(focusInfo.hwndFocus, GA_ROOT) == modal;
+                        OwnedKeyResult key;
+                        if (guarded) key = SendOwnedKey(targetPid, targetProcess, modal, VK_TAB);
+                        exposureDelivered = guarded && key.sent;
+                        actions.push_back("{\"action\":\"single_owned_modal_exposure_tab\",\"pid\":" + std::to_string(modalPid)
+                            + ",\"class_name\":" + jsonQuoted(modalClass)
+                            + ",\"main_handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(exercise))
+                            + ",\"modal_handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(modal))
+                            + ",\"foreground_handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(foreground))
+                            + ",\"focus_handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(focusInfo.hwndFocus))
+                            + ",\"guards_verified\":" + (guarded ? "true" : "false")
+                            + ",\"input_count\":" + std::to_string(key.inputCount) + ",\"error\":" + std::to_string(key.error)
+                            + ",\"delivered\":" + (exposureDelivered ? "true" : "false") + "}");
+                        if (!exposureDelivered) { reason = "blocked_owned_modal_exposure_guard_or_delivery"; break; }
+                        Sleep(180);
+                        snapshot(automation.Get(), output, L"tree-after-single-modal-tab");
+                    } else Sleep(120);
+                    continue;
+                }
                 observed = true; observedDiscardLabel = discardLabel(discard->name);
                 if (!modalOfExercise(modal, exercise) || !currentDiscardNode(*discard)
                     || !elementBelowModal(automation.Get(), discard->element.Get(), modalRoot.Get())) {
@@ -174,7 +205,9 @@ static int closeOwnedExercise(const std::filesystem::path& output)
     if (exited) report << exitCode; else report << "null";
     report << ",\"initial_caption\":" << jsonQuoted(initialCaption) << ",\"initial_window_class\":" << jsonQuoted(initialClass)
         << ",\"modal_caption\":" << jsonQuoted(observedModalCaption) << ",\"discard_label\":" << jsonQuoted(observedDiscardLabel)
-        << ",\"discard_method\":\"" << method << "\",\"deadline_seconds\":25,\"save_requested\":false,\"actions\":[";
+        << ",\"discard_method\":\"" << method << "\",\"deadline_seconds\":25,\"save_requested\":false"
+        << ",\"discard_exposure_tab_attempted\":" << (exposureAttempted ? "true" : "false")
+        << ",\"discard_exposure_tab_delivered\":" << (exposureDelivered ? "true" : "false") << ",\"actions\":[";
     for (size_t index = 0; index < actions.size(); ++index) { if (index) report << ','; report << actions[index]; }
     report << "],\"keyboard_frames\":[";
     for (size_t index = 0; index < keyboardFrames.size(); ++index) { if (index) report << ','; report << keyboardFrames[index]; }

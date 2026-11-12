@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "scope": "Synthetic JSON reports only; no Windows, application or audio executed",
+  "cases_passed": 17,
+  "results": [
+    {
+      "case": "57 checks and 35 identical exports accepted",
+      "passed": true
+    },
+    {
+      "case": "56 checks refused",
+      "passed": true
+    },
+    {
+      "case": "extra check refused",
+      "passed": true
+    },
+    {
+      "case": "failed check refused",
+      "passed": true
+    },
+    {
+      "case": "string PASS refused",
+      "passed": true
+    },
+    {
+      "case": "numeric PASS refused",
+      "passed": true
+    },
+    {
+      "case": "wrong executable refused",
+      "passed": true
+    },
+    {
+      "case": "nonzero version exit refused",
+      "passed": true
+    },
+    {
+      "case": "boolean version exit refused",
+      "passed": true
+    },
+    {
+      "case": "changed stable hash refused",
+      "passed": true
+    },
+    {
+      "case": "malformed stable hash refused",
+      "passed": true
+    },
+    {
+      "case": "missing stable output refused",
+      "passed": true
+    },
+    {
+      "case": "duplicate stable identity refused",
+      "passed": true
+    },
+    {
+      "case": "failed WAV numeric gate refused",
+      "passed": true
+    },
+    {
+      "case": "string WAV gate refused",
+      "passed": true
+    },
+    {
+      "case": "missing WAV numeric gate refused",
+      "passed": true
+    },
+    {
+      "case": "Windows output root may differ",
+      "passed": true
+    }
+  ]
+}

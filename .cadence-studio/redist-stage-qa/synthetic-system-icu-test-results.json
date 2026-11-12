@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "scope": "Actual bounded export parser on synthetic mini-PE files and Linux filesystem fixtures only",
+  "actual_Windows_system_ICU_validated": false,
+  "application_or_DLL_executed": false,
+  "tests_passed": 28,
+  "tests": [
+    {
+      "case": "all20-exact-named-forwarders-reach-real-x64-exports-read-only",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "Linux-synthetic-success-cannot-pass-Windows-omission-gate",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "all20-forwarders-by-ordinal",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "direct-system-icuuc-executable-exports",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "one-of20-missing-is-refused",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "export-symbol-names-remain-case-sensitive",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "PE32-is-not-x64-SystemICU",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "ARM64-is-not-x64-SystemICU",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "terminal-export-in-data-section-is-refused",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "non-file-backed-export-RVA-is-refused",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "raw-bytes-outside-SizeOfImage-are-refused",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "forwarder-to-third-DLL-is-refused",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "forwarder-cycle-is-refused",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "forwarded-missing-ordinal-is-refused",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "forwarded-ordinal-bound-is-enforced",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "forwarder-depth-bound-is-enforced",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "duplicate-named-exports-are-refused",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "missing-system-icu-file-is-refused",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "required-list-cannot-omit-one-of20",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "required-list-cannot-repeat-symbols",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "relative-SystemDirectory-is-refused",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "legitimate-nlink-greater-than1-is-accepted-for-read-only-system-files",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "symlink-system-file-is-refused",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "symlink-SystemDirectory-ancestor-is-refused",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "synthetic-Windows-reparse-attribute-is-refused-without-Windows-execution",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "system-file-read-bound-is-enforced-with-tiny-test-bound",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "CLI-emits-JSON-and-refuses-Windows-omission-gate-on-Linux",
+      "passed": true,
+      "synthetic": true
+    },
+    {
+      "case": "helper-CLI-has-no-file-writing-output-option",
+      "passed": true,
+      "synthetic": true
+    }
+  ]
+}

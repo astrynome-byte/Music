@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "status": "nine-synthetic-tests-passed-independent-review-replayed",
+  "actual_Windows_PCM_measured": false,
+  "application_or_DLL_launched": false,
+  "cases": 9,
+  "scope": "Synthetic signal pitch/octave/vibrato/harmonics/antiphase; strict WAV malformed guards; artifact metadata pins; path traversal refusal"
+}

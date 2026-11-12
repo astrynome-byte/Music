@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "status": "source-prepared-ICU-omission-not-executed",
+  "producer_run_id": 43207550870,
+  "artifact_id": 13943781621,
+  "stage_build": 2005,
+  "source_files_verified_before_runtime": true,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "Invoke-IcuOmission.ps1",
+      "bytes": 18185,
+      "sha256": "e4b85cedda243f3ce78eaa8c14ee148f8617c8bb4bbf11bdcd85d5bb392dc43d"
+    },
+    {
+      "path": "verify_system_icu.py",
+      "bytes": 21722,
+      "sha256": "aea7d3968e6d60aa2285c7133e129e7931cf6835553efe5b12a4a923c62d7d75"
+    },
+    {
+      "path": "required-system-icu.json",
+      "bytes": 1322,
+      "sha256": "5f60e0faacc3a58f766154792e2de3fdd3214b0747ec86f2dc4c8eca06a5f11c"
+    },
+    {
+      "path": "compare_corpus_reports.py",
+      "bytes": 3176,
+      "sha256": "50d4123bddcb5765eb081ec682c7b35bbd849ffd29c8e5e15f1c2fbacccbef79"
+    },
+    {
+      "path": "Read-ProducedTarget.ps1",
+      "bytes": 3505,
+      "sha256": "be42d6ae4ea1536bd1d41d11d0e04a4b77c00c75a1f84764c6ded4123421db2f"
+    },
+    {
+      "path": "Restore-NextStage.ps1",
+      "bytes": 10820,
+      "sha256": "4977871eb659ac4a353c99ce6e6ae807845fe95e96e1bdba1d1e6d3f7dfcc7d3"
+    },
+    {
+      "path": "target.json",
+      "bytes": 1395,
+      "sha256": "77883302ec2180ccc3b1a18f359d00acdfc6a40c3708302749993767d6d3bfa7"
+    },
+    {
+      "path": "CadenceProfileScope.py",
+      "bytes": 34344,
+      "sha256": "60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c"
+    },
+    {
+      "path": "profile-source-contract.json",
+      "bytes": 3310,
+      "sha256": "0023f8d7510c89429dea85cda35d803175b3434532cf14aecaf793ded5663a9e"
+    },
+    {
+      "path": "OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    },
+    {
+      "path": "corpus_run_exports.py",
+      "bytes": 16535,
+      "sha256": "f701874e7a37b8d3148f0bb99477b60b96865e804ed238372d75c06598027d82"
+    },
+    {
+      "path": "LICENSE.txt",
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "README-FR.md",
+      "bytes": 3086,
+      "sha256": "b0e6d98bf6fabc5f908412b74811b25e3ead8f89d1b33262e5bdec38b87021eb"
+    },
+    {
+      "path": "fixtures/manifest.json",
+      "bytes": 1681,
+      "sha256": "0df55165e2c04ebcd8f60ca0a4677c960be6a4a9833700e8401500e129e4c0c4"
+    },
+    {
+      "path": "fixtures/LICENSE.txt",
+      "bytes": 578,
+      "sha256": "506fdeacbf34a01edf36e2775f777889b93cfe0af8b471991b2e02b80bcee246"
+    },
+    {
+      "path": "fixtures/piano.musicxml",
+      "bytes": 6481,
+      "sha256": "1b38cc5953cc56426976345411394c24d39e0ff22dbf6c350addcb68c770a3fb"
+    },
+    {
+      "path": "fixtures/voice.musicxml",
+      "bytes": 3242,
+      "sha256": "8c1414cf17b420ac251a42c54d0e79ce45d79c6c435e82eb9186981b5df32576"
+    },
+    {
+      "path": "fixtures/guitar.musicxml",
+      "bytes": 5128,
+      "sha256": "dc459150df3adf1574b33fca450fa023bc1e8691c47bff551ac70cb6319614b3"
+    },
+    {
+      "path": "fixtures/percussion.musicxml",
+      "bytes": 6053,
+      "sha256": "c65574891b3146572bdceec21528541e0ed6a53e0e5fc95eaeb01b0c2601b208"
+    },
+    {
+      "path": "fixtures/ensemble.musicxml",
+      "bytes": 28011,
+      "sha256": "f050b3ff2c84cc62f5f6dfe116b6410305a56ddfc10454fc262f790238c721b7"
+    }
+  ],
+  "preserved_helpers": [
+    "Read-ProducedTarget.ps1",
+    "Restore-NextStage.ps1",
+    "target.json",
+    "CadenceProfileScope.py",
+    "profile-source-contract.json",
+    "OwnProcessJob.psm1",
+    "corpus_run_exports.py"
+  ],
+  "qualification": {
+    "Windows_run_performed": false,
+    "synthetic_system_PE_cases": 28,
+    "synthetic_comparison_cases": 17,
+    "actual_PS_AST_map_cases": 7,
+    "five_original_fixtures_structure": "passed",
+    "independent_review": "Concrete ASIO seed issue fixed; no other concrete blocker at static review, module sampling can honestly refuse if missed",
+    "actual_PS_AST_settings_writer_cases": 3
+  }
+}

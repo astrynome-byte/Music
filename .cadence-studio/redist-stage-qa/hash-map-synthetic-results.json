@@ -1,0 +1,35 @@
+{
+  "cases_passed": 7,
+  "results": [
+    {
+      "case": "identical accepted",
+      "passed": true
+    },
+    {
+      "case": "single ICU omission accepted",
+      "passed": true
+    },
+    {
+      "case": "non-ICU change refused",
+      "passed": true
+    },
+    {
+      "case": "two omissions refused",
+      "passed": true
+    },
+    {
+      "case": "wrong missing DLL refused",
+      "passed": true
+    },
+    {
+      "case": "still-present ICU refused",
+      "passed": true
+    },
+    {
+      "case": "unexpected member refused",
+      "passed": true
+    }
+  ],
+  "schema_version": 1,
+  "scope": "Actual PowerShell AST pure-data guard on Linux; no application, Windows API or file deletion"
+}

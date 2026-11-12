@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "status": "source-prepared-existing-Windows-WAV-pitch-not-yet-measured",
+  "source_run_id": 43231480145,
+  "artifact_id": 13949852671,
+  "files": [
+    {
+      "path": ".cadence-studio/vsco-sf2-pitch/.gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": ".cadence-studio/vsco-sf2-pitch/CODE-GPL-3.0.txt",
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": ".cadence-studio/vsco-sf2-pitch/README-FR.md",
+      "bytes": 2894,
+      "sha256": "788ad0a6056586ab5a3253d5baefcc5d7da378ada5ad6c781c49b00a387d54eb"
+    },
+    {
+      "path": ".cadence-studio/vsco-sf2-pitch/analyze_existing_wavs.py",
+      "bytes": 20446,
+      "sha256": "d03da527fdaee7af6105654a26d2edcfc5f3e760b285d1479048d00b8a2df52c"
+    },
+    {
+      "path": ".cadence-studio/vsco-sf2-pitch/test_pitch_reader.py",
+      "bytes": 4941,
+      "sha256": "64736cecda0b1e85b063bd35eefcf930f40878691369811b0e334a201ef21769"
+    },
+    {
+      "path": ".cadence-studio/vsco-sf2-pitch/checks.json",
+      "bytes": 340,
+      "sha256": "936a88047e3859648569ea08d8fc5921e319fb57e5158c7c4775af6d696339f8"
+    },
+    {
+      "path": ".github/workflows/cadence-vsco-sf2-pitch.yml",
+      "bytes": 1894,
+      "sha256": "42f0e3a9f7549f0558b72d5cad5e57b9f0a5a5d0e431f9e373650cba1bf3b72a"
+    }
+  ]
+}

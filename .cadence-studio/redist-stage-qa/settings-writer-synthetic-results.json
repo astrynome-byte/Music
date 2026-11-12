@@ -1,0 +1,19 @@
+{
+  "results": [
+    {
+      "case": "valid",
+      "passed": true
+    },
+    {
+      "case": "changed-seed",
+      "passed": true
+    },
+    {
+      "case": "oversized",
+      "passed": true
+    }
+  ],
+  "scope": "Actual bounded writer AST on synthetic temporary INI files under Linux; no KnownFolders, application, registry or Windows API",
+  "schema_version": 1,
+  "cases_passed": 3
+}

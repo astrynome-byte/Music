@@ -28,6 +28,7 @@ static bool toolsLabel(const Node& node, const std::wstring& label)
 {
     const bool buttonExpected = label == generalDownload || label == generalInstruments || label == generalLicense
         || label == L"Actualiser" || label == L"Ouvrir le dossier \u00b7 MS Basic"
+        || label == L"Voir les instruments (309) \u00b7 MS Basic"
         || label.rfind(L"Ouvrir l\u2019exercice : ", 0) == 0;
     return toolsContext() && node.element && node.pid == static_cast<int>(targetPid)
         && node.enabled && !node.offscreen && controlLabel(node.name) == label
@@ -123,7 +124,8 @@ static bool focusGeneralLicense(IUIAutomation* automation, const std::filesystem
             }
         }
         if (toolsLabel(focus, generalLicense)) { result.generalLicenseControl = true; return true; }
-        if (toolsLabel(focus, L"Actualiser") || toolsLabel(focus, L"Ouvrir le dossier \u00b7 MS Basic")) {
+        if (toolsLabel(focus, L"Actualiser") || toolsLabel(focus, L"Ouvrir le dossier \u00b7 MS Basic")
+            || toolsLabel(focus, L"Voir les instruments (309) \u00b7 MS Basic")) {
             if (!toolsKey(automation, output, VK_TAB, controlLabel(focus.name), "next_observed_sound_collection_panel")) return false;
         } else if (toolsLabel(focus, generalDownload)) {
             if (!toolsKey(automation, output, VK_DOWN, generalDownload, "navigate_without_activating_download")) return false;
