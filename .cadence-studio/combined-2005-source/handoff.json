@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "prepared_only": true,
+  "source_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+  "source_tree": "c4780f1487559744fd4b2c2040b86ac37bb8c67b",
+  "upstream_commit": "96480d58445e3b24b230a3fe7d4725d639aa2eb3",
+  "compressed_patch_sha256": "1f9823f48ae63c69647bf5dbc3e05e096540f96d1dfd0ed5de568ed4ad7f464b",
+  "compressed_patch_git_blob": "1d11e73fdb0b361fe46bb13933c5ccae55bb510a",
+  "compressed_patch_bytes": 1295108,
+  "expanded_patch_bytes": 6111471,
+  "isolated_index_restored_exact_tree": true,
+  "code_qualified_source": "fcec2022f66c3c0e36265c26db07407420682096",
+  "linux_python_tests_passed": 35,
+  "linux_store_scenarios_passed": 13,
+  "windows_store_scenarios_passed": 13,
+  "windows_store_run_id": 43194829263,
+  "windows_store_source": "5dfceb25d9995d2b6f5b9c5a4c7f57429fc41579",
+  "windows_resource_checkout_run_id": 43202701708,
+  "windows_resource_checkout_source": "8c33b3c110e7f55d7244fbe8af54511d081a969c",
+  "previous_full_run": 43204369731,
+  "previous_full_application_built": false,
+  "windows_tempo_harness_run": 43206351514,
+  "windows_tempo_harness_compilers": [
+    "GNU",
+    "MSVC"
+  ],
+  "windows_tempo_properties_each": 1024,
+  "linux_full_unit_test_source": "8c33b3c110e7f55d7244fbe8af54511d081a969c",
+  "full3_dirty_worktree_root_cause_proven": false,
+  "full_windows_application_built_from_this_tree": false,
+  "human_listening": false,
+  "mp4_qualified": false,
+  "gift_release": false,
+  "retention_days": 14,
+  "legacy_namespaces_modified": false,
+  "expected_installer_build": 2005,
+  "distribution_compliance_ready": false,
+  "remaining_binary_origins_audit": [
+    "exact Qt SDK build options and patches",
+    "deployed special DLLs and MSVC runtime mapping"
+  ]
+}
