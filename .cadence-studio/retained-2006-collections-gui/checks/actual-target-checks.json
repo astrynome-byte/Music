@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "scope": "Actual target accepted; controlled metadata mutations rejected by actual guard; no application, UIA, ZIP or patch execution",
+  "helper_sha256": "9a6c45debe253f47bfffee0a891d955334b6852b970a422e032e626c594585e7",
+  "cases": [
+    {
+      "case": "actual-authenticated2006-target-accepted-data-only",
+      "passed": true,
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "old2005-target-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "A reviewed actually produced build2006 stage target is required."
+    },
+    {
+      "case": "boolean-schema-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "A reviewed actually produced build2006 stage target is required."
+    },
+    {
+      "case": "boolean-artifact-id-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Actual positive producer run/artifact/attempt identifiers are required."
+    },
+    {
+      "case": "wrong-producer-id-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Target differs from the one actually authenticated stage2006."
+    },
+    {
+      "case": "wrong-source-json-SHA-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Frozen source selection/patch bytes differ from the reviewed produced stage."
+    },
+    {
+      "case": "wrong-source-tree-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Produced target differs from the frozen Cadence source provenance."
+    },
+    {
+      "case": "wrong-EXE-SHA-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Target differs from the one actually authenticated stage2006."
+    },
+    {
+      "case": "wrong-innerZIP-SHA-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Target differs from the one actually authenticated stage2006."
+    },
+    {
+      "case": "floating-EXE-size-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "Actually measured stage/EXE byte counts differ."
+    },
+    {
+      "case": "expired-artifact-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "The retained stage artifact has expired; no old download is silently substituted."
+    },
+    {
+      "case": "receipt-path-substitution-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "The reviewed authenticated-marker receipt bytes differ."
+    },
+    {
+      "case": "wrong-receipt-SHA-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "The reviewed authenticated-marker receipt bytes differ."
+    },
+    {
+      "case": "altered-receipt-bytes-refused",
+      "passed": true,
+      "accepted": false,
+      "expected": false,
+      "error": "The reviewed authenticated-marker receipt bytes differ."
+    }
+  ],
+  "application_executed": false,
+  "GUI_validated": false,
+  "source_and_receipt_originals_modified": false
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "status": "reviewed-produced-stage",
+  "producer_run_id": 43233124321,
+  "artifact_id": 13955301913,
+  "artifact_digest_from_github_metadata": "sha256:c93aa9eb68a5a7e21b80c19b150d9d9731532e91d2abb778f87342317417443b",
+  "artifact_expires_utc": "2026-11-26T14:57:16Z",
+  "build_number": 2006,
+  "run_number": 6,
+  "run_attempt": 1,
+  "source": {
+    "original_commit": "ac9a24933f78f22ea630570910848201baad3d3b",
+    "ci_commit": "536d13cf1caba07197deccefc9f880d8a77902e0",
+    "tree": "a94a09974229c47e7b90b593a7649c29d6a6d190",
+    "source_json_sha256": "0d6c5944374cfa2b58ee8f81a3912b36585ed263ed79ffb3ff1968f2bd07ca1b",
+    "patch_sha256": "cba5d10112b8cd7ce470577e07cc70fb8d1cd849ec412b652c0a6b71bf4e3ce7"
+  },
+  "stage": {
+    "archive": "CadenceStudio-v4.7.6-combined-system-aac-stage-build-2006-attempt-1-x64.zip",
+    "archive_bytes": 148007535,
+    "archive_sha256": "b6b6bb9160250282879543b44e1ca8217494285e86c47fb2003f8b24dd93954c",
+    "executable_bytes": 80068096,
+    "executable_sha256": "c29d7c8c76b213b79d7390acd65cbabc6fb940f06e3e7f86c0ce60be7e9b9520"
+  },
+  "evidence": {
+    "reader_run_id": 43256055209,
+    "reader_job_id": 131314481337,
+    "reader_driver_commit": "1b8d318188ea86f289bc245107cffb247d5a50ee",
+    "receipt_file": "data-authentication.json",
+    "receipt_sha256": "3ddf8d61b2a2223c23e836b7d063e218418c7f9013895741c83bdd17bc28e4cd",
+    "receipt_encoding": "parsed_and_reserialized_authenticated_marker_JSON",
+    "original_stage_members_hashed": 290,
+    "inner_stage_files_hashed": 2705,
+    "original_outer_artifact_bytes_recomputed": true,
+    "stage_delivery_inner_files_equal": true,
+    "scope": "Actual source/ZIP/EXE identity only; this receipt did not execute an app/MSI or validate collections GUI"
+  }
+}

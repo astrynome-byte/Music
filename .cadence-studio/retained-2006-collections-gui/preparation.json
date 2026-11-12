@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "state": "prepared_for_parent_review_not_published_or_executed",
+  "prepared_utc": "2026-11-12T16:24:46.718577+00:00",
+  "single_scope": "Real stage2006 local library import-copy, enable/create/favorite/membership/filter, clean close, restart/persist and native score open; no notes/FX/exercise",
+  "target_build": 2006,
+  "actual_executable_sha256": "c29d7c8c76b213b79d7390acd65cbabc6fb940f06e3e7f86c0ce60be7e9b9520",
+  "actual_stage_archive_sha256": "b6b6bb9160250282879543b44e1ca8217494285e86c47fb2003f8b24dd93954c",
+  "source_json_verified_sha256": "0d6c5944374cfa2b58ee8f81a3912b36585ed263ed79ffb3ff1968f2bd07ca1b",
+  "metadata_reader_run_id": 43256055209,
+  "metadata_reader_job_id": 131314481337,
+  "metadata_receipt_sha256": "3ddf8d61b2a2223c23e836b7d063e218418c7f9013895741c83bdd17bc28e4cd",
+  "source_patch_verified_sha256": "cba5d10112b8cd7ce470577e07cc70fb8d1cd849ec412b652c0a6b71bf4e3ce7",
+  "local_verification": {
+    "actual_target_and_controlled_mutations_passed": 14,
+    "PowerShell_files_or_workflow_blocks_parsed": 9,
+    "parse_errors": 0,
+    "native_files_byte_identical_to_previously_compiled_collections_harness": 7,
+    "ZIP_extraction_body_byte_identical": true,
+    "independent_source_ac9_label_and_schema_review_completed": true
+  },
+  "metadata_corrobation_policy": "Never read catalogue while app runs; metadata alone never validates GUI; actual clean exit0 and native UI flags required for success",
+  "new_target_GUI2006_validated": false,
+  "new_native_SDK_compilation": false,
+  "app_rebuilt_or_executed_during_preparation": false,
+  "source_product_modified": false,
+  "publication_or_job_started_by_this_agent": false,
+  "onboarding_or_audio_or_listening_validated": false,
+  "stage_manifest_synthesized": false,
+  "historical_2005_positive_pages_and_failed_exercise_close_unchanged": true,
+  "known_harness_limit": "If semantic native entry navigation fails, the existing F6 fallback may remain blocked; no speculative new menu path added"
+}

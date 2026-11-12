@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "files": [
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2006-collections-gui/checks/workflow-step-1.ps1",
+      "sha256": "c6f2dcde06d3eb5d6e2821710735e4886b1f59391871fa008f2f9ee8ad260f30",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2006-collections-gui/checks/workflow-step-3.ps1",
+      "sha256": "e488446818a51a574a766919af2560386ed750ca3a874f59f90be80f6adc2044",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2006-collections-gui/checks/workflow-step-5.ps1",
+      "sha256": "64aa19a4f0aa6113dfd0205ac7539cc01a08770cc0de6f61228c4009c35ff98a",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2006-collections-gui/checks/workflow-step-6.ps1",
+      "sha256": "c64ad9c37d69fb56c5e5d469cc7ff3174ed848319b2f9288af05800d5f02ce93",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2006-collections-gui/checks/workflow-step-7.ps1",
+      "sha256": "61594df61f345868a4d9acbad31345c040f874e3e477ce34427181ccd08dc2b1",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2006-collections-gui/Read-ProducedTarget.ps1",
+      "sha256": "9a6c45debe253f47bfffee0a891d955334b6852b970a422e032e626c594585e7",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2006-collections-gui/Restore-NextStage.ps1",
+      "sha256": "61bd6bcf7495e768bcd774211b6bc87ade844e5958c2c7ebbf0224e8cc41a11d",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2006-collections-gui/Run-CollectionsUiProbe.ps1",
+      "sha256": "8070348858a1e5817628d1e7bf72b8f524bca4a274971cd7d80d2ec692685715",
+      "parse_errors": 0
+    },
+    {
+      "path": "/workspace/cadence-ci-driver/retained-2006-collections-gui/checks/check-actual-target.ps1",
+      "sha256": "a3e68b2cc5c9b17c54889e3fa25ada9049de4846aeb61279e87ead1b5421bfe7",
+      "parse_errors": 0
+    }
+  ],
+  "commands_executed_by_parser": false,
+  "application_UIA_or_Windows_executed": false
+}

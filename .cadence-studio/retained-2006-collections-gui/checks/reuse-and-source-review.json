@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "source_commit": "ac9a24933f78f22ea630570910848201baad3d3b",
+  "frozen_source_files_read": [
+    {
+      "path": "src/project/qml/MuseScore/Project/internal/ScoresPage/LocalScoresView.qml",
+      "bytes": 44546,
+      "sha256": "600c0180dbaa4208fd4651e2464111c029db42847113d179d4323a85725c9783"
+    },
+    {
+      "path": "src/project/internal/localscorelibrarystore.cpp",
+      "bytes": 31290,
+      "sha256": "d8db10756f5fd2d118a4c22fa05d40d0dce0ebc5c9d2e6cd0ab68ae4270bf2d2"
+    },
+    {
+      "path": "src/project/internal/localcatalogwatch.h",
+      "bytes": 5327,
+      "sha256": "506b53b3374e3d00ffdb12ea10193648b84acb8f6ba2965618f5b96788de6c08"
+    },
+    {
+      "path": "src/appshell/internal/startupscenario.cpp",
+      "bytes": 11176,
+      "sha256": "ef9722000a8d9b497a54c42e602e1776bcde0f7fb473218d45cb8a1fc5b46377"
+    }
+  ],
+  "native_harness_files": [
+    {
+      "path": "native/CollectionFlow.inc",
+      "sha256": "8a42a368b08914d6d6f849ddf97602951cac3cae6ba510d7c887e3ffe1fe292f",
+      "byte_identical_to_existing_harness": true
+    },
+    {
+      "path": "native/OwnedFileDialog.h",
+      "sha256": "4ad24654aa9dbf293b75929157c9d597e4021f8c6ca07e223e630c92eb6683e1",
+      "byte_identical_to_existing_harness": true
+    },
+    {
+      "path": "native/OwnedKeyboard.h",
+      "sha256": "c4ae8c12c17002f24c27ed2d259b5577b6f2b49887cd8271d0f927f966fb1024",
+      "byte_identical_to_existing_harness": true
+    },
+    {
+      "path": "native/README.md",
+      "sha256": "33ff77fb2a65e4fa25954c88863e89ab4ea4b9bb166e56e28dff0f76c3b989b8",
+      "byte_identical_to_existing_harness": true
+    },
+    {
+      "path": "native/SHA256SUMS.txt",
+      "sha256": "b8955c44b7baa2e8f67ebf06b69d8eef0a19c9b32e1fd590db274839a26a387c",
+      "byte_identical_to_existing_harness": true
+    },
+    {
+      "path": "native/UiaProbe.cpp",
+      "sha256": "157f5613ee9eb8c9b0ea8d29532cf41b7c4e61ebc3a26dc4740d175898bd6c78",
+      "byte_identical_to_existing_harness": true
+    },
+    {
+      "path": "native/preparation-checks.json",
+      "sha256": "01f978e2767589ebeb828a60c1ce34f84d7fa425d49ccec1ed88cb64da31bbf5",
+      "byte_identical_to_existing_harness": true
+    }
+  ],
+  "native_source_changed": false,
+  "native_harness_previously_compiled_in_real_Windows_GUI2": true,
+  "zip_extraction_body_byte_identical_to_existing_restorer": true,
+  "zip_extraction_body_sha256": "3e2d173b779603df9584357f57c8f7ed5f215a12c9fb70c9cd51fe6875c8b4e6",
+  "independent_static_source_review": "practice_tools confirms existing collection labels/rows preserved in ac9; Notes column3 outside sequence; fresh schema1->EnableCollections2, annotations3 only by separate explicit activation",
+  "new_collections_GUI2006_executed": false,
+  "other_notes_FX_exercise_or_audio_flow_added": false,
+  "musical_fixture": "Existing CC0 native MSCX piano copy, no imported exercise and no CloseExercise client"
+}
