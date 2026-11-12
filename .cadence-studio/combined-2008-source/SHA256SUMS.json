@@ -24,12 +24,12 @@
     "sha256": "36f373d9d3fa293453458501e5959467d5dbb448ed34ded1ad6c8358dc61d175"
   },
   "README.md": {
-    "bytes": 1470,
-    "sha256": "0b4b15b90a0448cc4677b838881c3094d61c973f166614d7a15cb6a6e4569e19"
+    "bytes": 1871,
+    "sha256": "4912d967b3725103e09dc55d52198b389cef8c27b407f53c0024b222c237d15a"
   },
   "Restore-Binaries.ps1": {
     "bytes": 12272,
-    "sha256": "670873e68bca7ce6cb6bac67552ef37d47e06e39d8f13d82c2d2abbb0cda90e5"
+    "sha256": "6e2a891297db146587ec8a49134a4ddb04a491bf8a42ce6882aec3608066bed5"
   },
   "Test-ReadyGui.ps1": {
     "bytes": 11599,
@@ -588,16 +588,16 @@
     "sha256": "3a6d328e4deeb187b5b7d7ff81010ac81ddd01e7bef5dca37edf0f62f103987a"
   },
   "binary-parts/changes.patch.gz/00079.b64": {
-    "bytes": 70244,
-    "sha256": "69335686597d46661f4ae05c09033ebe96440adb9fa81e3c44c6e32ded380b95"
+    "bytes": 70268,
+    "sha256": "06c5274cf6c381a726eb33fc732db389b84e81b8f8f46edc33b29273416a7dee"
   },
   "binary-parts.json": {
     "bytes": 27109,
-    "sha256": "c211643bd7cbfa9cd6c4372ed6145e4a084b9948c92cf41c12ff1b6b649153a4"
+    "sha256": "14f67df7a7b326154eef1942260074a19bfe92813982b75b254073f729350c84"
   },
   "changes.patch.gz": {
-    "bytes": 5228762,
-    "sha256": "a06a96273cd0c3aacf34f587de43bebc77309df7b9d5623457485f4909f583aa"
+    "bytes": 5228780,
+    "sha256": "c7654d9a8fa18adf9bcce0b6198c1ef907a2e5886a19339a08ed8ccb80f7b70d"
   },
   "check_app_aac.py": {
     "bytes": 16511,
@@ -620,8 +620,8 @@
     "sha256": "e47a0df3af2f0af6b15df3ed625a0f76768020e06387705d60ec7ca52ddbf036"
   },
   "handoff.json": {
-    "bytes": 980,
-    "sha256": "82f1ee555c1633876e60a30d97ca66e635e715a7ce82266be74b0351ecb26cb0"
+    "bytes": 903,
+    "sha256": "0cc08b0e4af0d703afba282242fca1fbc8140618f38629b904e63f5c334b834c"
   },
   "observe_native_additions.py": {
     "bytes": 8319,
@@ -648,8 +648,8 @@
     "sha256": "5f60e0faacc3a58f766154792e2de3fdd3214b0747ec86f2dc4c8eca06a5f11c"
   },
   "source.json": {
-    "bytes": 944,
-    "sha256": "a33ad2f48541ea4b4a1216fbd397df06ec18b4806c1e5debe4efa65fb6df2ac5"
+    "bytes": 968,
+    "sha256": "00da283e18c5b4fc2e5cd9b191cc45ab5ffc7d2f2c266aac27a9b6d6f4ab6788"
   },
   "test_driver_helpers.py": {
     "bytes": 6028,

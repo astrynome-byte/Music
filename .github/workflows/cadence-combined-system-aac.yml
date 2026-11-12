@@ -243,8 +243,9 @@ jobs:
 
       - name: Compile and stage the complete Cadence library and system AAC candidate
         run: |
-          $buildNumber = 2000 + [int]$env:GITHUB_RUN_NUMBER
-          if ($buildNumber -ne 2008) { throw 'This 2008-source snapshot is reviewed only for build2008; review a later workflow run number before building another installer identity' }
+          $selection = Get-Content "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/source.json" -Raw | ConvertFrom-Json
+          $buildNumber = [int]$selection.build_number
+          if ($buildNumber -ne 2008) { throw 'This frozen candidate is reviewed only for product build2008; a different product version requires a new reviewed source plan' }
           if ($buildNumber -gt 65535) { throw 'Build-number space exhausted; choose a new reviewed version without reusing an MSI identity' }
           $sdks = Get-Content "$env:RUNNER_TEMP/cadence-deps/prepared-sdks.json" -Raw | ConvertFrom-Json
           ./scripts/windows/Configure.ps1 -Variant Cadence -QtPath $env:QT_ROOT_DIR `

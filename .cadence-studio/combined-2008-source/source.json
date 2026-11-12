@@ -6,12 +6,12 @@
     "commit": "96480d58445e3b24b230a3fe7d4725d639aa2eb3"
   },
   "source": {
-    "commit": "8420ff1737b560d86e1cd12c7c487476369f04f1",
-    "tree": "f061b64c670f354fb0c87e4afeddcad8c87bfede"
+    "commit": "49272b75a4107c97130b8a46727af6a8c95d1c9a",
+    "tree": "fae79e265b3a21431388cd432a853228ffd7676b"
   },
   "patch": {
     "file": "changes.patch.gz",
-    "sha256": "a06a96273cd0c3aacf34f587de43bebc77309df7b9d5623457485f4909f583aa"
+    "sha256": "c7654d9a8fa18adf9bcce0b6198c1ef907a2e5886a19339a08ed8ccb80f7b70d"
   },
   "qualification": {
     "schema_version": 1,
@@ -32,5 +32,6 @@
       "history_total": 15,
       "qt_version": "6.10.2"
     }
-  }
+  },
+  "build_number": 2008
 }
