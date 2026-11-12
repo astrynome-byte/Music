@@ -1,0 +1,13 @@
+db0f4d46fa2823baa1f3d72d2120a56a317be851aba56e78854498d62e2bae4d  .cadence-studio/native-fx-msvc-probe/README.md
+eb2cc02f57d3b1c6e897af970e06ce443f6edd00dd1967a59a0fde1dfb6a51d3  .cadence-studio/native-fx-msvc-probe/Run-NativeFxMsvc.ps1
+32742f3deae2d1cf6dcaee4b742248cf50176c66087dcdf32a3f2199008d6267  .github/workflows/cadence-native-fx-msvc-probe.yml
+e643737b5779ce77261849bd17e74091abe7645bf93de7e92f97dbfcddf6cf4b  .cadence-studio/native-fx-msvc-probe/preparation-checks.json
+92508359db317021328b6b2cdc6ea5d88915030fa6f9c798f90f24ef4e814dfe  .cadence-studio/native-fx-msvc-probe/source/src/framework/audio/common/cadencefxparams.h
+d0aec7e3c4a3f74b6fabd186cc4fe2cca4b7274aab082b9e7aeb47946480351b  .cadence-studio/native-fx-msvc-probe/source/src/framework/audio/engine/internal/dsp/nativeeffects.cpp
+d2654dc1f0038242cd4686a834fcb24b500a6b86e6f5db2070762c225894a40f  .cadence-studio/native-fx-msvc-probe/source/src/framework/audio/engine/internal/dsp/nativeeffects.h
+c6bf475683bcb9e8e6f3b2773e73bff16e10853852b93615688b32b2610e26ef  .cadence-studio/native-fx-msvc-probe/source/test/cadence/native_fx/CMakeLists.txt
+fa26f7be6794e9627ab1a4e2f04b813b3fa87da73def7424f8e4e6a3fb9468c0  .cadence-studio/native-fx-msvc-probe/source/test/cadence/native_fx/allocationtracker.cpp
+2b01b5a43224986a9b67f22fc76cab8e4d93b64bbd0389e34a1f550d58c0560f  .cadence-studio/native-fx-msvc-probe/source/test/cadence/native_fx/allocationtracker.h
+8f55432af5031f543cbc84a1530730ef7b4fcbb355d05bf9da2bba218f55ee3d  .cadence-studio/native-fx-msvc-probe/source/test/cadence/native_fx/config_codec_tests.cpp
+6df8fc150f227ae665276a05423581da69eb28241368fea20d9383534e6f18f4  .cadence-studio/native-fx-msvc-probe/source/test/cadence/native_fx/native_fx_dsp_tests.cpp
+281a00328d1c3587015adbdbb84e882f68939d31305ad35ae4c6982fb15916eb  .cadence-studio/native-fx-msvc-probe/standalone-source-manifest.json

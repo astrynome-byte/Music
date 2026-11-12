@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "status": "prepared-only-local-linux-tests-passed",
+  "candidate_patch_sha256": "3799741259937200e23fd859811c483719e4a18db448a29a61df4504545e71aa",
+  "exact_files_extracted_from_patch": 8,
+  "all_source_bytes_match_candidate_overlay": true,
+  "local_linux_configure_build_ctest_passed": true,
+  "local_dsp_checks": 48,
+  "local_codec_checks": 71,
+  "local_ctest_passed": 2,
+  "local_ctest_total": 2,
+  "powershell_runner_and_workflow_block_parsed": true,
+  "workflow_yaml_push_scope_and_read_only_permission_checked": true,
+  "windows_msvc_executed": false,
+  "app_patch_modified": false,
+  "github_publication_attempted": false,
+  "remaining": [
+    "Execute the actual prepared Windows MSVC x64 Release job.",
+    "Read compiler and CTest results before claiming Windows qualification.",
+    "Full application, Qt/GUI, MSCZ round-trip, audio export/listening and installer remain separate."
+  ]
+}

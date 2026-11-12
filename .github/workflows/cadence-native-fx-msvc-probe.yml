@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: standalone native FX MSVC x64'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/native-fx-msvc-probe/**'
+      - '.github/workflows/cadence-native-fx-msvc-probe.yml'
+permissions:
+  contents: read
+concurrency:
+  group: cadence-native-fx-msvc-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  standalone-msvc-x64:
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Build the exact DSP and codec targets and execute CTest in Release
+        working-directory: driver
+        shell: pwsh
+        run: |
+          & ./.cadence-studio/native-fx-msvc-probe/Run-NativeFxMsvc.ps1 `
+            -OutputDirectory "$env:RUNNER_TEMP/native-fx-msvc"
+      - name: Retain factual Windows compiler and CTest evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-native-fx-msvc-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/native-fx-msvc/*.json
+            ${{ runner.temp }}/native-fx-msvc/*.txt
+            ${{ runner.temp }}/native-fx-msvc/*.xml
+            ${{ runner.temp }}/native-fx-msvc/build/CMakeCache.txt
+            ${{ runner.temp }}/native-fx-msvc/build/Testing/Temporary/LastTest.log
+            driver/.cadence-studio/native-fx-msvc-probe/standalone-source-manifest.json
+          retention-days: 14
+          if-no-files-found: warn

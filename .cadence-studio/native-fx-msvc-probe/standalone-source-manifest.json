@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "scope": "Exact new standalone codec/DSP files extracted from the candidate native-fx.patch; no Qt, SDK or complete application",
+  "patch_sha256": "3799741259937200e23fd859811c483719e4a18db448a29a61df4504545e71aa",
+  "candidate_base_commit": "fcec2022f66c3c0e36265c26db07407420682096",
+  "source_files": [
+    {
+      "path": "test/cadence/native_fx/CMakeLists.txt",
+      "bytes": 1446,
+      "sha256": "c6bf475683bcb9e8e6f3b2773e73bff16e10853852b93615688b32b2610e26ef"
+    },
+    {
+      "path": "test/cadence/native_fx/native_fx_dsp_tests.cpp",
+      "bytes": 13765,
+      "sha256": "6df8fc150f227ae665276a05423581da69eb28241368fea20d9383534e6f18f4"
+    },
+    {
+      "path": "test/cadence/native_fx/allocationtracker.cpp",
+      "bytes": 804,
+      "sha256": "fa26f7be6794e9627ab1a4e2f04b813b3fa87da73def7424f8e4e6a3fb9468c0"
+    },
+    {
+      "path": "test/cadence/native_fx/allocationtracker.h",
+      "bytes": 164,
+      "sha256": "2b01b5a43224986a9b67f22fc76cab8e4d93b64bbd0389e34a1f550d58c0560f"
+    },
+    {
+      "path": "test/cadence/native_fx/config_codec_tests.cpp",
+      "bytes": 2443,
+      "sha256": "8f55432af5031f543cbc84a1530730ef7b4fcbb355d05bf9da2bba218f55ee3d"
+    },
+    {
+      "path": "src/framework/audio/engine/internal/dsp/nativeeffects.cpp",
+      "bytes": 12518,
+      "sha256": "d0aec7e3c4a3f74b6fabd186cc4fe2cca4b7274aab082b9e7aeb47946480351b"
+    },
+    {
+      "path": "src/framework/audio/engine/internal/dsp/nativeeffects.h",
+      "bytes": 3996,
+      "sha256": "d2654dc1f0038242cd4686a834fcb24b500a6b86e6f5db2070762c225894a40f"
+    },
+    {
+      "path": "src/framework/audio/common/cadencefxparams.h",
+      "bytes": 4546,
+      "sha256": "92508359db317021328b6b2cdc6ea5d88915030fa6f9c798f90f24ef4e814dfe"
+    }
+  ]
+}
