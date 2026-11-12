@@ -57,7 +57,7 @@ try{
  $binary=Join-Path $build 'free_collection_installer_tests.exe'
  $report.test_executable_sha256=Hash $binary
  Run 'actual-installer-scenarios' $binary @($BankPath,$LicensePath,'--download-real') 240000
- $stdout=[IO.File]::ReadAllText((Join-Path $OutputDirectory 'actual-installer-scenarios.stdout.log'))
+ $stdout=[IO.File]::ReadAllText((Join-Path $OutputDirectory 'actual-installer-scenarios.stdout.log')).Replace("`r`n","`n")
  if($stdout -notmatch '(?m)^14/14 real installer scenarios passed \(Qt 6\.10\.2\)\.$' -or
     [regex]::Matches($stdout,'(?m)^PASS:').Count -ne 14){throw 'Actual fourteen scenarios did not pass.'}
  foreach($entry in $manifest.files){if((Hash (Join-Path $SourcePath $entry.path)) -cne $entry.sha256){throw 'Production source changed during probe.'}}
