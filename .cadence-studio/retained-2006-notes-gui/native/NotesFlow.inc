@@ -78,10 +78,26 @@ static bool noteRestoreSelectorFocus(IUIAutomation* automation, const std::files
         && moveCollectionFocus(automation, output, VK_DOWN, noteBack, UIA_ButtonControlTypeId,
                 noteSelector, UIA_ComboBoxControlTypeId, "reanchor_private_note_selector_after_schema_activation");
 }
+// A completed Save disables the previously focused button. The actual Notes4
+// capture and post-exit catalogue prove completion, but UIA can expose only the
+// main chrome. Recover the closed exact selector, then observe (never invoke)
+// the source-defined last enabled Notes control: Delete, row6/column3.
+static bool noteObserveSavedDelete(IUIAutomation* automation, const std::filesystem::path& output)
+{
+    const std::wstring remove = L"Supprimer la note";
+    if (noteWaitFocus(automation, output, remove, UIA_ButtonControlTypeId)) return true;
+    if (!noteRestoreSelectorFocus(automation, output)) return false;
+    const HWND main = mainWindow();
+    // No dropdown has been opened in this creation flow. Also reject any
+    // other enabled visible owned top-level window before the sole End key.
+    for (HWND window : windows()) if (window != main && IsWindowEnabled(window)) return false;
+    return moveCollectionFocus(automation, output, VK_END, noteSelector, UIA_ComboBoxControlTypeId,
+                               remove, UIA_ButtonControlTypeId, "observe_saved_private_note_delete_without_invoking");
+}
 static bool noteFocusText(IUIAutomation* automation, const std::filesystem::path& output)
 {
     if (setExactCollectionFocus(automation, output, noteTextLabel, UIA_EditControlTypeId)) return true;
-    if (!noteWaitFocus(automation, output, noteSelector, UIA_ComboBoxControlTypeId)) return false;
+    if (!noteRestoreSelectorFocus(automation, output)) return false;
     const std::wstring measure = L"Rep\u00e8re manuel de mesure, z\u00e9ro pour aucun";
     // No modification to the numeric reference: Down only, from exact roles.
     return moveCollectionFocus(automation, output, VK_DOWN, noteSelector, UIA_ComboBoxControlTypeId,
@@ -186,11 +202,11 @@ static NotesResult exercisePrivateNote(IUIAutomation* automation, const std::fil
         // Delete becomes enabled only for a committed selected note with no dirty draft.
         // Observe/focus it as corroboration, never invoke it.
         result.savedControlObserved = result.saveRequested
-            && noteWaitFocus(automation, output, L"Supprimer la note", UIA_ButtonControlTypeId)
+            && noteObserveSavedDelete(automation, output)
             && noteTextMatches(automation, output, noteText);
         if (!result.savedControlObserved) { result.status = "blocked_notes_saved_control_or_text"; return result; }
     } else {
-        result.annotationsEnabled = noteWaitFocus(automation, output, noteSelector, UIA_ComboBoxControlTypeId);
+        result.annotationsEnabled = noteRestoreSelectorFocus(automation, output);
         if (!result.annotationsEnabled || !collectionKey(automation, output, VK_RETURN, noteSelector,
                 UIA_ComboBoxControlTypeId, "open_private_note_selection_on_restart")) {
             result.status = "blocked_notes_restart_selection"; return result;

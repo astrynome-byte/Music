@@ -101,7 +101,7 @@ inline OwnedKeyResult SendOwnedKey(DWORD expectedPid, HANDLE process, HWND main,
 {
     using namespace cadence_owned_keyboard_detail;
     OwnedKeyResult result;
-    if (virtualKey != VK_F6 && virtualKey != VK_TAB && virtualKey != VK_RIGHT && virtualKey != VK_LEFT && virtualKey != VK_DOWN && virtualKey != VK_UP && virtualKey != VK_ESCAPE && virtualKey != VK_RETURN) {
+    if (virtualKey != VK_F6 && virtualKey != VK_TAB && virtualKey != VK_RIGHT && virtualKey != VK_LEFT && virtualKey != VK_DOWN && virtualKey != VK_UP && virtualKey != VK_ESCAPE && virtualKey != VK_END && virtualKey != VK_RETURN) {
         result.error = ERROR_INVALID_PARAMETER;
         return result;
     }
@@ -147,7 +147,7 @@ inline OwnedKeyResult SendOwnedKey(DWORD expectedPid, HANDLE process, HWND main,
     INPUT inputs[2] {};
     inputs[0].type = INPUT_KEYBOARD;
     inputs[0].ki.wVk = virtualKey;
-    inputs[0].ki.dwFlags = virtualKey == VK_RIGHT || virtualKey == VK_LEFT || virtualKey == VK_DOWN || virtualKey == VK_UP ? KEYEVENTF_EXTENDEDKEY : 0;
+    inputs[0].ki.dwFlags = virtualKey == VK_RIGHT || virtualKey == VK_LEFT || virtualKey == VK_DOWN || virtualKey == VK_UP || virtualKey == VK_END ? KEYEVENTF_EXTENDEDKEY : 0;
     inputs[1] = inputs[0];
     inputs[1].ki.dwFlags |= KEYEVENTF_KEYUP;
 

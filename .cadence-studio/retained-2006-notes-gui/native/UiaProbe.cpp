@@ -26,6 +26,7 @@ static std::vector<std::string> keyboardFrames;
 static int keyboardGestureAttempts = 0;
 static int f6GestureAttempts = 0, tabGestureAttempts = 0, rightGestureAttempts = 0, leftGestureAttempts = 0, downGestureAttempts = 0, returnGestureAttempts = 0;
 static bool keyboardFailure = false;
+static int endGestureAttempts = 0;
 
 static std::string utf8(const std::wstring& value)
 {
@@ -221,9 +222,10 @@ static void retainKeyboardFrame(const std::vector<Node>& nodes, const std::strin
 static bool sendNavigationKey(WORD key, const char* purpose)
 {
     if (Clock::now() >= deadline || keyboardGestureAttempts >= 100) return false;
-    if ((key == VK_F6 && f6GestureAttempts >= 35) || (key == VK_TAB && tabGestureAttempts >= 25)
+    if ((key == VK_END && endGestureAttempts >= 1) || (key == VK_F6 && f6GestureAttempts >= 35) || (key == VK_TAB && tabGestureAttempts >= 25)
         || (key == VK_RIGHT && rightGestureAttempts >= 15) || (key == VK_DOWN && downGestureAttempts >= 20)
         || (key == VK_LEFT && leftGestureAttempts >= 10) || (key == VK_RETURN && returnGestureAttempts >= 20)) return false;
+    if (key == VK_END) ++endGestureAttempts;
     if (key == VK_F6) ++f6GestureAttempts;
     if (key == VK_TAB) ++tabGestureAttempts;
     if (key == VK_RIGHT) ++rightGestureAttempts;
@@ -233,7 +235,7 @@ static bool sendNavigationKey(WORD key, const char* purpose)
     ++keyboardGestureAttempts;
     const OwnedKeyResult result = SendOwnedKey(targetPid, targetProcess, mainWindow(), key);
     if (!result.sent) keyboardFailure = true;
-    const char* label = key == VK_F6 ? "F6" : key == VK_TAB ? "Tab" : key == VK_RIGHT ? "Right" : key == VK_LEFT ? "Left" : key == VK_DOWN ? "Down" : key == VK_UP ? "Up" : key == VK_ESCAPE ? "Escape" : "Return";
+    const char* label = key == VK_F6 ? "F6" : key == VK_TAB ? "Tab" : key == VK_RIGHT ? "Right" : key == VK_LEFT ? "Left" : key == VK_DOWN ? "Down" : key == VK_UP ? "Up" : key == VK_ESCAPE ? "Escape" : key == VK_END ? "End" : "Return";
     actions.push_back(std::string("{\"action\":\"owned_navigation_key\",\"purpose\":\"") + purpose
                       + "\",\"key\":\"" + label + "\",\"pid\":" + std::to_string(targetPid)
                       + ",\"foreground_handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(result.foreground))
