@@ -19,7 +19,10 @@ std::atomic<unsigned long> liveObjects {0}, serverLocks {0}, liveWorkers {0};
 class QaClock;
 thread_local QaClock* activeClock = nullptr;
 using Clock = std::chrono::steady_clock;
-void pairValue(std::uint64_t value, ASIOSamples* result) noexcept {
+// The pinned SDK deliberately defines two distinct hi/lo structure types:
+// ASIOSamples and ASIOTimeStamp. Write their words without pointer casting.
+template <typename WordPair>
+void pairValue(std::uint64_t value, WordPair* result) noexcept {
     result->hi = static_cast<unsigned long>(value >> 32);
     result->lo = static_cast<unsigned long>(value & 0xffffffffULL);
 }

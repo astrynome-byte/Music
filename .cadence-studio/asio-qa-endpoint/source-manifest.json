@@ -31,8 +31,8 @@
     },
     {
       "path": "README-FR.md",
-      "bytes": 9081,
-      "sha256": "e5a21549442ba603b5cfbfabfbb18623b3586466cce01ec6071096b25845c35b"
+      "bytes": 9432,
+      "sha256": "6d646e21c031b11734b152c93ecd95f07463692f0098f979c5845dc0fe35bd74"
     },
     {
       "path": "asio-interfaces.lock.json",
@@ -56,8 +56,8 @@
     },
     {
       "path": "qa_clock.cpp",
-      "bytes": 20874,
-      "sha256": "b7f3c6fef97df3228dd082fdabbe31625d4fe26a66081fd67f60038eb5d2b233"
+      "bytes": 21052,
+      "sha256": "cd0d3df8beea5d49f45c74467cd8de9c9d6d49d833921858cec6d5ad87f3c270"
     },
     {
       "path": "qa_clock.def",
