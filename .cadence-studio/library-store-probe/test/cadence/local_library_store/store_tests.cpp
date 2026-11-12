@@ -171,7 +171,7 @@ void preserveCorruptAndFutureCatalogue()
     rejectsWithoutRewriting(QByteArray("{truncated original data"));
     rejectsWithoutRewriting(QByteArray());
     auto root = validRoot;
-    root[QStringLiteral("schema_version")] = 2;
+    root[QStringLiteral("schema_version")] = 3;
     rejectsWithoutRewriting(QJsonDocument(root).toJson());
     root = validRoot;
     root[QStringLiteral("future_property")] = true;
@@ -400,6 +400,196 @@ void metadataWatchDoesNotBlockAtomicReplacement()
             "Missing catalogue metadata was not represented without creating a file");
 }
 
+void explicitCollectionMigration()
+{
+    QTemporaryDir temporary;
+    const auto score = fixture(temporary.path(), QString::fromUtf8("Été.mscx"));
+    const auto originalScore = digest(score.path);
+    LocalScoreLibraryStore store(temporary.path() + QStringLiteral("/library.json"));
+    require(store.load().schemaVersion == 1, "A fresh catalogue implicitly enabled collections");
+    const auto added = store.add({ score });
+    require(added.ok && added.schemaVersion == 1, "Adding a score changed the catalogue version");
+    const QString id = added.entries.front().id;
+    const auto favored = store.setFavorite(id, true);
+    require(favored.ok && favored.schemaVersion == 1, "Favourite implicitly enabled collections");
+    const auto before = read(store.filePath());
+    require(!store.createCollection(QStringLiteral("Concert")).ok, "Collection creation implicitly migrated v1");
+    require(read(store.filePath()) == before, "Refused creation rewrote the v1 catalogue");
+    const auto enabled = store.enableCollections();
+    require(enabled.ok && enabled.schemaVersion == 2 && enabled.collections.isEmpty()
+            && enabled.entries.size() == 1 && enabled.entries.front().id == id
+            && enabled.entries.front().path == score.path && enabled.entries.front().favorite
+            && enabled.entries.front().title == score.title && enabled.entries.front().composer == score.composer,
+            "Explicit migration lost score identity, metadata, favourite or path");
+    const auto migrated = read(store.filePath());
+    require(store.enableCollections().ok && read(store.filePath()) == migrated, "Enabling collections twice was not idempotent");
+    const auto reopened = LocalScoreLibraryStore(store.filePath()).load();
+    require(reopened.ok && reopened.schemaVersion == 2 && reopened.entries.front().favorite,
+            "A reopened v2 catalogue lost its version or favourite");
+    require(digest(score.path) == originalScore, "Migration changed the score file");
+}
+
+void collectionNamesMembershipAndOrder()
+{
+    QTemporaryDir temporary;
+    const auto a = fixture(temporary.path(), QStringLiteral("a.mscx"));
+    const auto b = fixture(temporary.path(), QStringLiteral("b.mscx"));
+    const auto c = fixture(temporary.path(), QStringLiteral("c.mscx"));
+    const auto replacement = fixture(temporary.path(), QStringLiteral("moved/b.mscx"));
+    const QList<QByteArray> originals { digest(a.path), digest(b.path), digest(c.path), digest(replacement.path) };
+    LocalScoreLibraryStore store(temporary.path() + QStringLiteral("/library.json"));
+    const auto added = store.add({ a, b, c });
+    require(added.ok && store.enableCollections().ok, "Could not prepare collection fixture");
+    const QString aId = added.entries[0].id, bId = added.entries[1].id, cId = added.entries[2].id;
+    auto result = store.createCollection(QString::fromUtf8("  Été — 東京  "));
+    require(result.ok && result.collections.size() == 1 && result.collections[0].name == QString::fromUtf8("Été — 東京"),
+            "Collection name was not normalized or preserved as Unicode");
+    const QString firstId = result.collections[0].id;
+    require(!QUuid(firstId).isNull(), "Collection needs a stable UUID");
+    const auto beforeDuplicate = read(store.filePath());
+    require(!store.createCollection(QString::fromUtf8("ETE — 東京")).ok
+            && read(store.filePath()) == beforeDuplicate, "Case/diacritic duplicate collection was accepted");
+    for (const QString& invalid : { QString(), QStringLiteral("   "), QString(81, QLatin1Char('a')),
+                                   QStringLiteral("Line\nbreak"), QStringLiteral("Tab\tname") }) {
+        require(!store.createCollection(invalid).ok && read(store.filePath()) == beforeDuplicate,
+                "Invalid collection name changed the catalogue");
+    }
+    result = store.createCollection(QStringLiteral("Second"));
+    require(result.ok && result.collections.size() == 2, "Second collection failed");
+    const QString secondId = result.collections[1].id;
+    require(store.renameCollection(firstId, QStringLiteral(" Concert ")).ok, "Collection rename failed");
+    require(!store.renameCollection(secondId, QStringLiteral("CONCERT")).ok, "Rename accepted a duplicate name");
+    require(store.setCollectionEntry(firstId, aId, true).ok && store.setCollectionEntry(firstId, bId, true).ok
+            && store.setCollectionEntry(firstId, cId, true).ok, "Adding collection membership failed");
+    auto memberships = store.setCollectionEntry(firstId, bId, true);
+    require(memberships.ok && memberships.collections[0].entryIds == QStringList({ aId, bId, cId }),
+            "Duplicate membership changed order or duplicated a score");
+    result = store.moveCollectionEntry(firstId, cId, -1);
+    require(result.ok && result.collections[0].entryIds == QStringList({ aId, cId, bId }), "Move up lost manual list order");
+    result = store.moveCollectionEntry(firstId, aId, 1);
+    require(result.ok && result.collections[0].entryIds == QStringList({ cId, aId, bId }), "Move down failed");
+    require(store.moveCollectionEntry(firstId, cId, -1).ok && store.moveCollectionEntry(firstId, bId, 1).ok,
+            "Moving at the list boundary should be a safe no-op");
+    const auto beforeBadMove = read(store.filePath());
+    require(!store.moveCollectionEntry(firstId, aId, 2).ok && read(store.filePath()) == beforeBadMove,
+            "An invalid move changed the collection");
+    require(!store.setCollectionEntry(firstId, QStringLiteral("missing-score"), true).ok
+            && !store.setCollectionEntry(QStringLiteral("missing-collection"), aId, true).ok
+            && !store.renameCollection(QStringLiteral("missing-collection"), QStringLiteral("Rename")).ok
+            && !store.removeCollection(QStringLiteral("missing-collection")).ok
+            && read(store.filePath()) == beforeBadMove, "Unknown membership/collection mutation changed the catalogue");
+    require(store.setCollectionEntry(secondId, bId, true).ok && store.setFavorite(bId, true).ok,
+            "Favourite or second collection lost membership");
+    result = store.relink(bId, replacement);
+    require(result.ok && result.collections[0].entryIds == QStringList({ cId, aId, bId })
+            && result.collections[1].entryIds == QStringList({ bId }) && result.entries[1].id == bId
+            && result.entries[1].favorite && result.entries[1].path == replacement.path, "Relink broke collection references");
+    result = store.setCollectionEntry(firstId, aId, false);
+    require(result.ok && result.collections[0].entryIds == QStringList({ cId, bId }), "Removing membership changed another score");
+    result = store.remove(bId);
+    require(result.ok && result.collections[0].entryIds == QStringList({ cId }) && result.collections[1].entryIds.isEmpty()
+            && result.entries.size() == 2, "Removing a score left dangling collection references");
+    result = store.removeCollection(firstId);
+    require(result.ok && result.collections.size() == 1 && result.collections[0].id == secondId && result.entries.size() == 2,
+            "Removing collection deleted library entries");
+    require(digest(a.path) == originals[0] && digest(b.path) == originals[1]
+            && digest(c.path) == originals[2] && digest(replacement.path) == originals[3],
+            "Collection operations changed or deleted a score file");
+}
+
+void corruptCollectionsRemainUntouched()
+{
+    QTemporaryDir temporary;
+    const auto score = fixture(temporary.path(), QStringLiteral("score.mscx"));
+    LocalScoreLibraryStore store(temporary.path() + QStringLiteral("/library.json"));
+    const auto added = store.add({ score });
+    require(added.ok && store.enableCollections().ok, "Could not prepare v2 corruption fixture");
+    const auto created = store.createCollection(QStringLiteral("Concert"));
+    require(created.ok, "Could not create v2 corruption fixture collection");
+    const QString collectionId = created.collections.front().id, scoreId = added.entries.front().id;
+    const auto valid = QJsonDocument::fromJson(read(store.filePath())).object();
+    const auto reject = [&](const QJsonObject& malformed) {
+        const QByteArray bytes = QJsonDocument(malformed).toJson();
+        write(store.filePath(), bytes);
+        require(!store.load().ok && !store.enableCollections().ok && !store.createCollection(QStringLiteral("Next")).ok
+                && !store.renameCollection(collectionId, QStringLiteral("Next")).ok && !store.removeCollection(collectionId).ok
+                && !store.setCollectionEntry(collectionId, scoreId, true).ok
+                && !store.moveCollectionEntry(collectionId, scoreId, 1).ok
+                && !store.setFavorite(scoreId, true).ok && !store.remove(scoreId).ok
+                && read(store.filePath()) == bytes, "Malformed collections were silently repaired or rewritten");
+    };
+    auto root = valid;
+    root[QStringLiteral("schema_version")] = 3;
+    reject(root);
+    root = valid;
+    root.remove(QStringLiteral("collections"));
+    reject(root);
+    root = valid;
+    root[QStringLiteral("collections")] = QStringLiteral("not-an-array");
+    reject(root);
+    root = valid;
+    auto collection = valid.value(QStringLiteral("collections")).toArray()[0].toObject();
+    collection[QStringLiteral("entry_ids")] = QJsonArray { QStringLiteral("missing-score") };
+    root[QStringLiteral("collections")] = QJsonArray { collection };
+    reject(root);
+    collection[QStringLiteral("entry_ids")] = QJsonArray { scoreId, scoreId };
+    root[QStringLiteral("collections")] = QJsonArray { collection };
+    reject(root);
+    collection[QStringLiteral("entry_ids")] = QJsonArray { 7 };
+    root[QStringLiteral("collections")] = QJsonArray { collection };
+    reject(root);
+    collection[QStringLiteral("entry_ids")] = QJsonArray {};
+    collection[QStringLiteral("id")] = QStringLiteral("not-a-uuid");
+    root[QStringLiteral("collections")] = QJsonArray { collection };
+    reject(root);
+    collection[QStringLiteral("id")] = collectionId;
+    collection[QStringLiteral("name")] = QStringLiteral("   ");
+    root[QStringLiteral("collections")] = QJsonArray { collection };
+    reject(root);
+    collection[QStringLiteral("name")] = QStringLiteral("Concert");
+    auto duplicate = collection;
+    duplicate[QStringLiteral("id")] = QUuid::createUuid().toString(QUuid::WithoutBraces);
+    duplicate[QStringLiteral("name")] = QStringLiteral("CONCERT");
+    root[QStringLiteral("collections")] = QJsonArray { collection, duplicate };
+    reject(root);
+    duplicate[QStringLiteral("name")] = QStringLiteral("Other");
+    duplicate[QStringLiteral("id")] = collectionId;
+    root[QStringLiteral("collections")] = QJsonArray { collection, duplicate };
+    reject(root);
+    root = valid;
+    root[QStringLiteral("extra")] = true;
+    reject(root);
+}
+
+void concurrentCollectionMembers()
+{
+    QTemporaryDir temporary;
+    const auto first = fixture(temporary.path(), QStringLiteral("first.mscx"));
+    const auto second = fixture(temporary.path(), QStringLiteral("second.mscx"));
+    LocalScoreLibraryStore windowA(temporary.path() + QStringLiteral("/library.json"));
+    const auto added = windowA.add({ first, second });
+    require(added.ok && windowA.enableCollections().ok, "Could not prepare concurrent collection fixture");
+    const auto created = windowA.createCollection(QStringLiteral("Concert"));
+    require(created.ok, "Could not create concurrent collection fixture");
+    const QString collectionId = created.collections[0].id;
+    LocalScoreLibraryStore staleWindow(windowA.filePath());
+    require(staleWindow.load().ok, "Initial stale-window collection read failed");
+    QProcess a, b;
+    const QString program = QCoreApplication::applicationFilePath();
+    a.start(program, { QStringLiteral("--collection-writer"), windowA.filePath(), collectionId, added.entries[0].id });
+    b.start(program, { QStringLiteral("--collection-writer"), windowA.filePath(), collectionId, added.entries[1].id });
+    require(a.waitForFinished(10000) && b.waitForFinished(10000), "Concurrent collection writers timed out");
+    require(a.exitStatus() == QProcess::NormalExit && a.exitCode() == 0 && b.exitStatus() == QProcess::NormalExit && b.exitCode() == 0,
+            "Concurrent collection child writer failed");
+    auto result = staleWindow.setFavorite(added.entries[0].id, true);
+    require(result.ok && result.entries[0].favorite && result.collections[0].entryIds.size() == 2
+            && result.collections[0].entryIds.contains(added.entries[0].id) && result.collections[0].entryIds.contains(added.entries[1].id),
+            "Stale favourite mutation lost a concurrently committed member");
+    result = windowA.renameCollection(collectionId, QStringLiteral("Rehearsal"));
+    require(result.ok && result.collections[0].entryIds.size() == 2 && result.entries[0].favorite,
+            "Stale rename overwrote memberships or favourite");
+}
+
 void nativeXmlStructuralGate()
 {
     const QList<QByteArray> invalid {
@@ -439,6 +629,10 @@ int main(int argc, char** argv)
         const auto result = store.add({ { {}, application.arguments()[3], QStringLiteral("Writer"), {}, false } });
         return result.ok ? 0 : 1;
     }
+    if (application.arguments().size() == 5 && application.arguments()[1] == QStringLiteral("--collection-writer")) {
+        LocalScoreLibraryStore store(application.arguments()[2]);
+        return store.setCollectionEntry(application.arguments()[3], application.arguments()[4], true).ok ? 0 : 1;
+    }
     const QList<QPair<const char*, std::function<void()>>> tests {
         { "persistence, Unicode, stable id, deduplication and no score mutation", persistAndDeduplicate },
         { "missing score retained and relink preserves id/favourite", retainAndRelinkMissing },
@@ -448,6 +642,10 @@ int main(int argc, char** argv)
         { "permission and invalid-parent failures preserve data", writeFailurePreservesData },
         { "concurrent real processes preserve both writes", concurrentProcesses },
         { "metadata/identity watch permits atomic saves, equal-time replacements and native rearming", metadataWatchDoesNotBlockAtomicReplacement },
+        { "explicit v1 to v2 collections migration preserves metadata and never happens during ordinary writes", explicitCollectionMigration },
+        { "collection CRUD, Unicode names, membership order, relink and removal preserve score files", collectionNamesMembershipAndOrder },
+        { "invalid/future collection structures and foreign references preserve exact catalogue bytes", corruptCollectionsRemainUntouched },
+        { "concurrent real membership writers and stale windows preserve all committed changes", concurrentCollectionMembers },
         { "native XML gate rejects malformed/non-native/DTD and accepts modern/legacy Unicode", nativeXmlStructuralGate }
     };
     int failures = 0;

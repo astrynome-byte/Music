@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "path": "Prepare-SfzAssets.py",
+      "bytes": 10623,
+      "sha256": "41a90f5703e21cdc750ce2784aebc4aba0f274e13c17494dec258368123b9ae0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3824,
+      "sha256": "b57f4fdbb89ba47ca246327cc875841d4c82fefdf1c6cbadc7900a20c8e311d5"
+    },
+    {
+      "path": "Restore-CombinedStage.ps1",
+      "bytes": 14937,
+      "sha256": "73a7697a0f015fef660466cb31ff4efd1abee84451306456edc024543f71cf4c"
+    },
+    {
+      "path": "Test-SfzHost.py",
+      "bytes": 16425,
+      "sha256": "5679e459c83fb7f94ba942e8f4463461d726e126e9580b845ac25f152bc23921"
+    },
+    {
+      "path": "VSCO-CC0-LICENSE.txt",
+      "bytes": 6555,
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+    },
+    {
+      "path": "asset-source-manifest.json",
+      "bytes": 8238,
+      "sha256": "f2d68c3fdf42c130c8b182581aa0a63e881f6f30b1934b39c97fc448843b1a8b"
+    },
+    {
+      "path": "corpus_run_exports.py",
+      "bytes": 16535,
+      "sha256": "f701874e7a37b8d3148f0bb99477b60b96865e804ed238372d75c06598027d82"
+    },
+    {
+      "path": "fixtures/LICENSE.txt",
+      "bytes": 336,
+      "sha256": "f27921abb7376a651167ae82f6a2ed6119abafab071c9ea33d0e6badeffb5f52"
+    },
+    {
+      "path": "fixtures/pins.json",
+      "bytes": 95,
+      "sha256": "33eb6e992e285130afb109c0d1d8acb9367fa535f77d4e8fa461a92b087df42f"
+    },
+    {
+      "path": "fixtures/sfz-probe.musicxml",
+      "bytes": 2005,
+      "sha256": "7168c20304fd65f7a40c1b2141f982c79daf86b62bb6a0384fbeb5f9214967ec"
+    },
+    {
+      "path": "sfizz-reader-lock.json",
+      "bytes": 5861,
+      "sha256": "4845d749b4120328d94303a46e0bc60e88c9ee8266e4fa7153286b8442534870"
+    },
+    {
+      "path": "sfizz_state.py",
+      "bytes": 7785,
+      "sha256": "e4b37b0426712abd5fe29bdee95f2818cea26edcb4561ca11413a48f36b7bb01"
+    }
+  ]
+}

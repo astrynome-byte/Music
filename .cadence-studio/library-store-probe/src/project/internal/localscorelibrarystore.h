@@ -4,6 +4,7 @@
 
 #include <QList>
 #include <QString>
+#include <QStringList>
 
 #include <functional>
 
@@ -16,10 +17,18 @@ struct LocalLibraryEntry {
     bool favorite = false;
 };
 
+struct LocalLibraryCollection {
+    QString id;
+    QString name;
+    QStringList entryIds;
+};
+
 struct LocalLibraryResult {
     bool ok = false;
     QString error;
     QList<LocalLibraryEntry> entries;
+    int schemaVersion = 1;
+    QList<LocalLibraryCollection> collections {};
 };
 
 // Owns only the catalogue, never the score files referenced by it. Every mutation
@@ -35,10 +44,18 @@ public:
     LocalLibraryResult setFavorite(const QString& id, bool favorite);
     LocalLibraryResult remove(const QString& id);
     LocalLibraryResult relink(const QString& id, const LocalLibraryEntry& replacement);
+    // An explicit opt-in is the only operation that upgrades schema 1 to 2.
+    // Older Cadence readers refuse schema 2 without rewriting its catalogue.
+    LocalLibraryResult enableCollections();
+    LocalLibraryResult createCollection(const QString& name);
+    LocalLibraryResult renameCollection(const QString& id, const QString& name);
+    LocalLibraryResult removeCollection(const QString& id);
+    LocalLibraryResult setCollectionEntry(const QString& collectionId, const QString& entryId, bool included);
+    LocalLibraryResult moveCollectionEntry(const QString& collectionId, const QString& entryId, int offset);
     QString filePath() const;
 
 private:
-    using Mutation = std::function<bool(QList<LocalLibraryEntry>&, QString&)>;
+    using Mutation = std::function<bool(LocalLibraryResult&, QString&)>;
     LocalLibraryResult mutate(const Mutation& mutation);
     LocalLibraryResult readUnlocked() const;
 

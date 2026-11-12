@@ -1,0 +1,106 @@
+{
+  "source_commit": "0e05d04acbeee32f1b561f24493d7ef41c322081",
+  "scope": "Exact frozen application source inspected; no binary executed by this audit",
+  "files": [
+    {
+      "path": "src/app/cmdoptions.h",
+      "frozen2002_sha256": "453dfa50c668aec18b59d7a584d5cdca948a581194821dabe4ad03876f08d0e5",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/app/internal/commandlineparser.cpp",
+      "frozen2002_sha256": "c62721dd69a3f41d2d65405489cb819f22488b4bb5bb755d240799b8fe63ad67",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/app/appfactory.cpp",
+      "frozen2002_sha256": "07d321c8ddcbb2c5e7e54260d72f769b0c8eafc6c7b1b2fd897d4a6f582026c7",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/project/projectmodule.cpp",
+      "frozen2002_sha256": "eb300713494bf47652027c841559c09573a1c75b2c38ac59a1908f8e92dd57b8",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/project/internal/projectactionscontroller.cpp",
+      "frozen2002_sha256": "049bd10d2a3a4d2d83d279e7d704a09ee3ddbbaaa00786ff02f6b0eba353a963",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/project/internal/engravingpluginapihelper.cpp",
+      "frozen2002_sha256": "54f647ca3969c2fda27e0b21bbd4d17e27e6af0df7aa1f23c3f6775e55bce5cc",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/project/internal/notationproject.cpp",
+      "frozen2002_sha256": "28a6070b8b75b7b989b000b90e3fc0c0dc12e0008ce0ee286e5f3b98366eea93",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/notation/internal/mscnotationwriter.cpp",
+      "frozen2002_sha256": "bd08ee02ebf7e27daee5482275d29f539add6dbd75f00102f90965b75015dd92",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/engraving/api/v1/qmlpluginapi.cpp",
+      "frozen2002_sha256": "ed88121788a1de8a58e94b5530ada7a42b7fd40a50968e97602354dc0c078f2c",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/framework/extensions/internal/extensionsconfiguration.cpp",
+      "frozen2002_sha256": "70ec7e3d5654bf888ba2cea50b0edd97347f5584d2214fe6b415ecbfb5c3a782",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/framework/extensions/internal/extensionsprovider.cpp",
+      "frozen2002_sha256": "a18d4b6d2449002e5ff493d788bcca9e72a41b3e957d66be9b6e221788d2216f",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/framework/extensions/internal/extensionsloader.cpp",
+      "frozen2002_sha256": "6ae738b44944de9a01a5ff7c9a4e3904944343e85ed07a3296973b6a3e12a6ea",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/framework/actions/internal/actionsdispatcher.cpp",
+      "frozen2002_sha256": "d3f9af7a900419c8e5c6006f92d375c7559d1678ce849274d7b51fa75c7f2cf0",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/appshell/internal/applicationactioncontroller.cpp",
+      "frozen2002_sha256": "837d1f9ca2b445c44b81f6180cccca4c7ca2926c5b8b429d95ade532a714f1f3",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/appshell/internal/startupscenario.cpp",
+      "frozen2002_sha256": "975ca74a1822dcee67540a8381f5c443c5e6073a1eef81117f7b4d95ea8740ff",
+      "same_as_local_source_reviewed": true
+    },
+    {
+      "path": "src/playback/internal/playbackcontroller.cpp",
+      "frozen2002_sha256": "035c4fc9acec93bbd0899f0118fbf629a86d91a8582db450e8cfa3255b54fd8a",
+      "same_as_local_source_reviewed": false,
+      "relevant_doAddTrack_body_identical": true,
+      "relevant_body_sha256": "4e662bae31c18cf5e2cc3a3b15f7210fc7eec27d69c390bd1b507e58d6247a5e",
+      "local_difference_note": "Root has an independent tempo-position fix outside doAddTrack. This QA still targets the frozen2002 executable."
+    },
+    {
+      "path": "src/importexport/audioexport/internal/abstractaudiowriter.cpp",
+      "frozen2002_sha256": "4a907d23119ecbb67b778b73301748f309144e9067e8d031049f85cf22a460d8",
+      "same_as_local_source_reviewed": true
+    }
+  ],
+  "findings": [
+    "Old -p plugin CLI is absent; --test-case forces ConsoleApp",
+    "ProjectModule initializes native project actions only in GuiApp",
+    "onpost_project_opened and onpost_project_saved are actual native extension points",
+    "PluginAPI.writeScore WAV checks the selected score and delegates actual audio export",
+    "Native notation-only MSCZ export omits project audiosettings and is not used",
+    "cmd(file-save) uses direct synchronous dispatcher and NotationProject save including audiosettings",
+    "quit has all-instances default and is deliberately not used; only an owned WM_CLOSE is sent",
+    "An explicit startup score takes precedence over last-session mode; scoreName comes from the project filename and is checked against the controlled working copy.",
+    "AbstractAudioWriter waits for actual audio start and soundtrack completion while processing events, then restores the same current notation.",
+    "PlaybackController doAddTrack writes applied input/output parameters before onFinished; raw native save after rendering can reveal replacement of the unavailable request."
+  ]
+}

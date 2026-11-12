@@ -1,0 +1,8 @@
+SPDX-License-Identifier: CC0-1.0
+
+The original short musical exercise sfz-probe.musicxml was written for Cadence
+qualification. Its authors waive copyright and related rights under the Creative
+Commons CC0 1.0 Universal dedication:
+https://creativecommons.org/publicdomain/zero/1.0/
+
+It is not copied from a commercial score catalogue.

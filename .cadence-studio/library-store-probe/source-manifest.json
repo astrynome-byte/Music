@@ -1,21 +1,21 @@
 {
   "schema_version": 1,
-  "scope": "Actual store/XML/watch helpers with Windows parent-directory entry identities; QtCore only, not the full application",
-  "source_commit": "bc3390c6365eb5a3e25311859898aad62f1efa95",
-  "source_tree": "f99d2d6a3c8fc757772d166e6beedc360102f44f",
-  "expected_scenarios": 9,
+  "scope": "Actual integrated production store, schema2 collections, XML gate and parent-directory identity watcher; QtCore only, not the full application",
+  "source_commit": "5dfceb25d9995d2b6f5b9c5a4c7f57429fc41579",
+  "source_tree": "8ec23ec5f448319760289fca5b7b02afa3674bd1",
+  "expected_scenarios": 13,
   "required_qt_version": "6.10.2",
   "gui_failure_attribution_confirmed": false,
   "files": [
     {
       "path": "src/project/internal/localscorelibrarystore.cpp",
-      "bytes": 11079,
-      "sha256": "4449f4c3fa7f76479e21db3e73a7571d5ec73e35157b463016141c7a6d140776"
+      "bytes": 20832,
+      "sha256": "02e35f74f22a3bd56b7fc285e1243f85b892e26b66410c08e76d7fbab9718726"
     },
     {
       "path": "src/project/internal/localscorelibrarystore.h",
-      "bytes": 1335,
-      "sha256": "df5078a05434552022782c712f118eedcd90d95a8039bd6bf0ba7d1156a54a76"
+      "bytes": 2147,
+      "sha256": "e884724008baca52e27fa02e52ba3d234690d3ea518864a888e098c01033241e"
     },
     {
       "path": "src/project/internal/localscorexmlcheck.h",
@@ -34,8 +34,8 @@
     },
     {
       "path": "test/cadence/local_library_store/store_tests.cpp",
-      "bytes": 25465,
-      "sha256": "0a8422c25ab2e75077bb3ea473694aaca3774d252014d2386ba6c3b92d81586f"
+      "bytes": 39285,
+      "sha256": "09e4383efb5d31de7286d606fb608acfb7113367dcd8f9e3a1c4993c7e384171"
     }
   ]
 }

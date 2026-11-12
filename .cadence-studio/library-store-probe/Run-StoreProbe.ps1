@@ -26,7 +26,7 @@ $report = [ordered]@{
     schema_version=1;status='pending';passed=$false;source_path=$SourcePath;qt_path=$QtPath
     source_run_id=$env:GITHUB_RUN_ID;driver_commit=$env:GITHUB_SHA
     scope='Compile and run only the real QtCore production-store/XML/snapshot tests'
-    source_manifest_verified=$false;expected_scenarios=9;runtime_scenarios_passed=$null
+    source_manifest_verified=$false;expected_scenarios=$null;runtime_scenarios_passed=$null
     application_built=$false;application_executed=$false;gui_tested=$false;musical_editing_tested=$false
     ctest_started=$false;commands=@();error=$null;started_utc=[DateTime]::UtcNow.ToString('o')
 }
@@ -81,7 +81,10 @@ try {
     Assert-PlainFile $manifestPath
     if((Get-Item -LiteralPath $manifestPath).Length -gt 65536){throw 'Source manifest exceeds 64 KiB.'}
     $manifest=Get-Content -LiteralPath $manifestPath -Raw|ConvertFrom-Json -AsHashtable
-    if($manifest.schema_version -ne 1 -or $manifest.expected_scenarios -ne 9 -or @($manifest.files).Count -ne $expected.Count){throw 'Expected schema1 manifest for exactly six sources and nine scenarios.'}
+    if($manifest.schema_version -ne 1 -or @($manifest.files).Count -ne $expected.Count){throw 'Expected schema1 manifest for exactly six production/test sources.'}
+    $scenarioCount=$manifest.expected_scenarios
+    if(($scenarioCount -isnot [int] -and $scenarioCount -isnot [long]) -or $scenarioCount -lt 1 -or $scenarioCount -gt 256){throw 'Manifest must declare a positive reviewed runtime scenario count.'}
+    $report.expected_scenarios=[int]$scenarioCount
     $seen=[Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
     $verified=@()
     foreach($entry in $manifest.files){
@@ -124,11 +127,12 @@ try {
     $ctest=Join-Path (Split-Path -Parent $cmake) 'ctest.exe'
     Invoke-ProbeCommand 'ctest' $ctest @('--test-dir',$build,'--verbose','--output-on-failure','--no-tests=error','--timeout','60','-R','^local_library_store$') 120000
     $runtime=[IO.File]::ReadAllText((Join-Path $OutputDirectory 'ctest.stdout.log'))
-    if($runtime -notmatch '(?m)^(?:\d+:\s*)?9/9 production-store runtime scenarios passed \(Qt 6\.10\.2\)\.\s*$' -or
-        [regex]::Matches($runtime,'(?m)^(?:\d+:\s*)?PASS:').Count -ne 9 -or $runtime -match '(?m)^(?:\d+:\s*)?FAIL:') {throw 'CTest did not report the actual nine production runtime scenarios passing on Qt6.10.2.'}
+    $expectedSummary=[regex]::Escape(('{0}/{0} production-store runtime scenarios passed (Qt 6.10.2).' -f $scenarioCount))
+    if($runtime -notmatch ('(?m)^(?:\d+:\s*)?'+$expectedSummary+'\s*$') -or
+        [regex]::Matches($runtime,'(?m)^(?:\d+:\s*)?PASS:').Count -ne $scenarioCount -or $runtime -match '(?m)^(?:\d+:\s*)?FAIL:') {throw 'CTest did not report every reviewed production runtime scenario passing on Qt6.10.2.'}
     # Re-read every manifest entry after compilation/execution as well.
     foreach($entry in $manifest.files){if((Get-FileHash -LiteralPath (Join-Path $SourcePath $entry.path) -Algorithm SHA256).Hash.ToLowerInvariant() -cne $entry.sha256){throw 'A production source changed during the probe.'}}
-    $report.runtime_scenarios_passed=9;$report.passed=$true;$report.status='nine_production_runtime_scenarios_passed'
+    $report.runtime_scenarios_passed=[int]$scenarioCount;$report.passed=$true;$report.status='all_reviewed_production_runtime_scenarios_passed'
 } catch {
     $report.status='failed';$report.error=$_.Exception.Message
 } finally {

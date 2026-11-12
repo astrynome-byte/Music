@@ -1,0 +1,142 @@
+{
+  "version": "1.2.3",
+  "source_commit": "6ef7b89b6e5aa914593c7f3ca19b859915c30337",
+  "installer_url": "https://github.com/sfztools/sfizz-ui/releases/download/1.2.3/sfizz-1.2.3-win64.exe",
+  "installer_bytes": 3626650,
+  "installer_sha256": "56f57dfe443018e947b82b8e2bf4c9d824a9c961ff2b8eb6c5e929030b71b937",
+  "source_url": "https://github.com/sfztools/sfizz-ui/releases/download/1.2.3/sfizz-1.2.3.tar.gz",
+  "source_archive_bytes": 36291101,
+  "source_archive_sha256": "ae1a0ea014eae9923b2b8e7b90d35dcebc309301fd82abaf13cbb55f01581c76",
+  "extractor_url": "https://github.com/dscharrer/innoextract/releases/download/1.9/innoextract-1.9-windows.zip",
+  "extractor_bytes": 520705,
+  "extractor_sha256": "6989342c9b026a00a72a38f23b62a8e6a22cc5de69805cf47d68ac2fec993065",
+  "extractor_exe_bytes": 1218560,
+  "extractor_exe_sha256": "946bd06d8b3722a791fea4d84f496139eef6faef61640924cb72f5f1998a68e1",
+  "plugin_bundle_files": [
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/Fonts/Roboto-Regular.ttf",
+      "bytes": 171272,
+      "sha256": "017c0be9aaa6d0359737e1fa762ad304c0e0107927faff5a6c1f415c7f5244ed"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/Fonts/sfizz-fluentui-system-f20.ttf",
+      "bytes": 229796,
+      "sha256": "f8d7c18f410487ec261fd3bb21f5a3bde1cf99363d8745b35daf89a892a20f0f"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/Fonts/sfizz-fluentui-system-r20.ttf",
+      "bytes": 275084,
+      "sha256": "6e4b7c016f383a2ccdb079ea57f290214a9007793c37ad6fdf9f10f388eb68fd"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/Fonts/sfizz-misc-icons.ttf",
+      "bytes": 4472,
+      "sha256": "eb9b8d7635d64e38d208f684c82a3cef8312b30014cb167014e656fd272c802b"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/Themes/Dark/theme.xml",
+      "bytes": 1927,
+      "sha256": "3860dc4b897708a9eacee9198894165e6bfb3957909af39912ab61e82b8dc8ce"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/Themes/Default/theme.xml",
+      "bytes": 1885,
+      "sha256": "a51cc4972ef6737e3d86be094c8cdf62268b7691f38d0d84f01773aaa6df4c09"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/background.png",
+      "bytes": 6312,
+      "sha256": "cf1706bf934737b2a742d1ac693c790807160c8feabd8d9bdf82eba97186d0b6"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/background@2x.png",
+      "bytes": 13771,
+      "sha256": "b9fd599abad1ed4b7791e68bd6fe7fe7a1ef73d711bf31c8bdc3d4f5b4cfcfb0"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/background_button_about.png",
+      "bytes": 6933,
+      "sha256": "5c8b4be24c6fbcbd7dea188e0198c5199cf20bd585e900519140f0110ad72700"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/background_button_about@2x.png",
+      "bytes": 16768,
+      "sha256": "78b6a6067d4438c775f9f48264a29406930a4be0209fa9f3ca4fbc49f8015e7d"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/icon_white.png",
+      "bytes": 3412,
+      "sha256": "a144cdc5bd7fcf7585b742a55d5d5c04bfaa618020dec68e5802c6e711612a0f"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/icon_white@2x.png",
+      "bytes": 7336,
+      "sha256": "3d0d9011914457370a761c82769d2b0a4fa3d9d4ee3f32ca55749bb44c1aa09a"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/knob48.png",
+      "bytes": 7382,
+      "sha256": "94b1082b59ccb08925954907ef8757353f4664ce9254ebc81f28817bdd797580"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/knob48@2x.png",
+      "bytes": 92347,
+      "sha256": "305248d805781392064209e6a37c2f9e5fc2168b1999ed78fb3bb4cd8dd99b4e"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/logo.png",
+      "bytes": 11712,
+      "sha256": "8411a5c7554a7017f2c05316f603690cbbdf9d4cb05c94ece2540ca1c70aebe6"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/logo_orange.png",
+      "bytes": 27303,
+      "sha256": "3cd6d5120456930ee45b6e0e3afeee76500e785ddc3670ab096369e9e68795c1"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/logo_text.png",
+      "bytes": 5414,
+      "sha256": "bb616e00c44654cf5f2b85aa20c1215dfcfc62fdd659f6005c9fdfe0f7ef92f0"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/logo_text@2x.png",
+      "bytes": 10935,
+      "sha256": "328d8de2bbb32361f6b9d664073f5469661ab7f919335ebb50f1afe7e1c2997e"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/logo_text_shaded.png",
+      "bytes": 2471,
+      "sha256": "6d57bec0c6a570f0bf7326e0ce6e0fc89a027451bd93ee710b822b997f24f771"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/logo_text_shaded@2x.png",
+      "bytes": 4726,
+      "sha256": "e1d72b9ef1b8d570cefeb1c273756206010209e9cfa763788ed068bfc719cf89"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/logo_text_white.png",
+      "bytes": 2591,
+      "sha256": "0a5f091c0b95d6863c2c0a85add1f38c20b07be43d5929039cb4f9e47b9cebce"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/Resources/logo_text_white@2x.png",
+      "bytes": 4056,
+      "sha256": "046685e326305b08ea88815905855c18a1b453f1acf6a5ebb21bea67e943d064"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Contents/x86_64-win/sfizz.vst3",
+      "bytes": 3182592,
+      "sha256": "b034341678fac5266faea3e361e5d1a618910e2f885bfd09a2dd4edd9d833f6f"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/Plugin.ico",
+      "bytes": 351974,
+      "sha256": "95a4c97b65d2d88ca496d5d1e4aecfbe0b373244679ff2bcef7c44c9a53cd44e"
+    },
+    {
+      "path": "commoncf/VST3/sfizz.vst3/desktop.ini",
+      "bytes": 46,
+      "sha256": "5853906fe6acfe4a3f26739b76b7dbf11637b3989d59ac5977b569230fd823bc"
+    }
+  ]
+}

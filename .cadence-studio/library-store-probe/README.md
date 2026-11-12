@@ -1,49 +1,37 @@
-# Windows QtCore : identité du catalogue depuis son répertoire parent
+# Stockage natif et collections — qualification Windows QtCore
 
-Sources actuelles : commit bc3390c6365eb5a3e25311859898aad62f1efa95,
-arbre f99d2d6a3c8fc757772d166e6beedc360102f44f. Les six fichiers exacts sont
-copiés depuis les blobs Git, indépendamment des modifications futures du
-worktree. Source-manifest.json et SHA256SUMS.txt identifient leurs octets.
-Cette cible QtCore ne construit ni ne lance l'application Cadence complète.
+Ce pilote compile six fichiers exacts du commit source indiqué dans
+`source-manifest.json`, avec Qt6.10.2, MSVC2022x64 et SDK10.0.26100.0 sur un
+runner GitHub Windows jetable. Le nombre de scénarios attendu vient du même
+manifeste ; le vrai transcript doit contenir ce nombre de PASS et son résumé
+complet. Le target CTest regroupe ces scénarios dans un seul test.
 
-## Historique conservé
+La source intégrée ajoute quatre scénarios de collections au socle de neuf :
+migration v1→v2 explicite, noms/membres/ordre/relocalisation, données invalides
+préservées et écritures concurrentes réelles. Les neuf cas existants couvrent
+persistance Unicode, id/favoris, fichiers absents, collision, erreurs/permissions,
+verrouillage et fusion, processus concurrents, garde XML et watcher réel.
+Le watcher Windows énumère uniquement le dossier parent pour son identité de
+fichier ; il n'ouvre aucun flux du catalogue pendant les changements de dossier.
+Le cas natif exige deux remplacements atomiques de même taille/date, ID changé,
+événement réel et réarmement. Les systèmes de fichiers sans identité exploitable
+restent limités à la détection Qt/métadonnées et à Actualiser manuellement.
 
-- 43126537489 : zéro job, publication base64 littérale invalide.
-- 43178954921 : six sources vérifiées et qmake6.10.2, échec avant C++ : lookup
-  PowerShell de deux chemins CMake concaténé. Select-Object -First 1 corrige
-  CMake/Ninja/MSVC et reste dans le pilote.
-- 43179668680 : vraie compilation,8/9 ; SHARE_DELETE ne permet pas le
-  remplacement Qt FileRenameInfo d'une cible de catalogue ouverte.
-- 43184034438 : vrai9/9 sous Windows pour le filtre de métadonnées a07.
-  Le backend Qt Windows filtre toutefois certaines notifications fichier par
-  taille/date/permissions ; ce succès n'est pas une garantie de tous les cas
-  où ces métadonnées seraient restaurées avant son observation.
+Ce petit binaire exécute les vraies classes de production ; il ne compile pas
+l'application, n'exécute pas son GUI et ne valide pas les parcours d'édition.
+Les hashes sont contrôlés avant et après les tests. Le code et les projets2002
+retenus restent indépendants de ce pilote.
 
-## Nouvelle qualification à exécuter
+Historique conservé : erreur d'encodage du pilote43126537489 (aucun job),
+lookup Get-Command multiple43178954921 (aucun C++ lancé), tentative de lecteur
+SHARE_DELETE43179668680 (8/9, remplacement refusé), métadonnées sans lecteur
+43184034438 (9/9), puis identité native du parent43188835467 (9/9 réels sur
+Windows, commitbc3390). Ces réussites ne qualifient pas les nouveaux treize cas.
+Leur état courant doit être lu dans les vrais résultats du nouveau run.
 
-Le helper Windows énumère le répertoire parent par
-GetFileInformationByHandleEx, avec partage lecture/écriture/DELETE, handle RAII
-et buffer borné64×16Kio. Il ajoute volume/id de l'entrée au filtre. Il n'ouvre
-aucun flux du catalogue et ne change ni schéma, ni nom du verrou, ni QSaveFile.
-Une identité différente déclenche la relecture sur directoryChanged même
-lorsque le backend Qt supprime une notification fileChanged à propriétés égales.
+Les quatre anciens logs GUI demandés au run43123741624 ont été lus ; ils sont
+vides, ce qui ne permet pas d'attribuer son LOGE original avec certitude.
+La preuve du conflit et de sa correction vient des essais natifs ci-dessus.
 
-Le neuvième groupe exige le refus de l'ancien lecteur sous Windows, puis deux
-commits de titres de même taille avec date forcée identique, ID natif différent,
-événement fichier OU répertoire significatif, réarmement, favori sauvegardé et
-partition inchangée. L'activité des seuls verrous reste filtrée. Les huit autres
-groupes de stockage/XML sont conservés.
-
-Linux :9/9 et syntaxe du modèle ON/OFF passent pour les nouvelles sources.
-La branche d'énumération Windows n'y est pas exécutée : elle doit compiler et
-passer le vrai nouveau job avant qualification. Sur un système de fichiers ne
-fournissant pas d'identité, un parent inaccessible ou une limite atteinte,
-le repli utilise métadonnées/notifications Qt et le bouton Actualiser ; le cas
-externe à métadonnées restaurées n'est alors pas garanti automatiquement.
-
-Aucun résultat QtCore ne valide gestes GUI, redémarrage, ouverture de partition,
-édition musicale, écoute ou installation. Les quatre stdout/stderr du précédent
-runGUI11 ont été observés vides ; son erreur exacte n'est pas attribuée ici.
-Publication réservée à cadence-studio/windows-build avec marqueur
-`[cadence-packaging-only]`, sans main Android ni changement des stages1001/2002.
-Artifacts temporaires14jours et potentiellement authentifiés, pas lien du cadeau.
+Les artefacts GitHub restent expérimentaux, à accès GitHub et rétention14jours.
+Ils ne constituent pas un lien de téléchargement cadeau sans compte.

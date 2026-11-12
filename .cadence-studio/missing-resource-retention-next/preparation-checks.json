@@ -1,0 +1,33 @@
+{
+  "status": "prepared_not_executed_on_Windows",
+  "checks": [
+    {
+      "check": "Generated APIv1 hook renders same selected score before actual native save, never uses notation MSCZ export or global quit",
+      "passed": true
+    },
+    {
+      "check": "Both generated JavaScript sources parse",
+      "passed": true
+    },
+    {
+      "check": "Actual diagnostic script refuses wrong score and never saves after failed rendering (mock API contract only)",
+      "passed": true
+    },
+    {
+      "check": "Real non-Windows guard refuses before output/profile writes",
+      "passed": true
+    },
+    {
+      "check": "Strict namespace YAML and read-only workflow permissions",
+      "passed": true
+    },
+    {
+      "check": "Exact restoration script and two new workflow blocks parse in PowerShell",
+      "passed": true
+    },
+    {
+      "check": "Reused helper, native CC0 fixture and WAV inspector retain exact known bytes",
+      "passed": true
+    }
+  ]
+}
