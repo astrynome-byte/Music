@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "prepared_not_network_executed": true,
+  "python_ast_files": [
+    "read_data.py",
+    "download_originals.py",
+    "read_only_msi.py"
+  ],
+  "isolated_cli_help_exit_code": 0,
+  "old_2005_reader_sha256": "269149f1a80ad4d2c0a2a4558c3dc2ba54254a1f15dc0b06deef79acc6d7c8eb",
+  "unchanged_reused_functions": [
+    "digest",
+    "file_hash"
+  ],
+  "frozen_2006_source_files_unchanged_sha256": {
+    "source.json": "0d6c5944374cfa2b58ee8f81a3912b36585ed263ed79ffb3ff1968f2bd07ca1b",
+    "changes.patch.gz": "cba5d10112b8cd7ce470577e07cc70fb8d1cd849ec412b652c0a6b71bf4e3ce7",
+    "handoff.json": "c96a0220c4b79cf48d87eaecafeca35c09679a745275fe9bf08a7e2fd64de6c4",
+    "SHA256SUMS.txt": "115db2b2256044ca555c2be9605968aeac20570dd35c44782c14e5a11c05ddf1"
+  },
+  "application_executed": false,
+  "installer_executed": false,
+  "original_archives_downloaded_locally": false,
+  "windows_msi_database_read_locally": false,
+  "powershell_workflow_parse": "passed-actual-PowerShell-7-parser-no-workflow-execution",
+  "actual_artifact_schema_read": "pending-real-Windows-data-read",
+  "powershell_initial_default_cache_attempt": "blocked-read-only-home; retried with task-local XDG directories"
+}

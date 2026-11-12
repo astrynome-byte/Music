@@ -68,6 +68,156 @@ static bool elementBelowModal(IUIAutomation* automation, IUIAutomationElement* e
     }
     return false;
 }
+
+// Identity is the real UIA element identity, never a name, AutomationId or proxy address.
+// CompareElements is already used by the retained client; no new SDK dependency.
+struct ModalReadState {
+    IUIAutomation* automation = nullptr;
+    HWND modal = nullptr, exercise = nullptr;
+    std::vector<ComPtr<IUIAutomationElement>> identities;
+    std::vector<bool> expanded;
+    std::vector<Node> nodes;
+    size_t candidates = 0, comparisons = 0, repeated = 0, siblingCycles = 0, ancestorCycles = 0;
+    bool complete = true, deadlineReached = false, limitReached = false;
+    const char* error = "none";
+    bool ready() {
+        if (!complete) return false;
+        if (Clock::now() >= deadline) { complete = false; deadlineReached = true; error = "deadline"; return false; }
+        if (!modalOfExercise(modal, exercise)) { complete = false; error = "owned_modal_changed"; return false; }
+        return true;
+    }
+    void fail(const char* reason) { complete = false; error = reason; }
+    int identity(IUIAutomationElement* element) {
+        if (!element || !ready()) return -1;
+        if (candidates >= 1200) { limitReached = true; fail("candidate_limit"); return -1; }
+        ++candidates;
+        for (size_t i = 0; i < identities.size(); ++i) {
+            if (!ready()) return -1;
+            BOOL same = FALSE;
+            ++comparisons;
+            if (FAILED(automation->CompareElements(element, identities[i].Get(), &same))) {
+                fail("identity_comparison_failed"); return -1;
+            }
+            if (same) return static_cast<int>(i);
+        }
+        identities.emplace_back(element);
+        expanded.push_back(false);
+        return static_cast<int>(identities.size() - 1);
+    }
+};
+static void readModalElement(IUIAutomationTreeWalker* walker, IUIAutomationElement* element,
+                             int identity, int depth, ModalReadState& state, std::vector<int> ancestors = {})
+{
+    if (identity < 0 || !state.ready()) return;
+    if (state.expanded[static_cast<size_t>(identity)]) { ++state.repeated; return; }
+    if (state.nodes.size() >= 1200 || depth > 18) { state.limitReached = true; state.fail("node_or_depth_limit"); return; }
+    state.expanded[static_cast<size_t>(identity)] = true;
+    ancestors.push_back(identity);
+    Node node; node.element = element; node.depth = depth;
+    auto read = [&](auto operation) {
+        if (!state.ready()) return false;
+        if (FAILED(operation())) { state.fail("uia_property_read_failed"); return false; }
+        return true;
+    };
+    UIA_HWND nativeWindow = {};
+    if (!read([&] { return element->get_CurrentProcessId(&node.pid); })
+        || !read([&] { return element->get_CurrentNativeWindowHandle(&nativeWindow); })) return;
+    if (node.pid != static_cast<int>(targetPid)) { state.fail("foreign_modal_element_pid"); return; }
+    const HWND native = reinterpret_cast<HWND>(nativeWindow);
+    if (native && (!owned(native) || GetAncestor(native, GA_ROOT) != state.modal)) {
+        state.fail("element_hwnd_outside_modal"); return;
+    }
+    BSTR value = nullptr;
+    bool ok = read([&] { return element->get_CurrentName(&value); });
+    node.name = text(value); value = nullptr;
+    if (!ok) return;
+    ok = read([&] { return element->get_CurrentAutomationId(&value); });
+    node.id = text(value); value = nullptr;
+    if (!ok || !read([&] { return element->get_CurrentControlType(&node.type); })
+        || !read([&] { return element->get_CurrentIsEnabled(&node.enabled); })
+        || !read([&] { return element->get_CurrentIsOffscreen(&node.offscreen); })
+        || !read([&] { return element->get_CurrentHasKeyboardFocus(&node.focused); })) return;
+    state.nodes.push_back(node);
+    // Do not issue a first-child call at the existing depth cap. A partial read
+    // may never authorize a discard that could hide another exact candidate.
+    if (depth == 18) { state.limitReached = true; state.fail("depth_limit"); return; }
+    ComPtr<IUIAutomationElement> child;
+    if (!state.ready()) return;
+    if (FAILED(walker->GetFirstChildElement(element, &child))) { state.fail("first_child_failed"); return; }
+    std::vector<int> siblingIdentities;
+    while (child && state.ready()) {
+        const int childIdentity = state.identity(child.Get());
+        if (childIdentity < 0) return;
+        // An ancestor returned as a child is not a sibling cursor: asking for
+        // its next sibling could escape this modal. Refuse an incomplete view.
+        if (std::find(ancestors.begin(), ancestors.end(), childIdentity) != ancestors.end()) {
+            ++state.ancestorCycles; state.fail("ancestor_reference_in_modal_view"); return;
+        }
+        if (std::find(siblingIdentities.begin(), siblingIdentities.end(), childIdentity) != siblingIdentities.end()) {
+            ++state.siblingCycles; break;
+        }
+        siblingIdentities.push_back(childIdentity);
+        ComPtr<IUIAutomationElement> checkedParent;
+        BOOL parentMatches = FALSE;
+        if (!state.ready()) return;
+        if (FAILED(walker->GetParentElement(child.Get(), &checkedParent)) || !checkedParent) {
+            state.fail("inconsistent_modal_child_parent"); return;
+        }
+        if (!state.ready()) return;
+        ++state.comparisons;
+        if (FAILED(state.automation->CompareElements(checkedParent.Get(), element, &parentMatches)) || !parentMatches) {
+            state.fail("inconsistent_modal_child_parent"); return;
+        }
+        readModalElement(walker, child.Get(), childIdentity, depth + 1, state, ancestors);
+        if (!state.ready()) return;
+        ComPtr<IUIAutomationElement> sibling;
+        if (FAILED(walker->GetNextSiblingElement(child.Get(), &sibling))) { state.fail("next_sibling_failed"); return; }
+        child = sibling;
+    }
+}
+static ModalReadState readOwnedModal(IUIAutomation* automation, IUIAutomationTreeWalker* walker,
+                                    IUIAutomationElement* root, HWND modal, HWND exercise)
+{
+    ModalReadState state; state.automation = automation; state.modal = modal; state.exercise = exercise;
+    UIA_HWND rootWindow = {};
+    int rootPid = 0;
+    if (!root) { state.fail("modal_root_absent"); return state; }
+    if (!state.ready()) return state;
+    if (FAILED(root->get_CurrentNativeWindowHandle(&rootWindow)) || reinterpret_cast<HWND>(rootWindow) != modal) {
+        state.fail("modal_root_hwnd_or_pid_unverified"); return state;
+    }
+    if (!state.ready()) return state;
+    if (FAILED(root->get_CurrentProcessId(&rootPid)) || rootPid != static_cast<int>(targetPid)) {
+        state.fail("modal_root_hwnd_or_pid_unverified"); return state;
+    }
+    const int identity = state.identity(root);
+    readModalElement(walker, root, identity, 0, state);
+    state.ready(); // Also account for the final synchronous UIA call returning after the deadline.
+    return state;
+}
+static void saveModalRead(const std::filesystem::path& output, const wchar_t* phase, const ModalReadState& state)
+{
+    std::ofstream file(output / (std::wstring(phase) + L".json"), std::ios::binary);
+    file << "{\"pid\":" << targetPid << ",\"bounded\":true,\"scope\":\"verified_owned_modal_only\",\"max_nodes\":1200,\"max_depth\":18"
+        << ",\"source_hwnd\":" << reinterpret_cast<std::uintptr_t>(state.modal)
+        << ",\"complete\":" << (state.complete ? "true" : "false") << ",\"error\":\"" << state.error << '"'
+        << ",\"deadline_reached\":" << (state.deadlineReached ? "true" : "false")
+        << ",\"node_limit_reached\":" << (state.limitReached ? "true" : "false")
+        << ",\"candidate_reads\":" << state.candidates << ",\"identity_comparisons\":" << state.comparisons
+        << ",\"unique_identities\":" << state.identities.size() << ",\"repeated_references_skipped\":" << state.repeated
+        << ",\"sibling_cycles_stopped\":" << state.siblingCycles
+        << ",\"ancestor_cycles_stopped\":" << state.ancestorCycles << ",\"nodes\":[";
+    bool first = true;
+    for (const Node& node : state.nodes) {
+        if (!first) file << ','; first = false;
+        file << "{\"name\":" << jsonQuoted(node.name) << ",\"automation_id\":" << jsonQuoted(node.id)
+            << ",\"control_type\":" << node.type << ",\"pid\":" << node.pid << ",\"depth\":" << node.depth
+            << ",\"enabled\":" << (node.enabled ? "true" : "false") << ",\"offscreen\":" << (node.offscreen ? "true" : "false")
+            << ",\"keyboard_focus\":" << (node.focused ? "true" : "false") << '}';
+    }
+    file << "]}";
+}
+
 static int closeOwnedExercise(const std::filesystem::path& output)
 {
     deadline = Clock::now() + std::chrono::seconds(25);
@@ -110,10 +260,11 @@ static int closeOwnedExercise(const std::filesystem::path& output)
                 ComPtr<IUIAutomationTreeWalker> walker;
                 if (FAILED(automation->ElementFromHandle(modal, &modalRoot)) || !modalRoot
                     || FAILED(automation->get_RawViewWalker(&walker))) { reason = "blocked_owned_modal_provider"; break; }
-                std::vector<Node> nodes;
-                walk(walker.Get(), modalRoot.Get(), 0, nodes);
+                const auto modalRead = readOwnedModal(automation.Get(), walker.Get(), modalRoot.Get(), modal, exercise);
+                const auto& nodes = modalRead.nodes;
                 retainKeyboardFrame(nodes, "exact_owned_discard_dialog");
-                snapshot(automation.Get(), output, L"tree-owned-discard-dialog");
+                saveModalRead(output, L"tree-owned-discard-dialog", modalRead);
+                if (!modalRead.complete || Clock::now() >= deadline) { reason = "blocked_owned_modal_read_incomplete"; break; }
                 const Node* discard = nullptr;
                 for (const auto& node : nodes) {
                     if (!exactDiscardNode(node)) continue;
@@ -149,7 +300,9 @@ static int closeOwnedExercise(const std::filesystem::path& output)
                             + ",\"delivered\":" + (exposureDelivered ? "true" : "false") + "}");
                         if (!exposureDelivered) { reason = "blocked_owned_modal_exposure_guard_or_delivery"; break; }
                         Sleep(180);
-                        snapshot(automation.Get(), output, L"tree-after-single-modal-tab");
+                        const auto afterTabRead = readOwnedModal(automation.Get(), walker.Get(), modalRoot.Get(), modal, exercise);
+                        saveModalRead(output, L"tree-after-single-modal-tab", afterTabRead);
+                        if (!afterTabRead.complete) { reason = "blocked_owned_modal_read_incomplete_after_tab"; break; }
                     } else Sleep(120);
                     continue;
                 }

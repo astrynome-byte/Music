@@ -1,0 +1,42 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: read actual 2006 stage, delivery and existing MSI QA as data'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/combined-2006-data-reader/**'
+      - '.github/workflows/cadence-combined-2006-data-reader.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  read-original-2006-data:
+    runs-on: windows-2022
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Authenticate only the three exact originals and read their contents without executing application or installer
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python -I "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2006-data-reader/read_data.py" `
+            --source-selection "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2006-source" `
+            --work "$env:RUNNER_TEMP/retained-2006-original-zip-data" `
+            --output "$env:RUNNER_TEMP/retained-2006-data-receipts"
+          if($LASTEXITCODE-ne0){throw 'Actual 2006 data authentication incomplete; inspect the existing metadata without running any app/MSI.'}
+      - name: Retain metadata, hashes and exact existing reports only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-retained-2006-data-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/retained-2006-data-receipts/
+          retention-days: 14
+          if-no-files-found: warn
