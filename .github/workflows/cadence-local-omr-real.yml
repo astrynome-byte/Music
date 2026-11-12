@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence: real local OMR PNG and PDF with native import'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths: ['.cadence-studio/local-omr-real-qa/**', '.github/workflows/cadence-local-omr-real.yml']
+permissions:
+  contents: read
+jobs:
+  real-local-omr:
+    if: github.repository == 'astrynome-byte/Music'
+    runs-on: windows-2022
+    timeout-minutes: 40
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Real original CC0 score to native PNG/PDF, local Audiveris, then Cadence
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/local-omr-real-qa/Invoke-OmrChain.ps1" -OutputDirectory "$env:RUNNER_TEMP/cadence-local-omr-results"
+      - name: Preserve actual reports and copies after success or failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-real-local-omr-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/cadence-local-omr-results/**/*.json
+            ${{ runner.temp }}/cadence-local-omr-results/**/*.log
+            ${{ runner.temp }}/cadence-local-omr-results/**/*.musicxml
+            ${{ runner.temp }}/cadence-local-omr-results/**/*.mxl
+            ${{ runner.temp }}/cadence-local-omr-results/**/*.mscz
+            ${{ runner.temp }}/cadence-local-omr-results/**/*.pdf
+            ${{ runner.temp }}/cadence-local-omr-results/**/*.png
+          retention-days: 14
+          if-no-files-found: warn

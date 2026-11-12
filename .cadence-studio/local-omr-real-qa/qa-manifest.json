@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "scope": "Real external Audiveris5.11 plus unchanged published Cadence2007; not a new integrated binary",
+  "files": [
+    {
+      "path": "CadenceProfileScope.py",
+      "bytes": 34344,
+      "sha256": "60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c"
+    },
+    {
+      "path": "profile-source-contract.json",
+      "bytes": 3310,
+      "sha256": "0023f8d7510c89429dea85cda35d803175b3434532cf14aecaf793ded5663a9e"
+    },
+    {
+      "path": "OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    },
+    {
+      "path": "Run-OmrChain.py",
+      "bytes": 14422,
+      "sha256": "8aed0b3bd68adeee88752d09c8cb9883cce2344ac6c7af3e5a63c2422e80ca4b"
+    },
+    {
+      "path": "omr-canonical.musicxml",
+      "bytes": 1822,
+      "sha256": "2eabf32df677a15e06c3320ccc2ba86880d49e26d651948ec9080dfe9534fcfa"
+    },
+    {
+      "path": "LICENSE-fixture.txt",
+      "bytes": 221,
+      "sha256": "02874cc887ba5dc4ea7a65e6b760f0bbe82e9e41bab50da34591facf293c4c88"
+    }
+  ]
+}

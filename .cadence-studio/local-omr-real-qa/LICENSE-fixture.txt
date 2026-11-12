@@ -1,0 +1,1 @@
+The original omr-canonical.musicxml fixture was created for Cadence in 2026 and is dedicated to the public domain under CC0 1.0. No third-party score or image is copied. https://creativecommons.org/publicdomain/zero/1.0/
