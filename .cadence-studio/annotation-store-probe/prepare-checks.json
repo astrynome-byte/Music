@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "prepared_utc": "2026-11-12T11:25:32.821525+00:00",
+  "status": "prepared-not-published-not-Windows-executed",
+  "source_commit": "2e1b0987e633bcec0247d03cde8933408fd95f81",
+  "source_tree": "df58fc9b447840ab2b4451096f5e12ba18a29455",
+  "parent_application_source_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+  "expected_scenarios": 20,
+  "manifest_source_file_count": 7,
+  "source_extraction": "git show exact pinned commit; UTF-8 bytes preserved",
+  "source_manifest_sha256": "d972bce4a997238faffa3b5c02d14e2df0f313ee8645dfa5c99a72535c3486bc",
+  "helper_sha256": "6577d627df961b523f5f2946aa81ac69724a762a0cc3b6275dbf1adce4ebdb32",
+  "workflow_sha256": "5a591fa9e7765dd06e694bc3e11e8595f9928edde34a85157977cccaba15c72b",
+  "yaml_parse_passed": true,
+  "powershell_parser_errors": 0,
+  "production_helper_guard_checks_passed": 7,
+  "non_windows_full_helper_rejected_without_output": true,
+  "same_seven_source_bytes_as_linux20": true,
+  "production_runtime_suite_rerun": false,
+  "windows_compiled": false,
+  "windows_executed": false,
+  "application_built": false,
+  "model_compiled": false,
+  "qml_tested": false,
+  "gui_tested": false,
+  "full2005_application_source_unchanged": true,
+  "old_namespaces_unchanged": true,
+  "publication_performed": false,
+  "toolchain_required": {
+    "runner": "windows-2022 x64 GitHub hosted",
+    "qt": "6.10.2",
+    "qt_arch": "win64_msvc2022_64",
+    "qt_archives": [
+      "qtbase"
+    ],
+    "visual_studio": "17.14",
+    "windows_sdk": "10.0.26100.0"
+  },
+  "limits": "Linux QA-helper checks and exact source matching do not qualify Windows20, the full app or GUI. Root must publish/run and inspect actual results."
+}

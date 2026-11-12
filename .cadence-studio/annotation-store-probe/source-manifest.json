@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "scope": "Actual reviewed annotation store/journal, collections, native watch and XML tests; QtCore only, no model/QML/full app",
+  "source_commit": "2e1b0987e633bcec0247d03cde8933408fd95f81",
+  "source_tree": "df58fc9b447840ab2b4451096f5e12ba18a29455",
+  "parent_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+  "source_branch": "cadence/annotations-v3",
+  "expected_scenarios": 20,
+  "required_qt_version": "6.10.2",
+  "required_qt_arch": "win64_msvc2022_64",
+  "required_visual_studio": "17.14",
+  "required_windows_sdk": "10.0.26100.0",
+  "gui_tested": false,
+  "files": [
+    {
+      "path": "src/project/internal/localscorelibrarystore.cpp",
+      "bytes": 31290,
+      "sha256": "d8db10756f5fd2d118a4c22fa05d40d0dce0ebc5c9d2e6cd0ab68ae4270bf2d2",
+      "git_blob": "e3627b2404ee9caea4ddb675c1b1c6d158b8e355"
+    },
+    {
+      "path": "src/project/internal/localscorelibrarystore.h",
+      "bytes": 3015,
+      "sha256": "eeead173643d160c489f2cfd2fd170c54e86b016f010bb6f938ca5f1c9781add",
+      "git_blob": "cbe2b9e744b2c86d655a7850ddf7e0634b782123"
+    },
+    {
+      "path": "src/project/internal/localannotationdraft.h",
+      "bytes": 8244,
+      "sha256": "ad5caebd3b46aebb30e5cbc31591c85435b3c215eb3fda09318955b1f1d52e34",
+      "git_blob": "e4961df3ed2eae14a5acc2c4aac4f7e3129661e4"
+    },
+    {
+      "path": "src/project/internal/localscorexmlcheck.h",
+      "bytes": 1793,
+      "sha256": "83a54cf5faa8204ac40d80f621f0e4f79a3ee67cb12ff0249e34cb72c11dfd1a",
+      "git_blob": "b653ecd9a8cb0f86af6f864d8c5bce196e0fb775"
+    },
+    {
+      "path": "src/project/internal/localcatalogwatch.h",
+      "bytes": 4965,
+      "sha256": "1777768bd4e91217d6ec0722b01f4962703d69a2cb050bdcea9619d90df009de",
+      "git_blob": "317d4dafc6c1b4f156aa5d4c8574b0161c4c5700"
+    },
+    {
+      "path": "test/cadence/local_library_store/CMakeLists.txt",
+      "bytes": 895,
+      "sha256": "d3e2d31eb1b0a8755cf066b3f066255c974b3e5ac33fcd198768974413ec8ff4",
+      "git_blob": "279968a4c90aa1f3c465689b1fc1a909321c67fb"
+    },
+    {
+      "path": "test/cadence/local_library_store/store_tests.cpp",
+      "bytes": 60696,
+      "sha256": "5289523c314502b9e9ebf470051be93508b34f4b566d21ee3b2045ed380981cc",
+      "git_blob": "a654ebf0789b5c3bc079dd4fc40e2f581537d523"
+    }
+  ]
+}

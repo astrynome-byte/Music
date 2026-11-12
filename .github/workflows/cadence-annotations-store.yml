@@ -1,0 +1,86 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: 'Cadence Studio: isolated annotation store qualification'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/annotation-store-probe/**'
+      - '.github/workflows/cadence-annotations-store.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-annotations-store-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  windows-qtcore-annotations-store:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Use the native MSVC 2022 x64 toolchain and Windows SDK 26100
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+
+      - name: Install or restore the exact Qt base development kit
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.2'
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          archives: 'qtbase'
+          cache: true
+          cache-key-prefix: 'cadence-qtbase-annotations-store'
+
+      - name: Verify pinned source bytes and run twenty real QtCore scenarios
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/annotation-store-probe/Run-StoreProbe.ps1" `
+            -SourcePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/annotation-store-probe" `
+            -QtPath $env:QT_ROOT_DIR `
+            -OutputDirectory "$env:RUNNER_TEMP/annotation-store-probe-results"
+
+      - name: Print bounded source/runtime evidence after success or failure
+        if: always()
+        run: |
+          $root=Join-Path $env:RUNNER_TEMP 'annotation-store-probe-results'
+          $budget=262144L
+          if(Test-Path -LiteralPath $root -PathType Container){
+            $files=@(Get-ChildItem -LiteralPath $root -File | Where-Object { -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) -and $_.Extension -in @('.json','.log') } |
+              Sort-Object @{Expression={if($_.Extension -eq '.json'){0}else{1}}},Name | Select-Object -First 20)
+            foreach($file in $files){
+              $limit=[Math]::Min(32768L,$budget)
+              if($limit -le 0){break}
+              $stream=[IO.File]::OpenRead($file.FullName)
+              try{
+                [void]$stream.Seek([Math]::Max(0L,$stream.Length-$limit),[IO.SeekOrigin]::Begin)
+                $bytes=[byte[]]::new([int][Math]::Min($limit,$stream.Length));$count=$stream.Read($bytes,0,$bytes.Length)
+                $text=[Text.Encoding]::UTF8.GetString($bytes,0,$count)
+              }finally{$stream.Dispose()}
+              Write-Host 'CADENCE_ANNOTATION_STORE_EVIDENCE_BEGIN'
+              Write-Host ([ordered]@{path=$file.Name;file_bytes=$file.Length;printed_bytes=$count;tail_only=$file.Length -gt $count;text=$text}|ConvertTo-Json -Depth 4 -Compress)
+              Write-Host 'CADENCE_ANNOTATION_STORE_EVIDENCE_END'
+              $budget-=$count
+            }
+          }else{Write-Host 'Annotation store probe did not create results; no runtime success inferred.'}
+
+      - name: Retain exact-source verification and compiler/runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-annotations-store-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/annotation-store-probe-results/**
+          retention-days: 14
+          if-no-files-found: warn

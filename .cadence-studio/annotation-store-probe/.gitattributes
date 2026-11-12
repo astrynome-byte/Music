@@ -1,0 +1,2 @@
+# Preserve exact pinned source/probe UTF-8 bytes on Windows.
+* -text
