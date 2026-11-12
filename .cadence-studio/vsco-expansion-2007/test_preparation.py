@@ -53,6 +53,12 @@ class Preparation(unittest.TestCase):
     z.writestr('base.mscx','<museScore><Score><Part id="1"><Instrument id="violoncello"><Channel><program value="42"/></Channel></Instrument></Part></Score></museScore>');z.writestr('audiosettings.json','{}')
    bank={'soundfont_name':'Cadence-VSCO-Cello-Ensemble','resource_id':'Cadence-VSCO-Cello-Ensemble\\0\\42','program':42}
    track,meta=q.assign_soundfont(base,d/'assigned.mscz','cello',bank);self.assertTrue(q.input_preserved(d/'assigned.mscz',track));self.assertEqual(meta['imported_GM_programs_zero_based'],[42])
+   expected_sends=[{'signalAmount':0.0,'active':False},{'signalAmount':0.0,'active':False}]
+   self.assertEqual(track['out']['auxSends'],expected_sends)
+   saved_settings,_=q.native_data(d/'assigned.mscz')
+   self.assertEqual(saved_settings['tracks'][0]['out']['auxSends'],expected_sends)
+   for send in saved_settings['tracks'][0]['out']['auxSends']:
+    self.assertIs(send['active'],False);self.assertIsInstance(send['signalAmount'],float);self.assertEqual(send['signalAmount'],0.0)
    with self.assertRaises(ValueError):q.assign_soundfont(base,d/'wrong.mscz','trumpet',bank)
  def test_data_windows_gain_and_no_false_silence_or_clipping_pass(self):
   with tempfile.TemporaryDirectory() as t:

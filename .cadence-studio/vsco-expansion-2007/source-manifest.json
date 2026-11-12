@@ -24,8 +24,8 @@
     },
     {
       "path": "Test-VscoExpansion.py",
-      "bytes": 32644,
-      "sha256": "d48a09ecca52f48db76e6b5f6865ada39acc887e3c916d96a19e17af27db5945"
+      "bytes": 32715,
+      "sha256": "32e36e3393a359b87a93fa632e29ac09fa0a127bca7fc3091a2c1176159a1ba5"
     },
     {
       "path": "actual-linux-bank-lock-check.json",
@@ -119,8 +119,8 @@
     },
     {
       "path": "test_preparation.py",
-      "bytes": 5905,
-      "sha256": "f029f4f7a36445665a5afaf065272848978f0fd6e7897341a983cbb68ec56f7c"
+      "bytes": 6390,
+      "sha256": "410bf14f43c704a7ebf70d840762e9ca4a1666b3e028231b92fa195fe22e58c4"
     },
     {
       "path": "verify_producer.py",

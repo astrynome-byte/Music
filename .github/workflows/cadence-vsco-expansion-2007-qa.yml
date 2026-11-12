@@ -28,7 +28,7 @@ jobs:
         shell: pwsh
         run: |
           $source=Join-Path $env:GITHUB_WORKSPACE '.cadence-studio/vsco-expansion-2007'
-          if((Get-FileHash "$source/source-manifest.json" -Algorithm SHA256).Hash.ToLowerInvariant()-cne'3616ee5c17bdbacf640df01a46b88cd65935e3c5743ece3d9ce1fdc4ff9b2d32'){throw 'QA source manifest differs.'}
+          if((Get-FileHash "$source/source-manifest.json" -Algorithm SHA256).Hash.ToLowerInvariant()-cne'def5113bc8807ef4e564edb5e32d1764022d8bfef7a2232d1c349d15db893813'){throw 'QA source manifest differs.'}
           $manifest=Get-Content "$source/source-manifest.json" -Raw|ConvertFrom-Json
           foreach($row in $manifest.files){
             if($row.path-cnotmatch'^[A-Za-z0-9_./-]+$'-or$row.path.Contains('..')){throw 'Unsafe QA source path.'}

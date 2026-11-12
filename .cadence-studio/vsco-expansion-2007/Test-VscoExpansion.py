@@ -293,7 +293,7 @@ def assign_soundfont(base,target,instrument,bank=None):
     request={'resourceMeta':{'id':bank['resource_id'] if bank else name,'vendor':'Fluid','type':'fluid_soundfont',
                              'hasNativeEditorSupport':False,'attributes':attrs},'unitConfiguration':{}}
     track={'partId':part.get('id'),'instrumentId':actual.get('id'),'in':request,
-           'out':{'balance':0,'volumeDb':0,'fxChain':{},'auxSends':[]},'soloMuteState':{'mute':False,'solo':False}}
+           'out':{'balance':0,'volumeDb':0,'fxChain':{},'auxSends':[{'signalAmount':0.0,'active':False},{'signalAmount':0.0,'active':False}]},'soloMuteState':{'mute':False,'solo':False}}
     settings.update(activeSoundProfile='MuseScore Basic',tracks=[track],master={'balance':0,'volumeDb':-18,'fxChain':{},'auxSends':[]},aux=[])
     with zipfile.ZipFile(base) as source,zipfile.ZipFile(target,'x',compression=zipfile.ZIP_DEFLATED) as destination:
         for row in source.infolist():destination.writestr(row,json.dumps(settings,ensure_ascii=False).encode('utf-8') if row.filename=='audiosettings.json' else source.read(row))
