@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "prepared_utc": "2026-11-12T13:37:57.840686+00:00",
+  "status": "prepared-not-published-not-Windows-executed",
+  "candidate_source_commit": "391107f9d42518db272420d3f80215ff1e4ba389",
+  "candidate_source_tree": "ef85a87bbf4c5aad0f2add1a379ff5aaf1f3008b",
+  "old_control_source_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+  "candidate_snapshots_identical_to_main_7826": true,
+  "candidate_store21_bytes_match_executed_Linux21": true,
+  "candidate_store21_not_repeated": true,
+  "adapter_linux_compile_runtime_passed": true,
+  "adapter_linux_mutations": 12000,
+  "adapter_linux_failures": 0,
+  "yaml_ps_parse_guards_passed": true,
+  "windows_executed": false,
+  "application_built": false,
+  "gui_tested": false,
+  "source_worktree_modified": false,
+  "manifest_sha256": "b6cb3e36ca19a792651145bd3de8f08111e8c982b44235a826f601d4dd99a403",
+  "helper_sha256": "ed98cb1ccce60cd018c22f5956444dfe0b79d4a47be72873457e4e2b5d66e31c",
+  "workflow_sha256": "e79304cb2968504c1de05cc7362510aa6c9ba8537b2b51dac9ee25746dd657f1"
+}

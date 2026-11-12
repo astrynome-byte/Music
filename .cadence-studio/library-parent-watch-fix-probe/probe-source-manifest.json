@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "source_commit": "391107f9d42518db272420d3f80215ff1e4ba389",
+  "source_tree": "ef85a87bbf4c5aad0f2add1a379ff5aaf1f3008b",
+  "old_control_source_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+  "required_qt_version": "6.10.2",
+  "expected_scenarios": 21,
+  "expected_phases": 6,
+  "optional_fresh_local_appdata_phases": 6,
+  "phase_budget_ms": 30000,
+  "iterations_per_phase": 2000,
+  "scope": "Exact candidate store21 plus old961 file-watch control versus actual candidate production helper; no application build/GUI proof",
+  "files": [
+    {
+      "path": "source/src/project/internal/localscorelibrarystore.cpp",
+      "source_commit": "391107f9d42518db272420d3f80215ff1e4ba389",
+      "source_path": "src/project/internal/localscorelibrarystore.cpp",
+      "bytes": 31290,
+      "sha256": "d8db10756f5fd2d118a4c22fa05d40d0dce0ebc5c9d2e6cd0ab68ae4270bf2d2"
+    },
+    {
+      "path": "source/src/project/internal/localscorelibrarystore.h",
+      "source_commit": "391107f9d42518db272420d3f80215ff1e4ba389",
+      "source_path": "src/project/internal/localscorelibrarystore.h",
+      "bytes": 3015,
+      "sha256": "eeead173643d160c489f2cfd2fd170c54e86b016f010bb6f938ca5f1c9781add"
+    },
+    {
+      "path": "source/src/project/internal/localannotationdraft.h",
+      "source_commit": "391107f9d42518db272420d3f80215ff1e4ba389",
+      "source_path": "src/project/internal/localannotationdraft.h",
+      "bytes": 8244,
+      "sha256": "ad5caebd3b46aebb30e5cbc31591c85435b3c215eb3fda09318955b1f1d52e34"
+    },
+    {
+      "path": "source/src/project/internal/localscorexmlcheck.h",
+      "source_commit": "391107f9d42518db272420d3f80215ff1e4ba389",
+      "source_path": "src/project/internal/localscorexmlcheck.h",
+      "bytes": 1793,
+      "sha256": "83a54cf5faa8204ac40d80f621f0e4f79a3ee67cb12ff0249e34cb72c11dfd1a"
+    },
+    {
+      "path": "source/src/project/internal/localcatalogwatch.h",
+      "source_commit": "391107f9d42518db272420d3f80215ff1e4ba389",
+      "source_path": "src/project/internal/localcatalogwatch.h",
+      "bytes": 5327,
+      "sha256": "506b53b3374e3d00ffdb12ea10193648b84acb8f6ba2965618f5b96788de6c08"
+    },
+    {
+      "path": "source/test/cadence/local_library_store/CMakeLists.txt",
+      "source_commit": "391107f9d42518db272420d3f80215ff1e4ba389",
+      "source_path": "test/cadence/local_library_store/CMakeLists.txt",
+      "bytes": 895,
+      "sha256": "d3e2d31eb1b0a8755cf066b3f066255c974b3e5ac33fcd198768974413ec8ff4"
+    },
+    {
+      "path": "source/test/cadence/local_library_store/store_tests.cpp",
+      "source_commit": "391107f9d42518db272420d3f80215ff1e4ba389",
+      "source_path": "test/cadence/local_library_store/store_tests.cpp",
+      "bytes": 65930,
+      "sha256": "6160591022a7a9a9ea9744a08eeb3323c38f9e5b4e2b8c08f29a689df4fbd27c"
+    },
+    {
+      "path": "control/localcatalogwatch-2005.h",
+      "source_commit": "961c80b235d413dc9d123ea8f669ddb7f84ecd09",
+      "source_path": "src/project/internal/localcatalogwatch.h",
+      "bytes": 4965,
+      "sha256": "1777768bd4e91217d6ec0722b01f4962703d69a2cb050bdcea9619d90df009de"
+    },
+    {
+      "path": "watch_mode_stress.cpp",
+      "source_commit": null,
+      "origin": "Diagnostic comparison adapter; old control source itself is unmodified",
+      "bytes": 16631,
+      "sha256": "2cac85b5ef0c4a9b5e689248b6752623c7b16748f2b855f75754cc45be7d0c67"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "source_commit": null,
+      "origin": "Diagnostic comparison adapter; old control source itself is unmodified",
+      "bytes": 1024,
+      "sha256": "ffbbe5dd57d4e25b687721c0dbe02eec42cb3d7ff4ad4b87a5919b5710f27de0"
+    }
+  ]
+}
