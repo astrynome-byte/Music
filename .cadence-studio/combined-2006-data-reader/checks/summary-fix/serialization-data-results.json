@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "scope": "Synthetic _msi API return shapes and JSON serialization only",
+  "checks": 5,
+  "records": [
+    {
+      "name": "original-bytes-json-failure-reproduced",
+      "passed": true,
+      "error": "Object of type bytes is not JSON serializable"
+    },
+    {
+      "name": "fixed-bytes-summary-json",
+      "passed": true
+    },
+    {
+      "name": "fixed-str-summary-json",
+      "passed": true
+    },
+    {
+      "name": "refused-invalid-bytes",
+      "passed": true
+    },
+    {
+      "name": "refused-invalid-int",
+      "passed": true
+    }
+  ],
+  "actual_windows_installer_called": false,
+  "actual_msi_read": false,
+  "application_or_installer_executed": false
+}
