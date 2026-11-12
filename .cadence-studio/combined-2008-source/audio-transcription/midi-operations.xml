@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: CC0-1.0; original QA settings, not an inferred performance. -->
+<MidiOptions>
+  <QuantValue>2</QuantValue>
+  <VoiceCount>0</VoiceCount>
+  <HumanPerformance>false</HumanPerformance>
+  <SplitStaff>false</SplitStaff>
+  <SimplifyDurations>false</SimplifyDurations>
+  <ShowStaccato>false</ShowStaccato>
+  <DottedNotes>true</DottedNotes>
+  <RecognizePickupBar>false</RecognizePickupBar>
+  <Duplets>false</Duplets><Triplets>false</Triplets><Quadruplets>false</Quadruplets>
+  <Quintuplets>false</Quintuplets><Septuplets>false</Septuplets><Nonuplets>false</Nonuplets>
+  <Swing>0</Swing>
+</MidiOptions>

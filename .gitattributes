@@ -4,3 +4,4 @@ gradlew text eol=lf
 *.wav binary
 *.jar binary
 .cadence-studio/vsco-expansion-public-next/** -text
+.cadence-studio/combined-2008-source/** -text

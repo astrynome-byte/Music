@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "license": "CC0-1.0",
+  "scope": "Two original six-note phrases actually rendered headless using existing FluidSynth2.4.4 and VSCO CE CC0 sampled instruments; no human listening. Reference MIDI from original production native engine Linux test.",
+  "application_or_Windows_proved": false,
+  "cases": [
+    {
+      "id": "cello-ensemble",
+      "events": [
+        [
+          48,
+          360,
+          840
+        ],
+        [
+          50,
+          1560,
+          2040
+        ],
+        [
+          52,
+          2880,
+          3240
+        ],
+        [
+          55,
+          3960,
+          4440
+        ],
+        [
+          57,
+          5160,
+          5640
+        ],
+        [
+          60,
+          6360,
+          6840
+        ]
+      ],
+      "soundfont": {
+        "file": "Cadence-VSCO-Cello-Ensemble.sf2",
+        "sha256": "7c5d177057ef73bf6ccf2a7618b0516de678c4a98160d95c1a4e66fd6f670685",
+        "license": "CC0-1.0"
+      },
+      "wav": {
+        "file": "cello-ensemble.wav",
+        "bytes": 1411244,
+        "sha256": "305e5fdf924535fcfd0f3d04ae83b28a3a9307f0872ddae6cb0af17310899519"
+      },
+      "reference_midi": {
+        "file": "cello-ensemble.expected.mid",
+        "bytes": 148,
+        "sha256": "824ecc0d3b9b41dc84249c4ebed11b61c2f2a2ce327ad38f9847fc1d442cad5b"
+      }
+    },
+    {
+      "id": "trumpet-vibrato",
+      "events": [
+        [
+          60,
+          360,
+          720
+        ],
+        [
+          62,
+          1440,
+          1920
+        ],
+        [
+          64,
+          2640,
+          3240
+        ],
+        [
+          67,
+          3840,
+          4320
+        ],
+        [
+          69,
+          5040,
+          5520
+        ],
+        [
+          72,
+          6240,
+          6840
+        ]
+      ],
+      "soundfont": {
+        "file": "Cadence-VSCO-Trumpet.sf2",
+        "sha256": "8e6a212811ca9431c03c73a0c0fa1a5b3dd28038848ca7524137e7343ccbfc7c",
+        "license": "CC0-1.0"
+      },
+      "wav": {
+        "file": "trumpet-vibrato.wav",
+        "bytes": 1411244,
+        "sha256": "f005adb920ffa11638162d9051c0acaa389005513f01b31640393ec85b9d9c58"
+      },
+      "reference_midi": {
+        "file": "trumpet-vibrato.expected.mid",
+        "bytes": 148,
+        "sha256": "7ccb3071eb514282def53c653bfa7fea85d7e5edd317a92ee2ef67cb66e7db6f"
+      }
+    }
+  ]
+}

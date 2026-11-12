@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "prepared_only": true,
+  "source_commit": "8420ff1737b560d86e1cd12c7c487476369f04f1",
+  "source_tree": "f061b64c670f354fb0c87e4afeddcad8c87bfede",
+  "upstream_commit": "96480d58445e3b24b230a3fe7d4725d639aa2eb3",
+  "compressed_patch_sha256": "a06a96273cd0c3aacf34f587de43bebc77309df7b9d5623457485f4909f583aa",
+  "compressed_patch_git_blob": "b45f81acb7f4a814f2bde7380e6bbcd13acbd381",
+  "compressed_patch_bytes": 5228762,
+  "expanded_patch_bytes": 32093122,
+  "isolated_index_restored_exact_tree": true,
+  "expected_installer_build": 2008,
+  "previous_full_run": 43266732201,
+  "previous_installer_build": 2007,
+  "full_windows_application_built_from_this_tree": false,
+  "human_listening": false,
+  "gift_release": false,
+  "publicly_published": false,
+  "remaining_qualification": [
+    "Full application compile and new native tests on Windows",
+    "Native GUI paths and lifecycle",
+    "Human listening, physical MIDI and Windows10/11 client"
+  ]
+}

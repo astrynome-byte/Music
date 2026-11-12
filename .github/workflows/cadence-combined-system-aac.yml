@@ -4,7 +4,7 @@ on:
   push:
     branches: ['cadence-studio/windows-build']
     paths:
-      - '.cadence-studio/combined-2007-source/**'
+      - '.cadence-studio/combined-2008-source/**'
       - '.github/workflows/cadence-combined-system-aac.yml'
   workflow_dispatch:
 
@@ -31,11 +31,17 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      - name: Restore the five pinned driver binaries from verified local base64 parts
+        working-directory: ${{ github.workspace }}
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/Restore-Binaries.ps1" `
+            -Root "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source"
+
       - name: Reconstruct the exact Cadence source tree from pinned upstream
         working-directory: ${{ github.workspace }}
         run: |
-          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/Bootstrap.ps1" `
-            -DriverPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source" `
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/Bootstrap.ps1" `
+            -DriverPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source" `
             -SourcePath "$env:GITHUB_WORKSPACE/cadence-src" `
             -ResultPath "$env:RUNNER_TEMP/cadence-bootstrap.json"
 
@@ -74,8 +80,8 @@ jobs:
 
       - name: Bind reviewed qualification counts to the exact reconstructed source
         run: |
-          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/qualification_plan.py" `
-            --selection "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/source.json" `
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/qualification_plan.py" `
+            --selection "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/source.json" `
             --bootstrap "$env:RUNNER_TEMP/cadence-bootstrap.json" `
             --github-env "$env:GITHUB_ENV" `
             --output "$env:RUNNER_TEMP/qa-qualification-plan/preflight.json"
@@ -90,8 +96,15 @@ jobs:
 
       - name: Check the candidate diagnostic gate without executing the application
         run: |
-          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/test_driver_helpers.py"
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/test_driver_helpers.py"
           if ($LASTEXITCODE -ne 0) { throw 'Candidate diagnostic gate preflight failed; no full application build attempted' }
+
+# Fragment 1: insert after the existing driver diagnostic preflight, before the full build.
+      - name: Check the practice qualification parser before compiling native code
+        run: |
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/test_practice_qualification.py" -v
+          if ($LASTEXITCODE -ne 0) { throw 'Practice observation-parser regression failed; native qualification has not run' }
+
 
       - name: Retrieve the exact validated source-built zlib component
         uses: actions/download-artifact@v4
@@ -104,7 +117,7 @@ jobs:
 
       - name: Prepare and verify the pinned zlib package without overwriting files
         run: |
-          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/prepare_zlib_package.py" `
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/prepare_zlib_package.py" `
             --input "$env:RUNNER_TEMP/cadence-zlib-transport" `
             --output "$env:RUNNER_TEMP/qa-zlib-package" `
             --prepared-package "$env:RUNNER_TEMP/cadence-zlib-prepared"
@@ -132,8 +145,8 @@ jobs:
           $unitStatus = $LASTEXITCODE
           Get-Content "$env:RUNNER_TEMP/combined-unit-tests.log" | Write-Host
           if ($unitStatus -ne 0) { throw 'Regression harness tests failed' }
-          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/qualification_plan.py" `
-            --selection "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/source.json" `
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/qualification_plan.py" `
+            --selection "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/source.json" `
             --bootstrap "$env:RUNNER_TEMP/cadence-bootstrap.json" `
             --unit-log "$env:RUNNER_TEMP/combined-unit-tests.log" `
             --output "$env:RUNNER_TEMP/qa-qualification-plan/unit-observation.json"
@@ -169,13 +182,42 @@ jobs:
           $env:PATH = (Join-Path $qtKit 'bin') + ';' + $env:PATH
           Invoke-CheckedNative cmake @('-S', "$cadenceSource/test/cadence/local_library_store", '-B', $storeBuild, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_COMPILER=cl.exe', "-DCMAKE_PREFIX_PATH=$qtKit", '-DCMAKE_CXX_FLAGS_INIT=/utf-8') (Join-Path $storeBuild 'configure.log')
           Invoke-CheckedNative cmake @('--build', $storeBuild, '--parallel', '2') (Join-Path $storeBuild 'build.log')
-          Invoke-CheckedNative ctest @('--test-dir', $storeBuild, '-C', 'Release', '--output-on-failure', '--verbose', '--timeout', '45', '--output-junit', (Join-Path $storeBuild 'ctest-results.xml')) (Join-Path $storeBuild 'ctest.log')
-          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/qualification_plan.py" `
-            --selection "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/source.json" `
+          Invoke-CheckedNative ctest @('--test-dir', $storeBuild, '-C', 'Release', '-R', '^local_library_store$', '--output-on-failure', '--verbose', '--timeout', '45', '--output-junit', (Join-Path $storeBuild 'ctest-results.xml')) (Join-Path $storeBuild 'ctest.log')
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/qualification_plan.py" `
+            --selection "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/source.json" `
             --bootstrap "$env:RUNNER_TEMP/cadence-bootstrap.json" `
             --store-log (Join-Path $storeBuild 'ctest.log') `
             --output "$env:RUNNER_TEMP/qa-qualification-plan/store-observation.json"
           if ($LASTEXITCODE -ne 0) { throw 'Every reviewed production store scenario must really pass; CTest wraps them in one test' }
+
+      - name: Require the new metadata groups and focus-ticket scenarios separately
+        run: |
+          . ./scripts/windows/Common.ps1
+          $storeBuild = Join-Path $env:RUNNER_TEMP 'library-store-tests'
+          Invoke-CheckedNative ctest @('--test-dir', $storeBuild, '-C', 'Release', '-R', '^local_library_metadata$', '--output-on-failure', '--verbose', '--timeout', '45', '--output-junit', (Join-Path $storeBuild 'metadata-ctest-results.xml')) (Join-Path $storeBuild 'metadata-ctest.log')
+
+      - name: Compile and exercise the real optional sync HTTP client and cancellation gate
+        run: |
+          . ./scripts/windows/Common.ps1
+          $cadenceSource = Get-CadenceRoot
+          $qtKit = (Resolve-Path -LiteralPath $env:QT_ROOT_DIR).Path
+          $syncBuild = Join-Path $env:RUNNER_TEMP 'sync-client-tests'
+          if (Test-Path -LiteralPath $syncBuild) { throw 'Use a new sync-client test build directory' }
+          New-Item -ItemType Directory -Path $syncBuild | Out-Null
+          $env:PATH = (Join-Path $qtKit 'bin') + ';' + $env:PATH
+          $syncPython = (Get-Command python -CommandType Application -ErrorAction Stop).Source
+          Invoke-CheckedNative cmake @('-S', "$cadenceSource/test/cadence/sync_client", '-B', $syncBuild, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_COMPILER=cl.exe', "-DCMAKE_PREFIX_PATH=$qtKit", "-DPython3_EXECUTABLE=$syncPython", '-DCMAKE_CXX_FLAGS_INIT=/utf-8') (Join-Path $syncBuild 'configure.log')
+          Invoke-CheckedNative cmake @('--build', $syncBuild, '--parallel', '2') (Join-Path $syncBuild 'build.log')
+          Invoke-CheckedNative ctest @('--test-dir', $syncBuild, '-C', 'Release', '--output-on-failure', '--verbose', '--timeout', '90', '--output-junit', (Join-Path $syncBuild 'ctest-results.xml')) (Join-Path $syncBuild 'ctest.log')
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/observe_native_additions.py" `
+            --selection "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/source.json" `
+            --bootstrap "$env:RUNNER_TEMP/cadence-bootstrap.json" `
+            --source-root $cadenceSource `
+            --metadata-log "$env:RUNNER_TEMP/library-store-tests/metadata-ctest.log" `
+            --sync-log (Join-Path $syncBuild 'ctest.log') `
+            --allow-windows-posix-symlink-skip `
+            --output "$env:RUNNER_TEMP/qa-qualification-plan/native-additions-observation.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Native metadata/sync observations differ from the reviewed tests or frozen source' }
 
       - name: Fetch pinned dependencies
         run: ./scripts/windows/Prepare-Dependencies.ps1 -Destination "$env:RUNNER_TEMP/cadence-deps" -WithVstSdk
@@ -202,7 +244,7 @@ jobs:
       - name: Compile and stage the complete Cadence library and system AAC candidate
         run: |
           $buildNumber = 2000 + [int]$env:GITHUB_RUN_NUMBER
-          if ($buildNumber -ne 2007) { throw 'This 2007-source snapshot is reviewed only for build2007; review a later workflow run number before building another installer identity' }
+          if ($buildNumber -ne 2008) { throw 'This 2008-source snapshot is reviewed only for build2008; review a later workflow run number before building another installer identity' }
           if ($buildNumber -gt 65535) { throw 'Build-number space exhausted; choose a new reviewed version without reusing an MSI identity' }
           $sdks = Get-Content "$env:RUNNER_TEMP/cadence-deps/prepared-sdks.json" -Raw | ConvertFrom-Json
           ./scripts/windows/Configure.ps1 -Variant Cadence -QtPath $env:QT_ROOT_DIR `
@@ -214,7 +256,7 @@ jobs:
             -OpenSourceZlibPath "$env:RUNNER_TEMP/cadence-zlib-prepared" `
             -CorrespondingSourceBundlePath "$env:RUNNER_TEMP/cadence-corresponding-sources" `
             -CorrespondingSourceReportSha256 "$env:CADENCE_QA_CORRESPONDING_SOURCE_REPORT_SHA256"
-          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/check_backend.py" `
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/check_backend.py" `
             --build "$env:RUNNER_TEMP/build-cadence" --output "$env:RUNNER_TEMP/qa-system-aac-graph/report.json"
           if ($LASTEXITCODE -ne 0) { throw 'System AAC graph selection failed; no full application build will be attempted' }
           ./scripts/windows/Build.ps1 -BuildPath "$env:RUNNER_TEMP/build-cadence" -Jobs 2
@@ -228,6 +270,8 @@ jobs:
           if ($result.executable_sha256 -notmatch '^[a-f0-9]{64}$' -or $actualHash -ne $result.executable_sha256) { throw 'Build result executable hash does not match current staged bytes' }
           "CADENCE_QA_EXPECTED_EXECUTABLE_SHA256=$actualHash" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding UTF8
 
+# Fragment 2: insert after the complete application build and executable authentication,
+# before packaging. All build directories are outside the exact source checkout.
       - name: Require omitted local ICU forwarder and the exact system export profile before archiving
         run: |
           $stage = "$env:RUNNER_TEMP/stage-cadence"
@@ -236,7 +280,7 @@ jobs:
               [void](Get-Item -LiteralPath $localIcu -Force -ErrorAction Stop)
               throw 'Local ICU forwarder remains in the new stage; no archive or installer may be produced'
           } catch [System.Management.Automation.ItemNotFoundException] { }
-          $helper = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source"
+          $helper = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source"
           $icuProfile = Get-Content "$helper/required-system-icu.json" -Raw -Encoding UTF8 | ConvertFrom-Json
           if ($icuProfile.importer -cne 'bin/Qt6Core.dll' -or $icuProfile.required_count -ne 20 -or
               $icuProfile.importer_sha256 -cne 'b98eea394a95563879b614dbd4432ce074b0fceeb154c3bae252f4e7a9376a40') {
@@ -349,9 +393,130 @@ jobs:
           if-no-files-found: warn
           include-hidden-files: true
 
+      - name: Require the Windows OMR runner and its owned descendant cancellation
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/Invoke-LocalOmrRunnerTests.ps1" `
+            -SourceRoot "$env:GITHUB_WORKSPACE/cadence-src" `
+            -QtKit $env:QT_ROOT_DIR `
+            -OutputDirectory "$env:RUNNER_TEMP/cadence-omr-runner-tests"
+
+
+      - name: Compile and execute the actual MIDI practice and history components with MSVC x64
+        run: |
+          . ./scripts/windows/Common.ps1
+          Assert-Windows64
+          $cadenceSource = Get-CadenceRoot
+          $qtKit = (Resolve-Path -LiteralPath $env:QT_ROOT_DIR).Path
+          $appBuild = Join-Path $env:RUNNER_TEMP 'build-cadence'
+          $helper = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source"
+          if (-not (Test-Path -LiteralPath "$appBuild/muse_framework_config.h" -PathType Leaf)) { throw 'Use the real framework header from this completed application build' }
+          $env:PATH = (Join-Path $qtKit 'bin') + ';' + $env:PATH
+          $onBuild = Join-Path $env:RUNNER_TEMP 'practice-midi-on-tests'
+          $offBuild = Join-Path $env:RUNNER_TEMP 'practice-midi-off-tests'
+          $historyBuild = Join-Path $env:RUNNER_TEMP 'practice-history-tests'
+          foreach ($directory in @($onBuild, $offBuild, $historyBuild)) {
+              if (Test-Path -LiteralPath $directory) { throw "Use a fresh native practice-test build directory: $directory" }
+              New-Item -ItemType Directory -Path $directory | Out-Null
+          }
+          Invoke-CheckedNative cmake @('-S', "$cadenceSource/test/cadence/midi_practice", '-B', $onBuild, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_COMPILER=cl.exe', "-DCMAKE_PREFIX_PATH=$qtKit", '-DCMAKE_CXX_FLAGS_INIT=/utf-8', "-DMUSE_GENERATED_CONFIG_DIR=$appBuild", '-DCADENCE_TEST_LEGACY=OFF') (Join-Path $onBuild 'configure.log')
+          Invoke-CheckedNative cmake @('--build', $onBuild, '--parallel', '2') (Join-Path $onBuild 'build.log')
+          Invoke-CheckedNative ctest @('--test-dir', $onBuild, '-C', 'Release', '--output-on-failure', '--verbose', '--timeout', '90', '--output-junit', (Join-Path $onBuild 'ctest-results.xml')) (Join-Path $onBuild 'ctest.log')
+          python "$helper/prepare_practice_reference.py" --header "$appBuild/muse_framework_config.h" --output "$offBuild/framework-reference-profile"
+          if ($LASTEXITCODE -ne 0) { throw 'Reference routing profile must change only the one reviewed CADENCE_BUILD directive' }
+          Invoke-CheckedNative cmake @('-S', "$cadenceSource/test/cadence/midi_practice", '-B', $offBuild, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_COMPILER=cl.exe', "-DCMAKE_PREFIX_PATH=$qtKit", '-DCMAKE_CXX_FLAGS_INIT=/utf-8', "-DMUSE_GENERATED_CONFIG_DIR=$offBuild/framework-reference-profile", '-DCADENCE_TEST_LEGACY=ON') (Join-Path $offBuild 'configure.log')
+          Invoke-CheckedNative cmake @('--build', $offBuild, '--target', 'midi_practice_routing_tests', '--parallel', '2') (Join-Path $offBuild 'build.log')
+          Invoke-CheckedNative ctest @('--test-dir', $offBuild, '-C', 'Release', '-R', '^midi_practice_routing$', '--output-on-failure', '--verbose', '--timeout', '90', '--output-junit', (Join-Path $offBuild 'ctest-results.xml')) (Join-Path $offBuild 'ctest.log')
+          Invoke-CheckedNative cmake @('-S', "$cadenceSource/test/cadence/practice_history", '-B', $historyBuild, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_COMPILER=cl.exe', "-DCMAKE_PREFIX_PATH=$qtKit", '-DCMAKE_CXX_FLAGS_INIT=/utf-8') (Join-Path $historyBuild 'configure.log')
+          Invoke-CheckedNative cmake @('--build', $historyBuild, '--parallel', '2') (Join-Path $historyBuild 'build.log')
+          Invoke-CheckedNative ctest @('--test-dir', $historyBuild, '-C', 'Release', '--output-on-failure', '--verbose', '--timeout', '90', '--output-junit', (Join-Path $historyBuild 'ctest-results.xml')) (Join-Path $historyBuild 'ctest.log')
+          python "$helper/qualify_practice.py" `
+            --selection "$helper/source.json" --bootstrap "$env:RUNNER_TEMP/cadence-bootstrap.json" `
+            --source-root $cadenceSource --application-build $appBuild `
+            --on-build $onBuild --off-build $offBuild --history-build $historyBuild `
+            --output "$env:RUNNER_TEMP/qa-practice-native/report.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Native practice counts, exact scenarios, declared Unix skips or source identity did not qualify' }
+
+# Fragment 3: optional separate observation; a link failure must be reported as
+# unqualified. It does not prevent the complete application build from running.
+      - name: Exercise the actual notation refusal hook with the already built application libraries
+        id: practice_hook_probe
+        continue-on-error: true
+        run: |
+          . ./scripts/windows/Common.ps1
+          Assert-Windows64
+          $qa = Join-Path $env:RUNNER_TEMP 'qa-practice-hook'
+          New-Item -ItemType Directory -Path $qa | Out-Null
+          try {
+              $cadenceSource = Get-CadenceRoot
+              $appBuild = Join-Path $env:RUNNER_TEMP 'build-cadence'
+              $qtKit = (Resolve-Path -LiteralPath $env:QT_ROOT_DIR).Path
+              $env:PATH = (Join-Path $qtKit 'bin') + ';' + $env:PATH
+              $probeInclude = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/Add-PracticeHookProbe.cmake"
+              $cache = Read-CMakeCache $appBuild
+              if ($cache.ContainsKey('CMAKE_PROJECT_TOP_LEVEL_INCLUDES') -and $cache['CMAKE_PROJECT_TOP_LEVEL_INCLUDES'] -and $cache['CMAKE_PROJECT_TOP_LEVEL_INCLUDES'] -cne $probeInclude) { throw 'Do not replace an existing top-level CMake include; review a composed include list' }
+              Invoke-CheckedNative cmake @('-S', $cadenceSource, '-B', $appBuild, "-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=$probeInclude") (Join-Path $qa 'configure.log')
+              Invoke-CheckedNative cmake @('--build', $appBuild, '--target', 'cadence_practice_reset_probe', '--parallel', '2') (Join-Path $qa 'build.log')
+              $probe = (Get-Content -LiteralPath "$appBuild/cadence-practice-probe-path.txt" -Raw).Trim()
+              if (-not ([IO.Path]::GetFullPath($probe).StartsWith([IO.Path]::GetFullPath($appBuild).TrimEnd('\') + '\', [StringComparison]::OrdinalIgnoreCase))) { throw 'Probe executable is outside the configured build' }
+              Invoke-CheckedNative $probe @() (Join-Path $qa 'native.log')
+              $actual = @(Get-Content -LiteralPath (Join-Path $qa 'native.log') | Where-Object { $_ -like 'PASS: *' })
+              $expected = @('PASS: real MIDI refusal preserves map queue timers and score boundary', 'PASS: actual scene router restores ordinary input after preparation refusal')
+              if ($actual.Count -ne 2 -or @((Compare-Object $expected $actual -CaseSensitive)).Count -ne 0) { throw 'Both exact real-hook refusal cases must run successfully' }
+              [ordered]@{
+                  schema_version=1;passed=$true;status='native-refusal-hook-and-scene-route-with-explicit-boundaries'
+                  executable=$probe;executable_sha256=(Get-FileHash -LiteralPath $probe -Algorithm SHA256).Hash.ToLowerInvariant()
+                  source_commit=(Get-GitText $cadenceSource @('rev-parse','HEAD'))
+                  production_map_queue_and_timers_tested=$true;real_input_and_scene_route=$true
+                  context_remote_activation_boundaries_doubled=$true
+                  actual_note_or_complete_score_undo_or_physical_MIDI_test=$false
+                  retained_staged_application_modified=$false;production_target_link_libraries_changed=$false
+              } | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $qa 'report.json') -Encoding utf8NoBOM
+          } catch {
+              [ordered]@{schema_version=1;passed=$false;status='hook-probe-not-qualified';error=$_.Exception.Message;complete_score_or_hardware_validated=$false} | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $qa 'report.json') -Encoding utf8NoBOM
+              throw
+          }
+
+      - name: Compile and require the native monophonic WAV transcription engine tests
+        timeout-minutes: 10
+        run: |
+          . ./scripts/windows/Common.ps1
+          $sourceRoot = Get-CadenceRoot
+          $testBuild = Join-Path $env:RUNNER_TEMP 'audio-transcription-tests'
+          if (Test-Path -LiteralPath $testBuild) { throw 'Use a new transcription engine test build directory' }
+          New-Item -ItemType Directory -Path $testBuild | Out-Null
+          $sourceFiles = @('src/importexport/audiotranscription/audiotranscription.cpp', 'src/importexport/audiotranscription/audiotranscription.h', 'test/cadence/audio_transcription/test_audiotranscription.cpp')
+          $sourceHashes = [ordered]@{}
+          foreach ($relative in $sourceFiles) { $sourceHashes[$relative] = (Get-FileHash -LiteralPath (Join-Path $sourceRoot $relative) -Algorithm SHA256).Hash.ToLowerInvariant() }
+          Invoke-CheckedNative cmake @('-S', "$sourceRoot/test/cadence/audio_transcription", '-B', $testBuild, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_COMPILER=cl.exe', '-DCMAKE_CXX_FLAGS_INIT=/utf-8') (Join-Path $testBuild 'configure.log')
+          Invoke-CheckedNative cmake @('--build', $testBuild, '--parallel', '2') (Join-Path $testBuild 'build.log')
+          Invoke-CheckedNative ctest @('--test-dir', $testBuild, '-C', 'Release', '--output-on-failure', '--verbose', '--timeout', '90', '--output-junit', (Join-Path $testBuild 'ctest-results.xml')) (Join-Path $testBuild 'ctest.log')
+          foreach ($relative in $sourceFiles) { if ((Get-FileHash -LiteralPath (Join-Path $sourceRoot $relative) -Algorithm SHA256).Hash.ToLowerInvariant() -cne $sourceHashes[$relative]) { throw 'Production engine source changed during standalone compilation/test' } }
+          [ordered]@{
+              schema_version=1;source_commit=(Get-GitText $sourceRoot @('rev-parse','HEAD'))
+              compiler='cl.exe';configuration='Release';production_sources=$sourceHashes
+              engine_executable_sha256=(Get-FileHash -LiteralPath (Join-Path $testBuild 'cadence_audio_transcription_tests.exe') -Algorithm SHA256).Hash.ToLowerInvariant()
+          } | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $testBuild 'engine-build-receipt.json') -Encoding utf8NoBOM
+
+      - name: Transcribe two sampled WAV melodies and import their MIDI in the actual new Cadence2008 binary
+        timeout-minutes: 25
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/audio-transcription"
+          python -I -B -X utf8 "$helper/qualify_audio_transcription.py" --validate-only
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned local WAV/MIDI fixtures differ; no application launched' }
+          & pwsh -NoLogo -NoProfile -NonInteractive -File "$helper/Invoke-AudioTranscriptionQa.ps1" `
+            -Executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
+            -ExpectedExecutableSha256 "$env:CADENCE_QA_EXPECTED_EXECUTABLE_SHA256" `
+            -EngineExecutable "$env:RUNNER_TEMP/audio-transcription-tests/cadence_audio_transcription_tests.exe" `
+            -CtestLog "$env:RUNNER_TEMP/audio-transcription-tests/ctest.log" `
+            -BuildState "$env:RUNNER_TEMP/build-cadence/cadence-build.json" `
+            -BuildResult "$env:RUNNER_TEMP/build-cadence/cadence-build-result.json" `
+            -EngineBuildReceipt "$env:RUNNER_TEMP/audio-transcription-tests/engine-build-receipt.json" `
+            -OutputDirectory "$env:RUNNER_TEMP/qa-audio-transcription"
+          if ($LASTEXITCODE -ne 0) { throw 'Native Windows engine, actual Cadence2008 MIDI import/reopen, or owned process cleanup failed' }
+
       - name: Verify actual installed notice bytes and omit the development-only MNX archive
         run: |
-          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/check_stage_notices.py" `
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/check_stage_notices.py" `
             --source-root "$env:GITHUB_WORKSPACE/cadence-src" `
             --stage-root "$env:RUNNER_TEMP/stage-cadence" `
             --expected-executable-sha256 "$env:CADENCE_QA_EXPECTED_EXECUTABLE_SHA256" `
@@ -362,7 +527,7 @@ jobs:
 
       - name: Read deployed DLL signatures, versions and Qt SDK build hints without loading staged code
         run: |
-          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/Collect-BinaryOrigins.ps1" `
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/Collect-BinaryOrigins.ps1" `
             -StagePath "$env:RUNNER_TEMP/stage-cadence" `
             -ExpectedExecutableSha256 "$env:CADENCE_QA_EXPECTED_EXECUTABLE_SHA256" `
             -QtPath $env:QT_ROOT_DIR `
@@ -384,8 +549,8 @@ jobs:
 
       - name: Compare 35 stable output hashes against the retained Windows reference
         run: |
-          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/compare_reference.py" `
-            --expected "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/expected-reference.json" `
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/compare_reference.py" `
+            --expected "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/expected-reference.json" `
             --candidate-report "$env:RUNNER_TEMP/qa-cadence/report.json" `
             --output "$env:RUNNER_TEMP/qa-combined-reference-bytes/report.json"
           if ($LASTEXITCODE -ne 0) { throw 'Fixed-reference byte differences require review; inspect the report before packaging' }
@@ -395,7 +560,7 @@ jobs:
       - name: Export and externally decode five musical AAC files with Unicode paths
         id: qualify_aac
         run: |
-          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/check_app_aac.py" `
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/check_app_aac.py" `
             --executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
             --candidate-report "$env:RUNNER_TEMP/qa-cadence/report.json" `
             --source-root "$env:GITHUB_WORKSPACE/cadence-src" `
@@ -418,7 +583,7 @@ jobs:
 
       - name: Require a clear unavailable video encoder error from fresh Cadence runtime logs
         run: |
-          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/Test-VideoUnavailable.py" `
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/Test-VideoUnavailable.py" `
             --executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
             --expected-executable-sha256 "$env:CADENCE_QA_EXPECTED_EXECUTABLE_SHA256" `
             --score "$env:GITHUB_WORKSPACE/cadence-src/test/cadence/fixtures/piano.musicxml" `
@@ -432,7 +597,7 @@ jobs:
           Push-Location $probe
           try {
               & cl.exe /nologo /std:c++17 /utf-8 /EHsc /MD `
-                "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/UiReadyProbe.cpp" `
+                "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/UiReadyProbe.cpp" `
                 /Fe:UiReadyProbe.exe /link ole32.lib oleaut32.lib user32.lib uuid.lib
               if ($LASTEXITCODE -ne 0) { throw 'Read-only SDK UI readiness probe compilation failed' }
           } finally { Pop-Location }
@@ -441,7 +606,7 @@ jobs:
         run: |
           & "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Run-CleanGuiProbe.ps1" `
             -Executable "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
-            -ProbePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/Test-ReadyGui.ps1" `
+            -ProbePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/Test-ReadyGui.ps1" `
             -OutputDirectory "$env:RUNNER_TEMP/gui-cadence"
 
       - name: Package experimental installer and source archive
@@ -461,7 +626,7 @@ jobs:
           Copy-Item -LiteralPath "$env:RUNNER_TEMP/cadence-stage-delivery/corresponding-sources" -Destination "$env:RUNNER_TEMP/cadence-delivery/corresponding-sources" -Recurse
           $recipe = "$env:RUNNER_TEMP/cadence-delivery/build-recipe"
           New-Item -ItemType Directory -Path $recipe | Out-Null
-          Copy-Item -LiteralPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source" -Destination "$recipe/combined-2007-source" -Recurse
+          Copy-Item -LiteralPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source" -Destination "$recipe/combined-2008-source" -Recurse
           Copy-Item -LiteralPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/corresponding-sources" -Destination "$recipe/corresponding-sources" -Recurse
           Copy-Item -LiteralPath "$env:GITHUB_WORKSPACE/driver/.github/workflows/cadence-combined-system-aac.yml" -Destination $recipe
           $delivery = [IO.Path]::GetFullPath("$env:RUNNER_TEMP/cadence-delivery").TrimEnd('\','/')
@@ -485,8 +650,8 @@ jobs:
             -StageNoticeReportPath "$env:RUNNER_TEMP/qa-stage-notices/stage-notices-report.json" `
             -OutputDirectory "$env:RUNNER_TEMP/msi-qa" -ExpectedVersion '4.7.6' `
             -GuiWrapperPath "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Run-CleanGuiProbe.ps1" `
-            -GuiProbePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2007-source/Test-ReadyGui.ps1" `
-            -RequireSystemIcu -ExpectedProductVersion '4.7.6.2007'
+            -GuiProbePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/Test-ReadyGui.ps1" `
+            -RequireSystemIcu -ExpectedProductVersion '4.7.6.2008'
 
       - name: Retain experimental build artifacts (requires GitHub access, expires)
         if: always()
@@ -504,12 +669,12 @@ jobs:
             ${{ runner.temp }}/cadence-bootstrap.json
             ${{ runner.temp }}/cadence-delivery/build-recipe/**
             ${{ runner.temp }}/cadence-delivery/corresponding-sources/**
-            ${{ github.workspace }}/driver/.cadence-studio/combined-2007-source/README.md
-            ${{ github.workspace }}/driver/.cadence-studio/combined-2007-source/prepare_zlib_package.py
-            ${{ github.workspace }}/driver/.cadence-studio/combined-2007-source/check_backend.py
-            ${{ github.workspace }}/driver/.cadence-studio/combined-2007-source/check_app_aac.py
-            ${{ github.workspace }}/driver/.cadence-studio/combined-2007-source/source.json
-            ${{ github.workspace }}/driver/.cadence-studio/combined-2007-source/expected-reference.json
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/README.md
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/prepare_zlib_package.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/check_backend.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/check_app_aac.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/source.json
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/expected-reference.json
           retention-days: 14
           if-no-files-found: warn
           include-hidden-files: true
@@ -530,14 +695,45 @@ jobs:
             ${{ runner.temp }}/qa-cadence/report.json
             ${{ runner.temp }}/qa-cadence/**/*.log
             ${{ runner.temp }}/qa-roundtrip-cadence/**
+            ${{ runner.temp }}/audio-transcription-tests/*.log
+            ${{ runner.temp }}/audio-transcription-tests/*.json
+            ${{ runner.temp }}/audio-transcription-tests/*.xml
+            ${{ runner.temp }}/audio-transcription-tests/Testing/Temporary/**
+            ${{ runner.temp }}/qa-audio-transcription/**
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/audio-transcription/**
             ${{ runner.temp }}/gui-cadence/**
             ${{ runner.temp }}/msi-qa/**
             ${{ runner.temp }}/cadence-bootstrap.json
             ${{ runner.temp }}/combined-unit-tests.log
             ${{ runner.temp }}/qa-qualification-plan/**
+            ${{ runner.temp }}/cadence-omr-runner-tests/*.json
+            ${{ runner.temp }}/cadence-omr-runner-tests/*.log
+            ${{ runner.temp }}/cadence-omr-runner-tests/ctest-results.xml
             ${{ runner.temp }}/library-store-tests/*.log
             ${{ runner.temp }}/library-store-tests/*.xml
             ${{ runner.temp }}/library-store-tests/Testing/Temporary/**
+            ${{ runner.temp }}/sync-client-tests/*.log
+            ${{ runner.temp }}/sync-client-tests/*.xml
+            ${{ runner.temp }}/sync-client-tests/Testing/Temporary/**
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/observe_native_additions.py
+            ${{ runner.temp }}/practice-midi-on-tests/*.log
+            ${{ runner.temp }}/practice-midi-on-tests/*.xml
+            ${{ runner.temp }}/practice-midi-on-tests/*.exe
+            ${{ runner.temp }}/practice-midi-on-tests/Testing/Temporary/**
+            ${{ runner.temp }}/practice-midi-off-tests/*.log
+            ${{ runner.temp }}/practice-midi-off-tests/*.xml
+            ${{ runner.temp }}/practice-midi-off-tests/*.exe
+            ${{ runner.temp }}/practice-midi-off-tests/Testing/Temporary/**
+            ${{ runner.temp }}/practice-history-tests/*.log
+            ${{ runner.temp }}/practice-history-tests/*.xml
+            ${{ runner.temp }}/practice-history-tests/*.exe
+            ${{ runner.temp }}/practice-history-tests/Testing/Temporary/**
+            ${{ runner.temp }}/qa-practice-native/**
+            ${{ runner.temp }}/qa-practice-hook/**
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/qualify_practice.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/test_practice_qualification.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/Add-PracticeHookProbe.cmake
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/MidiPracticeResetProbe.cpp
             ${{ runner.temp }}/qa-video-unavailable/**
             ${{ runner.temp }}/qa-combined-reference-bytes/**
             ${{ runner.temp }}/qa-system-aac-graph/**
@@ -550,11 +746,11 @@ jobs:
             ${{ runner.temp }}/qa-system-aac-music/**/*.log
             ${{ runner.temp }}/qa-system-aac-music/**/*.aac
             ${{ runner.temp }}/qa-system-aac-music/aac-jobs.json
-            ${{ github.workspace }}/driver/.cadence-studio/combined-2007-source/prepare_zlib_package.py
-            ${{ github.workspace }}/driver/.cadence-studio/combined-2007-source/check_backend.py
-            ${{ github.workspace }}/driver/.cadence-studio/combined-2007-source/check_app_aac.py
-            ${{ github.workspace }}/driver/.cadence-studio/combined-2007-source/source.json
-            ${{ github.workspace }}/driver/.cadence-studio/combined-2007-source/expected-reference.json
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/prepare_zlib_package.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/check_backend.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/check_app_aac.py
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/source.json
+            ${{ github.workspace }}/driver/.cadence-studio/combined-2008-source/expected-reference.json
           retention-days: 14
           if-no-files-found: warn
           include-hidden-files: true

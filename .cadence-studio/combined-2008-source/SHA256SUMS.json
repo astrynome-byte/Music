@@ -1,0 +1,666 @@
+{
+  ".gitattributes": {
+    "bytes": 25,
+    "sha256": "4f1cc3a349adb40d9098c6c27939e254b52e306c28701cd58cb6a4caaae455f3"
+  },
+  "Add-PracticeHookProbe.cmake": {
+    "bytes": 2288,
+    "sha256": "fc4591f209b6b146a65a5e50f4dd387bfa801a56c91fc1a9e3138061089cd645"
+  },
+  "Bootstrap.ps1": {
+    "bytes": 9937,
+    "sha256": "ba1f2d819e16317b9469091d9a6f9caf7f8a0cfc627d18f7e9aa2273c240089c"
+  },
+  "Collect-BinaryOrigins.ps1": {
+    "bytes": 15508,
+    "sha256": "b717fd270ef01a4defd443dd958b19314bd22ecff7b0dcdde392083e8bb06339"
+  },
+  "Invoke-LocalOmrRunnerTests.ps1": {
+    "bytes": 4978,
+    "sha256": "33a4706fc2432830bb1335fbb826031730498b14519e6dba8cc6ecdd8182309c"
+  },
+  "MidiPracticeResetProbe.cpp": {
+    "bytes": 11023,
+    "sha256": "36f373d9d3fa293453458501e5959467d5dbb448ed34ded1ad6c8358dc61d175"
+  },
+  "README.md": {
+    "bytes": 1470,
+    "sha256": "0b4b15b90a0448cc4677b838881c3094d61c973f166614d7a15cb6a6e4569e19"
+  },
+  "Restore-Binaries.ps1": {
+    "bytes": 12272,
+    "sha256": "670873e68bca7ce6cb6bac67552ef37d47e06e39d8f13d82c2d2abbb0cda90e5"
+  },
+  "Test-ReadyGui.ps1": {
+    "bytes": 11599,
+    "sha256": "c3c3223e9dcb676db7da2df5502232d919ebeecc1f53dc43c7607b1d9a8e737f"
+  },
+  "Test-Restore-Binaries.ps1": {
+    "bytes": 9123,
+    "sha256": "2e7518d1b15e6ed7b66b2c7739ed96f62f50346c537d6840eececa797e66b5d3"
+  },
+  "Test-VideoUnavailable.py": {
+    "bytes": 8241,
+    "sha256": "f6a362c78407222aec6957eea749d0e2bc1a97bdeaf21648f73ab973adf8dfce"
+  },
+  "UiReadyProbe.cpp": {
+    "bytes": 11882,
+    "sha256": "64b3a594ad35c366deb442441516e521fdc0fa907eac17b487dac9a9ab1d9b1a"
+  },
+  "audio-transcription/Invoke-AudioTranscriptionQa.ps1": {
+    "bytes": 3722,
+    "sha256": "752dc919376ada53f9798e0c3b3004615686f053702a9872f4f2efe8df9ea329"
+  },
+  "audio-transcription/OwnProcessJob.psm1": {
+    "bytes": 21255,
+    "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+  },
+  "audio-transcription/fixtures/VSCO-CC0-LICENSE.txt": {
+    "bytes": 6555,
+    "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+  },
+  "audio-transcription/fixtures/cello-ensemble.expected.mid": {
+    "bytes": 148,
+    "sha256": "824ecc0d3b9b41dc84249c4ebed11b61c2f2a2ce327ad38f9847fc1d442cad5b"
+  },
+  "audio-transcription/fixtures/cello-ensemble.wav": {
+    "bytes": 1411244,
+    "sha256": "305e5fdf924535fcfd0f3d04ae83b28a3a9307f0872ddae6cb0af17310899519"
+  },
+  "audio-transcription/fixtures/manifest.json": {
+    "bytes": 2370,
+    "sha256": "6a31e6ef04fa52a9b0b28e973a8bd62b7d5f6b1b455c6a964e4d74933e134600"
+  },
+  "audio-transcription/fixtures/trumpet-vibrato.expected.mid": {
+    "bytes": 148,
+    "sha256": "7ccb3071eb514282def53c653bfa7fea85d7e5edd317a92ee2ef67cb66e7db6f"
+  },
+  "audio-transcription/fixtures/trumpet-vibrato.wav": {
+    "bytes": 1411244,
+    "sha256": "f005adb920ffa11638162d9051c0acaa389005513f01b31640393ec85b9d9c58"
+  },
+  "audio-transcription/midi-operations.xml": {
+    "bytes": 662,
+    "sha256": "cd08c42f08251565b496db97db2dd3d81132ac08ffe554ab4b38fc5dbe278e9c"
+  },
+  "audio-transcription/qualify_audio_transcription.py": {
+    "bytes": 18656,
+    "sha256": "ad34b8120e8a27d2255251d8917648a227349bc226c1f0b181256e103a342297"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.expected.mid/00000.b64": {
+    "bytes": 200,
+    "sha256": "5d0d268f9d37d7c08b6377f2cdd7d2b060d0e7ec19d4759ee02faa351dba9904"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00000.b64": {
+    "bytes": 87360,
+    "sha256": "c5cd0d8b4c36188390df6c7c11266f6f51945c1d43d410599a7b7d3ee0594407"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00001.b64": {
+    "bytes": 87360,
+    "sha256": "5b40b4483d41d1a5e1bbbe558c85e1f4475ddb09ee121b409edd818eafc9f49f"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00002.b64": {
+    "bytes": 87360,
+    "sha256": "8c06c176a6e8666736ec428810fae480f52daaeb57eb43fa8f8bc3ae5269ba26"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00003.b64": {
+    "bytes": 87360,
+    "sha256": "11a597f6aaee9fc1f4749a278de4e94d5dcc176894cf6176695987807fef1621"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00004.b64": {
+    "bytes": 87360,
+    "sha256": "18d85d2b93a5ea99e810f45604e4aaf45edbda105064265b747baf25543b1d7d"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00005.b64": {
+    "bytes": 87360,
+    "sha256": "827b9de65ba38b5dec1a65567a8766937552c10e9774592be0e1c3a65bc34f99"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00006.b64": {
+    "bytes": 87360,
+    "sha256": "c09bcd6b05b4a0a1144a017cc18bdb321d28c4b56107ac05c6afeba155aa59a3"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00007.b64": {
+    "bytes": 87360,
+    "sha256": "b5cc4ed6f6282401a6cce6727dbc54ca32af492fe5e52adccc1a8e99e9ded5f8"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00008.b64": {
+    "bytes": 87360,
+    "sha256": "af25b856ea78e7b50cfcac1928dbfab2a7c40044d553ab5bf5ff69cdf95d7427"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00009.b64": {
+    "bytes": 87360,
+    "sha256": "6ce3ee50be8914ee0aed0f831f54d15ecd603ab3d1c2b4a1a7a305e625e9b666"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00010.b64": {
+    "bytes": 87360,
+    "sha256": "753725234566daa0f1e78b5df0d24918dc1e30a7767d270f509ceb9de16b7b02"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00011.b64": {
+    "bytes": 87360,
+    "sha256": "c7c26c12b780fab2311362702c4cf2f3e45586f5e4d612e003d4c0def253b693"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00012.b64": {
+    "bytes": 87360,
+    "sha256": "0dbc9164771b79b887b90d07ca28847cfee90eb54924586080191ddf6890410f"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00013.b64": {
+    "bytes": 87360,
+    "sha256": "9810dc6001c7a2c48cd07c4fe68c564c6cc91c56f05e88cab17bd778356fac74"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00014.b64": {
+    "bytes": 87360,
+    "sha256": "15c2157c9f6330d6c3c3864b4cc9442615880304673ecf114aa330a1f027045f"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00015.b64": {
+    "bytes": 87360,
+    "sha256": "5137606cc459875e2224621d4dba5da66673b186132432a033844965cf79a10a"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00016.b64": {
+    "bytes": 87360,
+    "sha256": "e5d052df62aee2b6ed86ff6d43a0e36b764e58337be99e562ef49fefbe559241"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00017.b64": {
+    "bytes": 87360,
+    "sha256": "00c0ee81a0837326deab0505a11efbae71a34cf3c572c19232c320a049b2aaa4"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00018.b64": {
+    "bytes": 87360,
+    "sha256": "b864809753fc08ccf81349adcfe58da810ac2d73a02dc7667097586a546c214e"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00019.b64": {
+    "bytes": 87360,
+    "sha256": "f1166abbe5c0928c6c06b062a851a8646f1b52653a96209d979ecc1056b391ba"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00020.b64": {
+    "bytes": 87360,
+    "sha256": "039709cdc27377715a9a6622c91b3d9b379254a85ffadae1a7c4a1b856919e83"
+  },
+  "binary-parts/audio-transcription_fixtures_cello-ensemble.wav/00021.b64": {
+    "bytes": 47100,
+    "sha256": "daa61d078e176f90fb251c0107ad5ca935622719167ed47f485b8e6108a819cb"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.expected.mid/00000.b64": {
+    "bytes": 200,
+    "sha256": "e3f20ab20e415a1c9cd2e746c34212e53531cbe71b9a6e1bbc8c38b6257a5cc8"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00000.b64": {
+    "bytes": 87360,
+    "sha256": "afbc6fefd797e9c9a8d7603a83641a27f4e11ab697c14217fc571af142840db0"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00001.b64": {
+    "bytes": 87360,
+    "sha256": "9fd12ee7b08c4767cddc8a147a895b3db6f1919bf632e05dbe4027f98c4fa4d9"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00002.b64": {
+    "bytes": 87360,
+    "sha256": "9a9f973569e1cedb028cc0200264d0ed683aaae42ca4f8240d52145571909428"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00003.b64": {
+    "bytes": 87360,
+    "sha256": "020d03e100356bed2d8173c36866a3cce13e387f71e19bbbc89856def392c2e6"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00004.b64": {
+    "bytes": 87360,
+    "sha256": "ce2ec9607b8bfa705d18c68389509e3c0eda3790239fc4bb60a0cebe321cd7a0"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00005.b64": {
+    "bytes": 87360,
+    "sha256": "402994ec0a7952999582632e143a5e17c3c77beba70745d2d50804e09918ad37"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00006.b64": {
+    "bytes": 87360,
+    "sha256": "cf3c52f491f60328c3c1c05ec835e894581534a92ae1b9ba6a559f9207661d5e"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00007.b64": {
+    "bytes": 87360,
+    "sha256": "25174d26cde3d8586d6a3c01e7f02ae0c41cc9243e40e50ee77aa4392990c6ee"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00008.b64": {
+    "bytes": 87360,
+    "sha256": "7d6b66b5117308ca96cacdf0d0a05de24b90bca4b7d7150459232d31d57b5aa3"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00009.b64": {
+    "bytes": 87360,
+    "sha256": "83782bed237621c461fedcca5548414024d9d6a989493c1318e5d978cb99ed3b"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00010.b64": {
+    "bytes": 87360,
+    "sha256": "cf98faf94e0fe8a09a953948ec9445517a8ed0e568b520310142cb493bc4f297"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00011.b64": {
+    "bytes": 87360,
+    "sha256": "632c05999cedf237a209b40558e268b130a58055e31610c4159072be3b18528c"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00012.b64": {
+    "bytes": 87360,
+    "sha256": "2dc2dd1fd90f1fef445751580555a101bbe55926a9552730a2363b758eb054a3"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00013.b64": {
+    "bytes": 87360,
+    "sha256": "80fd98d7825275632ae6689792d9f9a9f1c01e1fa8e0532bbd36f261c22200b5"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00014.b64": {
+    "bytes": 87360,
+    "sha256": "408b671d36c9e1eefa8b48264fb4282504085e244354fc2cbcb7f1fca6b87a7d"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00015.b64": {
+    "bytes": 87360,
+    "sha256": "1a79e5566a4ddfca4a7fd74993f4508fe0b347c1f71abb6da99ddd73683f100b"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00016.b64": {
+    "bytes": 87360,
+    "sha256": "24e962cd82753a599d8691b1374b9de0d1effa1e5ce2eb9a8e9a0f776771d748"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00017.b64": {
+    "bytes": 87360,
+    "sha256": "7a8d6ca957c60866dadcb1b4ac48dac6a17ccf1cfedadfa70ebeb327d8cb2cfc"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00018.b64": {
+    "bytes": 87360,
+    "sha256": "382b07fd1cc31c8e2202df6c3e310e40afcd58f4af0413aa30912067fb1e13ab"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00019.b64": {
+    "bytes": 87360,
+    "sha256": "de4059f5997befbaee1bf95f570754cc3f7c5c5c1c540bf18208f2263ed9396b"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00020.b64": {
+    "bytes": 87360,
+    "sha256": "9ee6562690da227230a66a574530a8fef8968eb983544932573cc2302606b893"
+  },
+  "binary-parts/audio-transcription_fixtures_trumpet-vibrato.wav/00021.b64": {
+    "bytes": 47100,
+    "sha256": "daa61d078e176f90fb251c0107ad5ca935622719167ed47f485b8e6108a819cb"
+  },
+  "binary-parts/changes.patch.gz/00000.b64": {
+    "bytes": 87360,
+    "sha256": "501084424ef940b379ff62ec5a16282d28da3579413f5c1803fe163f43e5a76a"
+  },
+  "binary-parts/changes.patch.gz/00001.b64": {
+    "bytes": 87360,
+    "sha256": "e017e6cf0cb454fd4e42550811a6f98406930cfc178ed137082905b81ecd6462"
+  },
+  "binary-parts/changes.patch.gz/00002.b64": {
+    "bytes": 87360,
+    "sha256": "cf95a3e36da078fa3b85ffdaf683baa5aafd583da2497a183b4fabd3ab051d09"
+  },
+  "binary-parts/changes.patch.gz/00003.b64": {
+    "bytes": 87360,
+    "sha256": "0507d34d2db9ce51013b43e0b69d57558c5d069958d5cb92fd2ee6a86b989026"
+  },
+  "binary-parts/changes.patch.gz/00004.b64": {
+    "bytes": 87360,
+    "sha256": "219e56afa2f1c396750f4fb138929ea291c9e7a67aa36e50b091f09d7a775f10"
+  },
+  "binary-parts/changes.patch.gz/00005.b64": {
+    "bytes": 87360,
+    "sha256": "269b9f6f2d904cb073a8cbfc2e1b6f56feac5bca678c039883c9ef8fbdfac34a"
+  },
+  "binary-parts/changes.patch.gz/00006.b64": {
+    "bytes": 87360,
+    "sha256": "3bf41803b5e45e14b724533b6629bef40315b78303811baae8fe5ea1dafad727"
+  },
+  "binary-parts/changes.patch.gz/00007.b64": {
+    "bytes": 87360,
+    "sha256": "3002bf45cf3a2578fe07d53d13e3061ce82ee7a7c62b70eacf377946edfb4d51"
+  },
+  "binary-parts/changes.patch.gz/00008.b64": {
+    "bytes": 87360,
+    "sha256": "80f34590ebef3eadc8662c56dd2acc3899b3130583390258ba49195029a3a5d0"
+  },
+  "binary-parts/changes.patch.gz/00009.b64": {
+    "bytes": 87360,
+    "sha256": "eef6fbb1d5d7fafe939e42aae78b3e1a8152ce9b22bdec943a65d5c47c3fcfd0"
+  },
+  "binary-parts/changes.patch.gz/00010.b64": {
+    "bytes": 87360,
+    "sha256": "bc62eab6e7a827c96025b262c41cf6981e855d77cd4c95bc06bce1abb279711d"
+  },
+  "binary-parts/changes.patch.gz/00011.b64": {
+    "bytes": 87360,
+    "sha256": "81bc885d078a5ca8394f16f5b62ae0e650394fd9b0601139583535abfd814f2e"
+  },
+  "binary-parts/changes.patch.gz/00012.b64": {
+    "bytes": 87360,
+    "sha256": "9b5d34ca73291ad5d2217f6514a9325769e6635d1bca2f0c67b92160bf796471"
+  },
+  "binary-parts/changes.patch.gz/00013.b64": {
+    "bytes": 87360,
+    "sha256": "ae897d1619bb60d6cd0fda76ae16eb2c6ca5ed99e03adb214bfbe6272983601e"
+  },
+  "binary-parts/changes.patch.gz/00014.b64": {
+    "bytes": 87360,
+    "sha256": "3fda8da4045999b95a23566edf7bf4f1ec0f0f909add70033bbd735f1c960423"
+  },
+  "binary-parts/changes.patch.gz/00015.b64": {
+    "bytes": 87360,
+    "sha256": "d0d4b7413457a295fe61ffbcb6a71bbb838851233f78b311099c3e4725f39716"
+  },
+  "binary-parts/changes.patch.gz/00016.b64": {
+    "bytes": 87360,
+    "sha256": "0494f7abcb0ff856f043b4cf85c270ac1981993717c33c0b03df5bcc4a42c86d"
+  },
+  "binary-parts/changes.patch.gz/00017.b64": {
+    "bytes": 87360,
+    "sha256": "959aa7e596eaccf5af7e3113ec62387578f560cbd66d0d205450dfe2a59c8f3f"
+  },
+  "binary-parts/changes.patch.gz/00018.b64": {
+    "bytes": 87360,
+    "sha256": "c1911e8c27fbcc2dea051dc516c05050a83d030db616cc84ddd90a5d5fcd97b8"
+  },
+  "binary-parts/changes.patch.gz/00019.b64": {
+    "bytes": 87360,
+    "sha256": "a281d96f44cc92d8ccfc5f64d44f6ac31342818fa08a809ca42b81257a6b1f10"
+  },
+  "binary-parts/changes.patch.gz/00020.b64": {
+    "bytes": 87360,
+    "sha256": "eb38e3df46b36c864b49493a46e87b21067a804e13be23d4b076ec0fb10d4e50"
+  },
+  "binary-parts/changes.patch.gz/00021.b64": {
+    "bytes": 87360,
+    "sha256": "769c98bb07cbc0d05a832a7a128380d14a98690fd14e62f423cbd688c258f545"
+  },
+  "binary-parts/changes.patch.gz/00022.b64": {
+    "bytes": 87360,
+    "sha256": "d1ecf43a9a3b30d28d24079e385be41553ff083bfc4c38f67b1755582da6daa5"
+  },
+  "binary-parts/changes.patch.gz/00023.b64": {
+    "bytes": 87360,
+    "sha256": "045a83cb8cf2bc7be7d5b0d794f4f655ef6e701b52cbb4a054b0c3c2250263f5"
+  },
+  "binary-parts/changes.patch.gz/00024.b64": {
+    "bytes": 87360,
+    "sha256": "1cc2b147b0bf2ddc6335973bc20674617c2fcb0d9b053427685480cef238d57f"
+  },
+  "binary-parts/changes.patch.gz/00025.b64": {
+    "bytes": 87360,
+    "sha256": "f44fe55f917b7ab25e2caa52f7ac320170550f8730c130b4547454de66726719"
+  },
+  "binary-parts/changes.patch.gz/00026.b64": {
+    "bytes": 87360,
+    "sha256": "0d14e2130d9faeb70381aafdbc847f61910df8ad8e0106283879b6d8f1e990ac"
+  },
+  "binary-parts/changes.patch.gz/00027.b64": {
+    "bytes": 87360,
+    "sha256": "03340634d75f4be75383c4d29634132d8d590659dcbd161ee51b7b95445777d0"
+  },
+  "binary-parts/changes.patch.gz/00028.b64": {
+    "bytes": 87360,
+    "sha256": "b3c15dbdde6ca8e339494338f85be04a0905cfef7f5032161bcaf11994225f15"
+  },
+  "binary-parts/changes.patch.gz/00029.b64": {
+    "bytes": 87360,
+    "sha256": "e5ed6f5c5c96eb3a3fa9068c0ed55b02d651626b2a33a97778bd82cb36ca6acc"
+  },
+  "binary-parts/changes.patch.gz/00030.b64": {
+    "bytes": 87360,
+    "sha256": "796d3d3f30d879faaec6323134fcfb758d386487c809f6766e988163788512c4"
+  },
+  "binary-parts/changes.patch.gz/00031.b64": {
+    "bytes": 87360,
+    "sha256": "98b94228fbea47011ffb8d0fe4313b590f544ef7e3101420b56b71744eb00db3"
+  },
+  "binary-parts/changes.patch.gz/00032.b64": {
+    "bytes": 87360,
+    "sha256": "380b4845e31bf3c26485d04676c252d027d87576cc4b0f5a5de800de91158090"
+  },
+  "binary-parts/changes.patch.gz/00033.b64": {
+    "bytes": 87360,
+    "sha256": "691717ff285597aa3215c15dd8e9212320332ed2a41eeb0a4315bd5535ce6fd3"
+  },
+  "binary-parts/changes.patch.gz/00034.b64": {
+    "bytes": 87360,
+    "sha256": "845eed5b59666aeafc0a00948a859fd4a3b1f664deb251a0a2512ab23d80e209"
+  },
+  "binary-parts/changes.patch.gz/00035.b64": {
+    "bytes": 87360,
+    "sha256": "af2f3002f5a81cf4583869b1b2d42d5d14ce97593ef5a7ad39b2f5f1fa30bd6e"
+  },
+  "binary-parts/changes.patch.gz/00036.b64": {
+    "bytes": 87360,
+    "sha256": "5e019c9ecb922eabde35253320152ec70bd63f1867964806c4ab81e71ccd23e6"
+  },
+  "binary-parts/changes.patch.gz/00037.b64": {
+    "bytes": 87360,
+    "sha256": "94915a7eef09d1301b70c2c031f067636fe77b9b4f2aa05efb54ecc44ab96c35"
+  },
+  "binary-parts/changes.patch.gz/00038.b64": {
+    "bytes": 87360,
+    "sha256": "c6db6d2663294d68dcbf4e5668403f391ec3ebedb5e536516c126e510b8abe4e"
+  },
+  "binary-parts/changes.patch.gz/00039.b64": {
+    "bytes": 87360,
+    "sha256": "feddf2b39de1631f449f7ee120e0e1ce624bcc3f2a079114d856dab6c492db80"
+  },
+  "binary-parts/changes.patch.gz/00040.b64": {
+    "bytes": 87360,
+    "sha256": "cb1f8499c66dec6e252693447f60d6bdcb7bb92eac5af81246f054d682ff599c"
+  },
+  "binary-parts/changes.patch.gz/00041.b64": {
+    "bytes": 87360,
+    "sha256": "2b02201de182fc9067071cdb0eec927c3d22f2bb613204d92ec1b1d2afdbf48a"
+  },
+  "binary-parts/changes.patch.gz/00042.b64": {
+    "bytes": 87360,
+    "sha256": "7e8aa0589ed3f488e7f70dc4a66656e4ccce3e81a80f231b741c53c66e92f32e"
+  },
+  "binary-parts/changes.patch.gz/00043.b64": {
+    "bytes": 87360,
+    "sha256": "67395b7e7b5c93e84e157eff2b6d7b9480f0d60fe0b3b5aae713eaab3740447c"
+  },
+  "binary-parts/changes.patch.gz/00044.b64": {
+    "bytes": 87360,
+    "sha256": "70a09260926a6f6b95bfe69f58b66bfa337f641274fbb46985adb775ceaa13f6"
+  },
+  "binary-parts/changes.patch.gz/00045.b64": {
+    "bytes": 87360,
+    "sha256": "07f12a567fc7988386c5828191c29e2d34d8ac5ffb7eabb5593620223a364c27"
+  },
+  "binary-parts/changes.patch.gz/00046.b64": {
+    "bytes": 87360,
+    "sha256": "394af1d9769e9fe3ad47975c18490d29bc8fa552304df4a75d572719e51bd006"
+  },
+  "binary-parts/changes.patch.gz/00047.b64": {
+    "bytes": 87360,
+    "sha256": "a96fb37ed9f800bd993e2bec81c214de2d520b7377d7fa5f38d5c3856ec17271"
+  },
+  "binary-parts/changes.patch.gz/00048.b64": {
+    "bytes": 87360,
+    "sha256": "a10c177f22b2c1960db38baf11e3d1b0077d6ef68169e48b9d4a41f40cca680a"
+  },
+  "binary-parts/changes.patch.gz/00049.b64": {
+    "bytes": 87360,
+    "sha256": "ddaaa78168f8d1de4c0bfef42032d8960475da6d46ccd8d79a533a4b7ce4d314"
+  },
+  "binary-parts/changes.patch.gz/00050.b64": {
+    "bytes": 87360,
+    "sha256": "0e26a980e38be42f9a845ddff4c1ca142def4a6b6381e0a6cd4767cc09610f7d"
+  },
+  "binary-parts/changes.patch.gz/00051.b64": {
+    "bytes": 87360,
+    "sha256": "19837f16723a4976b632ae4838d6c457738be619a0b02cc847ed263c75235eb0"
+  },
+  "binary-parts/changes.patch.gz/00052.b64": {
+    "bytes": 87360,
+    "sha256": "2a3d91d4659effdf1173074464c356f45659837179d6304c56567a27919ef833"
+  },
+  "binary-parts/changes.patch.gz/00053.b64": {
+    "bytes": 87360,
+    "sha256": "efdddecc27b396179fbcfaa16224a987c5a55208fbf0d4673c510082ba7c6f24"
+  },
+  "binary-parts/changes.patch.gz/00054.b64": {
+    "bytes": 87360,
+    "sha256": "9fc9d01674d417a6a4d67df2464d2e455b2bfd0e82bc2939daa6468071d0d444"
+  },
+  "binary-parts/changes.patch.gz/00055.b64": {
+    "bytes": 87360,
+    "sha256": "c47ad9eb674cb664414ebdd8ec61f31fb780ac8b46e43eb6880245600c95447f"
+  },
+  "binary-parts/changes.patch.gz/00056.b64": {
+    "bytes": 87360,
+    "sha256": "ccf9732b8a1861182dee464e68c88de64d32eb3a3c6311323dd055022de1041a"
+  },
+  "binary-parts/changes.patch.gz/00057.b64": {
+    "bytes": 87360,
+    "sha256": "4c998c061d75bf3b1503f0755ac19e5b6983e71d10f7c3879730a49e5ef20022"
+  },
+  "binary-parts/changes.patch.gz/00058.b64": {
+    "bytes": 87360,
+    "sha256": "f9fe536c363d778c208b57d1b3b50bf9a2f707cb4d8db89ace2c8ef764e4214a"
+  },
+  "binary-parts/changes.patch.gz/00059.b64": {
+    "bytes": 87360,
+    "sha256": "aa66e7389f52a49973237a77d2fcd3c01db41689379f44e1484e7be108927ab7"
+  },
+  "binary-parts/changes.patch.gz/00060.b64": {
+    "bytes": 87360,
+    "sha256": "477634cba70a8c499f2f5c69625ff02190a5a2b94e8673d9b0b437717365783c"
+  },
+  "binary-parts/changes.patch.gz/00061.b64": {
+    "bytes": 87360,
+    "sha256": "b0c3aa19378268bff3461dd7392281daf1df37c309f3dffe5837c0d0bf6bf2a0"
+  },
+  "binary-parts/changes.patch.gz/00062.b64": {
+    "bytes": 87360,
+    "sha256": "e9b838774495c76acab53517a389216a3bd02f42138ac692dfe4936724d06754"
+  },
+  "binary-parts/changes.patch.gz/00063.b64": {
+    "bytes": 87360,
+    "sha256": "57e783020e06da0a0d1aaff3d1c423eba3e1aff55a953e900405e50eb72e9c71"
+  },
+  "binary-parts/changes.patch.gz/00064.b64": {
+    "bytes": 87360,
+    "sha256": "8271f4ed1bfb323035579e7fac803aac42a8599c8e50902be899338a1ab89ba7"
+  },
+  "binary-parts/changes.patch.gz/00065.b64": {
+    "bytes": 87360,
+    "sha256": "758d0bb71d583d1730d69e5fa1b8c8a76b1168bf50d00db64b1c95e37aeda4a2"
+  },
+  "binary-parts/changes.patch.gz/00066.b64": {
+    "bytes": 87360,
+    "sha256": "3170deb26ae0773740d7dbb3b5bfc48f03bd58e660d1757cbf1e247f9a355cd3"
+  },
+  "binary-parts/changes.patch.gz/00067.b64": {
+    "bytes": 87360,
+    "sha256": "c2a325dfad6f24048aeb0e6d1ccfabed6362594c0d9bf350c75acc073f16a40f"
+  },
+  "binary-parts/changes.patch.gz/00068.b64": {
+    "bytes": 87360,
+    "sha256": "78e5d0019161566e917a8a5f1174076aee9caea1d531942d1d0ee88360f5b27f"
+  },
+  "binary-parts/changes.patch.gz/00069.b64": {
+    "bytes": 87360,
+    "sha256": "d4c5d3a10bbd04a4bbaa1336e1531caebe4f67c72e6ea357f1db48a9aba6e88a"
+  },
+  "binary-parts/changes.patch.gz/00070.b64": {
+    "bytes": 87360,
+    "sha256": "1c6f1bd8e6331877ae54c27ea99bfef776b78d0dfafca499eb57ac93ba5f7b2a"
+  },
+  "binary-parts/changes.patch.gz/00071.b64": {
+    "bytes": 87360,
+    "sha256": "e8fb476c0079167421f04834695dd79a9e0eb25b8b7dc914ee4a79cdf919d81f"
+  },
+  "binary-parts/changes.patch.gz/00072.b64": {
+    "bytes": 87360,
+    "sha256": "908019baea2d7a8566feb25e4584e4d9eaff208adaab540833f234822fc52823"
+  },
+  "binary-parts/changes.patch.gz/00073.b64": {
+    "bytes": 87360,
+    "sha256": "2504e6dbc93bb76e0295db45bb7682eb81320b469c418ef17fec5692a07c6024"
+  },
+  "binary-parts/changes.patch.gz/00074.b64": {
+    "bytes": 87360,
+    "sha256": "c9723b45bd5baa8fadcc27ef85e3d2f0cd73f6b80ed38ef608da374c28eed584"
+  },
+  "binary-parts/changes.patch.gz/00075.b64": {
+    "bytes": 87360,
+    "sha256": "53f71a1aa4e7e34f6d7052d57dda0977ce28c04de745ba54321a83764dfef59d"
+  },
+  "binary-parts/changes.patch.gz/00076.b64": {
+    "bytes": 87360,
+    "sha256": "b7ed7d8763a279be82ca43f85c9a2fc8a90a50365575e42dded9b4d6e900e968"
+  },
+  "binary-parts/changes.patch.gz/00077.b64": {
+    "bytes": 87360,
+    "sha256": "b8b554f42bd20b5b72e1c40662f7777645f54185409cfe638ad49502cb2a603d"
+  },
+  "binary-parts/changes.patch.gz/00078.b64": {
+    "bytes": 87360,
+    "sha256": "3a6d328e4deeb187b5b7d7ff81010ac81ddd01e7bef5dca37edf0f62f103987a"
+  },
+  "binary-parts/changes.patch.gz/00079.b64": {
+    "bytes": 70244,
+    "sha256": "69335686597d46661f4ae05c09033ebe96440adb9fa81e3c44c6e32ded380b95"
+  },
+  "binary-parts.json": {
+    "bytes": 27109,
+    "sha256": "c211643bd7cbfa9cd6c4372ed6145e4a084b9948c92cf41c12ff1b6b649153a4"
+  },
+  "changes.patch.gz": {
+    "bytes": 5228762,
+    "sha256": "a06a96273cd0c3aacf34f587de43bebc77309df7b9d5623457485f4909f583aa"
+  },
+  "check_app_aac.py": {
+    "bytes": 16511,
+    "sha256": "7f8adc7adc93a1cd312521c479b3fc5a9c1e24e728b3687c15f4864a9cfbebfb"
+  },
+  "check_backend.py": {
+    "bytes": 5517,
+    "sha256": "162bda2ce1d90cd4a67e84938c9472fa6674f3ae2df6576ebfa6af5b06302c60"
+  },
+  "check_stage_notices.py": {
+    "bytes": 11506,
+    "sha256": "c8c30b8563a07dce000fae22f4277d3d6c4cc4cfb14ed09fce3bbfd581789252"
+  },
+  "compare_reference.py": {
+    "bytes": 4540,
+    "sha256": "ea5e8770ab32835d11c199ab08200425a7e2e25d295eb9f5d383d7dbccd3e16d"
+  },
+  "expected-reference.json": {
+    "bytes": 8316,
+    "sha256": "e47a0df3af2f0af6b15df3ed625a0f76768020e06387705d60ec7ca52ddbf036"
+  },
+  "handoff.json": {
+    "bytes": 980,
+    "sha256": "82f1ee555c1633876e60a30d97ca66e635e715a7ce82266be74b0351ecb26cb0"
+  },
+  "observe_native_additions.py": {
+    "bytes": 8319,
+    "sha256": "c86a1dfe9f6a1dd3822b309809336a26eb6b2f496a0ddcabfbbe871d4e44822d"
+  },
+  "prepare_practice_reference.py": {
+    "bytes": 1349,
+    "sha256": "97188807c43682820e22e0b956f1fd0bf8e2e03906c22f9347b23fe31109712c"
+  },
+  "prepare_zlib_package.py": {
+    "bytes": 11426,
+    "sha256": "7e897469fb313453b6ac7ea22940db358146add5219039bca4df96af87c0bffd"
+  },
+  "qualification_plan.py": {
+    "bytes": 5536,
+    "sha256": "d5ee93538f6c343f52432c65a9e71e4cbb3f1381e0161c7cbbd266292917abd6"
+  },
+  "qualify_practice.py": {
+    "bytes": 11603,
+    "sha256": "925a9fb389d59174a55e56e2b015bc51ed2309af97b86d7a4797394565335b27"
+  },
+  "required-system-icu.json": {
+    "bytes": 1322,
+    "sha256": "5f60e0faacc3a58f766154792e2de3fdd3214b0747ec86f2dc4c8eca06a5f11c"
+  },
+  "source.json": {
+    "bytes": 944,
+    "sha256": "a33ad2f48541ea4b4a1216fbd397df06ec18b4806c1e5debe4efa65fb6df2ac5"
+  },
+  "test_driver_helpers.py": {
+    "bytes": 6028,
+    "sha256": "13a2b4e069efdff5458555a5e3ece42b4e7cbf15c5ba12d3fa1650a41e86648e"
+  },
+  "test_practice_qualification.py": {
+    "bytes": 4989,
+    "sha256": "cb210b2285bf3370e107dbffa553d84089bc6d93069c7b456b7ee8f12627cc0f"
+  },
+  "verify_system_icu.py": {
+    "bytes": 21722,
+    "sha256": "aea7d3968e6d60aa2285c7133e129e7931cf6835553efe5b12a4a923c62d7d75"
+  }
+}
