@@ -171,3 +171,5 @@ jobs:
             ${{ github.workspace }}/driver/.cadence-studio/retained-2006-notes-gui/target.json
           retention-days: 14
           if-no-files-found: warn
+
+# One unchanged-code retry after run43286626097 lost post-Invoke UIA evidence of the closed file dialog.
