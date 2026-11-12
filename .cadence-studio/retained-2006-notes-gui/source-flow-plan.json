@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "state": "complete_isolated_preparation_not_Windows_compiled_or_run",
+  "target_stage": 2006,
+  "source_files_read": [
+    {
+      "source_path": "src/project/qml/MuseScore/Project/internal/ScoresPage/LocalScoresView.qml",
+      "source_commit": "ac9a24933f78f22ea630570910848201baad3d3b",
+      "bytes": 44546,
+      "sha256": "600c0180dbaa4208fd4651e2464111c029db42847113d179d4323a85725c9783"
+    },
+    {
+      "source_path": "src/framework/uicomponents/qml/Muse/UiComponents/TextInputArea.qml",
+      "source_commit": "ac9a24933f78f22ea630570910848201baad3d3b",
+      "bytes": 9607,
+      "sha256": "6194306bfc7e6ea83332193fad743fd41968215c30fb84532e5d4c2fd25d496f"
+    },
+    {
+      "source_path": "src/framework/uicomponents/qml/Muse/UiComponents/CheckBox.qml",
+      "source_commit": "ac9a24933f78f22ea630570910848201baad3d3b",
+      "bytes": 4044,
+      "sha256": "d4a92601963be49a86c9b1c3d3d351c7c981536b66872445165758c9a3647b43"
+    },
+    {
+      "source_path": "src/project/qml/MuseScore/Project/internal/ScoresPage/localscoresmodel.cpp",
+      "source_commit": "ac9a24933f78f22ea630570910848201baad3d3b",
+      "bytes": 35554,
+      "sha256": "e136ea5f68bdb571b947d7cf1791d06521adca35bff2ece8cdd3a4602a48fac1"
+    },
+    {
+      "source_path": "src/project/internal/localscorelibrarystore.cpp",
+      "source_commit": "ac9a24933f78f22ea630570910848201baad3d3b",
+      "bytes": 31290,
+      "sha256": "d8db10756f5fd2d118a4c22fa05d40d0dce0ebc5c9d2e6cd0ab68ae4270bf2d2"
+    }
+  ],
+  "single_planned_flow": [
+    "Add only the controlled native piano copy to a fresh local library",
+    "Observe Notes exact control and open inline private-notes panel",
+    "Observe/acknowledge schema3 compatibility checkbox and activate notes in disposable profile only",
+    "Type one bounded ASCII note using TextPattern-priority readback",
+    "Save via exact button; retain saved text for capture, clean close and read auxiliary catalogue only after exit0",
+    "Restart same profile, select saved note and read text through actual UIA; score bytes unchanged"
+  ],
+  "known_source_controls": {
+    "score_notes": "Notes privées de pratique <controlled score title>",
+    "panel": "Notes privées de pratique",
+    "back": "Retour à la bibliothèque",
+    "migration_checkbox": "J'ai compris la compatibilité du catalogue",
+    "activate": "Activer les notes privées",
+    "selection": "Choisir une note enregistrée ou une nouvelle note",
+    "text": "Texte de la note privée, 8 000 caractères au maximum",
+    "save": "Enregistrer"
+  },
+  "textarea_edit_finish": "Escape explicitly ends TextInputArea edit; Return would insert a newline and is not planned for finishing this field",
+  "no_audio_FX_musical_edit_or_native_modal_walk": true,
+  "subdelegation": false,
+  "application_or_UIA_executed": false,
+  "published_or_workflow_started": false,
+  "partial_files_not_a_ready_runnable_lot": false
+}

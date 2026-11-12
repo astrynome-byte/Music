@@ -1,0 +1,173 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Publish only with an actual reviewed target.json after stage2006 exists.
+name: 'Cadence Studio: retained2006 notes UI qualification'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths:
+      - '.cadence-studio/retained-2006-notes-gui/**'
+      - '.github/workflows/cadence-retained-2006-notes-gui.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-retained-2006-notes-gui-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  retained2006-notes:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Require the independently reviewed actually produced stage target
+        id: target
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2006-notes-gui"
+          . "$helper/Read-ProducedTarget.ps1"
+          $target = Get-NextGuiTarget "$helper/target.json" "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2006-source"
+          "producer_run_id=$($target.producer_run_id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding UTF8
+          "artifact_id=$($target.artifact_id)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding UTF8
+          "executable_sha256=$($target.stage.executable_sha256)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding UTF8
+          "CADENCE_NOTES_2006_EXE_SHA256=$($target.stage.executable_sha256)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding UTF8
+
+      - name: Use only the Windows compiler for the independent native UI Automation client
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+
+      - name: Compile the independent UI Automation client without Qt or an application rebuild
+        run: |
+          $source = "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2006-notes-gui/native/UiaProbe.cpp"
+          $nativeRoot = Split-Path -Parent $source
+          $seen = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+          foreach ($line in Get-Content -LiteralPath (Join-Path $nativeRoot 'SHA256SUMS.txt')) {
+            if ($line -cnotmatch '^([a-f0-9]{64})  ([A-Za-z0-9_.-]+)$') { throw 'Malformed native source checksum.' }
+            $sha=$Matches[1]; $name=$Matches[2]
+            if ($name.Contains('..') -or $name -ceq 'SHA256SUMS.txt' -or -not $seen.Add($name)) { throw 'Unsafe/duplicate native source checksum.' }
+            $file=Get-Item -LiteralPath (Join-Path $nativeRoot $name)
+            if ($file.PSIsContainer -or ($file.Attributes -band [IO.FileAttributes]::ReparsePoint) -or $file.Length -gt 1048576 -or
+                (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant() -cne $sha) { throw 'Native source bytes differ before SDK compilation.' }
+          }
+          if (@(Get-ChildItem -LiteralPath $nativeRoot -File -Force).Count -ne $seen.Count+1) { throw 'Native source inventory is incomplete.' }
+          $build = "$env:RUNNER_TEMP/notes-2006-gui-probe-build"
+          if (Test-Path -LiteralPath $build) { throw 'Probe build directory must be new.' }
+          New-Item -ItemType Directory -Path $build | Out-Null
+          Push-Location $build
+          try {
+            $oldPreference = $ErrorActionPreference
+            $ErrorActionPreference = 'Continue'
+            try {
+              & cl.exe /nologo /std:c++17 /utf-8 /EHsc $source /Fe:UiaProbe.exe /link ole32.lib oleaut32.lib user32.lib uuid.lib 2>&1 |
+                Tee-Object -FilePath (Join-Path $build 'compile.log') | Out-Host
+              $compileStatus = $LASTEXITCODE
+            } finally { $ErrorActionPreference = $oldPreference }
+            if ($compileStatus -ne 0) { throw "Native UI Automation client compilation failed: $compileStatus" }
+          } finally { Pop-Location }
+
+      - name: Download only the exact actually produced retained2006 stage
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.target.outputs.artifact_id }}
+          run-id: ${{ steps.target.outputs.producer_run_id }}
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/notes-2006-gui-original-stage
+
+      - name: Authenticate provenance, every companion checksum and the pinned stage before restoring
+        run: |
+          $result = "$env:RUNNER_TEMP/notes-2006-gui-results"
+          if (Test-Path -LiteralPath $result) { throw 'GUI result directory must be new.' }
+          New-Item -ItemType Directory -Path $result | Out-Null
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2006-notes-gui/Restore-NextStage.ps1" `
+            -TargetPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2006-notes-gui/target.json" `
+            -ArtifactDirectory "$env:RUNNER_TEMP/notes-2006-gui-original-stage" `
+            -StagePath "$env:RUNNER_TEMP/notes-2006-gui-stage" `
+            -ResultPath "$result/stage-restoration.json" *>&1 | Tee-Object -FilePath "$result/restore.log" | Out-Host
+
+      - name: Exercise one actual private note, save, clean close, restart and UI text readback
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2006-notes-gui/Run-NotesUiProbe.ps1" `
+            -StagePath "$env:RUNNER_TEMP/notes-2006-gui-stage" `
+            -ExpectedExecutableSha256 $env:CADENCE_NOTES_2006_EXE_SHA256 `
+            -ProbePath "$env:RUNNER_TEMP/notes-2006-gui-probe-build/UiaProbe.exe" `
+            -OutputDirectory "$env:RUNNER_TEMP/notes-2006-gui-results/ui-probe"
+
+      - name: Print bounded evidence from this exact UI inspection even if it was blocked
+        if: always()
+        run: |
+          $resultRoot = Join-Path $env:RUNNER_TEMP 'notes-2006-gui-results'
+          $jsonBudget = 1000000L
+          $pngBudget = 2000000L
+          $jsonPrinted = 0L
+          $pngPrinted = 0L
+          $notes = [Collections.Generic.List[string]]::new()
+          function Write-Evidence([string] $Kind, $Document) {
+            Write-Host ('CADENCE_UI_EVIDENCE_' + $Kind + '_BEGIN')
+            Write-Host ($Document | ConvertTo-Json -Depth 40 -Compress)
+            Write-Host ('CADENCE_UI_EVIDENCE_' + $Kind + '_END')
+          }
+          if (Test-Path -LiteralPath $resultRoot -PathType Container) {
+            $jsonFiles = @(Get-ChildItem -LiteralPath $resultRoot -Recurse -File -Filter '*.json' |
+              Where-Object { -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) } |
+              Sort-Object @{ Expression = { if ($_.Name -in @('notes-ui-report.json','notes-phase-report.json','uia-report.json','catalog-after-ui.json','application-log-tails.json')) { 0 } elseif ($_.Name -eq 'stage-restoration.json') { 1 } else { 2 } } }, FullName | Select-Object -First 17)
+            if ($jsonFiles.Count -gt 16) { $notes.Add('More than16 JSON files; printing only first16.') }
+            foreach ($file in @($jsonFiles | Select-Object -First 16)) {
+              if ($file.Length -gt 4194304L) { $notes.Add('JSON above4MiB input bound excluded: ' + $file.Name); continue }
+              try {
+                $raw = [IO.File]::ReadAllBytes($file.FullName)
+                $document = [Text.Encoding]::UTF8.GetString($raw).TrimStart([char]0xfeff) | ConvertFrom-Json -AsHashtable
+                $projection = $null
+                if ($document.ContainsKey('keyboard_frames')) {
+                  $projection = [ordered]@{ kind='bounded_native_UIA_report_view';original_keyboard_frames=@($document.keyboard_frames).Count;original_actions=@($document.actions).Count;retained_last_keyboard_frames=8;retained_last_actions=80;complete_original_retained_in_artifact=$true;sha256_describes_original_file_not_projection=$true }
+                  $document.keyboard_frames=@($document.keyboard_frames | Select-Object -Last 8)
+                  $document.actions=@($document.actions | Select-Object -Last 80)
+                }
+                $envelope = [ordered]@{ source_run_id=[long]$env:GITHUB_RUN_ID;path=[IO.Path]::GetRelativePath($resultRoot,$file.FullName).Replace('\','/');bytes=$raw.Length;sha256=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($raw)).ToLowerInvariant();projection=$projection;report=$document }
+                $encoded = $envelope | ConvertTo-Json -Depth 40 -Compress
+                $size = [Text.Encoding]::UTF8.GetByteCount($encoded)
+                if ($jsonPrinted + $size -gt $jsonBudget) { $notes.Add('JSON aggregate budget reached: ' + $file.Name); continue }
+                Write-Evidence 'JSON' $envelope
+                $jsonPrinted += $size
+              } catch { $notes.Add('Unreadable JSON: ' + $file.Name + ': ' + $_.Exception.Message) }
+            }
+            $pngFiles = @(Get-ChildItem -LiteralPath $resultRoot -Recurse -File -Filter '*.png' |
+              Where-Object { -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) } |
+              Sort-Object @{ Expression = { if ($_.Name -eq 'after-notes-flow.png') { 0 } elseif ($_.Name -eq 'after-navigation.png') { 1 } else { 2 } } }, FullName | Select-Object -First 3)
+            if ($pngFiles.Count -gt 2) { $notes.Add('More than2 PNG captures; printing only first2.') }
+            foreach ($file in @($pngFiles | Select-Object -First 2)) {
+              if (4L * [long][Math]::Ceiling($file.Length / 3.0) + $pngPrinted -gt $pngBudget) { $notes.Add('PNG base64 aggregate budget reached: ' + $file.Name); continue }
+              $raw = [IO.File]::ReadAllBytes($file.FullName)
+              $base64 = [Convert]::ToBase64String($raw)
+              Write-Evidence 'PNG' ([ordered]@{ source_run_id=[long]$env:GITHUB_RUN_ID;path=[IO.Path]::GetRelativePath($resultRoot,$file.FullName).Replace('\','/');bytes=$raw.Length;sha256=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($raw)).ToLowerInvariant();base64=$base64 })
+              $pngPrinted += $base64.Length
+            }
+          } else { $notes.Add('No result directory exists; UI evidence unavailable.') }
+          Write-Evidence 'SUMMARY' ([ordered]@{ schema_version=1;source_run_id=[long]$env:GITHUB_RUN_ID;scope='Read back existing results from this exact workflow only';reader_only=$true;application_executed=$false;ui_validation_inferred_from_reading=$false;json_printed_bytes=$jsonPrinted;png_base64_printed_bytes=$pngPrinted;notes=@($notes.ToArray()) })
+
+      - name: Retain UI reports, tree dumps, captures and logs even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-retained-2006-notes-ui-probe-${{ github.run_number }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/notes-2006-gui-results/**
+            ${{ runner.temp }}/notes-2006-gui-probe-build/compile.log
+            ${{ runner.temp }}/notes-2006-gui-original-stage/stage-manifest.json
+            ${{ runner.temp }}/notes-2006-gui-original-stage/cadence-build-result.json
+            ${{ runner.temp }}/notes-2006-gui-original-stage/SHA256SUMS.txt
+            ${{ github.workspace }}/driver/.cadence-studio/retained-2006-notes-gui/README.md
+            ${{ github.workspace }}/driver/.cadence-studio/retained-2006-notes-gui/target.json
+          retention-days: 14
+          if-no-files-found: warn

@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "scope": "Preparation and byte/source review only; no SDK/compiler/UIA/application executed",
+  "reused_headers": [
+    {
+      "file": "OwnedKeyboard.h",
+      "identical_to_passed_collections_client": true,
+      "sha256": "c4ae8c12c17002f24c27ed2d259b5577b6f2b49887cd8271d0f927f966fb1024"
+    },
+    {
+      "file": "OwnedFileDialog.h",
+      "identical_to_passed_collections_client": true,
+      "sha256": "4ad24654aa9dbf293b75929157c9d597e4021f8c6ca07e223e630c92eb6683e1"
+    }
+  ],
+  "collection_helpers_identical_to_successful_TextPattern_revision": true,
+  "old_collection_functions_not_called_by_new_main": true,
+  "source_commit": "ac9a24933f78f22ea630570910848201baad3d3b",
+  "real_stage_EXE_sha256": "c29d7c8c76b213b79d7390acd65cbabc6fb940f06e3e7f86c0ce60be7e9b9520",
+  "notes_code_also_in_frozen_2007": true,
+  "Windows_compiled": false,
+  "application_executed": false
+}
