@@ -205,7 +205,8 @@ jobs:
           if (Test-Path -LiteralPath $syncBuild) { throw 'Use a new sync-client test build directory' }
           New-Item -ItemType Directory -Path $syncBuild | Out-Null
           $env:PATH = (Join-Path $qtKit 'bin') + ';' + $env:PATH
-          $syncPython = (Get-Command python -CommandType Application -ErrorAction Stop).Source
+          $syncPython = (Get-Command python -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
+          if (-not (Test-Path -LiteralPath $syncPython -PathType Leaf)) { throw "Selected sync-test Python interpreter is not a file: $syncPython" }
           Invoke-CheckedNative cmake @('-S', "$cadenceSource/test/cadence/sync_client", '-B', $syncBuild, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_COMPILER=cl.exe', "-DCMAKE_PREFIX_PATH=$qtKit", "-DPython3_EXECUTABLE=$syncPython", '-DCMAKE_CXX_FLAGS_INIT=/utf-8') (Join-Path $syncBuild 'configure.log')
           Invoke-CheckedNative cmake @('--build', $syncBuild, '--parallel', '2') (Join-Path $syncBuild 'build.log')
           Invoke-CheckedNative ctest @('--test-dir', $syncBuild, '-C', 'Release', '--output-on-failure', '--verbose', '--timeout', '90', '--output-junit', (Join-Path $syncBuild 'ctest-results.xml')) (Join-Path $syncBuild 'ctest.log')
