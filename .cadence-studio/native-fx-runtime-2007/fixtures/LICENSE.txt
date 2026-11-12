@@ -1,0 +1,14 @@
+Original generated Cadence native FX control exercise
+
+SPDX-License-Identifier: CC0-1.0
+
+The file native-fx-cello.musicxml was authored for this QA preparation on
+2026-11-12. It contains four elementary bars of repeated C3 with p/mf/f/mf
+dynamics, at 120 quarter notes per minute. No third-party composition, score,
+recording, sample or arrangement was copied. The contributors dedicate this
+original test data to the public domain under CC0 1.0 Universal:
+https://creativecommons.org/publicdomain/zero/1.0/
+
+The adjacent application and QA source code remains GPL-3.0-only. MS Basic is
+the exact existing bank from the retained application stage; it is not part
+of this generated CC0 fixture and is not downloaded or republished here.

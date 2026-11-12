@@ -1,0 +1,450 @@
+{
+  "schema_version": 1,
+  "scope": "Static source contract investigation only; proposed runtime qualification targets retained Windows2007 executable bytes only.",
+  "ready": false,
+  "runtime_application_executed": false,
+  "windows_runtime_qualified": false,
+  "source_2007": "5058d29dad67e6131ee46ee617258ccfed8ba4b0",
+  "candidate_2008": "49272b75a4107c97130b8a46727af6a8c95d1c9a",
+  "retained_2007_executable_sha256": "dcfbf9155c6c972c37966a4b2b0dcd212133c8e31fb397c644dda800ac7122be",
+  "comparison_method": "Read-only local git show <full commit>:<path>; SHA-256 over exact blob bytes; no branch/ref/worktree change.",
+  "files": [
+    {
+      "path": "src/framework/audio/common/cadencefxparams.h",
+      "source_2007_sha256": "92508359db317021328b6b2cdc6ea5d88915030fa6f9c798f90f24ef4e814dfe",
+      "candidate_2008_sha256": "92508359db317021328b6b2cdc6ea5d88915030fa6f9c798f90f24ef4e814dfe",
+      "byte_identical": true
+    },
+    {
+      "path": "src/framework/audio/engine/internal/dsp/nativeeffects.h",
+      "source_2007_sha256": "d2654dc1f0038242cd4686a834fcb24b500a6b86e6f5db2070762c225894a40f",
+      "candidate_2008_sha256": "d2654dc1f0038242cd4686a834fcb24b500a6b86e6f5db2070762c225894a40f",
+      "byte_identical": true
+    },
+    {
+      "path": "src/framework/audio/engine/internal/dsp/nativeeffects.cpp",
+      "source_2007_sha256": "d0aec7e3c4a3f74b6fabd186cc4fe2cca4b7274aab082b9e7aeb47946480351b",
+      "candidate_2008_sha256": "d0aec7e3c4a3f74b6fabd186cc4fe2cca4b7274aab082b9e7aeb47946480351b",
+      "byte_identical": true
+    },
+    {
+      "path": "src/framework/audio/engine/internal/fx/cadencefxprocessor.h",
+      "source_2007_sha256": "1665f49977a364390d8b93d934d41c7c986a08495d48dfe5d4a54debe3ba63a9",
+      "candidate_2008_sha256": "1665f49977a364390d8b93d934d41c7c986a08495d48dfe5d4a54debe3ba63a9",
+      "byte_identical": true
+    },
+    {
+      "path": "src/framework/audio/engine/internal/fx/cadencefxprocessor.cpp",
+      "source_2007_sha256": "4f88abb689dc645f47993fc9a77ddf268c89d97aa8fe5cbc2e7dc0ec5a29fbf8",
+      "candidate_2008_sha256": "4f88abb689dc645f47993fc9a77ddf268c89d97aa8fe5cbc2e7dc0ec5a29fbf8",
+      "byte_identical": true
+    },
+    {
+      "path": "src/framework/audio/engine/internal/fx/musefxresolver.h",
+      "source_2007_sha256": "4655e6aaa30084eed1295541ac423ad79fc0454f79428ccd5d3e542ff701ab6e",
+      "candidate_2008_sha256": "4655e6aaa30084eed1295541ac423ad79fc0454f79428ccd5d3e542ff701ab6e",
+      "byte_identical": true
+    },
+    {
+      "path": "src/framework/audio/engine/internal/fx/musefxresolver.cpp",
+      "source_2007_sha256": "324c4c9623170eb8af4c2d27806db2d0bd5e7bb91c9a2fdf52bf128e5845bf3b",
+      "candidate_2008_sha256": "324c4c9623170eb8af4c2d27806db2d0bd5e7bb91c9a2fdf52bf128e5845bf3b",
+      "byte_identical": true
+    },
+    {
+      "path": "src/framework/audio/engine/internal/fx/abstractfxresolver.cpp",
+      "source_2007_sha256": "4cdd95ac6af7d4b6e8bba7496648a278793ef16b690f48cabe1c0924989d0aa6",
+      "candidate_2008_sha256": "4cdd95ac6af7d4b6e8bba7496648a278793ef16b690f48cabe1c0924989d0aa6",
+      "byte_identical": true
+    },
+    {
+      "path": "src/framework/audio/engine/internal/mixerchannel.cpp",
+      "source_2007_sha256": "63f169e376122139f25a398d44196ea4636e6309b37326cfd05eebb2480d1498",
+      "candidate_2008_sha256": "63f169e376122139f25a398d44196ea4636e6309b37326cfd05eebb2480d1498",
+      "byte_identical": true
+    },
+    {
+      "path": "src/framework/audio/engine/internal/mixer.cpp",
+      "source_2007_sha256": "3f934ab0013e7155a70b2209f127356242ed6701a15b70f037705ea357fab576",
+      "candidate_2008_sha256": "3f934ab0013e7155a70b2209f127356242ed6701a15b70f037705ea357fab576",
+      "byte_identical": true
+    },
+    {
+      "path": "src/project/internal/projectaudiosettings.cpp",
+      "source_2007_sha256": "b3feedce136fd6103220471c9e7ff24a5eaf2e54c787c3efa28c3c301bd61af8",
+      "candidate_2008_sha256": "b3feedce136fd6103220471c9e7ff24a5eaf2e54c787c3efa28c3c301bd61af8",
+      "byte_identical": true
+    },
+    {
+      "path": "src/playback/internal/playbackcontroller.cpp",
+      "source_2007_sha256": "cf94605101fed1173e3e604b8cc4b64e8adeefe8b5b8fe8dcac617fb76378867",
+      "candidate_2008_sha256": "cf94605101fed1173e3e604b8cc4b64e8adeefe8b5b8fe8dcac617fb76378867",
+      "byte_identical": true
+    },
+    {
+      "path": "src/framework/audio/common/audiotypes.h",
+      "source_2007_sha256": "2b567f7e36af5207030f5e91b7ea078c7fb8f0689a9ac143d56a038726ec6cd2",
+      "candidate_2008_sha256": "2b567f7e36af5207030f5e91b7ea078c7fb8f0689a9ac143d56a038726ec6cd2",
+      "byte_identical": true
+    }
+  ],
+  "all_13_files_identical": true,
+  "existing_evidence": {
+    "integration_runtime_evidence_found": false,
+    "inspection_scope": [
+      "docs/evidence paths containing native-fx, integrated-alternatives and Windows combined MSI2006/2007",
+      "test/cadence/native_fx",
+      "src/framework/audio/engine/internal/fx and native DSP",
+      "STATUS.md, FEATURES.md, ROADMAP.md, README.md"
+    ],
+    "conclusion": "Existing standalone MSVC DSP+codec evidence and factory/model source checks do not qualify full application rendering, MSCZ save/reopen or human listening. No duplicate application qualification was found.",
+    "references": [
+      {
+        "path": "docs/evidence/native-fx-windows-msvc/README.md",
+        "first_line": 38,
+        "last_line": 42,
+        "fact": "Explicitly excludes Qt, complete factory/mixer, complete application, MSCZ save, application render and listening."
+      },
+      {
+        "path": "FEATURES.md",
+        "first_line": 136,
+        "last_line": 136,
+        "fact": "AU12 remains partial: complete projects with native effects, reopen/export and listening await qualification."
+      },
+      {
+        "path": "test/cadence/native_fx/native_fx_engine_tests.cpp",
+        "first_line": 3,
+        "last_line": 3,
+        "fact": "Actual IFxProcessor/MuseFxResolver tests, with no application or GUI instantiated."
+      }
+    ]
+  },
+  "contract_references": [
+    {
+      "path": "src/framework/audio/common/cadencefxparams.h",
+      "first_line": 15,
+      "last_line": 17,
+      "fact": "Exact IDs Cadence EQ, Cadence Compressor and cadence.fx.schema key."
+    },
+    {
+      "path": "src/framework/audio/common/cadencefxparams.h",
+      "first_line": 32,
+      "last_line": 47,
+      "fact": "Six exact parameter names, defaults and valid ranges for each effect."
+    },
+    {
+      "path": "src/framework/audio/common/cadencefxparams.h",
+      "first_line": 67,
+      "last_line": 93,
+      "fact": "Decode requires supported ID, schema string1, at most7 map entries, known parameter names and finite in-range decimal text."
+    },
+    {
+      "path": "src/framework/audio/common/cadencefxparams.h",
+      "first_line": 95,
+      "last_line": 110,
+      "fact": "Encode emits schema1 and six numeric parameter string entries."
+    },
+    {
+      "path": "src/framework/audio/engine/internal/fx/musefxresolver.cpp",
+      "first_line": 36,
+      "last_line": 49,
+      "fact": "CADENCE_BUILD factory creates native adapter only for exact native IDs and MuseFx type."
+    },
+    {
+      "path": "src/framework/audio/engine/internal/fx/musefxresolver.cpp",
+      "first_line": 54,
+      "last_line": 73,
+      "fact": "Metadata: MusePlugin type, vendor Cadence, native editor support true, category EQ or Dynamics."
+    },
+    {
+      "path": "src/framework/audio/common/audiotypes.h",
+      "first_line": 173,
+      "last_line": 173,
+      "fact": "Metadata category attribute key is categories."
+    },
+    {
+      "path": "src/framework/audio/common/audiotypes.h",
+      "first_line": 190,
+      "last_line": 190,
+      "fact": "MusePlugin JSON resource type string is muse_plugin."
+    },
+    {
+      "path": "src/framework/audio/common/audiotypes.h",
+      "first_line": 301,
+      "last_line": 301,
+      "fact": "MusePlugin maps to AudioFxType MuseFx."
+    },
+    {
+      "path": "src/project/internal/projectaudiosettings.cpp",
+      "first_line": 265,
+      "last_line": 313,
+      "fact": "Reads master, aux and tracks with partId/instrumentId and in/out objects from actual MscReader audio.settings JSON."
+    },
+    {
+      "path": "src/project/internal/projectaudiosettings.cpp",
+      "first_line": 316,
+      "last_line": 342,
+      "fact": "Writes actual MscWriter audio.settings JSON: master, aux, tracks and activeSoundProfile."
+    },
+    {
+      "path": "src/project/internal/projectaudiosettings.cpp",
+      "first_line": 356,
+      "last_line": 364,
+      "fact": "Output JSON uses fxChain object, balance float, volumeDb float and auxSends array."
+    },
+    {
+      "path": "src/project/internal/projectaudiosettings.cpp",
+      "first_line": 376,
+      "last_line": 397,
+      "fact": "fxChain keys parse to chain-order integers; each FX reads active, chainOrder, resourceMeta and unitConfiguration."
+    },
+    {
+      "path": "src/project/internal/projectaudiosettings.cpp",
+      "first_line": 400,
+      "last_line": 420,
+      "fact": "Each auxSends object reads signalAmount float and active bool."
+    },
+    {
+      "path": "src/project/internal/projectaudiosettings.cpp",
+      "first_line": 433,
+      "last_line": 442,
+      "fact": "unitConfiguration stores each decoded string as base64 in JSON; raw decimal strings in JSON would be wrong."
+    },
+    {
+      "path": "src/project/internal/projectaudiosettings.cpp",
+      "first_line": 488,
+      "last_line": 496,
+      "fact": "fxChain writer emits object keys from actual chain slot numbers."
+    },
+    {
+      "path": "src/project/internal/projectaudiosettings.cpp",
+      "first_line": 518,
+      "last_line": 527,
+      "fact": "FX writer preserves active, chainOrder, resourceMeta and unitConfiguration."
+    },
+    {
+      "path": "src/project/internal/projectaudiosettings.cpp",
+      "first_line": 542,
+      "last_line": 551,
+      "fact": "unitConfiguration writer base64-encodes each byte string."
+    },
+    {
+      "path": "src/playback/playbacktypes.h",
+      "first_line": 30,
+      "last_line": 30,
+      "fact": "AUX_CHANNEL_NUM is2."
+    },
+    {
+      "path": "src/playback/internal/playbackcontroller.cpp",
+      "first_line": 1142,
+      "last_line": 1149,
+      "fact": "An empty auxSends array inserts default aux sends; explicit two inactive zero sends are required for dry trials."
+    },
+    {
+      "path": "src/framework/audio/engine/internal/fx/cadencefxprocessor.cpp",
+      "first_line": 34,
+      "last_line": 46,
+      "fact": "Opening saved settings prepares and applies DSP then resets history, so saved output/makeup gain starts immediately."
+    },
+    {
+      "path": "src/framework/audio/engine/internal/fx/cadencefxprocessor.cpp",
+      "first_line": 80,
+      "last_line": 86,
+      "fact": "Adapter returns unchanged samples for inactive/invalid/unsupported state and runs native EQ or comp otherwise."
+    },
+    {
+      "path": "src/framework/audio/engine/internal/mixerchannel.cpp",
+      "first_line": 255,
+      "last_line": 264,
+      "fact": "Track chain effects process before track volume/balance."
+    },
+    {
+      "path": "src/framework/audio/engine/internal/mixer.cpp",
+      "first_line": 267,
+      "last_line": 270,
+      "fact": "Aux returns process before master native FX; master FX precede master volume/balance."
+    },
+    {
+      "path": "src/framework/audio/engine/internal/mixer.cpp",
+      "first_line": 620,
+      "last_line": 652,
+      "fact": "Master completion applies only master volume/balance, so sufficiently quiet fixed gain trials have an analytic amplitude relation."
+    }
+  ],
+  "proposed_serialization": {
+    "fxChain_example_slot": "0",
+    "chainOrder": 0,
+    "active": "Boolean, false for bypass and true for active case",
+    "resourceMeta": {
+      "id": "Cadence EQ or Cadence Compressor",
+      "type": "muse_plugin",
+      "vendor": "Cadence",
+      "hasNativeEditorSupport": true,
+      "attributes": {
+        "categories": "EQ or Dynamics"
+      }
+    },
+    "unitConfiguration_encoding": "Base64 per entry; decoded cadence.fx.schema is the string1 and each parameter is numeric decimal text.",
+    "dry_auxSends": [
+      {
+        "signalAmount": 0,
+        "active": false
+      },
+      {
+        "signalAmount": 0,
+        "active": false
+      }
+    ],
+    "master_and_aux_chains": "Keep explicit empty fxChain for baseline, dry aux outputs; FX only on the designated target bus."
+  },
+  "proposed_oracles": [
+    {
+      "name": "baseline_bypass",
+      "assertion": "At identical fixed volume and explicitly dry two sends, bypass samples match baseline within declared PCM quantization/numerical tolerance; preserve and compare decoded configuration and metadata after actual project.save and reopening in a fresh application process.",
+      "reference": {
+        "path": "src/framework/audio/engine/internal/fx/cadencefxprocessor.cpp",
+        "first_line": 80,
+        "last_line": 86,
+        "fact": "Inactive adapter does not process samples."
+      }
+    },
+    {
+      "name": "eq_known_gain",
+      "configuration_decoded": {
+        "cadence.fx.schema": "1",
+        "lowGainDb": "0",
+        "midGainDb": "0",
+        "midFrequencyHz": "1000",
+        "midQ": "1",
+        "highGainDb": "0",
+        "outputGainDb": "-6"
+      },
+      "assertion": "Active musical render amplitude ratio approximates10^(-6/20), with peak and RMS ratios plus scaled residual checked against declared PCM tolerance. This establishes processing and state restoration; it is not a listening-quality oracle.",
+      "references": [
+        {
+          "path": "src/framework/audio/engine/internal/dsp/nativeeffects.cpp",
+          "first_line": 61,
+          "last_line": 65,
+          "fact": "Zero-gain filters use identity coefficients."
+        },
+        {
+          "path": "src/framework/audio/engine/internal/dsp/nativeeffects.cpp",
+          "first_line": 172,
+          "last_line": 228,
+          "fact": "EQ output gain is10^(gainDb/20), reset from saved target then applied per sample."
+        }
+      ]
+    },
+    {
+      "name": "compressor_known_makeup_gain",
+      "configuration_decoded": {
+        "cadence.fx.schema": "1",
+        "thresholdDb": "0",
+        "ratio": "1",
+        "kneeDb": "0",
+        "attackMs": "10",
+        "releaseMs": "100",
+        "makeupDb": "6"
+      },
+      "assertion": "At fixed safe level active musical render amplitude ratio approximates10^(6/20), with scaled residual and peak/RMS ratios checked. Ratio1 makes target reduction zero; this verifies real compressor processing path, not dynamic gain reduction.",
+      "references": [
+        {
+          "path": "src/framework/audio/engine/internal/dsp/nativeeffects.cpp",
+          "first_line": 278,
+          "last_line": 298,
+          "fact": "Saved makeup starts immediately and ratio1 makes reduction slope zero."
+        },
+        {
+          "path": "src/framework/audio/engine/internal/dsp/nativeeffects.cpp",
+          "first_line": 300,
+          "last_line": 323,
+          "fact": "Compressor applies10^((makeup-reduction)/20) per sample."
+        },
+        {
+          "path": "test/cadence/native_fx/native_fx_engine_tests.cpp",
+          "first_line": 77,
+          "last_line": 79,
+          "fact": "Existing factory test checks the same saved makeup gain on first frame."
+        }
+      ]
+    },
+    {
+      "name": "optional_actual_dynamic_compression",
+      "configuration_decoded": {
+        "cadence.fx.schema": "1",
+        "thresholdDb": "-60",
+        "ratio": "4",
+        "kneeDb": "0",
+        "attackMs": "0.1",
+        "releaseMs": "10",
+        "makeupDb": "0"
+      },
+      "assertion": "For demonstrably above-threshold musical input, active RMS is measurably below bypass while finite/nonzero and unsaturated; makeup0 and nonnegative reduction mean compressor gain does not exceed unity. Specify threshold evidence before interpreting unchanged RMS as a failure. No exact steady-state curve or subjective quality is inferred from musical material.",
+      "references": [
+        {
+          "path": "src/framework/audio/engine/internal/dsp/nativeeffects.cpp",
+          "first_line": 284,
+          "last_line": 323,
+          "fact": "Peak detector, nonnegative reduction and time-dependent gain application."
+        }
+      ]
+    },
+    {
+      "name": "all_audio",
+      "assertion": "Decode and inspect actual PCM for every render: finite values, positive frame count, declared sample rate/channel count, nonzero RMS, peaks below saturation and consistent timeline; compare reopened render to direct render under predeclared tolerance."
+    }
+  ],
+  "limits": [
+    "Static source byte equivalence does not transfer Windows2007 runtime qualification to candidate2008.",
+    "No GUI mixer interaction, audio-device behavior, perceptual quality, installer operation or external plugin coverage is established by this investigation.",
+    "Any fixed gain comparison must use identical sound selection, rendering format, volume/balance and explicit dry sends, plus enough headroom to avoid output saturation.",
+    "Use fresh isolated application profiles and process-job cleanup; no mutation of original stage or corresponding sources."
+  ],
+  "application_save_reopen_path": {
+    "scope": "Static exact-source proof that separate CLI processes call the actual project load/save and project audio-settings reader/writer; native execution remains pending",
+    "files": [
+      {
+        "path": "src/converter/internal/convertercontroller.cpp",
+        "source2007_sha256": "eccf1ec2bde1beeaf1320bef10a115791d9268a41e1cc712267950f46b4ab6ed",
+        "candidate2008_sha256": "eccf1ec2bde1beeaf1320bef10a115791d9268a41e1cc712267950f46b4ab6ed",
+        "byte_identical": true,
+        "source2007_excerpts": [
+          {
+            "first_line": 153,
+            "last_line": 160,
+            "text": "\n    Ret ret = notationProject->load(in, openParams);\n    if (!ret) {\n        LOGE() << \"failed load notation, err: \" << ret.toString() << \", path: \" << in;\n        return make_ret(Err::InFileFailedLoad);\n    }\n\n    QJsonArray oldTracks;"
+          },
+          {
+            "first_line": 220,
+            "last_line": 228,
+            "text": "        if (suffix == engraving::MSCZ || suffix == engraving::MSCX || suffix == engraving::MSCS) {\n            if (pageNumIsSet) {\n                return notationProject->savePage(out, std::get<page_num_t>(target.value()));\n            } else if (regionIsSet) {\n                return saveRegion(notationProject, std::get<ConvertRegionJson>(target.value()), out);\n            }\n\n            return notationProject->save(out);\n        }"
+          }
+        ]
+      },
+      {
+        "path": "src/project/internal/notationproject.cpp",
+        "source2007_sha256": "28a6070b8b75b7b989b000b90e3fc0c0dc12e0008ce0ee286e5f3b98366eea93",
+        "candidate2008_sha256": "28a6070b8b75b7b989b000b90e3fc0c0dc12e0008ce0ee286e5f3b98366eea93",
+        "byte_identical": true,
+        "source2007_excerpts": [
+          {
+            "first_line": 220,
+            "last_line": 227,
+            "text": "\n    // Load audio settings\n    bool tryCompatAudio = false;\n    if (!openParams.disablePlayback) {\n        ret = m_projectAudioSettings->read(reader);\n        if (!ret) {\n            m_projectAudioSettings->makeDefault();\n            tryCompatAudio = true;"
+          },
+          {
+            "first_line": 491,
+            "last_line": 518,
+            "text": "Ret NotationProject::save(const muse::io::path_t& path, SaveMode saveMode, bool createBackup)\n{\n    TRACEFUNC;\n\n    Ret ret;\n    muse::io::path_t savePath = path;\n\n    switch (saveMode) {\n    case SaveMode::SaveSelection: {\n        ret = saveSelectionOnScore(savePath);\n    } break;\n    case SaveMode::Save:\n    case SaveMode::SaveAs:\n    case SaveMode::SaveCopy: {\n        if (savePath.empty()) {\n            IF_ASSERT_FAILED(!m_path.empty()) {\n                return false;\n            }\n\n            savePath = m_path;\n        }\n\n        std::string suffix = io::suffix(savePath);\n\n        // Whether a backup file will be created depends on both the caller's and user's will\n        bool shouldCreateBackup = createBackup && configuration()->createBackupBeforeSaving();\n\n        ret = saveScore(savePath, suffix, shouldCreateBackup);"
+          },
+          {
+            "first_line": 875,
+            "last_line": 880,
+            "text": "    // Write master audio settings\n    ret = m_projectAudioSettings->write(msczWriter, m_masterNotation->notation()->soloMuteState());\n    if (!ret) {\n        LOGE() << \"failed write project audio settings, err: \" << ret.toString();\n        return ret;\n    }"
+          }
+        ]
+      }
+    ],
+    "conclusion": "CLI output MSCZ routes to notationProject->save(out), not a harness ZIP copy. Native input reload uses notationProject->load(in,openParams) and ProjectAudioSettings::read; project writing calls m_projectAudioSettings->write."
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "scope": "Text-only original2007 native FX QA source",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 20,
+      "sha256": "e97602ab9cac70102245345c5ab0fc9830df8b17f1072b188265a662a3a547ae"
+    },
+    {
+      "path": "CadenceProfileScope.py",
+      "bytes": 34344,
+      "sha256": "60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c"
+    },
+    {
+      "path": "OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5632,
+      "sha256": "214257cfc0c668d2cd5dbbd7106a57a45dd73a4d16fc947f18cb46bfccd6809f"
+    },
+    {
+      "path": "Retained2007.py",
+      "bytes": 10030,
+      "sha256": "d02bbeaad09b6f85aafb24f0cd3107decb924043fd259fe3e9b409f7ba2133b0"
+    },
+    {
+      "path": "Test-NativeFxRuntime.py",
+      "bytes": 15735,
+      "sha256": "362eed9b835baedcb0b0b6449a883e17705bda170f1094204b37e40750721399"
+    },
+    {
+      "path": "fixtures/LICENSE.txt",
+      "bytes": 736,
+      "sha256": "ca1500a6c3dfdb1108784d7a7e9ac2e850a9449c0f19ba603aa82d039adf37de"
+    },
+    {
+      "path": "fixtures/native-fx-cello.musicxml",
+      "bytes": 2329,
+      "sha256": "ced8cabf84b4c3d7b446e8c3c3832a98667886d83e789e320faa9ea4b96d29d6"
+    },
+    {
+      "path": "frozen-source.json",
+      "bytes": 635,
+      "sha256": "e0e36a40d2bee76337d8117016d0ca064e24fb2be2b9713b69855d6182a61fa9"
+    },
+    {
+      "path": "profile-source-contract.json",
+      "bytes": 3310,
+      "sha256": "0023f8d7510c89429dea85cda35d803175b3434532cf14aecaf793ded5663a9e"
+    },
+    {
+      "path": "source-contract-investigation.json",
+      "bytes": 21087,
+      "sha256": "7ec3914db4bb857f1274946c190b04f6f7f9221b4393013d0cf0f01a01710ce2"
+    },
+    {
+      "path": "test_preparation.py",
+      "bytes": 8194,
+      "sha256": "a055cd9ad3cfdb3e94651b0a95f78fc46dd8964c64a71d41346250e0bebc3d4e"
+    },
+    {
+      "path": "verify_producer.py",
+      "bytes": 3613,
+      "sha256": "de4c16facc6d69de4c132acea06044372c5769db8ad10a038eb11b88f2fb621c"
+    }
+  ]
+}
