@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "scope": "Actual existing Linux SF2 file bytes/metadata and pure case plan, no native app execution",
+  "bank_rows_verified": [
+    {
+      "collection_id": "cello-ensemble",
+      "file": "Cadence-VSCO-Cello-Ensemble.sf2",
+      "bytes": 48400382,
+      "sha256": "7c5d177057ef73bf6ccf2a7618b0516de678c4a98160d95c1a4e66fd6f670685",
+      "program": 42
+    },
+    {
+      "collection_id": "trumpet-vibrato",
+      "file": "Cadence-VSCO-Trumpet.sf2",
+      "bytes": 21599476,
+      "sha256": "8e6a212811ca9431c03c73a0c0fa1a5b3dd28038848ca7524137e7343ccbfc7c",
+      "program": 56
+    },
+    {
+      "collection_id": "contrabass-vibrato",
+      "file": "Cadence-VSCO-Contrabass.sf2",
+      "bytes": 47966050,
+      "sha256": "a5e307c5eafe24c79a51229ee0a0b1e0d76d2626a6fd07fea6f663e6be4181f3",
+      "program": 43
+    }
+  ],
+  "planned_cases": [
+    "basic-cello",
+    "cello",
+    "basic-trumpet",
+    "trumpet",
+    "basic-contrabass",
+    "contrabass",
+    "trumpet-minus18",
+    "missing-cello"
+  ],
+  "planned_native_commands": 27,
+  "application_executed": false,
+  "Windows_qualified": false
+}

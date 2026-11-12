@@ -1,0 +1,3 @@
+Generated Cadence dynamics and finite-sustain exercises
+
+These three MusicXML exercises are original test data dedicated to the public domain under CC0 1.0 Universal. The generator code remains GPL-3.0-only. Original CC0 legal text is available in ../converter/VSCO-CC0-LICENSE.txt; its sample-library attribution is separate from these original generated scores. No third-party musical work is copied.

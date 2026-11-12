@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "scope": "Exact source-only QA payload, not a Windows qualification",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 20,
+      "sha256": "e97602ab9cac70102245345c5ab0fc9830df8b17f1072b188265a662a3a547ae"
+    },
+    {
+      "path": "CadenceProfileScope.py",
+      "bytes": 34344,
+      "sha256": "60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c"
+    },
+    {
+      "path": "OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4163,
+      "sha256": "5b45055b70a609e683d04c785bd8fd3264df3ab6ec11e8f3005d59e4f53c4fad"
+    },
+    {
+      "path": "Test-VscoExpansion.py",
+      "bytes": 32644,
+      "sha256": "d48a09ecca52f48db76e6b5f6865ada39acc887e3c916d96a19e17af27db5945"
+    },
+    {
+      "path": "actual-linux-bank-lock-check.json",
+      "bytes": 1125,
+      "sha256": "98e80137c2f6b0d9388f36a8aa330ab7fb801c31a08d3f60ee54f6b8a1d62bc7"
+    },
+    {
+      "path": "bank-lock.json",
+      "bytes": 2013,
+      "sha256": "788a4216b1da658ee506735f558960a634c3cc3de5cb4721fdf3b3420dae7a92"
+    },
+    {
+      "path": "converter/CODE-GPL-3.0.txt",
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "converter/UPSTREAM-README-md",
+      "bytes": 370,
+      "sha256": "52512ab2ac73256c9ef532cb8b49cef1ed8447bd47d653970ce7bd0728494390"
+    },
+    {
+      "path": "converter/UPSTREAM-Readme-txt",
+      "bytes": 1883,
+      "sha256": "e0c398cff9660ccc52588b8e4e1554941709996488805f04298bd6e0a7993fcf"
+    },
+    {
+      "path": "converter/VSCO-CC0-LICENSE.txt",
+      "bytes": 6555,
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+    },
+    {
+      "path": "converter/build_collections.py",
+      "bytes": 9378,
+      "sha256": "9f8c8ce6e9270558750ebb560949a72a6170ec17dfa88f120f949aa084da4c1f"
+    },
+    {
+      "path": "converter/build_vsco_sf2.py",
+      "bytes": 21468,
+      "sha256": "6ea917c9e0f13d280c71cfc36796b4bc1cba9119c6484730be202f75f4cb171f"
+    },
+    {
+      "path": "converter/expansion-source-manifest.json",
+      "bytes": 15815,
+      "sha256": "0884c11a1ee7024dfc7ffa6fd96945e5e756774755095a701d43b379df7af0e0"
+    },
+    {
+      "path": "converter/mappings/CelloEnsSusVib.sfz",
+      "bytes": 2933,
+      "sha256": "276352639dda425dd12a4fdb3acdf545867fdb0ff4f89876319f4ec3cf12a19f"
+    },
+    {
+      "path": "converter/mappings/ContrabassSusVB.sfz",
+      "bytes": 3105,
+      "sha256": "f99fd524c8558f3da235b240c40ed9854a1bbf4fa299cb0ec44b5b32c967291f"
+    },
+    {
+      "path": "converter/mappings/TrumpetSusVib.sfz",
+      "bytes": 2808,
+      "sha256": "4663769f31fb00e00cf0182138d809c18259e69d2065e963e1da89358eaf3567"
+    },
+    {
+      "path": "fixtures/LICENSE.txt",
+      "bytes": 403,
+      "sha256": "32403dec54c01433752b7eb31c80ec76d84967a7a35e88af3a3834f570137691"
+    },
+    {
+      "path": "fixtures/cello-original.musicxml",
+      "bytes": 4457,
+      "sha256": "ab2530a7c70dbd894427f90f61a10492be4b2141dfc74df08d467891ac8efee7"
+    },
+    {
+      "path": "fixtures/contrabass-original.musicxml",
+      "bytes": 4468,
+      "sha256": "ed18cda36db59158f9e16738cb222f99329d8eda8c13ec36c5b4674e18d41832"
+    },
+    {
+      "path": "fixtures/trumpet-original.musicxml",
+      "bytes": 4451,
+      "sha256": "ae9f78a9d239fc8db5f631029a5e1235dc67587dc5877cf4e6d5cf2767d230e1"
+    },
+    {
+      "path": "frozen-source.json",
+      "bytes": 635,
+      "sha256": "e0e36a40d2bee76337d8117016d0ca064e24fb2be2b9713b69855d6182a61fa9"
+    },
+    {
+      "path": "profile-source-contract.json",
+      "bytes": 3310,
+      "sha256": "0023f8d7510c89429dea85cda35d803175b3434532cf14aecaf793ded5663a9e"
+    },
+    {
+      "path": "test_preparation.py",
+      "bytes": 5905,
+      "sha256": "f029f4f7a36445665a5afaf065272848978f0fd6e7897341a983cbb68ec56f7c"
+    },
+    {
+      "path": "verify_producer.py",
+      "bytes": 3613,
+      "sha256": "de4c16facc6d69de4c132acea06044372c5769db8ad10a038eb11b88f2fb621c"
+    }
+  ]
+}

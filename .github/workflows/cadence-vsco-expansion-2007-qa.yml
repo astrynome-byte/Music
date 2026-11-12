@@ -1,0 +1,134 @@
+name: Cadence retained2007 three-family SF2 expansion qualification
+on:
+  workflow_dispatch:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths:
+      - '.cadence-studio/vsco-expansion-2007/**'
+      - '.github/workflows/cadence-vsco-expansion-2007-qa.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-vsco-expansion-2007-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  retained-native-SF2:
+    if: github.repository == 'astrynome-byte/Music'
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Verify exact source payload and frozen original2007 selection
+        shell: pwsh
+        run: |
+          $source=Join-Path $env:GITHUB_WORKSPACE '.cadence-studio/vsco-expansion-2007'
+          if((Get-FileHash "$source/source-manifest.json" -Algorithm SHA256).Hash.ToLowerInvariant()-cne'3616ee5c17bdbacf640df01a46b88cd65935e3c5743ece3d9ce1fdc4ff9b2d32'){throw 'QA source manifest differs.'}
+          $manifest=Get-Content "$source/source-manifest.json" -Raw|ConvertFrom-Json
+          foreach($row in $manifest.files){
+            if($row.path-cnotmatch'^[A-Za-z0-9_./-]+$'-or$row.path.Contains('..')){throw 'Unsafe QA source path.'}
+            $file=Get-Item -LiteralPath (Join-Path $source $row.path)
+            if($file.PSIsContainer-or($file.Attributes-band[IO.FileAttributes]::ReparsePoint)-or$file.Length-ne$row.bytes-or(Get-FileHash $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()-cne$row.sha256){throw ('Source input changed: '+$row.path)}
+          }
+          if((Get-FileHash "$env:GITHUB_WORKSPACE/.cadence-studio/combined-2007-source/source.json" -Algorithm SHA256).Hash.ToLowerInvariant()-cne'e0e36a40d2bee76337d8117016d0ca064e24fb2be2b9713b69855d6182a61fa9'){throw 'Original2007 source selection differs.'}
+      - name: Authenticate the fixed successful producer and original artifact metadata without any GitHub write
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python -I "$env:GITHUB_WORKSPACE/.cadence-studio/vsco-expansion-2007/verify_producer.py" --output "$env:RUNNER_TEMP/vsco-expansion-producer.json" --source-selection "$env:GITHUB_WORKSPACE/.cadence-studio/combined-2007-source/source.json"
+          if($LASTEXITCODE-ne0){throw 'Exact retained2007 producer/artifact provenance failed.'}
+      - name: Retrieve only the exact retained full2007 stage artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: astrynome-byte/Music
+          run-id: '43266732201'
+          artifact-ids: '13970570430'
+          merge-multiple: true
+          path: ${{ runner.temp }}/vsco-expansion-2007-stage-artifact
+      - name: Build pinned CC0 SF2 banks and exercise only the retained app in an owned native Job
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $source=Join-Path $env:GITHUB_WORKSPACE '.cadence-studio/vsco-expansion-2007'
+          $root=Join-Path $env:RUNNER_TEMP 'vsco-expansion-2007-qa'
+          if(Test-Path -LiteralPath $root){throw 'New runtime root required.'}
+          [void][IO.Directory]::CreateDirectory($root)
+          $profile=Join-Path $root 'profile-scope.json'
+          $python=(Get-Command python -CommandType Application -ErrorAction Stop|Select-Object -First 1).Source
+          $report=[ordered]@{schema_version=1;status='running';source_only_preparation=$false;commands=@();drains=@();profile_cleanup_verified=$false;job_closed_cleanly=$false;errors=@();forced_descendants=0}
+          $job=$null
+          function Invoke-Owned([string]$Name,[string[]]$Arguments,[int]$Seconds){
+            $info=[Diagnostics.ProcessStartInfo]::new();$info.FileName=$python;$info.UseShellExecute=$false
+            $info.WorkingDirectory=$root;$info.RedirectStandardOutput=$true;$info.RedirectStandardError=$true
+            foreach($argument in $Arguments){$info.ArgumentList.Add($argument)}
+            $process=[Diagnostics.Process]::new();$process.StartInfo=$info;$started=$false
+            $row=[ordered]@{name=$Name;pid=$null;exit_code=$null;timed_out=$false};$report.commands+=,$row
+            try{
+              if(-not $process.Start()){throw 'Owned Python process did not start.'};$started=$true;$row.pid=$process.Id
+              $stdout=$process.StandardOutput.ReadToEndAsync();$stderr=$process.StandardError.ReadToEndAsync()
+              if(-not $process.WaitForExit($Seconds*1000)){$row.timed_out=$true;$process.Kill($true);[void]$process.WaitForExit(5000);throw ('Owned timeout: '+$Name)}
+              $proof=Stop-OwnedJobChildren -Job $job;$report.drains+=,$proof;$report.forced_descendants+=@($proof.TerminatedPids).Count
+              $out=$stdout.GetAwaiter().GetResult();$err=$stderr.GetAwaiter().GetResult()
+              if($out.Length -gt 2097152 -or $err.Length -gt 2097152){throw 'Own transcript exceeds 2 MiB.'}
+              [IO.File]::WriteAllText((Join-Path $root ($Name+'.stdout.log')),$out,[Text.UTF8Encoding]::new($false))
+              [IO.File]::WriteAllText((Join-Path $root ($Name+'.stderr.log')),$err,[Text.UTF8Encoding]::new($false))
+              Write-Host $out;$row.exit_code=$process.ExitCode
+              if($row.exit_code -ne 0 -or $row.timed_out -or @($proof.TerminatedPids).Count){throw ('Owned command failed or left descendants: '+$Name)}
+            }finally{
+              if($started){
+                if(-not $process.HasExited){$process.Kill($true);[void]$process.WaitForExit(5000)}
+                $proof=Stop-OwnedJobChildren -Job $job;$report.drains+=,$proof;$report.forced_descendants+=@($proof.TerminatedPids).Count
+              }
+              $process.Dispose()
+            }
+          }
+          try{
+            $profileHelper=Join-Path $source 'CadenceProfileScope.py'
+            if((Get-FileHash -LiteralPath $profileHelper -Algorithm SHA256).Hash.ToLowerInvariant() -cne '60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c'){throw 'Pinned profile helper differs.'}
+            $jobHelper=Join-Path $source 'OwnProcessJob.psm1'
+            if((Get-FileHash -LiteralPath $jobHelper -Algorithm SHA256).Hash.ToLowerInvariant() -cne 'e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77'){throw 'Pinned owned Job helper differs.'}
+            Import-Module $jobHelper -Force;$job=New-OwnedProcessJob
+            Invoke-Owned 'build-CC0-banks' @('-I',(Join-Path $source 'converter/build_collections.py'),'--collection','cello-ensemble','--collection','trumpet-vibrato','--collection','contrabass-vibrato','--output',(Join-Path $root 'banks'),'--download') 900
+            Invoke-Owned 'prepare-profile' @('-I',$profileHelper,'prepare','--record',$profile) 30
+            Invoke-Owned 'native-SF2-tests' @('-I','-X','utf8',(Join-Path $source 'Test-VscoExpansion.py'),'--artifact',(Join-Path $env:RUNNER_TEMP 'vsco-expansion-2007-stage-artifact'),'--stage',(Join-Path $root 'stage'),'--banks',(Join-Path $root 'banks'),'--profile-record',$profile,'--output',(Join-Path $root 'native-evidence')) 1500
+            $qa=Get-Content -LiteralPath (Join-Path $root 'native-evidence/vsco-expansion-report.json') -Raw|ConvertFrom-Json
+            if($qa.status -cne 'passed-native-expansion-render-gain-save-reload-and-controls' -or $qa.cases.Count -ne 8 -or $qa.commands.Count -ne 27){throw 'Native SF2 qualification did not pass all eight cases and27 native commands.'}
+            $report.status='native-checks-passed-cleanup-pending'
+          }catch{$report.status='failed_or_blocked';$report.errors+=,$_.Exception.Message}
+          finally{
+            $drained=$false
+            if($job){try{$proof=Stop-OwnedJobChildren -Job $job;$report.drains+=,$proof;$report.forced_descendants+=@($proof.TerminatedPids).Count;$drained=$true}catch{$report.errors+=,$_.Exception.Message}}
+            if((Test-Path -LiteralPath $profile) -and $drained){
+              try{Invoke-Owned 'cleanup-profile' @('-I',(Join-Path $source 'CadenceProfileScope.py'),'cleanup','--record',$profile) 60
+                $state=Get-Content -LiteralPath $profile -Raw|ConvertFrom-Json;$report.profile_cleanup_verified=$state.status -ceq 'cleaned'
+              }catch{$report.errors+=,$_.Exception.Message}
+            }elseif(Test-Path -LiteralPath $profile){$report.errors+=,'Profile cleanup refused without proven Job drainage.'}
+            if($job){try{$report.final_job_close=Close-OwnedProcessJob -Job $job;$report.job_closed_cleanly=$true}catch{$report.errors+=,$_.Exception.Message}}
+            if($report.forced_descendants){$report.errors+=,'An owned descendant required forced termination; no qualification PASS.'}
+            if($report.status -ceq 'native-checks-passed-cleanup-pending' -and $report.profile_cleanup_verified -and $report.job_closed_cleanly -and -not $report.errors.Count){$report.status='passed-native-SF2-with-owned-cleanup'}
+            elseif($report.status -cne 'failed_or_blocked'){$report.status='cleanup-failed'}
+            $report|ConvertTo-Json -Depth 20|Set-Content -LiteralPath (Join-Path $root 'result.json') -Encoding utf8NoBOM
+            Write-Host 'CADENCE_VSCO_SF2_RESULT_BEGIN';Write-Host ($report|ConvertTo-Json -Depth 20 -Compress);Write-Host 'CADENCE_VSCO_SF2_RESULT_END'
+          }
+          if($report.status -cne 'passed-native-SF2-with-owned-cleanup'){throw 'Native SF2 QA blocked or failed; inspect exact reports.'}
+      - name: Retain actual diagnostics, native saved copies and rendered control WAVs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cadence-vsco-expansion-2007-qa-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/vsco-expansion-producer.json
+            ${{ runner.temp }}/vsco-expansion-2007-qa/result.json
+            ${{ runner.temp }}/vsco-expansion-2007-qa/*.log
+            ${{ runner.temp }}/vsco-expansion-2007-qa/profile-scope.json
+            ${{ runner.temp }}/vsco-expansion-2007-qa/native-evidence/
+            ${{ runner.temp }}/vsco-expansion-2007-qa/banks/banks-manifest.json
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "scope": "Exact actual Linux-generated SF2 bytes; Windows must rebuild and rehash these three rows, not compare the aggregated manifest serialization",
+  "source_commit": "28092772094b2d9f1148d84cea97f4545b8c687d",
+  "source_manifest_sha256": "0884c11a1ee7024dfc7ffa6fd96945e5e756774755095a701d43b379df7af0e0",
+  "banks": [
+    {
+      "collection_id": "cello-ensemble",
+      "file": "Cadence-VSCO-Cello-Ensemble.sf2",
+      "bytes": 48400382,
+      "sha256": "7c5d177057ef73bf6ccf2a7618b0516de678c4a98160d95c1a4e66fd6f670685",
+      "soundfont_name": "Cadence-VSCO-Cello-Ensemble",
+      "preset_name": "Violoncelles",
+      "resource_id": "Cadence-VSCO-Cello-Ensemble\\0\\42",
+      "bank": 0,
+      "program": 42,
+      "midi_range": [
+        36,
+        77
+      ],
+      "mapping": "CelloEnsSusVib.sfz",
+      "regions": 27,
+      "zones": 54,
+      "release_seconds": 0.8
+    },
+    {
+      "collection_id": "trumpet-vibrato",
+      "file": "Cadence-VSCO-Trumpet.sf2",
+      "bytes": 21599476,
+      "sha256": "8e6a212811ca9431c03c73a0c0fa1a5b3dd28038848ca7524137e7343ccbfc7c",
+      "soundfont_name": "Cadence-VSCO-Trumpet",
+      "preset_name": "Trompette",
+      "resource_id": "Cadence-VSCO-Trumpet\\0\\56",
+      "bank": 0,
+      "program": 56,
+      "midi_range": [
+        52,
+        84
+      ],
+      "mapping": "TrumpetSusVib.sfz",
+      "regions": 22,
+      "zones": 44,
+      "release_seconds": 0.5
+    },
+    {
+      "collection_id": "contrabass-vibrato",
+      "file": "Cadence-VSCO-Contrabass.sf2",
+      "bytes": 47966050,
+      "sha256": "a5e307c5eafe24c79a51229ee0a0b1e0d76d2626a6fd07fea6f663e6be4181f3",
+      "soundfont_name": "Cadence-VSCO-Contrabass",
+      "preset_name": "Contrebasse",
+      "resource_id": "Cadence-VSCO-Contrabass\\0\\43",
+      "bank": 0,
+      "program": 43,
+      "midi_range": [
+        24,
+        60
+      ],
+      "mapping": "ContrabassSusVB.sfz",
+      "regions": 26,
+      "zones": 52,
+      "release_seconds": 0.8
+    }
+  ]
+}
