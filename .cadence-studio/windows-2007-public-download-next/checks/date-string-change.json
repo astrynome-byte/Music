@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "observed_failure": "Real target rejected because expires_at was System.DateTime under PowerShell7.6.9; no active target was published",
+  "original_sha256": "930c3ca9a245ee2e7e125757fc4a0dcbae37d6648d3ca44e60f5bc1d315c15c3",
+  "new_sha256": "34b6aa75afe3b9e92adb2772c79601ea77c92198c5e92592cc09c1d6b50fa0a9",
+  "assets_and_reports_changed": false,
+  "workflow_changed": false,
+  "scope": "Preserve ISO JSON date strings with DateKind String when available; retain old PowerShell behavior"
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "PowerShell": "7.6.9",
+  "tests": [
+    {
+      "case": "actual old reader fails on coerced expiry date",
+      "passed": true,
+      "observed": "Actual distinct artifact IDs, roles, digests, sizes and expiry are required."
+    },
+    {
+      "case": "actual reviewed target accepted with exact string dates",
+      "passed": true
+    },
+    {
+      "case": "expired original rejected",
+      "passed": true,
+      "observed": "Original fullrun artifact expired; preserve and re-review provenance."
+    },
+    {
+      "case": "duplicate actual artifact ID rejected",
+      "passed": true,
+      "observed": "Actual distinct artifact IDs, roles, digests, sizes and expiry are required."
+    },
+    {
+      "case": "inactive target rejected",
+      "passed": true,
+      "observed": "The actual reviewed experimental2007 target is required; template is deliberately refused."
+    },
+    {
+      "case": "unreviewed source target rejected",
+      "passed": true,
+      "observed": "Actual asset/notices review has not been supplied."
+    },
+    {
+      "case": "completion claim rejected",
+      "passed": true,
+      "observed": "Unvalidated client/listening/completeness claims are forbidden."
+    }
+  ],
+  "count": 7,
+  "original_failure_preserved": true,
+  "github_writes": false,
+  "application_executed": false
+}

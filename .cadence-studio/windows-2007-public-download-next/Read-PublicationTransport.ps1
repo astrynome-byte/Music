@@ -2,7 +2,11 @@
 # Structural transport guard only. The inactive template never enables itself.
 Set-StrictMode -Version Latest
 function Read-PublicationTransport([string]$Path){
-    $t=Get-Content -LiteralPath $Path -Raw -Encoding utf8|ConvertFrom-Json
+    # PowerShell7.5+ otherwise coerces ISO dates and loses their string type.
+    # Older PowerShell keeps strings by default and has no DateKind parameter.
+    $jsonOptions=@{}
+    if((Get-Command ConvertFrom-Json -CommandType Cmdlet).Parameters.ContainsKey('DateKind')){$jsonOptions.DateKind='String'}
+    $t=Get-Content -LiteralPath $Path -Raw -Encoding utf8|ConvertFrom-Json @jsonOptions
     if(($t.schema_version-isnot[int]-and$t.schema_version-isnot[long])-or$t.schema_version-ne1-or$t.ready-isnot[bool]-or-not$t.ready-or$t.repository-cne'astrynome-byte/Music'-or$t.version-cne'4.7.6-cadence.2007'-or$t.build_number-ne2007){throw 'The actual reviewed experimental2007 target is required; template is deliberately refused.'}
     if($t.review.approved-isnot[bool]-or-not$t.review.approved-or$t.review.reviewed_by-isnot[string]-or[string]::IsNullOrWhiteSpace($t.review.reviewed_by)){throw 'Actual asset/notices review has not been supplied.'}
     if(($t.producer.run_id-isnot[int]-and$t.producer.run_id-isnot[long])-or$t.producer.run_id-ne43266732201-or$t.producer.driver_commit-cne'c3421a217c76a1b2cc5d4fab74305d209491d82f'){throw 'Only the exact full2007 producer is accepted.'}
