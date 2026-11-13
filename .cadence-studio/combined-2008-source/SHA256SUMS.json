@@ -24,12 +24,12 @@
     "sha256": "36f373d9d3fa293453458501e5959467d5dbb448ed34ded1ad6c8358dc61d175"
   },
   "README.md": {
-    "bytes": 2265,
-    "sha256": "dc97502c83342b05d59389722bbd6c38f5d37b0ae3109353875d3f5be0898088"
+    "bytes": 2805,
+    "sha256": "c7edfbc8204b739da3bea8edb28eaf3183d8a99a9c5a2993ca4e7a61328238e5"
   },
   "Restore-Binaries.ps1": {
     "bytes": 12272,
-    "sha256": "7ac9829997f88b6a1b4bc85ca558e24859c81357f66062d14550b00e047df03a"
+    "sha256": "c42225dd56553edf087fd65a99bf666e2cfb8e0dfc492ac25039c5dabb282bd8"
   },
   "Test-ReadyGui.ps1": {
     "bytes": 11599,
@@ -48,8 +48,8 @@
     "sha256": "64b3a594ad35c366deb442441516e521fdc0fa907eac17b487dac9a9ab1d9b1a"
   },
   "audio-transcription/Invoke-AudioTranscriptionQa.ps1": {
-    "bytes": 3722,
-    "sha256": "752dc919376ada53f9798e0c3b3004615686f053702a9872f4f2efe8df9ea329"
+    "bytes": 3862,
+    "sha256": "503e0edf678ee9430be36ad4ef2210c14b95dfc8fa0207286f31d1b07a777f23"
   },
   "audio-transcription/OwnProcessJob.psm1": {
     "bytes": 21255,
@@ -86,6 +86,10 @@
   "audio-transcription/qualify_audio_transcription.py": {
     "bytes": 18656,
     "sha256": "ad34b8120e8a27d2255251d8917648a227349bc226c1f0b181256e103a342297"
+  },
+  "binary-parts.json": {
+    "bytes": 27109,
+    "sha256": "c83c5cd09c63e378339e63d36f758c32a42968f9c35c09873d5b6b7e215fba6b"
   },
   "binary-parts/audio-transcription_fixtures_cello-ensemble.expected.mid/00000.b64": {
     "bytes": 200,
@@ -565,39 +569,35 @@
   },
   "binary-parts/changes.patch.gz/00073.b64": {
     "bytes": 87360,
-    "sha256": "88ed3084eb8c20dd5966132ab7f97741be27219d86b05cbe1b6e722e8992e8fb"
+    "sha256": "130e4aeb706d23d977026f47f587801069daf7677203d09ccc999b10b1577bda"
   },
   "binary-parts/changes.patch.gz/00074.b64": {
     "bytes": 87360,
-    "sha256": "cb4d73ce00142cc99ef3c6b8d4006b45bcb60a5c7a1019496568b04ff27bcc19"
+    "sha256": "a4a2a94c48a7617df28529e7f6396cc095731fdd96210bf13269f95260f46fe8"
   },
   "binary-parts/changes.patch.gz/00075.b64": {
     "bytes": 87360,
-    "sha256": "625445d375c1cf93608ae8c1f0979ef026be526d89aca99a2c888122c96709a9"
+    "sha256": "d43777c1099c9865b1ac7f1ff4b1e98b36724081609693da3498ae4b7acbe551"
   },
   "binary-parts/changes.patch.gz/00076.b64": {
     "bytes": 87360,
-    "sha256": "14fb08be86b9982b3dd9a1803b69615474e979af4564100eb8112235ec0c37bb"
+    "sha256": "0b39ea4f5470a8d7ecbcc0cca846cbf857985f6b4d7a592ee1b1f0eaeff18cd7"
   },
   "binary-parts/changes.patch.gz/00077.b64": {
     "bytes": 87360,
-    "sha256": "9c501d852f794df51746ed80523395e455eb0cc21d7af163414e8595220db585"
+    "sha256": "2713fb23993ca7dfd92867dc56bc1efa95eccd3e499a0e48e4457ab9cc652062"
   },
   "binary-parts/changes.patch.gz/00078.b64": {
     "bytes": 87360,
-    "sha256": "42df54e609c8f5d0c2d315c38969f12d7059b6423ef14afcda949ce4ced513b2"
+    "sha256": "8297aadb7d755fca967d8eee3faff78e866333bf54616c28209cef9bc18afaee"
   },
   "binary-parts/changes.patch.gz/00079.b64": {
-    "bytes": 70216,
-    "sha256": "5ec0a4b9d72fb9ea79e34820d9723059d34958aebd65dde8a8b09878e7619e36"
-  },
-  "binary-parts.json": {
-    "bytes": 27109,
-    "sha256": "3a95ee3258f5fb32711f23b11d5264a957e8a2f0421491379722b26adb496624"
+    "bytes": 84896,
+    "sha256": "b34f5a7861c49e3ac0a954925df85d08781d3c1040e761a82388d6774d45b574"
   },
   "changes.patch.gz": {
-    "bytes": 5228740,
-    "sha256": "cc5511e411124b7824441e110e50b9ea605b0ec473f437e0fe7c2503636767c0"
+    "bytes": 5239751,
+    "sha256": "ce7bc369062d6520785169c89d187bf8fa0c9e8dc069315a5e0d75e8f79247b9"
   },
   "check_app_aac.py": {
     "bytes": 16511,
@@ -620,8 +620,16 @@
     "sha256": "e47a0df3af2f0af6b15df3ed625a0f76768020e06387705d60ec7ca52ddbf036"
   },
   "handoff.json": {
-    "bytes": 849,
-    "sha256": "c73d12b341645969208c2703f5c7ad5259a66960df606e5ca71edb31e1439e15"
+    "bytes": 2583,
+    "sha256": "c1c143b8fcd52bcd795c0370b611cc3c1f45af04cdc89e72f02bf7b296057197"
+  },
+  "native-gates/Invoke-AuthorizedAudioLinksTests.ps1": {
+    "bytes": 7722,
+    "sha256": "fa5cc0f570acae69e8026e3df4b983e4a580e7ff57b40bb19fdaff60228c3885"
+  },
+  "native-gates/qt_tls_and_links_probe.cpp": {
+    "bytes": 2651,
+    "sha256": "02824acb76039d6f057fb8d2eaeaff949b13590f9490150da50a685763bf2129"
   },
   "observe_native_additions.py": {
     "bytes": 8319,
@@ -649,7 +657,7 @@
   },
   "source.json": {
     "bytes": 968,
-    "sha256": "3fb8812259226b2a2dd31e08e288d4e62162a1c97d4e16a6c3f055fa3ab63064"
+    "sha256": "d8150851d20d6f9d631a7f93226753951eb1fb456e8a385a0ef8c834992bf354"
   },
   "test_driver_helpers.py": {
     "bytes": 6028,
@@ -662,6 +670,10 @@
   "verify_configured_macro_profile.py": {
     "bytes": 6658,
     "sha256": "e1430844d762e9ccb4a6801b594579f2c99d4a3855a850750955275519d55a8e"
+  },
+  "verify_msvc_unity_syntax.py": {
+    "bytes": 14332,
+    "sha256": "59abe796887c101b7b452af311c568dee31602caa1eea81d8364f79fda87aeaa"
   },
   "verify_system_icu.py": {
     "bytes": 21722,

@@ -23,7 +23,8 @@ $qaRoot = [IO.Path]::GetFullPath($OutputDirectory).TrimEnd('\','/')
 $tempRoot = [IO.Path]::GetFullPath($env:RUNNER_TEMP).TrimEnd('\','/')
 if (-not $qaRoot.StartsWith($tempRoot + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase) -or
     (Test-Path -LiteralPath $qaRoot)) { throw 'Output must be new and below RUNNER_TEMP.' }
-$python = (Get-Command python -CommandType Application -ErrorAction Stop).Source
+$python = (Get-Command python -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
+if (-not (Test-Path -LiteralPath $python -PathType Leaf)) { throw 'A single real Python executable is required.' }
 Import-Module (Join-Path $PSScriptRoot 'OwnProcessJob.psm1') -Force
 New-Item -ItemType Directory -Path $qaRoot | Out-Null
 $record = [ordered]@{schema_version=1;status='running';controller_pid=$PID;python_exit_code=$null;errors=@();drain=$null;close=$null}

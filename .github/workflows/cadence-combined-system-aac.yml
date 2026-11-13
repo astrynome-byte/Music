@@ -220,6 +220,16 @@ jobs:
             --output "$env:RUNNER_TEMP/qa-qualification-plan/native-additions-observation.json"
           if ($LASTEXITCODE -ne 0) { throw 'Native metadata/sync observations differ from the reviewed tests or frozen source' }
 
+      # Insert after the Qt kit/Python/MSVC prerequisites and before the complete app build.
+      - name: Require the actual native authorized WAV HTTPS suite on Windows
+        run: |
+          & "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/native-gates/Invoke-AuthorizedAudioLinksTests.ps1" `
+            -SourceRoot "$env:GITHUB_WORKSPACE/cadence-src" `
+            -QtKit $env:QT_ROOT_DIR `
+            -OutputDirectory "$env:RUNNER_TEMP/qa-authorized-wav-HTTPS"
+      # Append this path to the existing always() logs artifact, with no app runtime dependency:
+      # ${{ runner.temp }}/qa-authorized-wav-HTTPS/**
+
       - name: Fetch pinned dependencies
         run: ./scripts/windows/Prepare-Dependencies.ps1 -Destination "$env:RUNNER_TEMP/cadence-deps" -WithVstSdk
 
@@ -266,6 +276,10 @@ jobs:
             --build-dir "$env:RUNNER_TEMP/build-cadence" --require-unity --require-pch `
             --output "$env:RUNNER_TEMP/macro-profile-prebuild.json"
           if ($LASTEXITCODE -ne 0) { throw 'Cadence macro profile is inconsistent; full application compilation was not attempted' }
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/verify_msvc_unity_syntax.py" `
+            --build-dir "$env:RUNNER_TEMP/build-cadence" `
+            --output-dir "$env:RUNNER_TEMP/project-unity-prebuild" --include-qml
+          if ($LASTEXITCODE -ne 0) { throw 'Actual MSVC Unity syntax preflight failed; full application build was not attempted' }
           $buildJobs = 2
           try {
             $memoryKiB = [long](Get-CimInstance Win32_OperatingSystem).TotalVisibleMemorySize
@@ -720,6 +734,8 @@ jobs:
             ${{ runner.temp }}/combined-unit-tests.log
             ${{ runner.temp }}/qa-qualification-plan/**
             ${{ runner.temp }}/macro-profile-prebuild.json
+            ${{ runner.temp }}/project-unity-prebuild/**
+            ${{ runner.temp }}/qa-authorized-wav-HTTPS/**
             ${{ runner.temp }}/cadence-omr-runner-tests/*.json
             ${{ runner.temp }}/cadence-omr-runner-tests/*.log
             ${{ runner.temp }}/cadence-omr-runner-tests/ctest-results.xml
