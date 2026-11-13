@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "private-actual-stage-only-harness-prefix-and-diagnostics-not-Windows-validated",
+  "status": "private-actual-stage-only-exact-native-title-forms-not-Windows-validated",
   "files": [
     {
       "path": ".gitattributes",
@@ -19,8 +19,8 @@
     },
     {
       "path": "Owned-WindowEvidence.ps1",
-      "bytes": 8859,
-      "sha256": "df3932ef9cc58674bf770ff886264d337d2fce3bb0eec3291a8ef27ffcc0742c"
+      "bytes": 9324,
+      "sha256": "4e793400f85a1ada755b94930f432b9182d5b9b81debc467181c09be6107f6e8"
     },
     {
       "path": "Prepare-OriginalWave.py",
@@ -74,8 +74,8 @@
     },
     {
       "path": "native/ImportDialogsFlow.inc",
-      "bytes": 25682,
-      "sha256": "73a44b914a59141f79877d1519159a1ab1383677ec9c9ba76c5d9091d54d3a64"
+      "bytes": 26089,
+      "sha256": "ff0d152504af02fa8adf4f9328ed07011a14cff4de079a5154aeca60c2819a37"
     },
     {
       "path": "native/OwnedKeyboard.h",
@@ -95,7 +95,7 @@
     {
       "path": "native/SHA256SUMS.txt",
       "bytes": 413,
-      "sha256": "e692eec09f9216972d628043eb662001cce13bfdbb8b99615ed8d4d09e2d130e"
+      "sha256": "4740c91372c290848719d9fef52869caa304598a2a32a44d9459ee526c8e18ef"
     },
     {
       "path": "native/UiaProbe.cpp",

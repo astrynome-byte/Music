@@ -30,11 +30,18 @@ static bool observeFocus(IUIAutomation* a,const std::wstring& label,int role)
         +",\"role\":"+std::to_string(n.type)+",\"pid\":"+std::to_string(n.pid)+",\"matched\":"+(yes?"true":"false")+'}');
     return yes;
 }
+static bool exactImportDialogTitle(const std::wstring& actual,const std::wstring& semantic)
+{
+    // GUI3 GetWindowTextW + original owned capture observed this exact native
+    // Cadence suffix. Accept only the two known dialog titles and exact forms.
+    if(semantic!=omrTitle&&semantic!=wavTitle)return false;
+    return actual==semantic||actual==semantic+L" - Cadence Studio";
+}
 static HWND exactDialog(const std::wstring& title)
 {
     HWND match=nullptr;
     for(HWND w:windows()) {
-        if(windowTitle(w)!=title||!IsWindowEnabled(w))continue;
+        if(!exactImportDialogTitle(windowTitle(w),title)||!IsWindowEnabled(w))continue;
         if(match||!cadence_owned_file_dialog_detail::ownedChain(w,mainWindow(),targetPid))return nullptr;
         match=w;
     }

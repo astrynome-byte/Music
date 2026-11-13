@@ -88,9 +88,13 @@ function Save-CadenceApplicationLogEvidence([string] $CadenceDataRoot, [string] 
 function Capture-OwnedImportDialog($Native,[string]$ExpectedTitle,$Process,[string]$Name,[string]$Directory,$Report) {
  $Process.Refresh();if($Process.HasExited){throw 'Owned application exited before its modal capture.'}
  $window=[IntPtr][long]$Native.dialog_handle
+ $observedTitle=[CadenceLibraryWindowNative]::Title($window)
+ if($ExpectedTitle-cnotin@('Reconnaître une partition — PDF ou image','Transcrire une mélodie WAV locale')-or
+    ($observedTitle-cne$ExpectedTitle-and$observedTitle-cne($ExpectedTitle+' - Cadence Studio'))-or
+    $Native.dialog_title-isnot[string]-or$Native.dialog_title-cne$observedTitle){throw 'The exact known import title must match its native phase observation.'}
  if(-not[CadenceLibraryWindowNative]::Owned($window,$Process.Id)-or
     -not[CadenceLibraryWindowNative]::IsWindowVisible($window)-or-not[CadenceLibraryWindowNative]::IsWindowEnabled($window)-or
-    [CadenceLibraryWindowNative]::Title($window)-cne$ExpectedTitle){throw 'The exact observed owned modal is no longer available.'}
+    [CadenceLibraryWindowNative]::Title($window)-cne$observedTitle){throw 'The exact observed owned modal is no longer available.'}
  [void][CadenceLibraryWindowNative]::SetForegroundWindow($window)
  if([CadenceLibraryWindowNative]::GetForegroundWindow()-ne$window){throw 'Expected modal is not foreground; no screenshot of another window is taken.'}
  $rect=[CadenceLibraryWindowNative+Rect]::new()
@@ -102,8 +106,8 @@ function Capture-OwnedImportDialog($Native,[string]$ExpectedTitle,$Process,[stri
  try {
   $graphics=[Drawing.Graphics]::FromImage($bitmap)
   try{$graphics.CopyFromScreen($rect.Left,$rect.Top,0,0,$bitmap.Size)}finally{$graphics.Dispose()}
-  if(-not[CadenceLibraryWindowNative]::Owned($window,$Process.Id)-or[CadenceLibraryWindowNative]::Title($window)-cne$ExpectedTitle-or[CadenceLibraryWindowNative]::GetForegroundWindow()-ne$window){throw 'Observed modal changed during capture.'}
+  if(-not[CadenceLibraryWindowNative]::Owned($window,$Process.Id)-or[CadenceLibraryWindowNative]::Title($window)-cne$observedTitle-or[CadenceLibraryWindowNative]::GetForegroundWindow()-ne$window){throw 'Observed modal changed during capture.'}
   $path=Join-Path $Directory $Name;$bitmap.Save($path,[Drawing.Imaging.ImageFormat]::Png)
-  $Report.captures+=,@{path=$path;pid=$Process.Id;title=$ExpectedTitle;bytes=(Get-Item $path).Length;sha256=(Get-FileHash $path -Algorithm SHA256).Hash.ToLowerInvariant();status='original_capture_requires_human_visual_review';method='desktop_pixels_cropped_only_to_verified_owned_modal'}
+  $Report.captures+=,@{path=$path;pid=$Process.Id;title=$observedTitle;semantic_title=$ExpectedTitle;bytes=(Get-Item $path).Length;sha256=(Get-FileHash $path -Algorithm SHA256).Hash.ToLowerInvariant();status='original_capture_requires_human_visual_review';method='desktop_pixels_cropped_only_to_verified_owned_modal'}
  }finally{$bitmap.Dispose()}
 }
