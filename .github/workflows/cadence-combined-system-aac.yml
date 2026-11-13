@@ -244,6 +244,7 @@ jobs:
 
       - name: Compile and stage the complete Cadence library and system AAC candidate
         run: |
+          $env:CMAKE_EXPORT_COMPILE_COMMANDS = 'ON'
           $selection = Get-Content "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/source.json" -Raw | ConvertFrom-Json
           $buildNumber = [int]$selection.build_number
           if ($buildNumber -ne 2008) { throw 'This frozen candidate is reviewed only for product build2008; a different product version requires a new reviewed source plan' }
@@ -261,7 +262,17 @@ jobs:
           python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/check_backend.py" `
             --build "$env:RUNNER_TEMP/build-cadence" --output "$env:RUNNER_TEMP/qa-system-aac-graph/report.json"
           if ($LASTEXITCODE -ne 0) { throw 'System AAC graph selection failed; no full application build will be attempted' }
-          ./scripts/windows/Build.ps1 -BuildPath "$env:RUNNER_TEMP/build-cadence" -Jobs 2
+          python "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/verify_configured_macro_profile.py" `
+            --build-dir "$env:RUNNER_TEMP/build-cadence" --require-unity --require-pch `
+            --output "$env:RUNNER_TEMP/macro-profile-prebuild.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Cadence macro profile is inconsistent; full application compilation was not attempted' }
+          $buildJobs = 2
+          try {
+            $memoryKiB = [long](Get-CimInstance Win32_OperatingSystem).TotalVisibleMemorySize
+            if ([Environment]::ProcessorCount -ge 4 -and $memoryKiB -ge 12582912) { $buildJobs = 4 }
+          } catch { Write-Host 'Hardware query unavailable; retain two compile workers.' }
+          Write-Host "Full-build workers: $buildJobs"
+          ./scripts/windows/Build.ps1 -BuildPath "$env:RUNNER_TEMP/build-cadence" -Jobs $buildJobs
 
       - name: Authenticate the executable used by all following probes
         run: |
@@ -708,6 +719,7 @@ jobs:
             ${{ runner.temp }}/cadence-bootstrap.json
             ${{ runner.temp }}/combined-unit-tests.log
             ${{ runner.temp }}/qa-qualification-plan/**
+            ${{ runner.temp }}/macro-profile-prebuild.json
             ${{ runner.temp }}/cadence-omr-runner-tests/*.json
             ${{ runner.temp }}/cadence-omr-runner-tests/*.log
             ${{ runner.temp }}/cadence-omr-runner-tests/ctest-results.xml

@@ -1,20 +1,16 @@
 {
   "schema_version": 1,
-  "source_commit": "49272b75a4107c97130b8a46727af6a8c95d1c9a",
-  "source_tree": "fae79e265b3a21431388cd432a853228ffd7676b",
+  "source_commit": "2493b32f8a288f06747c845c1d5536182c39262a",
+  "source_tree": "f54c87eeb8edbe141ba42ff7eddff23f2490cf60",
   "upstream_commit": "96480d58445e3b24b230a3fe7d4725d639aa2eb3",
-  "compressed_patch_sha256": "c7654d9a8fa18adf9bcce0b6198c1ef907a2e5886a19339a08ed8ccb80f7b70d",
-  "compressed_patch_bytes": 5228780,
-  "expanded_patch_bytes": 32093165,
+  "compressed_patch_sha256": "cc5511e411124b7824441e110e50b9ea605b0ec473f437e0fe7c2503636767c0",
+  "compressed_patch_bytes": 5228740,
+  "expanded_patch_bytes": 32093324,
   "isolated_index_restored_exact_tree": true,
   "build_number": 2008,
-  "first_attempt": {
-    "run": 43319506534,
-    "driver": "0e39c1b08fe5e70e76b5f279b2203fa9513f526b",
-    "compiled": false,
-    "cause": "One test-only SQLite connection left open; WinError32 temporary cleanup"
-  },
-  "change_from_first_source": "test/cadence/test_sync_service.py only; no production code changed",
-  "previous_source_commit": "8420ff1737b560d86e1cd12c7c487476369f04f1",
+  "previous_source_commit": "49272b75a4107c97130b8a46727af6a8c95d1c9a",
+  "change_from_previous": "CMakeLists.txt only: global CADENCE_BUILD=1 for the Cadence profile; no definition when OFF",
+  "previous_run_failed": 43322336613,
+  "actual_failure": "MSVC Unity omitted practiceMidiController declaration before later config include",
   "full_windows_application_built_from_this_tree": false
 }

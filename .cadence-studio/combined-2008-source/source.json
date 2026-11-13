@@ -6,12 +6,12 @@
     "commit": "96480d58445e3b24b230a3fe7d4725d639aa2eb3"
   },
   "source": {
-    "commit": "49272b75a4107c97130b8a46727af6a8c95d1c9a",
-    "tree": "fae79e265b3a21431388cd432a853228ffd7676b"
+    "commit": "2493b32f8a288f06747c845c1d5536182c39262a",
+    "tree": "f54c87eeb8edbe141ba42ff7eddff23f2490cf60"
   },
   "patch": {
     "file": "changes.patch.gz",
-    "sha256": "c7654d9a8fa18adf9bcce0b6198c1ef907a2e5886a19339a08ed8ccb80f7b70d"
+    "sha256": "cc5511e411124b7824441e110e50b9ea605b0ec473f437e0fe7c2503636767c0"
   },
   "qualification": {
     "schema_version": 1,

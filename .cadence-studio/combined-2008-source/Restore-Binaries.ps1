@@ -9,7 +9,7 @@ $ErrorActionPreference = 'Stop'
 $chunkBytes = 65520
 $maxPartBytes = 87360
 $expected = @{
-    'changes.patch.gz' = @{ bytes = 5228780L; sha256 = 'c7654d9a8fa18adf9bcce0b6198c1ef907a2e5886a19339a08ed8ccb80f7b70d' }
+    'changes.patch.gz' = @{ bytes = 5228740L; sha256 = 'cc5511e411124b7824441e110e50b9ea605b0ec473f437e0fe7c2503636767c0' }
     'audio-transcription/fixtures/cello-ensemble.wav' = @{ bytes = 1411244L; sha256 = '305e5fdf924535fcfd0f3d04ae83b28a3a9307f0872ddae6cb0af17310899519' }
     'audio-transcription/fixtures/cello-ensemble.expected.mid' = @{ bytes = 148L; sha256 = '824ecc0d3b9b41dc84249c4ebed11b61c2f2a2ce327ad38f9847fc1d442cad5b' }
     'audio-transcription/fixtures/trumpet-vibrato.wav' = @{ bytes = 1411244L; sha256 = 'f005adb920ffa11638162d9051c0acaa389005513f01b31640393ec85b9d9c58' }
