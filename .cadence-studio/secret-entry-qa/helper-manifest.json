@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "scope": "Reviewed exact five native synthetic QA inputs; no app or real key",
+  "files": [
+    {
+      "path": ".cadence-studio/secret-entry-qa/native/OwnedSecretEntry.h",
+      "bytes": 11810,
+      "sha256": "c666fd5e21c33d7a47cd10384c4541e364342e6b0c4cc2111d031518fd31a120"
+    },
+    {
+      "path": ".cadence-studio/secret-entry-qa/native/OwnedSecretEntryHarness.cpp",
+      "bytes": 9735,
+      "sha256": "af5a36e643616b4f2c2779fe16fad393d844df0d66680674f83d6e26ae214753"
+    },
+    {
+      "path": ".cadence-studio/secret-entry-qa/Run-SyntheticSecretEntry.ps1",
+      "bytes": 6390,
+      "sha256": "873f4a6a298175e6d0744d7a3f1653d570ecb956bb5311144f2071c7125689b6"
+    },
+    {
+      "path": ".cadence-studio/import-dialogs-gui-2008/native/OwnedKeyboard.h",
+      "bytes": 9043,
+      "sha256": "27431ad585fbf10627573db63f432743d4423011cff009bedd00361fd60ddfc3"
+    },
+    {
+      "path": ".cadence-studio/import-dialogs-gui-2008/OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    }
+  ]
+}
