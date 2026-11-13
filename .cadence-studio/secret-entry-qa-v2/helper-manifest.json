@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "scope": "Exact five-input second synthetic native QA; actual worker handle and message regression; no app/key/server",
+  "observation_attempt": 2,
+  "previous_failed_run_id": 43337069937,
+  "files": [
+    {
+      "path": ".cadence-studio/secret-entry-qa-v2/native/OwnedSecretEntry.h",
+      "bytes": 11810,
+      "sha256": "c666fd5e21c33d7a47cd10384c4541e364342e6b0c4cc2111d031518fd31a120"
+    },
+    {
+      "path": ".cadence-studio/secret-entry-qa-v2/native/OwnedSecretEntryHarness.cpp",
+      "bytes": 16421,
+      "sha256": "749b1a929c02238789e1904dfe28e4231cf377662264f7bbd34a77be80f14abe"
+    },
+    {
+      "path": ".cadence-studio/secret-entry-qa-v2/Run-SyntheticSecretEntry.ps1",
+      "bytes": 7569,
+      "sha256": "fd88909274d1d604d4b84a6195e9562d255a0a0cec4d13e6a8928bafbf747d06"
+    },
+    {
+      "path": ".cadence-studio/import-dialogs-gui-2008/native/OwnedKeyboard.h",
+      "bytes": 9043,
+      "sha256": "27431ad585fbf10627573db63f432743d4423011cff009bedd00361fd60ddfc3"
+    },
+    {
+      "path": ".cadence-studio/import-dialogs-gui-2008/OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    }
+  ]
+}
