@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "ready": true,
+  "mode": "qa-only-no-application-rebuild-no-MSI",
+  "build_number": 2008,
+  "source_original_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+  "source_ci_commit": "95cebb22fe6cbde22919c94f2b480bd14c3eb8de",
+  "source_tree": "c5452043983a048ef0aeef085615af903de3f5b0",
+  "executable_sha256": "13cd4e6d2f408d2e64b187d4c3bff1188ff4192ac7b670d3a12373bbeb37f6cd",
+  "helpers_manifest_sha256": "223dffdc385b4809013361ab6aadc1f12c891acac1b17db3b89b4c4d2ea30d93",
+  "original_producer_run": 43408309742,
+  "original_producer_job": 131828068954,
+  "original_producer_conclusion": "failure",
+  "original_failed_step": 31,
+  "original_stage_artifact": 14031621703,
+  "original_logs_artifact": 14031566362,
+  "note": "Root-controlled activation of QA only. No installer and no new application compilation."
+}
