@@ -50,5 +50,6 @@
   },
   "authentication_receipt_sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933",
   "full_qualification_complete": false,
-  "MSI": null
+  "MSI": null,
+  "activation_note": "Include the exact workflow byte copy listed in the helper manifest; revision2."
 }
