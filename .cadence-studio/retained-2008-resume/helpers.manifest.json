@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "scope": "QA-only retained immutable original2008 stage; no app build or installer",
+  "files": [
+    {
+      "name": "Bind-OriginalCiSource.py",
+      "bytes": 5637,
+      "sha256": "05deea87a4d6d449b0ac542531128a300517e418717d4028e73956e88ecae065"
+    },
+    {
+      "name": "Restore-RetainedRuntime.py",
+      "bytes": 8216,
+      "sha256": "187e490dd3ee1a3fe1a8aa87290da2b7d6a2693baea2fa167c63c9115e8cf35b"
+    },
+    {
+      "name": "check_retained_configuration.py",
+      "bytes": 4157,
+      "sha256": "c1a6235f9bca37c6dd3e82f07bd29fefb1d67ad32523e11d7d69a67b3467b9c7"
+    },
+    {
+      "name": "qualify_retained_resume.py",
+      "bytes": 6272,
+      "sha256": "a16832b0899f4f2acc4c49095a2bb28b21b5de71859b4da4960a39a5711d73d9"
+    },
+    {
+      "name": "Test-Activation.ps1",
+      "bytes": 1860,
+      "sha256": "f44aadc525dd90fd045ab21fc35854011610f14be97a9a2d7ac3eebedd46f707"
+    },
+    {
+      "name": "Test-RetainedConfiguration.ps1",
+      "bytes": 442,
+      "sha256": "9801a66a098ffb9b0571d845b35c17a98cbfd9119ebfaeb111fde7a08e5bb97c"
+    },
+    {
+      "name": "original-ci-commit.object",
+      "bytes": 317,
+      "sha256": "ac72bad8089d200e6ac1f2f7e6eb2c4b65beab1af001d631f4780adcc5763c88"
+    }
+  ]
+}

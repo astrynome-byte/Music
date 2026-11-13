@@ -1,0 +1,6 @@
+tree c5452043983a048ef0aeef085615af903de3f5b0
+parent 96480d58445e3b24b230a3fe7d4725d639aa2eb3
+author Cadence CI <cadence-ci@example.invalid> 1794565234 +0000
+committer Cadence CI <cadence-ci@example.invalid> 1794565234 +0000
+
+Restore Cadence Studio source tree a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903 for Windows CI
