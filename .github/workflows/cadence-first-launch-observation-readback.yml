@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: Cadence original first launch without INI data-only readback
+on:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths: ['.cadence-studio/first-launch-observation-readback/**', '.github/workflows/cadence-first-launch-observation-readback.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  read-original-first-launch-collection:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Authenticate exact successful first-launch producer and original413KB evidence artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -I .cadence-studio/first-launch-observation-readback/read_reports.py --metadata-output "$RUNNER_TEMP/first-launch-original-metadata.json"
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '14035045365'
+          run-id: '43421688966'
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/original-first-launch-observation
+      - name: Read mandatory original report, no-INI profile proof, receipts and pinned PNG only; execute none
+        run: python3 -I .cadence-studio/first-launch-observation-readback/read_reports.py --root "$RUNNER_TEMP/original-first-launch-observation" --output "$RUNNER_TEMP/first-launch-original-readback"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cadence-original-first-launch-data-only-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/first-launch-original-readback
+            ${{ runner.temp }}/first-launch-original-metadata.json
+          retention-days: 14
+          if-no-files-found: warn
