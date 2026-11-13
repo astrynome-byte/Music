@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "scope": "Static source investigation, not a Windows profile execution",
+  "Qt_originals": [
+    {
+      "path": "src/corelib/io/qstandardpaths_win.cpp",
+      "commit": "000d6c62f7880bb8d3054724e8da0b8ae244130e",
+      "sha256": "b2e92e95d81d13bd5f26b636288a7471f5445de71ec182ad8e12d698fb48fd01",
+      "source_url": "https://github.com/qt/qtbase/blob/000d6c62f7880bb8d3054724e8da0b8ae244130e/src/corelib/io/qstandardpaths_win.cpp"
+    },
+    {
+      "path": "src/corelib/io/qsettings.cpp",
+      "commit": "000d6c62f7880bb8d3054724e8da0b8ae244130e",
+      "sha256": "ecb1e58d0e4bbeb0b46ccd13866561d77ecc6df659bd54f0cb4a02e54fc039d3",
+      "source_url": "https://github.com/qt/qtbase/blob/000d6c62f7880bb8d3054724e8da0b8ae244130e/src/corelib/io/qsettings.cpp"
+    }
+  ],
+  "frozen_application_sources": [
+    {
+      "path": "src/app/internal/commandlineparser.cpp",
+      "commit": "0e05d04acbeee32f1b561f24493d7ef41c322081",
+      "sha256": "c62721dd69a3f41d2d65405489cb819f22488b4bb5bb755d240799b8fe63ad67",
+      "config_folder_option_present": false
+    },
+    {
+      "path": "src/app/main.cpp",
+      "commit": "0e05d04acbeee32f1b561f24493d7ef41c322081",
+      "sha256": "07b2b0218cf876e1ff4833dfa65886920cf6fda521caeaf6d2943cda3031e61b",
+      "config_folder_option_present": null
+    },
+    {
+      "path": "src/framework/global/settings.cpp",
+      "commit": "0e05d04acbeee32f1b561f24493d7ef41c322081",
+      "sha256": "4212e6a28cb40a8099e0561fb2a03c854e5e41b615ee5fa1c76d32f42076db84",
+      "config_folder_option_present": null
+    },
+    {
+      "path": "src/framework/global/internal/globalconfiguration.cpp",
+      "commit": "0e05d04acbeee32f1b561f24493d7ef41c322081",
+      "sha256": "541e7edadd1d0787ba590f1d190b685aca764f3fb9f6ea36df007c729be699f3",
+      "config_folder_option_present": null
+    },
+    {
+      "path": "src/framework/audio/main/internal/audioconfiguration.cpp",
+      "commit": "0e05d04acbeee32f1b561f24493d7ef41c322081",
+      "sha256": "be7bd7ea6ba3b4492a02959c0d31a9671effdef676c837b938c7fea68db50057",
+      "config_folder_option_present": null
+    },
+    {
+      "path": "SetupConfigure.cmake",
+      "commit": "0e05d04acbeee32f1b561f24493d7ef41c322081",
+      "sha256": "ee1655a623a59e29e5ad2eae4e733961c9612bda2cc470b432bcc991c3f18487"
+    }
+  ],
+  "conclusions": [
+    "No config-folder command-line option in retained2002",
+    "Qt QStandardPaths Win32 obtains Local/Roaming/Documents via SHGetKnownFolderPath, not solely environment variables",
+    "App local data/logs under KnownFolder LocalAppData/CadenceStudio/CadenceStudio4",
+    "QSettings default IniFormat UserScope under KnownFolder RoamingAppData/CadenceStudio/CadenceStudio4.ini",
+    "Documents application data defaults to KnownFolder Documents/CadenceStudio4",
+    "Frozen SetupConfigure.cmake sets MUSE_APP_UNSTABLE OFF for release build mode, so retained2002 application name is CadenceStudio4 (not Development)"
+  ],
+  "profile_only_boundary_exception_proposed": [
+    "KnownFolder LocalAppData/CadenceStudio initially absent and marked",
+    "KnownFolder RoamingAppData/CadenceStudio initially absent and marked",
+    "KnownFolder Documents/CadenceStudio4 initially absent and marked"
+  ],
+  "all_scores_DLLs_stats_and_stage_stay_strictly_below_RUNNER_TEMP": true
+}
