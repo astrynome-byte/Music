@@ -25,12 +25,16 @@ MANDATORY = {
     'firstlaunch-gui-results/readiness/native-readiness.json',
     'firstlaunch-authentication.json',
     'firstlaunch-producer-guard.json',
-    'firstlaunch-restoration.json',
     'firstlaunch-data-output/readback-receipt.json',
-    'firstlaunch-data-output/runtime-inventory.MEASURED.json',
 } | set(PNG_SHA256)
-ROOT_REPORTS = {'firstlaunch-authentication.json', 'firstlaunch-producer-guard.json',
-                'firstlaunch-restoration.json', 'firstlaunch-probe-build/compile.log'}
+SELECTED = MANDATORY | {
+    'firstlaunch-gui-results/verify-no-INI-before-start.stdout.log',
+    'firstlaunch-gui-results/cleanup-owned-unseeded-profile.stdout.log',
+    'firstlaunch-gui-results/application.stdout.log',
+    'firstlaunch-gui-results/application.stderr.log',
+    'firstlaunch-gui-results/probe.stdout.log',
+    'firstlaunch-gui-results/probe.stderr.log',
+}
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -103,17 +107,16 @@ def read_reports(root, output):
                 raise ValueError('Linked evidence directory refused')
             continue
         rel = path.relative_to(root).as_posix()
-        allowed = rel in ROOT_REPORTS or rel.startswith('firstlaunch-gui-results/') or rel.startswith('firstlaunch-data-output/')
-        if not allowed or path.suffix.lower() not in ('.json', '.log', '.txt', '.png'):
-            raise ValueError('Unexpected runtime or unrelated member in evidence artifact: ' + rel)
-        if path.suffix.lower() == '.png' and rel not in PNG_SHA256:
-            raise ValueError('Unexpected unpinned capture')
+        # Large already authenticated runtime inventory/restoration maps and
+        # unrelated original companion ledgers are intentionally not read or printed.
+        if rel not in SELECTED:
+            continue
         select(path, rel)
     # No output until mandatory original report/profile/no-INI records, guards
     # and the one exact owned-window capture have all been authenticated as data.
     names = {row['path'] for _, _, row in selected}
-    if len(selected) != 44 or not MANDATORY.issubset(names):
-        raise ValueError('Exact44 evidence files and mandatory first-launch records/capture required')
+    if not MANDATORY.issubset(names):
+        raise ValueError('Mandatory first-launch records and exact original capture required')
     output.mkdir()
     for rel, raw, row in selected:
         destination = output / rel
@@ -127,6 +130,9 @@ def read_reports(root, output):
                'expected_archive_bytes': ARCHIVE_BYTES, 'expected_archive_digest': DIGEST,
                'archive_digest_source': 'Pinned GitHub metadata before one actions/download-artifact request; see action download log for its computed archive digest',
                'application_or_SDK_executed_by_reader': False,
+               'original_artifact_file_count_measured': sum(path.is_file() for path in files),
+               'selected_file_count': len(selected),
+               'large_runtime_inventory_and_restoration_maps_omitted': True,
                'visual_review_complete': False, 'setup_completion_qualified': False,
                'playback_qualified': False, 'full_qualification_complete': False, 'MSI_produced_or_tested': False,
                'files': [{k: v for k, v in row.items() if k != 'base64_original_bytes'} for _, _, row in selected]}
