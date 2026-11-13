@@ -47,6 +47,14 @@ if(NOT CPACK_WIX_PRODUCT_GUID STREQUAL "CA4AC56B-9ED9-568F-9F5A-0D9475D4CC26"
    OR NOT CPACK_WIX_UPGRADE_GUID STREQUAL "319B992F-470A-465B-9A79-6B0CBFC7D6C7")
     message(FATAL_ERROR "Independent Cadence installer identities differ")
 endif()
-if(NOT CPACK_INSTALLED_DIRECTORIES STREQUAL "${CADENCE_STAGE_ROOT};.")
-    message(FATAL_ERROR "Only the exact authenticated stage may enter the MSI")
-endif()
+# CPack writes its binary config, then changes these caller variables while
+# generating CPackSourceConfig.cmake. Verify the generated binary config that
+# cpack will actually consume; keep its variables local to this function.
+function(cadence_verify_binary_cpack_inputs)
+    include("${CPACK_OUTPUT_CONFIG_FILE}")
+    if(NOT CPACK_INSTALLED_DIRECTORIES STREQUAL "${CADENCE_STAGE_ROOT};."
+       OR CPACK_INSTALL_CMAKE_PROJECTS)
+        message(FATAL_ERROR "Only the exact authenticated stage and no install project may enter the MSI")
+    endif()
+endfunction()
+cadence_verify_binary_cpack_inputs()
