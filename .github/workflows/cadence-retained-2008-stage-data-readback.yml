@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: Cadence authentic partial 2008 stage data-only readback
+on:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths: ['.cadence-studio/retained-2008-data-readback/**', '.github/workflows/cadence-retained-2008-stage-data-readback.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  read-authentic-partial-stage-without-executing:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Authenticate failed31 and original stage, stream-hash both ZIPs, read only original data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python -I .cadence-studio/retained-2008-data-readback/read_existing_stage.py \
+            --work "$RUNNER_TEMP/retained2008-readback-work" \
+            --output "$RUNNER_TEMP/retained2008-readback-output"
+      - name: Retain small original JSON/ledger bytes and measured inventory, never runtime executables
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-retained2008-data-only-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/retained2008-readback-output/**
+          retention-days: 14
+          if-no-files-found: warn
