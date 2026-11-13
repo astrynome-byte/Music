@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "scope": "Exact git show source audit only; no Windows GUI validation",
+  "commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+  "tree": "c5452043983a048ef0aeef085615af903de3f5b0",
+  "files": [
+    {
+      "path": "src/project/qml/MuseScore/Project/LocalAudioTranscriptionDialog.qml",
+      "bytes": 16701,
+      "sha256": "da51e87fbb4439f9f159730dff79db569ebc61e77aa23d3e204cbaa012c035d8"
+    },
+    {
+      "path": "src/project/qml/MuseScore/Project/internal/LocalAudioTranscription/localaudiotranscriptionmodel.cpp",
+      "bytes": 15009,
+      "sha256": "1f45d70749d12b84ca5ebe416569bfa04d81ecd03b3a47ef1b0dac323ad22b1e"
+    },
+    {
+      "path": "src/project/qml/MuseScore/Project/internal/LocalAudioTranscription/localaudiotranscriptionmodel.h",
+      "bytes": 2876,
+      "sha256": "745bf472b797df23f6d6064a80a01ab79a11c73784577bf9cb2e3740b189ad2a"
+    },
+    {
+      "path": "src/project/qml/MuseScore/Project/internal/LocalAudioTranscription/authorizedwavedownload.cpp",
+      "bytes": 12516,
+      "sha256": "252025b66019020cfb6c1bc48cdf1e672e239e32efaead76956ddb940e8bb47d"
+    },
+    {
+      "path": "src/project/qml/MuseScore/Project/internal/LocalAudioTranscription/authorizedwavedownload.h",
+      "bytes": 2069,
+      "sha256": "7005acc39b68b812978d5b32a28a10da1471eb6b11eba971898de3e64016f116"
+    },
+    {
+      "path": "src/project/qml/MuseScore/Project/LocalOmrDialog.qml",
+      "bytes": 12199,
+      "sha256": "c5324a9e19092a41ad00082c9343c6450aae4c6f8de886dcec1aed158bc326fa"
+    },
+    {
+      "path": "src/framework/uicomponents/qml/Muse/UiComponents/TextInputField.qml",
+      "bytes": 10420,
+      "sha256": "b1075b37d579bbb5497cd53336b30766d20840b537721758bed22de47ffb531b"
+    },
+    {
+      "path": "src/framework/ui/internal/navigationcontroller.cpp",
+      "bytes": 42733,
+      "sha256": "c427ad894091b250d263d13e9e31b5b744dcc7a6565844a817d4d9d88c8a9058"
+    },
+    {
+      "path": "src/project/qml/MuseScore/Project/CadenceSyncDialog.qml",
+      "bytes": 21446,
+      "sha256": "d51a1ae86664edc5d3ec0d08dce82c59c0e0350e6c8b9a1224013bc62c171751"
+    },
+    {
+      "path": "src/framework/ui/qml/Muse/Ui/qmlaccessible.h",
+      "bytes": 8812,
+      "sha256": "3fd9c374d6930edfcb25536ffec8f2cc89ea70b8eab171792c4b110726cfc029"
+    },
+    {
+      "path": "src/musesounds/internal/musesoundsconfiguration.cpp",
+      "bytes": 5406,
+      "sha256": "456faa4c9f3ec8710ee05c08bcb6ac130697f151a55f7ba194b52160f692639d"
+    }
+  ],
+  "navigation": "URL is row1/column-1; its two action buttons row2 are disabled while empty. PgDown from Choose normalizes column0 and skips them to tempo3. Home, Down to URL, Down to acknowledgment6; close8.",
+  "password_UIA_or_auth_validated": false,
+  "HTTPS_browser_or_download_GUI_invoked": false
+}

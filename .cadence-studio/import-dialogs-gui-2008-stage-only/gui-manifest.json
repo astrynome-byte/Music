@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "status": "private-actual-stage-only-not-Windows-validated",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "CadenceProfileScope.py",
+      "bytes": 34344,
+      "sha256": "60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c"
+    },
+    {
+      "path": "OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    },
+    {
+      "path": "Owned-WindowEvidence.ps1",
+      "bytes": 8859,
+      "sha256": "df3932ef9cc58674bf770ff886264d337d2fce3bb0eec3291a8ef27ffcc0742c"
+    },
+    {
+      "path": "Prepare-OriginalWave.py",
+      "bytes": 1167,
+      "sha256": "a66cf88a688f4a0f5ecba707005db3e582c4f896fe91e995380bf9de2072bf2d"
+    },
+    {
+      "path": "Print-ImportGuiEvidence.ps1",
+      "bytes": 2703,
+      "sha256": "22efe6c0957d81d6c57f4bcbbbe6417e41edef623a1cb46d7c3d1b2eb74de170"
+    },
+    {
+      "path": "README.md",
+      "bytes": 581,
+      "sha256": "3f5e85b554e0f37b0a392276c98d7092e2a2e1d24c54669b78307bd9b10cd76c"
+    },
+    {
+      "path": "Read-ActualImportTarget.ps1",
+      "bytes": 5293,
+      "sha256": "378057326793c5d3b65799c6daab790c4fc2748335316ceb5a476fdbf5f31ad2"
+    },
+    {
+      "path": "Restore-RetainedRuntime.py",
+      "bytes": 8216,
+      "sha256": "187e490dd3ee1a3fe1a8aa87290da2b7d6a2693baea2fa167c63c9115e8cf35b"
+    },
+    {
+      "path": "Run-ImportDialogsGui.ps1",
+      "bytes": 15038,
+      "sha256": "e34e9ecc3237b801f2d1d8381cbb1049dab09d32cf1217343d861c5da1c84312"
+    },
+    {
+      "path": "cadence-import-dialogs-gui-2008-stage-only.yml",
+      "bytes": 9596,
+      "sha256": "6b25c44682d28602b413dfbd17e0a78767a4f32e1a82bc847565a368777dbd74"
+    },
+    {
+      "path": "fixtures/LICENSE.txt",
+      "bytes": 219,
+      "sha256": "5f586edc6a74fd9467a1129e840a7eb54c4dd8badb97f67b3a6dfa2e30515c48"
+    },
+    {
+      "path": "fixtures/manifest.json",
+      "bytes": 455,
+      "sha256": "62e0fefb19d595e7222f1749eff827ca3294fd1edbbcd4b4a4849442526a88b2"
+    },
+    {
+      "path": "fixtures/original-three-notes.wav.zlib.b64",
+      "bytes": 41140,
+      "sha256": "317892eca3570062d5f597279ae1945a7f70c017fcd82aab376f3f847d1cb6e4"
+    },
+    {
+      "path": "native/ImportDialogsFlow.inc",
+      "bytes": 19867,
+      "sha256": "fdb33f12b4fdecc8f5fec0725062d061eaceba43697db0fbd0a7043f2169eacd"
+    },
+    {
+      "path": "native/OwnedKeyboard.h",
+      "bytes": 9043,
+      "sha256": "27431ad585fbf10627573db63f432743d4423011cff009bedd00361fd60ddfc3"
+    },
+    {
+      "path": "native/OwnedWaveFileDialog.h",
+      "bytes": 19981,
+      "sha256": "de0ab816b3d27cffd85966d3d4b98e807fe3ac4a0d2d3bb86b0aa4c918496036"
+    },
+    {
+      "path": "native/README.md",
+      "bytes": 1087,
+      "sha256": "10d6d3556e91b23f3a211bf9f40853cb5f9d800c3c29d2985af4ef41a66c931d"
+    },
+    {
+      "path": "native/SHA256SUMS.txt",
+      "bytes": 413,
+      "sha256": "2ebe08cdc4fc94bb785abfa3ebc2d9d00757b5d2c43a2688e510fda1d1f2dce0"
+    },
+    {
+      "path": "native/UiaProbe.cpp",
+      "bytes": 19203,
+      "sha256": "7acb74c2f4ea4cc77b68c7e8874be402b3b7f5033b9a3db82dc97ccb2a3310d8"
+    },
+    {
+      "path": "profile-source-contract.json",
+      "bytes": 3310,
+      "sha256": "0023f8d7510c89429dea85cda35d803175b3434532cf14aecaf793ded5663a9e"
+    },
+    {
+      "path": "read_existing_stage.py",
+      "bytes": 15356,
+      "sha256": "9bdcbc4732057fc50f8ba5387578d68d292682864a21938b717d29df662875ae"
+    },
+    {
+      "path": "selection.json",
+      "bytes": 1496,
+      "sha256": "1886ce76e0e2786ecc778956c4e8f4ba47bbcbe8308b5d8fa0e6dddbe1a69f18"
+    },
+    {
+      "path": "source-inputs-a2b7.json",
+      "bytes": 2789,
+      "sha256": "99424bc54ade3a44ab19738602aa774c91974f82ad24319e23284048a61f2b58"
+    },
+    {
+      "path": "stage-only-provenance.json",
+      "bytes": 5997,
+      "sha256": "7d3dc31520d9421e3340262d9fcd98b478890599460cf0ff8117bb4d81844db5"
+    },
+    {
+      "path": "stage-only-receipt.expected.json",
+      "bytes": 2480,
+      "sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933"
+    },
+    {
+      "path": "target.inactive-template.json",
+      "bytes": 2255,
+      "sha256": "f5b2798bfc4d55000a00830a129b5998ebc1352a8db7f6e5c96d4b7cf2acee37"
+    },
+    {
+      "path": "verify_stage_only_producer.py",
+      "bytes": 8654,
+      "sha256": "d2aa8dfb9ae6c8ae09695de3db1f43d3a97a039609b740a7f9d90f2b958158da"
+    },
+    {
+      "path": "write_stage_only_receipt.py",
+      "bytes": 7650,
+      "sha256": "9ae88028a059e6ad5b13892f60713f121740220b27c3ac1f14d863da1968e683"
+    }
+  ]
+}
