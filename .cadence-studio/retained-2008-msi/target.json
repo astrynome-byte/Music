@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "ready": true,
+  "mode": "package-and-test-retained2008-no-application-rebuild",
+  "helpers_manifest_sha256": "8f717134fbcc3d6f81dfe42a7e6d671ef679ae6bf25b94d70480a951ccf4b535",
+  "bindings_sha256": "75f0c4d0561d5cc3b0c91c8c2cdf8e9ef76899f7b122976bc329ce5ac8c38c1c",
+  "qa_selection_sha256": "410b53ed3ceca5a783c5361486fc96abc2cc850d2855efb8b41d533406ea491b",
+  "note": "Prepared activation data only; root alone publishes. Activate acquisition/packaging/real MSI test; no MSI or gift success is asserted."
+}
