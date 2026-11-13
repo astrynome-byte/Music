@@ -14,6 +14,9 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
 $plan=Get-Content -LiteralPath "$PSScriptRoot/observation-plan.json" -Raw|ConvertFrom-Json
 $activation=Get-Content -LiteralPath $ActivationPath -Raw|ConvertFrom-Json
+$nativeF10Readonly=$false
+$modeProperty=$activation.PSObject.Properties['native_f10_readonly']
+if($modeProperty){if($modeProperty.Value-isnot[bool]){throw 'Explicit native F10 mode must be boolean.'};$nativeF10Readonly=$modeProperty.Value}
 if($activation.ready -cne $true -or $activation.scope -cne 'private-original2007-mixer-observation'){throw 'Explicit reviewed mixer observation activation is required.'}
 if(-not [OperatingSystem]::IsWindows() -or -not [Environment]::Is64BitProcess -or
    -not [Environment]::UserInteractive -or [Diagnostics.Process]::GetCurrentProcess().SessionId -eq 0 -or
@@ -61,7 +64,7 @@ try{
     if(-not (Under $dll $temporary) -or (Sha $dll) -cne '08f570d7df0dfb5f2cafe899c6b6679e48d4e1fa132656e58f4b0113a8709fd2'){throw 'The actual qualified silent endpoint DLL differs.'}
 }finally{if($class){$class.Dispose()};if($endpoint){$endpoint.Dispose()};$machine.Dispose()}
 [void][IO.Directory]::CreateDirectory($WorkPath)
-$report=[ordered]@{schema_version=1;status='pending-observation';source_commit='5058d29dad67e6131ee46ee617258ccfed8ba4b0';executable_sha256='dcfbf9155c6c972c37966a4b2b0dcd212133c8e31fb397c644dda800ac7122be';probe_sha256=$ExpectedProbeSha256;application_pid=$null;application_exit_code=$null;probe_exit_code=$null;fixture=$null;application_started=$false;score_edited=$false;FI15_qualified=$false;FI16_qualified=$false;captures=@();commands=@();forced_owned_processes=@();drains=@();profile_cleanup_verified=$false;app_clock_verified=$false;job_closed=$false;error=$null;cleanup_errors=@()}
+$report=[ordered]@{schema_version=1;status='pending-observation';source_commit='5058d29dad67e6131ee46ee617258ccfed8ba4b0';executable_sha256='dcfbf9155c6c972c37966a4b2b0dcd212133c8e31fb397c644dda800ac7122be';probe_sha256=$ExpectedProbeSha256;application_pid=$null;application_exit_code=$null;probe_exit_code=$null;fixture=$null;application_started=$false;score_edited=$false;FI15_qualified=$false;FI16_qualified=$false;captures=@();commands=@();forced_owned_processes=@();drains=@();profile_cleanup_verified=$false;app_clock_verified=$false;job_closed=$false;native_f10_readonly_mode=$nativeF10Readonly;native_tree_incomplete=$null;native_f10_sent=$false;first_observation_failure=$null;UIA_complete=$false;FX_parameter_qualified=$false;Mixer_automatically_qualified=$false;error=$null;cleanup_errors=@()}
 $job=$null;$app=$null;$probe=$null;$exeLock=$null;$appOut=$null;$appErr=$null;$profileData=$null;$profile=Join-Path $WorkPath 'profile-scope.json'
 $python=(Get-Command python -CommandType Application -ErrorAction Stop|Select-Object -First 1).Source
 function Invoke-Preparation([string]$Name,[string[]]$Arguments){
@@ -128,6 +131,7 @@ try{
     Capture-OwnedWindow 'before-observation.png' $app $WorkPath $report
     $probeStart=[Diagnostics.ProcessStartInfo]::new();$probeStart.FileName=$ProbePath;$probeStart.UseShellExecute=$false;$probeStart.RedirectStandardOutput=$true;$probeStart.RedirectStandardError=$true
     foreach($argument in @('--pid',[string]$app.Id,'--exe',$exe,'--output',(Join-Path $WorkPath 'uia'))){$probeStart.ArgumentList.Add($argument)}
+    if($nativeF10Readonly){$probeStart.ArgumentList.Add('--native-f10-readonly')}
     $probe=[Diagnostics.Process]::new();$probe.StartInfo=$probeStart;Assert-AppIdentity
     if(-not $probe.Start()){throw 'Owned observation client did not start.'}
     $probeOut=$probe.StandardOutput.ReadToEndAsync();$probeErr=$probe.StandardError.ReadToEndAsync()
@@ -140,11 +144,19 @@ try{
     if($nativeFile.Length -gt 65536 -or ($nativeFile.Attributes -band [IO.FileAttributes]::ReparsePoint)){throw 'Native observation report is not a bounded regular file.'}
     $native=Get-Content -LiteralPath $nativeFile.FullName -Raw|ConvertFrom-Json
     $report.native_status=$native.status
-    if($report.probe_exit_code -ne 0 -or $native.status -cne 'mixer_observation_collected_no_parameter_qualification' -or
+    $report.native_tree_incomplete=$native.tree_incomplete
+    $report.native_f10_sent=$native.f10_sent
+    $report.first_observation_failure=$native.first_observation_failure
+    $expectedNativeStatus=if($nativeF10Readonly){'native-F10-observation-collected-with-partial-UIA'}else{'mixer_observation_collected_no_parameter_qualification'}
+    if($report.probe_exit_code -ne 0 -or $native.status -cne $expectedNativeStatus -or
        $native.pid -ne $app.Id -or $native.expected_executable_sha256 -cne $report.executable_sha256 -or
        $native.score_edited -cne $false -or $native.recovery_tested -cne $false -or $native.backup_tested -cne $false -or
-       $native.tree_incomplete -cne $false -or $native.runtime_identity_unknown -cne $false -or $native.foreign_node_refused -cne $false -or
-       $native.gestures_attempted -lt 1 -or $native.gestures_attempted -gt 1 -or $native.gesture_limit -ne 1){throw 'Native observation was blocked or its owned no-edit contract differs.'}
+       $native.runtime_identity_unknown -cne $false -or $native.foreign_node_refused -cne $false -or
+       $native.graph_guard_violation -cne $false -or $native.deadline_reached -cne $false -or
+       $native.gestures_attempted -ne 1 -or $native.gesture_limit -ne 1 -or
+       (-not$nativeF10Readonly-and$native.tree_incomplete-cne$false)-or
+       ($nativeF10Readonly-and($native.native_f10_readonly_mode-cne$true-or$native.f10_sent-cne$true-or$native.native_focus_verified-cne$true-or
+          $native.UIA_complete-cne$false-or$native.FX_parameter_qualified-cne$false-or$native.Mixer_automatically_qualified-cne$false))){throw 'Native observation was blocked or its explicit non-editing mode contract differs.'}
     $report.status='observation-recorded-close-pending'
 }catch{$report.status='blocked-or-failed-observation';$report.error=$_.Exception.Message}
 finally{
@@ -180,7 +192,7 @@ finally{
         if($report.fixture.source_sha256_after -cne $report.fixture.source_sha256 -or $report.fixture.copy_sha256_after -cne $report.fixture.copy_sha256_before){throw 'Original/copy score changed during observation.'}}catch{$report.cleanup_errors+=,$_.Exception.Message}}
     if($job){try{$report.final_job_close=Close-OwnedProcessJob -Job $job;$report.job_closed=$true}catch{$report.cleanup_errors+=,$_.Exception.Message}}
     if($report.status -ceq 'observation-recorded-close-pending' -and $report.application_exit_code -eq 0 -and
-       $report.profile_cleanup_verified -and $report.app_clock_verified -and $report.job_closed -and -not $report.forced_owned_processes.Count -and -not $report.cleanup_errors.Count){$report.status='mixer-observation-collected-no-FX-FI15-FI16-qualification'}else{$report.status='blocked-or-failed-observation'}
+       $report.profile_cleanup_verified -and $report.app_clock_verified -and $report.job_closed -and -not $report.forced_owned_processes.Count -and -not $report.cleanup_errors.Count){$report.status=if($nativeF10Readonly){'native-F10-observation-collected-with-partial-UIA'}else{'mixer-observation-collected-no-FX-FI15-FI16-qualification'}}else{$report.status='blocked-or-failed-observation'}
     $report|ConvertTo-Json -Depth 24|Set-Content -LiteralPath (Join-Path $WorkPath 'observation-result.json') -Encoding utf8NoBOM
     # Always put bounded native/inner diagnostics in the job log, including
     # failed runs; original files remain in the retained artifact.
@@ -201,4 +213,5 @@ finally{
         }
     }
 }
-if($report.status -cne 'mixer-observation-collected-no-FX-FI15-FI16-qualification'){throw 'Observation was blocked or cleanup was not clean; inspect actual reports.'}
+$expectedFinalStatus=if($nativeF10Readonly){'native-F10-observation-collected-with-partial-UIA'}else{'mixer-observation-collected-no-FX-FI15-FI16-qualification'}
+if($report.status -cne $expectedFinalStatus){throw 'Observation was blocked or cleanup was not clean; inspect actual reports.'}

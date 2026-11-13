@@ -34,5 +34,5 @@
     "observation-plan.original.json",
     "activation-target.original.json"
   ],
-  "source_of_model": "Existing V2 wrappers retain exact source/copy hashes, exe lock, profile marker/FileID, owned Job and registry cleanup; no guard relaxed"
+  "source_of_model": "Original V3 file/exe/clock/profile/Job/registry cleanup preserved; only explicit readonly F10 criterion differs and partial UIA remains reported"
 }

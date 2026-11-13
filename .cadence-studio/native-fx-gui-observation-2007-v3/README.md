@@ -1,74 +1,81 @@
-# Diagnostic V3 du premier échec UIA — recette inactive
+# Observation F10 native non modifiante — source inactive, tentative4
 
-Aucun `target.json` n’est livré. Le modèle séparé reste `ready=false`, tentative3.
-La racine relit les octets, publie les sources inactives puis ajoute une cible
-distincte si elle décide de lancer l’essai. Aucun lancement Windows, résultat de
-mixeur, écoute ou changement du produit n’est établi par cette préparation.
+Ce lot réutilise le namespace et le workflow V3. Aucun `target.json` actif,
+nouveau workflow ou lancement Windows n’est créé ici. Le modèle séparé garde
+`ready=false` et demande explicitement `native_f10_readonly=true`. La racine
+relit les sources puis décide de son activation. Le mode sans argument du probe
+reste strict : une projection UIA incomplète l’empêche toujours d’envoyer F10.
 
-## Sources et exécution prévues
+## Pourquoi ce mode distinct
 
-Le stage original2007 reste fixé au run43266732201/artefact13970570430, source
-5058d29dad67e6131ee46ee617258ccfed8ba4b0 et EXE SHA256
-dcfbf9155c6c972c37966a4b2b0dcd212133c8e31fb397c644dda800ac7122be.
-L’endpoint ASIO de test silencieux reste celui du run43212261044/artefact13941567509,
-DLL08f570d7df0dfb5f2cafe899c6b6679e48d4e1fa132656e58f4b0113a8709fd2.
-Les producteurs sont authentifiés et les artefacts originaux vérifiés avant tout
-lancement. Aucun driver noyau, service, programme utilisateur nouveau ou achat.
+Le diagnostic V3 réel (run43410673015/job131836055313) prouve un E_FAIL
+`0x80004005` de `IUIAutomationTreeWalker.GetNextSiblingElement` dans le premier
+snapshot. Le PID est bien possédé, aucune identité inconnue et aucune borne ou
+cycle n’explique cette erreur. La copie s’ouvre, puis ferme0 ; clock et nettoyages
+passent, mais0geste est envoyé. Ce résultat ne prouve pas qu’une touche F10 non
+modifiante soit impossible. Il reste un échec d’accessibilité conservé.
 
-Les helpers de registre HKLM64, profil KnownFolder, Job, restauration, conversion
-CLI et contrôle du clock sont repris octet pour octet de V2. Le profil QA neuf
-désactive explicitement la promotion MuseHub et le revérifie après conversion ;
-ce réglage ne corrige pas l’application2007. Le vrai CLI crée une copie MSCZ de
-notre MusicXML CC0, puis la GUI ouvre uniquement cette copie. Source/copie et EXE
-sont contrôlés ; le profil et le registre restent possédés, avec drainage du Job
-avant nettoyage. Aucun geste d’édition, sauvegarde, crash ou récupération.
+Le contrat présent est plus étroit qu’une qualification UIA/NVDA : enregistrer
+le graphe brut et sa première erreur, activer une fois le raccourci public F10
+sur notre copie, capturer le résultat puis fermer proprement. Il n’annonce ni
+complétude d’accessibilité, ni mixeur visible automatiquement, ni paramètres FX.
 
-## Instrumentation seule du probe
+## Geste et preuves natives
 
-Deux fichiers changent : `native/ObserveMixer.cpp` et le nouveau
-`native/ObservationFailure.h`. Le graphe RuntimeId reste identique. Tout premier
-échec de propriété, de navigation du walker ou d’une garde de complétude est
-enregistré avec phase, API, HRESULT signé et hexadécimal, origine réelle/synthétique
-et RuntimeId déjà vérifié par PID. Aucun texte de contrôle étranger n’est lu.
-Les causes sont distinctes par snapshot et la première cause globale survit aux
-dumps suivants. Les JSON et stderr portent `first_observation_failure` ; le
-wrapper V2 inchangé les imprime avant son `throw`, même si le probe échoue.
+Seul un argument exact `--native-f10-readonly`, transmis après vérification du
+booléen de la cible revue, sélectionne ce mode. Sans ce flag, les conditions UIA
+strictes demeurent. Aucune autre touche, saisie, Invoke, URI interne, édition,
+sauvegarde ou récupération n’est ajoutée ; les helpers communs de clavier et de
+clé secrète ne sont pas modifiés.
 
-La projection incomplète bloque toujours F10. PID, focus, refus de texte/menu/modale,
-délai75s,1200identités/3600arêtes et un seul F10 restent inchangés. Aucun retry,
-HRESULT ignoré, commande interne ou tolérance nouvelle n’est ajouté. La commande
-SDK compile réellement le client et écrit ses empreintes de sources sous Windows.
-Le helper portable passe15 assertions et six sorties JSON sous GCC ; cela ne
-qualifie ni MSVC ni un provider UIA réel. Une réussite de collecte demande encore
-inspection des captures ; elle ne qualifie pas les paramètres FX ou NVDA.
+Le probe conserve le vrai PID/handle vivant, le chemin et le verrou SHA de
+l’EXE2007. Après chaque lecture du provider et immédiatement avant l’insertion,
+il exige le seul HWND principal possédé, visible, activé et sans modale, le
+foreground sur ce HWND et un focus natif de ce PID dont la racine est ce HWND.
+`GetGUIThreadInfo` doit confirmer ce focus ; les drapeaux de menu/déplacement et
+les modificateurs doivent être absents. Une demande de foreground est bornée150ms,
+comme celle déjà permise au helper ; aucun clic ou AttachThreadInput de secours.
 
-## Historique conservé
+Le vrai `SendOwnedKey` reste appelé une seule fois avec VK_F10. Il recontrôle
+processus, fenêtre, foreground/focus et modificateurs au plus près de SendInput.
+Les2événements doivent être envoyés ; les HWND capturés par ce helper doivent
+correspondre au dernier échantillon natif. Tout résultat partiel ou changement
+invalide la collecte, sans retry de touche. Les HWND/focus/flags sont consignés.
+La fenêtre et le focus ne sont pas prouvés par une assertion HasKeyboardFocus UIA.
 
-- Tentative1, run43335448410/job131590425967 : promotion modale et projection
-  cyclique,0geste ; application possédée forcée une fois, sortie−1, pas de clock
-  final ; profil/registre nettoyés. Échec GUI, pas de résultat Mixer.
-- Tentative2, run43405873102/job131820024692 : copie ouverte, fermeture0,
-  callbacks clock valides,0arrêt forcé et nettoyage ; pourtant probe3,0geste,
-  projection incomplète. Les12nœuds/12identités ne dépassent aucune borne ; la
-  dernière entrée est «Publier». Les HRESULT exacts manquent dans V2 : la cause
-  est inconnue. V3 cherche cette cause, sans traiter une limite supposée comme
-  un fait et sans requalifier cet échec.
+PID étranger, RuntimeId inconnu, dépassement du délai75s ou garde de graphe
+(1200identités/3600arêtes/profondeur) restent bloquants. La première erreur et
+`tree_incomplete=true` ne sont jamais effacés pour franchir la suite. Une erreur
+de provider seule ne conditionne pas ce geste non modifiant si les preuves
+natives sont réunies. Le statut distinct est
+`native-F10-observation-collected-with-partial-UIA`, accompagné de
+`UIA_complete=false`, `FX_parameter_qualified=false` et
+`Mixer_automatically_qualified=false`. Les captures doivent être relues par la
+racine pour constater réellement les canaux/Master ; aucun Mixer PASS automatique.
 
-V1 et V2 restent immuables. Le champ `previous_failed_runs` des métadonnées fixe
-ces deux origines. Aucun de ces essais n’est une validation du nouveau produit
-en cours de compilation, de son installation ou d’une écoute physique.
+## Dépendances et fermeture conservées
 
-## Artefact de diagnostic limité
+Source application5058d29dad67e6131ee46ee617258ccfed8ba4b0 et EXE SHA
+dcfbf9155c6c972c37966a4b2b0dcd212133c8e31fb397c644dda800ac7122be,
+stage du run43266732201/artefact13970570430 ; endpoint silencieux du
+run43212261044/artefact13941567509 et sa provenance restent identiques.
+Le profil QA neuf règle explicitement la préférence publique de promotionfalse,
+revérifiée après conversion CLI. Ce n’est pas une correction de l’application2007.
 
-`retention-policy.json` et le workflow énumèrent seulement rapports, journaux,
-copie MusicXML/MSCZ, dumps JSON, deux PNG, rapports clock, provenance du DLL et
-empreintes de sources. L’arborescence `stage`, les archives d’entrée, DLL/EXE/OBJ
-et les dossiers d’installation ne sont pas téléversés. Les fichiers de preuve
-gardent leurs octets originaux ; aucun JSON ou PNG n’est tronqué dans l’artefact.
-Les journaux affichés restent bornés par les wrappers existants.
+Copie MusicXML/MSCZ, EXE, captures avant/après, fermeture0, clock fini, absence de
+kill, drainage Job et nettoyage KnownFolder/registre restent requis. Les rapports
+et la première erreur sont affichés avant tout échec. L’upload reste limité aux
+JSON/logs/copies/PNG/clock et provenance, sans stage ni archives ou binaires d’entrée.
 
-Lire d’abord le JSON natif ou `first_failure=` dans stderr après le prochain
-essai. Un code transitoire pourra ensuite justifier un retry ciblé et borné, en
-gardant l’échec initial et une preuve fraîche avant toute touche ; aucun n’est
-proposé avant l’observation réelle. Le cœur de l’application et les fichiers
-musicaux d’origine restent inchangés.
+## Trois échecs immuables et portée de préparation
+
+1. Run43335448410 : promotion/cycle,0geste, application forcée−1, clock absent.
+2. Run43405873102 : copie ouverte/close0/clock valide/0kill, mais projection UIA
+   incomplète,0geste ; première API non enregistrée.
+3. Run43410673015 : même fermeture propre et0geste ; GetNextSiblingElement E_FAIL
+   est désormais prouvé. La tentative4 ne réétiquette aucun de ces résultats.
+
+La préparation locale vérifie les copies/hashs, branches de mode, contrat
+non modifiant, statuts des wrappers, métadonnées et parsing PowerShell/YAML.
+Le helper de diagnostic reste celui déjà testé15assertions/sixJSON. Aucun essai
+Windows de ce nouveau mode, écran du mixeur, NVDA ou écoute n’est revendiqué ici.

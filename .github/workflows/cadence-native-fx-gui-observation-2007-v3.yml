@@ -1,4 +1,4 @@
-name: Cadence original2007 owned mixer diagnostic observation V3
+name: Cadence original2007 native F10 observation with partial UIA
 on:
   workflow_dispatch:
   push:
@@ -29,7 +29,7 @@ jobs:
           from pathlib import Path
           root=Path(os.environ['GITHUB_WORKSPACE'])/'.cadence-studio/native-fx-gui-observation-2007-v3'
           raw=(root/'observation-plan.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='cc2e20c928bee16b4b8116627ea69350f082563b58616af27a0d575d80da7171'
+          assert hashlib.sha256(raw).hexdigest()=='0b6c592e38cad35dd0343fe41626f170d80b8a7097b39934de10d2f3d9f2516f'
           for row in json.loads(raw)['files']:
               assert re.fullmatch(r'[A-Za-z0-9_./-]+',row['path']) and '..' not in row['path']
               p=root/row['path']
@@ -38,8 +38,9 @@ jobs:
           target_path=root/'target.json';ready=False
           if target_path.exists():
               target=json.loads(target_path.read_text());assert type(target.get('ready')) is bool
+              assert type(target.get('native_f10_readonly')) is bool and target['native_f10_readonly'] is True
               ready=target['ready'];target['ready']=False
-              assert target=={'schema_version': 1, 'ready': False, 'observation_attempt': 3, 'previous_failed_runs': [43335448410, 43405873102], 'scope': 'private-original2007-mixer-observation', 'build_number': 2007, 'source_commit': '5058d29dad67e6131ee46ee617258ccfed8ba4b0', 'executable_sha256': 'dcfbf9155c6c972c37966a4b2b0dcd212133c8e31fb397c644dda800ac7122be', 'stage_producer_run_id': 43266732201, 'stage_artifact_id': 13970570430, 'endpoint_producer_run_id': 43212261044, 'endpoint_artifact_id': 13941567509}
+              assert target=={'schema_version': 1, 'ready': False, 'observation_attempt': 4, 'previous_failed_runs': [43335448410, 43405873102, 43410673015], 'native_f10_readonly': True, 'scope': 'private-original2007-mixer-observation', 'build_number': 2007, 'source_commit': '5058d29dad67e6131ee46ee617258ccfed8ba4b0', 'executable_sha256': 'dcfbf9155c6c972c37966a4b2b0dcd212133c8e31fb397c644dda800ac7122be', 'stage_producer_run_id': 43266732201, 'stage_artifact_id': 13970570430, 'endpoint_producer_run_id': 43212261044, 'endpoint_artifact_id': 13941567509}
           with open(os.environ['GITHUB_OUTPUT'],'a') as output:output.write('ready='+str(ready).lower()+'\n')
   owned-mixer-observation:
     needs: activation
@@ -101,7 +102,7 @@ jobs:
             if($actual-cne$row.sha256-or(Get-Item -LiteralPath $file).Length-ne$row.bytes){throw 'Actual Windows diagnostic source differs from the reviewed plan.'}
             [ordered]@{path=$row.path;bytes=$row.bytes;sha256=$actual}
           })
-          [ordered]@{schema_version=1;scope='Actual Windows checkout of external observer only';driver_commit=$env:GITHUB_SHA;observation_attempt=3;product_source='5058d29dad67e6131ee46ee617258ccfed8ba4b0';plan_sha256=(Get-FileHash -LiteralPath "$source/observation-plan.json" -Algorithm SHA256).Hash.ToLowerInvariant();files=$sourceRows}|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $build 'observer-source-ledger.json') -Encoding utf8NoBOM
+          [ordered]@{schema_version=1;scope='Actual Windows checkout of external observer only';driver_commit=$env:GITHUB_SHA;observation_attempt=4;native_f10_readonly_mode=$true;product_source='5058d29dad67e6131ee46ee617258ccfed8ba4b0';plan_sha256=(Get-FileHash -LiteralPath "$source/observation-plan.json" -Algorithm SHA256).Hash.ToLowerInvariant();files=$sourceRows}|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $build 'observer-source-ledger.json') -Encoding utf8NoBOM
           Copy-Item -LiteralPath "$source/observation-plan.json" -Destination (Join-Path $build 'observation-plan.original.json')
           Copy-Item -LiteralPath "$source/target.json" -Destination (Join-Path $build 'activation-target.original.json')
           Push-Location $build
@@ -111,7 +112,7 @@ jobs:
             finally { $ErrorActionPreference=$before }
             if($status-ne0){throw 'Actual Windows observer did not compile.'}
           } finally { Pop-Location }
-      - name: Open own MSCZ, observe one F10 and close only the owned app
+      - name: Open own MSCZ, record partial UIA then send one guarded native F10 and close cleanly
         shell: pwsh
         run: |
           $source=Join-Path $env:GITHUB_WORKSPACE '.cadence-studio/native-fx-gui-observation-2007-v3'

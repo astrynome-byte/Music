@@ -32,6 +32,7 @@ static int keyboardGestureAttempts = 0;
 static int f10GestureAttempts = 0, tabGestureAttempts = 0, rightGestureAttempts = 0, leftGestureAttempts = 0, downGestureAttempts = 0, returnGestureAttempts = 0;
 static bool keyboardFailure = false;
 static bool observationTreeIncomplete = false;
+static bool observationGraphGuardViolation = false;
 static bool foreignNodeObserved = false;
 static bool runtimeIdentityUnknown = false;
 static long runtimeIdentityFailureHresult = S_OK;
@@ -44,6 +45,8 @@ static void failObservation(const char* operation, HRESULT hr, const RuntimeId& 
                             const char* origin = "provider_hresult")
 {
     observationTreeIncomplete = true;
+    if (std::string(origin) == "graph_guard" || std::string(operation) == "snapshot.node_limit")
+        observationGraphGuardViolation = true;
     firstObservationFailure.record(diagnosticPhase,operation,static_cast<std::int32_t>(hr),ownedId,origin);
     if (currentSnapshotFailure)
         currentSnapshotFailure->record(diagnosticPhase,operation,static_cast<std::int32_t>(hr),ownedId,origin);
@@ -437,10 +440,72 @@ static bool safeObservationFocus(const Node& node)
         && node.type != UIA_SpinnerControlTypeId;
 }
 
+struct NativeFocusRecord {
+    OwnedKeyResult sampled;
+    HWND root = nullptr;
+    DWORD guiFlags = 0;
+    std::string stage="not-started";
+};
+static bool nativeFocusReady(HWND main, NativeFocusRecord& record)
+{
+    using namespace cadence_owned_keyboard_detail;
+    auto oneMain = [main]() {
+        const auto found = windows();
+        return found.size() == 1 && found[0] == main && owned(main)
+            && IsWindowVisible(main) && IsWindowEnabled(main) && !GetWindow(main,GW_OWNER);
+    };
+    record.stage="owned_main_live_no_modifiers";
+    if (!oneMain() || !processAlive(targetPid,targetProcess,record.sampled.error) || modifiersDown()) return false;
+    // This is the same bounded foreground request permitted by SendOwnedKey;
+    // no click, text, modifier, AttachThreadInput or extra keyboard event.
+    record.stage="request_foreground";
+    if (GetForegroundWindow() != main) {
+        SetForegroundWindow(main);
+        const auto started = Clock::now();
+        while (GetForegroundWindow() != main && Clock::now()-started < std::chrono::milliseconds(150)) {
+            if (Clock::now() >= deadline || !oneMain() || !alive() || modifiersDown()) return false;
+            Sleep(5);
+        }
+    }
+    record.stage="sample_owned_native_focus";
+    if (!sampleOwnedFocus(targetPid,record.sampled) || record.sampled.foreground != main) return false;
+    DWORD pid = 0;
+    const DWORD thread = GetWindowThreadProcessId(main,&pid);
+    GUITHREADINFO gui {}; gui.cbSize=sizeof(gui);
+    record.stage="GetGUIThreadInfo";
+    if (!thread || pid != targetPid) { record.sampled.error=ERROR_ACCESS_DENIED; return false; }
+    if (!GetGUIThreadInfo(thread,&gui)) { record.sampled.error=GetLastError(); return false; }
+    record.guiFlags=gui.flags;
+    record.root=GetAncestor(record.sampled.focus,GA_ROOT);
+    const DWORD menuOrMove=GUI_INMENUMODE|GUI_POPUPMENUMODE|GUI_SYSTEMMENUMODE|GUI_INMOVESIZE;
+    record.stage="native_focus_root_and_gui_flags";
+    const bool verified=!(gui.flags&menuOrMove) && gui.hwndFocus == record.sampled.focus
+        && record.root == main && oneMain() && GetForegroundWindow() == main
+        && !modifiersDown() && processAlive(targetPid,targetProcess,record.sampled.error);
+    if (verified) record.stage="verified";
+    return verified;
+}
+static std::string nativeFocusJson(HWND main, const NativeFocusRecord& record)
+{
+    return "{\"main_hwnd\":"+std::to_string(reinterpret_cast<std::uintptr_t>(main))
+        +",\"foreground_hwnd\":"+std::to_string(reinterpret_cast<std::uintptr_t>(record.sampled.foreground))
+        +",\"focus_hwnd\":"+std::to_string(reinterpret_cast<std::uintptr_t>(record.sampled.focus))
+        +",\"focus_root_hwnd\":"+std::to_string(reinterpret_cast<std::uintptr_t>(record.root))
+        +",\"GetGUIThreadInfo_flags\":"+std::to_string(record.guiFlags)
+        +",\"stage\":"+jsonQuoted(std::wstring(record.stage.begin(),record.stage.end()))
+        +",\"error\":"+std::to_string(record.sampled.error)+"}";
+}
+static bool observationMustStop(bool allowPartialUIA)
+{
+    return foreignNodeObserved || runtimeIdentityUnknown || observationGraphGuardViolation
+        || Clock::now() >= deadline || !alive() || (!allowPartialUIA && observationTreeIncomplete);
+}
+
 int wmain(int argc, wchar_t** argv)
 {
-    if (argc != 7 || std::wstring(argv[1]) != L"--pid" || std::wstring(argv[3]) != L"--exe"
-        || std::wstring(argv[5]) != L"--output") return 2;
+    if ((argc != 7 && argc != 8) || std::wstring(argv[1]) != L"--pid" || std::wstring(argv[3]) != L"--exe"
+        || std::wstring(argv[5]) != L"--output" || (argc == 8 && std::wstring(argv[7]) != L"--native-f10-readonly")) return 2;
+    const bool nativeF10Readonly = argc == 8;
     std::filesystem::path output;
     std::string status = "blocked_observation_identity", error;
     std::vector<std::string> frames;
@@ -448,6 +513,7 @@ int wmain(int argc, wchar_t** argv)
     bool outputCreatedByThisRun = false;
     ObservationHandle executable;
     int gestures = 0;
+    bool f10Sent = false, nativeFocusVerified = false;
     try {
         size_t parsed = 0;
         unsigned long raw = std::stoul(argv[2], &parsed);
@@ -470,50 +536,73 @@ int wmain(int argc, wchar_t** argv)
         if (FAILED(CoCreateInstance(CLSID_CUIAutomation, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&automation)))
             || !automation) throw std::runtime_error("UIA creation failed");
         snapshot(automation.Get(), output, L"tree-initial");
-        if (observationTreeIncomplete || foreignNodeObserved || Clock::now() >= deadline)
-            throw std::runtime_error("initial UIA projection incomplete or outside owned PID");
-        status = "mixer_observation_collected_no_parameter_qualification";
+        if (observationMustStop(nativeF10Readonly))
+            throw std::runtime_error("initial observation blocked by scope, identity, budget or strict UIA guard");
+        status = nativeF10Readonly ? "native-F10-observation-collected-with-partial-UIA"
+                                  : "mixer_observation_collected_no_parameter_qualification";
         for (int index = 0; index < 1 && Clock::now() < deadline; ++index) {
             const HWND main = mainWindow();
-            const auto ownedWindows = windows();
-            const Node before = focusedNode(automation.Get());
-            frames.push_back("{\"phase\":\"before_f10\",\"index\":" + std::to_string(index)
-                             + ",\"focus\":" + focusJson(before) + "}");
-            // Unknown focus, text, menu or any modal blocks before insertion.
-            if (!imageMatches(image) || ownedWindows.size() != 1 || ownedWindows[0] != main
-                || !owned(main) || !IsWindowEnabled(main) || !safeObservationFocus(before)) {
-                status = "blocked_before_f10_on_unproved_or_text_menu_modal_focus"; break;
+            Node before;
+            NativeFocusRecord nativeBefore;
+            if (nativeF10Readonly) {
+                const bool ready=imageMatches(image) && nativeFocusReady(main,nativeBefore);
+                frames.push_back("{\"phase\":\"before_native_f10\",\"verified\":"+std::string(ready?"true":"false")+",\"native\":"+nativeFocusJson(main,nativeBefore)+"}");
+                if (!ready) { status="blocked_before_native_f10_on_unproved_main_or_native_focus"; break; }
+            } else {
+                const auto ownedWindows = windows();
+                before=focusedNode(automation.Get());
+                frames.push_back("{\"phase\":\"before_f10\",\"index\":"+std::to_string(index)+",\"focus\":"+focusJson(before)+"}");
+                if (!imageMatches(image) || ownedWindows.size()!=1 || ownedWindows[0]!=main
+                    || !owned(main) || !IsWindowEnabled(main) || !safeObservationFocus(before)) {
+                    status="blocked_before_f10_on_unproved_or_text_menu_modal_focus"; break;
+                }
             }
-            const std::wstring beforeName = L"tree-before-f10-" + std::to_wstring(index);
-            snapshot(automation.Get(), output, beforeName.c_str());
-            if (observationTreeIncomplete || foreignNodeObserved || Clock::now() >= deadline) {
-                status = "blocked_incomplete_owned_UIA_projection"; break;
+            const std::wstring beforeName=L"tree-before-f10-"+std::to_wstring(index);
+            snapshot(automation.Get(),output,beforeName.c_str());
+            if (observationMustStop(nativeF10Readonly)) {
+                status="blocked_before_f10_by_scope_identity_budget_or_strict_UIA"; break;
             }
-            const Node immediate = focusedNode(automation.Get());
-            BOOL same = FALSE;
-            if (!safeObservationFocus(immediate)
-                || FAILED(automation->CompareElements(before.element.Get(), immediate.element.Get(), &same)) || !same) {
-                status = "blocked_before_f10_focus_changed"; break;
+            if (nativeF10Readonly) {
+                // Exact live native facts are sampled again after all read-only
+                // provider calls, immediately before the shared guarded helper.
+                const bool ready=imageMatches(image) && nativeFocusReady(main,nativeBefore);
+                frames.push_back("{\"phase\":\"immediate_native_f10\",\"verified\":"+std::string(ready?"true":"false")+",\"native\":"+nativeFocusJson(main,nativeBefore)+"}");
+                if (!ready) { status="blocked_immediately_before_native_f10"; break; }
+            } else {
+                const Node immediate=focusedNode(automation.Get());
+                BOOL same=FALSE;
+                if (!safeObservationFocus(immediate)
+                    || FAILED(automation->CompareElements(before.element.Get(),immediate.element.Get(),&same)) || !same) {
+                    status="blocked_before_f10_focus_changed"; break;
+                }
             }
-            const auto sent = SendOwnedKey(targetPid, targetProcess, main, VK_F10);
+            const auto sent=SendOwnedKey(targetPid,targetProcess,main,VK_F10);
             ++gestures;
-            actions.push_back("{\"action\":\"owned_f10_observation_only\",\"sent\":"
-                + std::string(sent.sent ? "true" : "false") + ",\"error\":" + std::to_string(sent.error)
-                + ",\"foreground_hwnd\":" + std::to_string(reinterpret_cast<std::uintptr_t>(sent.foreground))
-                + ",\"focus_hwnd\":" + std::to_string(reinterpret_cast<std::uintptr_t>(sent.focus)) + "}");
-            if (!sent.sent) { status = "blocked_owned_f10_input"; break; }
-            Sleep(180);
-            const std::wstring afterName = L"tree-after-f10-" + std::to_wstring(index);
-            snapshot(automation.Get(), output, afterName.c_str());
-            if (observationTreeIncomplete || foreignNodeObserved || Clock::now() >= deadline) {
-                status = "blocked_incomplete_owned_UIA_projection"; break;
+            f10Sent=sent.sent && sent.inputCount==2;
+            nativeFocusVerified=nativeF10Readonly && f10Sent
+                && sent.foreground==main && sent.foreground==nativeBefore.sampled.foreground
+                && sent.focus==nativeBefore.sampled.focus && nativeBefore.root==main;
+            actions.push_back("{\"action\":\"owned_f10_observation_only\",\"sent\":"+std::string(sent.sent?"true":"false")
+                +",\"input_count\":"+std::to_string(sent.inputCount)+",\"error\":"+std::to_string(sent.error)
+                +",\"foreground_hwnd\":"+std::to_string(reinterpret_cast<std::uintptr_t>(sent.foreground))
+                +",\"focus_hwnd\":"+std::to_string(reinterpret_cast<std::uintptr_t>(sent.focus))+"}");
+            if (!f10Sent || (nativeF10Readonly && !nativeFocusVerified)) {
+                status="blocked_owned_f10_input_or_native_focus_changed"; break;
             }
-            frames.push_back("{\"phase\":\"after_f10\",\"index\":" + std::to_string(index)
-                             + ",\"focus\":" + focusJson(focusedNode(automation.Get())) + "}");
+            Sleep(180);
+            const std::wstring afterName=L"tree-after-f10-"+std::to_wstring(index);
+            snapshot(automation.Get(),output,afterName.c_str());
+            if (observationMustStop(nativeF10Readonly)) {
+                status="blocked_after_f10_by_scope_identity_budget_or_strict_UIA"; break;
+            }
+            if (!nativeF10Readonly)
+                frames.push_back("{\"phase\":\"after_f10\",\"index\":"+std::to_string(index)+",\"focus\":"+focusJson(focusedNode(automation.Get()))+"}");
         }
-        snapshot(automation.Get(), output, L"tree-final");
-        if (observationTreeIncomplete || foreignNodeObserved || Clock::now() >= deadline)
-            status = "blocked_incomplete_owned_UIA_projection";
+        snapshot(automation.Get(),output,L"tree-final");
+        if (observationMustStop(nativeF10Readonly))
+            status="blocked_by_scope_identity_budget_or_strict_UIA";
+        if (nativeF10Readonly && (!f10Sent || !nativeFocusVerified || gestures!=1))
+            status="blocked_native_f10_not_verified";
     } catch (const std::exception& exception) { error = exception.what(); status = "blocked_observation_exception"; }
     if (outputCreatedByThisRun && !output.empty() && std::filesystem::is_directory(output)) {
         std::ofstream report(output / L"observation-report.json", std::ios::binary);
@@ -521,6 +610,13 @@ int wmain(int argc, wchar_t** argv)
             << ",\"pid\":" << targetPid << ",\"expected_executable_sha256\":\"" << expectedExeSha
             << "\",\"score_edited\":false,\"recovery_tested\":false,\"backup_tested\":false,\"gestures_attempted\":" << gestures
             << ",\"gesture_limit\":1,\"tree_incomplete\":" << (observationTreeIncomplete ? "true" : "false")
+            << ",\"native_f10_readonly_mode\":" << (nativeF10Readonly ? "true" : "false")
+            << ",\"f10_sent\":" << (f10Sent ? "true" : "false")
+            << ",\"native_focus_verified\":" << (nativeFocusVerified ? "true" : "false")
+            << ",\"graph_guard_violation\":" << (observationGraphGuardViolation ? "true" : "false")
+            << ",\"deadline_reached\":" << (Clock::now() >= deadline ? "true" : "false")
+            << ",\"UIA_complete\":false,\"FX_parameter_qualified\":false,\"Mixer_automatically_qualified\":false"
+            << ",\"UIA_observation_scope\":\"Raw provider projection only; this native F10 mode does not qualify hierarchy or NVDA completeness\""
             << ",\"runtime_identity_unknown\":" << (runtimeIdentityUnknown ? "true" : "false")
             << ",\"runtime_identity_failure_hresult\":" << runtimeIdentityFailureHresult
             << ",\"total_cycle_edges\":" << totalCycleEdges << ",\"total_duplicate_edges\":" << totalDuplicateEdges
@@ -540,5 +636,6 @@ int wmain(int argc, wchar_t** argv)
     if (targetProcess) CloseHandle(targetProcess);
     targetProcess = nullptr;
     if (comInitialized) CoUninitialize();
-    return status == "mixer_observation_collected_no_parameter_qualification" ? 0 : 3;
+    return status == "mixer_observation_collected_no_parameter_qualification"
+        || status == "native-F10-observation-collected-with-partial-UIA" ? 0 : 3;
 }

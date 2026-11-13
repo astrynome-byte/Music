@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "ready": false,
-  "observation_attempt": 3,
+  "observation_attempt": 4,
   "previous_failed_runs": [
     {
       "run": 43335448410,
@@ -12,6 +12,11 @@
       "run": 43405873102,
       "job": 131820024692,
       "result": "failure;0gestures;app-close0;clock-valid;0forced;incomplete-UIA-projection"
+    },
+    {
+      "run": 43410673015,
+      "job": 131836055313,
+      "result": "failure;0gestures;app-close0;clock-valid;0forced;GetNextSiblingElement-E_FAIL-0x80004005-proved"
     }
   ],
   "status": "private-source-only-no-Windows-GUI-execution",
@@ -19,6 +24,10 @@
   "executable_sha256": "dcfbf9155c6c972c37966a4b2b0dcd212133c8e31fb397c644dda800ac7122be",
   "source_only_F10_action": "toggle-mixer",
   "gesture_limit": 1,
+  "native_f10_readonly": true,
+  "observer_mode": "native-F10-readonly-with-partial-UIA",
+  "UIA_complete": false,
+  "Mixer_automatically_qualified": false,
   "application_executed": false,
   "Windows_compiled": false,
   "FX_parameters_qualified": false,
@@ -27,8 +36,8 @@
   "files": [
     {
       "path": "Invoke-MixerObservation.ps1",
-      "bytes": 9841,
-      "sha256": "7313a708fac8fd5f00d13a31e7c0a2fdb5e34c5cbcaa7f30768527d1ea902652"
+      "bytes": 10152,
+      "sha256": "7333caa2317e23471ecceb3ecbd5a7446d407483c4ad62386c89756b123ebae3"
     },
     {
       "path": "LICENSE-fixture.txt",
@@ -42,13 +51,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 4624,
-      "sha256": "0fea93c232d1acd4cdf9efc4321389ed26750afca4e65bd4d9532801f7e67bdd"
+      "bytes": 5040,
+      "sha256": "69975780a10a5bed1d4a75c63c5b9eaeaf7268f0f7a3aa5e6b37a54e1d82b325"
     },
     {
       "path": "Run-MixerObservation.ps1",
-      "bytes": 19958,
-      "sha256": "dd8d726143b80e894cb310aa140191c08e12ec6e4f176adb845e25cf554589a8"
+      "bytes": 21390,
+      "sha256": "773aa94e09c36e9420a33ccb531310a3a38c746e91f7bb025add18a041d0d45b"
     },
     {
       "path": "configure_qa_profile.py",
@@ -77,8 +86,8 @@
     },
     {
       "path": "native/ObserveMixer.cpp",
-      "bytes": 30747,
-      "sha256": "78f07e9ddceb6578bf5eb4b6c6defb072df8839651ffea8f52d6706db22d3b86"
+      "bytes": 36698,
+      "sha256": "b201d0ac3368b54e994d91f2480cd24e758b1bf60c651be10e5eebcbd2e24574"
     },
     {
       "path": "native/OwnedKeyboard.h",
@@ -92,8 +101,8 @@
     },
     {
       "path": "retention-policy.json",
-      "bytes": 1790,
-      "sha256": "409b7983397cfc90025da0c04963e70bfc70a1e595eed6aafefb9cbe8a3353c4"
+      "bytes": 1799,
+      "sha256": "73283a6290e66a0d2659c4e7f6810017b829cd9578d33b77b3fe442f6cf8dc35"
     },
     {
       "path": "runtime/CadenceProfileScope.py",

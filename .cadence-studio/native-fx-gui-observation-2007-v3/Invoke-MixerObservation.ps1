@@ -10,7 +10,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
 $activationPath=Join-Path $PSScriptRoot 'target.json'
 $target=Get-Content -LiteralPath $activationPath -Raw|ConvertFrom-Json
-if($target.ready -cne $true -or $target.scope -cne 'private-original2007-mixer-observation' -or
+if($target.ready -cne $true -or $target.native_f10_readonly -isnot[bool] -or $target.native_f10_readonly -cne $true -or $target.observation_attempt -ne 4 -or $target.scope -cne 'private-original2007-mixer-observation' -or
    $target.source_commit -cne '5058d29dad67e6131ee46ee617258ccfed8ba4b0' -or
    $target.executable_sha256 -cne 'dcfbf9155c6c972c37966a4b2b0dcd212133c8e31fb397c644dda800ac7122be' -or
    $target.stage_artifact_id -ne 13970570430 -or $target.endpoint_artifact_id -ne 13941567509){throw 'Exact explicitly activated original2007 observation required.'}
@@ -43,7 +43,7 @@ foreach($row in $manifest.files){
 [void][IO.Directory]::CreateDirectory($WorkPath)
 $python=(Get-Command python -CommandType Application -ErrorAction Stop|Select-Object -First 1).Source
 $pwsh=(Get-Command pwsh -CommandType Application -ErrorAction Stop|Select-Object -First 1).Source
-$report=[ordered]@{schema_version=1;status='running';source_commit=$target.source_commit;stage_artifact_id=13970570430;endpoint_artifact_id=13941567509;registered_harness_passed=$false;registry_cleanup_verified=$false;job_closed=$false;commands=@();drains=@();forced_descendants=0;error=$null;cleanup_errors=@();physical_audio_output=$false;human_listening=$false;FX_parameters_qualified=$false;FI15_qualified=$false;FI16_qualified=$false}
+$report=[ordered]@{schema_version=1;status='running';source_commit=$target.source_commit;stage_artifact_id=13970570430;endpoint_artifact_id=13941567509;registered_harness_passed=$false;registry_cleanup_verified=$false;job_closed=$false;commands=@();drains=@();forced_descendants=0;error=$null;cleanup_errors=@();physical_audio_output=$false;human_listening=$false;FX_parameters_qualified=$false;FI15_qualified=$false;FI16_qualified=$false;native_f10_readonly_mode=$true;UIA_complete=$false;FX_parameter_qualified=$false;Mixer_automatically_qualified=$false}
 $job=$null;$registry=Join-Path $WorkPath 'registry-scope.json';$oldStats=$env:CADENCE_QA_CLOCK_STATS_DIR
 function Run-Owned([string]$Name,[string]$Program,[string[]]$Arguments,[int]$Seconds){
     $info=[Diagnostics.ProcessStartInfo]::new();$info.FileName=$Program;$info.WorkingDirectory=$WorkPath;$info.UseShellExecute=$false;$info.RedirectStandardOutput=$true;$info.RedirectStandardError=$true
@@ -81,7 +81,7 @@ try{
         $report.registered_harness_passed=$true
         Run-Owned 'actual2007-mixer-observation' $pwsh @('-NoProfile','-File',"$PSScriptRoot/Run-MixerObservation.ps1",'-StageArtifactDirectory',$StageArtifactPath,'-ActivationPath',$activationPath,'-ProbePath',$ProbePath,'-ExpectedProbeSha256',(Sha $ProbePath),'-WorkPath',(Join-Path $WorkPath 'app-observation')) 300
         $inner=Get-Content -LiteralPath (Join-Path $WorkPath 'app-observation/observation-result.json') -Raw|ConvertFrom-Json
-        if($inner.status-cne'mixer-observation-collected-no-FX-FI15-FI16-qualification'-or$inner.app_clock_verified-cne$true){throw 'Actual owned observation or GUI engine callbacks did not pass.'}
+        if($inner.status-cne'native-F10-observation-collected-with-partial-UIA'-or$inner.app_clock_verified-cne$true-or$inner.native_f10_sent-cne$true-or$inner.UIA_complete-cne$false-or$inner.Mixer_automatically_qualified-cne$false){throw 'Actual owned observation or GUI engine callbacks did not pass.'}
         $report.status='observation-collected-pending-cleanup'
     }
 }catch{$report.status='blocked-or-failed';$report.error=$_.Exception.Message}
@@ -90,8 +90,8 @@ finally{
     $env:CADENCE_QA_CLOCK_STATS_DIR=$oldStats
     if(Test-Path -LiteralPath $registry){try{$r=Get-Content -LiteralPath $registry -Raw|ConvertFrom-Json;$report.registry_cleanup_verified=$r.cleanup_verified-ceq$true}catch{$report.cleanup_errors+=,$_.Exception.Message}}
     if($job){try{$report.final_job_close=Close-OwnedProcessJob -Job $job;$report.job_closed=$true}catch{$report.cleanup_errors+=,$_.Exception.Message}}
-    if($report.status-ceq'observation-collected-pending-cleanup'-and$report.registry_cleanup_verified-and$report.job_closed-and-not$report.forced_descendants-and-not$report.cleanup_errors.Count){$report.status='collected-mixer-observation-no-FX-parameter-or-recovery-qualification'}else{$report.status='blocked-or-failed'}
+    if($report.status-ceq'observation-collected-pending-cleanup'-and$report.registry_cleanup_verified-and$report.job_closed-and-not$report.forced_descendants-and-not$report.cleanup_errors.Count){$report.status='native-F10-observation-collected-with-partial-UIA'}else{$report.status='blocked-or-failed'}
     $report|ConvertTo-Json -Depth 24|Set-Content -LiteralPath (Join-Path $WorkPath 'result.json') -Encoding utf8NoBOM
     Write-Host 'CADENCE_MIXER_OBSERVATION_BEGIN';Write-Host ($report|ConvertTo-Json -Depth 24 -Compress);Write-Host 'CADENCE_MIXER_OBSERVATION_END'
 }
-if($report.status-cne'collected-mixer-observation-no-FX-parameter-or-recovery-qualification'){throw 'Observation blocked or cleanup failed; retained evidence is not a GUI PASS.'}
+if($report.status-cne'native-F10-observation-collected-with-partial-UIA'){throw 'Observation blocked or cleanup failed; retained evidence is not a GUI PASS.'}
