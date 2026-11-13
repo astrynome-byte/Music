@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "ready": true,
+  "scope": "private-original2007-mixer-observation",
+  "build_number": 2007,
+  "source_commit": "5058d29dad67e6131ee46ee617258ccfed8ba4b0",
+  "executable_sha256": "dcfbf9155c6c972c37966a4b2b0dcd212133c8e31fb397c644dda800ac7122be",
+  "stage_producer_run_id": 43266732201,
+  "stage_artifact_id": 13970570430,
+  "endpoint_producer_run_id": 43212261044,
+  "endpoint_artifact_id": 13941567509
+}
