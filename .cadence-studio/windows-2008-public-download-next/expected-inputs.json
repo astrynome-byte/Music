@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "build_number": 2008,
+  "product_version": "4.7.6.2008",
+  "version": "4.7.6-cadence.2008",
+  "source": {
+    "original_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+    "tree": "c5452043983a048ef0aeef085615af903de3f5b0",
+    "source_json_sha256": "d8150851d20d6f9d631a7f93226753951eb1fb456e8a385a0ef8c834992bf354",
+    "patch_sha256": "ce7bc369062d6520785169c89d187bf8fa0c9e8dc069315a5e0d75e8f79247b9",
+    "ci_commit": "95cebb22fe6cbde22919c94f2b480bd14c3eb8de"
+  },
+  "producer": {
+    "run_id": 43425150320,
+    "job_id": 131884644607,
+    "driver_commit": "90d304749a692752a3d5537e82e8f225e94c0737",
+    "run_number": 2,
+    "run_attempt": 1
+  },
+  "android_main_commit": "a6c90b63344b3fd60567fd9f001ac9ecba4b2081",
+  "state": "real retained MSI2 success; stage build12 remains failed31; QA2 success; inactive recipe awaiting real Windows DATAONLY20 reports/7assets",
+  "baseline_failed_before_compile": {
+    "run_id": 43319506534,
+    "job_id": 131536158950,
+    "run_number": 8,
+    "run_attempt": 1,
+    "driver_commit": "0e39c1b08fe5e70e76b5f279b2203fa9513f526b",
+    "source_commit": "8420ff1737b560d86e1cd12c7c487476369f04f1",
+    "source_tree": "f061b64c670f354fb0c87e4afeddcad8c87bfede",
+    "source_json_sha256": "a33ad2f48541ea4b4a1216fbd397df06ec18b4806c1e5debe4efa65fb6df2ac5",
+    "patch_sha256": "a06a96273cd0c3aacf34f587de43bebc77309df7b9d5623457485f4909f583aa",
+    "new_executable_produced": false,
+    "new_msi_produced": false
+  },
+  "previous_failed_retry_before_compile": {
+    "run_id": 43321209033,
+    "driver_commit": "2348940f7927e8bb25bc91dce6f0eb4e2c397011",
+    "job_id": 131542020159,
+    "run_number": 9,
+    "run_attempt": 1,
+    "failure_step": "Configure and test the actual native Qt sync client against a real local Python service",
+    "failure_reason": "Python3_EXECUTABLE combined two resolved executables; driver path needs correction",
+    "new_executable_produced": false,
+    "new_msi_produced": false
+  },
+  "previous_failed_full_compile": {
+    "run_id": 43322336613,
+    "job_id": 131545929459,
+    "driver_commit": "d685753476a30b8dc29e1fab979bb355263a4fd6",
+    "run_number": 10,
+    "run_attempt": 1,
+    "conclusion": "failure",
+    "reason": "Full MSVC Unity/PCH compilation failed at midiinputoutputcontroller.cpp:140, C3861 practiceMidiController: CADENCE_BUILD was not defined before guarded headers. No executable or stage was produced.",
+    "stage_produced": false,
+    "eligible_for_GUI": false,
+    "new_executable_produced": false,
+    "new_msi_produced": false
+  },
+  "producer_driver_tree": "d71a1c238b5ae1601b8e9e20aeb1ae02f3275e3f",
+  "previous_failed_unity_compile": {
+    "run_id": 43333855453,
+    "job_id": 131584951385,
+    "driver_commit": "90125f362d4424b065e9cf5d2cd36f412d4322c1",
+    "run_number": 11,
+    "run_attempt": 1,
+    "conclusion": "failure",
+    "stage_produced": false,
+    "eligible_for_GUI": false,
+    "new_executable_produced": false,
+    "new_msi_produced": false,
+    "reason": "Full MSVC Unity compilation failed at mdlmigrator.cpp:127: C2872 Chord ambiguous; no EXE, stage or MSI2008."
+  },
+  "authorized_wav_tested_source_sha256": {
+    "test/cadence/authorized_audio_links/CMakeLists.txt": "3abfd9de1592d6660aa99d7e5499a20187dca8677e5d4ce745f3847a9cecdb40",
+    "test/cadence/authorized_audio_links/download_tests.cpp": "b4f40f19325c8be159b78717398b2d25304aafbffc95b952b25c02f6f4a4d472",
+    "test/cadence/authorized_audio_links/run_https.py": "9f354575946e8cbb9cca54e028303e393ae2c5391a9d72f05c9c9d22ad75a15b",
+    "src/project/qml/MuseScore/Project/internal/LocalAudioTranscription/authorizedwavedownload.cpp": "252025b66019020cfb6c1bc48cdf1e672e239e32efaead76956ddb940e8bb47d",
+    "src/project/qml/MuseScore/Project/internal/LocalAudioTranscription/authorizedwavedownload.h": "7005acc39b68b812978d5b32a28a10da1471eb6b11eba971898de3e64016f116",
+    "src/importexport/audiotranscription/audiotranscription.cpp": "40975eff17280c05a18a2e522ffdf7f912ba0d9e3d1431ba05b87c81ef879b38",
+    "src/importexport/audiotranscription/audiotranscription.h": "7c2fff2879a4944f7f063eafb492d1e4dd49f054e830b471ab29328cd328ac8b"
+  },
+  "stage_producer": {
+    "run_id": 43408309742,
+    "job_id": 131828068954,
+    "driver_commit": "a8470ae087841875fd39284188d0e9d11d95e32b",
+    "run_number": 12,
+    "run_attempt": 1,
+    "conclusion": "failure",
+    "passed_steps": [
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "failed_step": 31
+  },
+  "qualification_producer": {
+    "run_id": 43421094979,
+    "job_id": 131870989277,
+    "driver_commit": "cc88a26de1fd0966c311aae5a8e5e25b130b6629",
+    "run_number": 2,
+    "run_attempt": 1,
+    "status_at_task_handoff": "completed",
+    "conclusion": "success",
+    "artifact_id": null,
+    "artifact_digest": null,
+    "artifact_bytes": null,
+    "qualification_report_sha256": null
+  },
+  "executable_sha256": "13cd4e6d2f408d2e64b187d4c3bff1188ff4192ac7b670d3a12373bbeb37f6cd",
+  "retained_pipeline": {
+    "ready": false,
+    "runtime_adapter_complete": true,
+    "provenance_file": "retained-provenance.known-and-pending.json"
+  },
+  "original_artifacts": {
+    "stage": {
+      "id": 14031621703,
+      "name": "cadence-combined-system-aac-stage-experimental-12-1",
+      "digest": "sha256:8cd00d5df8670837c3b15d3e3bd6e406df290222e404ef88599e4383de048178",
+      "size_in_bytes": 306891538,
+      "expires_at": "2026-11-27T11:12:33Z"
+    },
+    "original_logs": {
+      "id": 14031566362,
+      "name": "cadence-combined-system-aac-logs-12-1",
+      "digest": "sha256:12f746febc7ca371fb00dcc33aa4a8151031e63ca03c5a8eaa24add50e3dfc8c",
+      "size_in_bytes": 6546788,
+      "expires_at": "2026-11-27T11:13:22Z"
+    }
+  },
+  "stage_inner_archive": {
+    "archive": "CadenceStudio-v4.7.6-combined-system-aac-stage-build-2008-attempt-1-x64.zip",
+    "archive_bytes": 148420143,
+    "archive_sha256": "360ee31bcd6599af40b8d395aad16db732ec32ebabe76b777aed465c274ae830",
+    "executable_bytes": 81236992,
+    "executable_sha256": "13cd4e6d2f408d2e64b187d4c3bff1188ff4192ac7b670d3a12373bbeb37f6cd",
+    "runtime_files": 2712
+  },
+  "retained_qualification_receipt": {
+    "bytes": 5405,
+    "sha256": "1161be5360ab492d2addda8f90e6aab9125dcbddadf747a4dc2ebbc6e51a7f68",
+    "source": "Original QA43421094979 report measured by root during actual MSI attempt1 readback; no reconstruction"
+  },
+  "measured_MSI": {
+    "bytes": 120979784,
+    "sha256": "a3f934273e2c2002cc035743974941082245655a7bbe4bc6d2540bb921e52a9e",
+    "basis": "Actual successful MSI producer2 log, installed GUI wrapper and root report; raw report hashes pending data-only"
+  }
+}

@@ -1,0 +1,307 @@
+{
+  "schema_version": 1,
+  "ready": false,
+  "repository": "astrynome-byte/Music",
+  "build_number": 2008,
+  "version": "4.7.6-cadence.2008",
+  "source": {
+    "original_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+    "tree": "c5452043983a048ef0aeef085615af903de3f5b0",
+    "source_json_sha256": "d8150851d20d6f9d631a7f93226753951eb1fb456e8a385a0ef8c834992bf354",
+    "patch_sha256": "ce7bc369062d6520785169c89d187bf8fa0c9e8dc069315a5e0d75e8f79247b9",
+    "ci_commit": "95cebb22fe6cbde22919c94f2b480bd14c3eb8de"
+  },
+  "producer": {
+    "run_id": 43425150320,
+    "job_id": 131884644607,
+    "driver_commit": "90d304749a692752a3d5537e82e8f225e94c0737",
+    "run_number": 2,
+    "run_attempt": 1
+  },
+  "executable_sha256": "13cd4e6d2f408d2e64b187d4c3bff1188ff4192ac7b670d3a12373bbeb37f6cd",
+  "msi_sha256": "a3f934273e2c2002cc035743974941082245655a7bbe4bc6d2540bb921e52a9e",
+  "artifacts": [
+    {
+      "role": "stage",
+      "id": 14031621703,
+      "name": "cadence-combined-system-aac-stage-experimental-12-1",
+      "run_id": 43408309742,
+      "digest": "sha256:8cd00d5df8670837c3b15d3e3bd6e406df290222e404ef88599e4383de048178",
+      "bytes": 306891538,
+      "expires_at": "2026-11-27T11:12:33Z"
+    },
+    {
+      "role": "original_logs",
+      "id": 14031566362,
+      "name": "cadence-combined-system-aac-logs-12-1",
+      "run_id": 43408309742,
+      "digest": "sha256:12f746febc7ca371fb00dcc33aa4a8151031e63ca03c5a8eaa24add50e3dfc8c",
+      "bytes": 6546788,
+      "expires_at": "2026-11-27T11:13:22Z"
+    },
+    {
+      "role": "qa_logs",
+      "id": 14035210409,
+      "name": "cadence-retained2008-resume-logs-2-1",
+      "run_id": 43421094979,
+      "digest": "sha256:d908339d0857a34f8f8134f6bb34cb3cf6f7f6f43579a7c74397b3597b70409d",
+      "bytes": 14680371,
+      "expires_at": "2026-11-27T12:04:58Z"
+    },
+    {
+      "role": "delivery",
+      "id": 14037026975,
+      "name": "cadence-retained2008-msi-delivery-2-1",
+      "run_id": 43425150320,
+      "digest": "sha256:7c4254a3e8982269632736b91f89f3260bf599095fdc8d7786950c3bc87e0827",
+      "bytes": 469722761,
+      "expires_at": "2026-11-27T12:32:09Z"
+    },
+    {
+      "role": "msi_logs",
+      "id": 14037266592,
+      "name": "cadence-retained2008-msi-logs-2-1",
+      "run_id": 43425150320,
+      "digest": "sha256:1c6b506677bdb812f38f2990c95cd433d059c5d04c1c5b90bba5e177d89fde2f",
+      "bytes": 1707362,
+      "expires_at": "2026-11-27T12:32:23Z"
+    }
+  ],
+  "reports": {
+    "bootstrap": {
+      "artifact_role": "original_logs",
+      "member_path": "_temp/cadence-bootstrap.json",
+      "bytes": 571,
+      "sha256": "72c10c499ae423aef97b6c9c7b930dc9583abcaaab6e951b16074b41e0cd4ebe"
+    },
+    "build": {
+      "artifact_role": "stage",
+      "member_path": "cadence-build-result.json",
+      "bytes": 377,
+      "sha256": "d3a65b5a17f762f36311e14f3f63fe1b0d158649aae20d989f6a838f689e9274"
+    },
+    "stage_manifest": {
+      "artifact_role": "stage",
+      "member_path": "stage-manifest.json",
+      "bytes": 3777,
+      "sha256": "266defaed6a0fe9033ef1ea3c50148bfd833ce84e01131508fea1ceedee8da53"
+    },
+    "release_manifest": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "cli": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "msi": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "notices": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "components": {
+      "artifact_role": "stage",
+      "member_path": "corresponding-sources/collection-report.json",
+      "bytes": 113790,
+      "sha256": "5fe6cc95c1831123d6437c93a9ae3ee6a358d8c840a388719bf2c6f64eb9908a"
+    },
+    "icu_policy": {
+      "artifact_role": "stage",
+      "member_path": "stage-system-icu-policy.json",
+      "bytes": 656,
+      "sha256": "6c4d10d43f8d0009b26ff77eca8d18601cb9749ea5bf9ea1c4280d8a4dd3764a"
+    },
+    "icu_exports": {
+      "artifact_role": "stage",
+      "member_path": "system-icu-exports.json",
+      "bytes": 18984,
+      "sha256": "a7a9e291ed073c2c1f9df9792f9cf66d3cc502bcbd8d770bb3c3849b4737cda8"
+    },
+    "native_additions": {
+      "artifact_role": "original_logs",
+      "member_path": "_temp/qa-qualification-plan/native-additions-observation.json",
+      "bytes": 2648,
+      "sha256": "d9fdaa5f4de8bb2398e6633c380f4c129d4300cdd957742089f0c5df077ce1cc"
+    },
+    "practice": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "audio_transcription": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "omr_runner": {
+      "artifact_role": "original_logs",
+      "member_path": "_temp/cadence-omr-runner-tests/runner-report.json",
+      "bytes": 1653,
+      "sha256": "e4818f0973aa7e31463ee80f85c64d90ffb9aa1c0a9563dc0bf194dad308119c"
+    },
+    "authorized_wav_https": {
+      "artifact_role": "original_logs",
+      "member_path": "_temp/qa-authorized-wav-HTTPS/qualification-report.json",
+      "bytes": 3205,
+      "sha256": "c2cd8da27e429a7282723ce19c133bb859bd9339673f8c563b26cb266340de18"
+    },
+    "macro_profile": {
+      "artifact_role": "original_logs",
+      "member_path": "_temp/macro-profile-prebuild.json",
+      "bytes": 5451,
+      "sha256": "1a09a81619aee5e74e941dd42c5e9961b8545078ede895fb9f15aeb908035648"
+    },
+    "unity_syntax": {
+      "artifact_role": "original_logs",
+      "member_path": "_temp/project-unity-prebuild/report.json",
+      "bytes": 11338,
+      "sha256": "e16d2a92444cabba4760f4ab824181011a3af008ee964c2fc7eb88160ed3a33d"
+    },
+    "retained_qualification": {
+      "artifact_role": "qa_logs",
+      "member_path": null,
+      "sha256": "1161be5360ab492d2addda8f90e6aab9125dcbddadf747a4dc2ebbc6e51a7f68",
+      "bytes": 5405
+    },
+    "retained_packaging": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "retained_installer_wrapper": {
+      "artifact_role": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    }
+  },
+  "release": {
+    "tag": null,
+    "title": null,
+    "prerelease": true,
+    "target_commit_mode": "workflow_head"
+  },
+  "review": {
+    "approved": false,
+    "reviewed_by": null,
+    "reviewed_utc": null,
+    "basis": "Review authentic retained2008 MSI installed with GUI, independent QA receipts, unchanged stage/CI95/EXE13cd, exact corresponding sources and notices including original zlib companions and explicit MEASURED supplement. Preserve established Qt/Mesa/Microsoft and optional external boundaries."
+  },
+  "limitations": {
+    "tested_platform": "Windows Server 2022 (GitHub Actions)",
+    "windows10_client_tested": false,
+    "windows11_client_tested": false,
+    "human_listening_completed": false,
+    "paid_equivalence_complete": false,
+    "final_gift": false,
+    "physical_audio_midi_hardware_tested": false,
+    "signed_installer": false
+  },
+  "android": {
+    "audit_status": "not-reviewed-for-current-publishing-head",
+    "main_commit": "a6c90b63344b3fd60567fd9f001ac9ecba4b2081",
+    "reviewed_by": null,
+    "main_workflows": [],
+    "tag_workflows": []
+  },
+  "assets": [
+    {
+      "kind": "msi",
+      "name": "CadenceStudio-4.7.6-cadence.2008-x86_64.msi",
+      "member_path": "CadenceStudio-4.7.6-cadence.2008-x86_64.msi",
+      "sha256": "a3f934273e2c2002cc035743974941082245655a7bbe4bc6d2540bb921e52a9e",
+      "bytes": 120979784
+    },
+    {
+      "kind": "source_archive",
+      "name": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "kind": "build_recipe",
+      "name": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "kind": "component_sources",
+      "name": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "kind": "notices",
+      "name": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "kind": "guide",
+      "name": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "kind": "checksums",
+      "name": null,
+      "member_path": null,
+      "sha256": null,
+      "bytes": null
+    }
+  ],
+  "warning": "INACTIVE actual retained MSI2 producer selected from success43425150320; stage build12 still failed31, independent QA2 success. All5 outer artifact metadata and MSI bytes/SHA measured;20 raw report and7 final asset receipts must be completed by real Windows DATAONLY. Console JSON objects are not original report file bytes. ready=false/review=false; no publication or public URL claimed.",
+  "stage_producer": {
+    "run_id": 43408309742,
+    "job_id": 131828068954,
+    "driver_commit": "a8470ae087841875fd39284188d0e9d11d95e32b",
+    "run_number": 12,
+    "run_attempt": 1,
+    "conclusion": "failure",
+    "passed_steps": [
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "failed_step": 31
+  },
+  "qualification_producer": {
+    "run_id": 43421094979,
+    "job_id": 131870989277,
+    "driver_commit": "cc88a26de1fd0966c311aae5a8e5e25b130b6629",
+    "run_number": 2,
+    "run_attempt": 1,
+    "status_at_task_handoff": "completed",
+    "conclusion": "success",
+    "artifact_id": null,
+    "artifact_digest": null,
+    "artifact_bytes": null,
+    "qualification_report_sha256": null
+  },
+  "retained_pipeline": {
+    "ready": false,
+    "runtime_adapter_complete": true
+  }
+}

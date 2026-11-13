@@ -1,0 +1,86 @@
+CADENCE STUDIO 4.7.6-cadence.2008 — PRÉVERSION EXPÉRIMENTALE WINDOWS 64 BITS
+
+Cette préversion sert à essayer le logiciel. Elle ne constitue pas le cadeau
+final ni une reproduction complète des services ou contenus payants de MuseScore.
+La bibliothèque, les cours locaux, le coach et les alternatives sonores restent
+en développement. Le catalogue commercial de MuseScore.com et les enregistrements
+commerciaux MuseSounds ne sont pas inclus. MS Basic fournit les sons de base.
+
+INSTALLER
+1. Télécharge le fichier CadenceStudio-4.7.6-cadence.2008-x86_64.msi de cette
+   préversion GitHub. Aucun compte ni abonnement n'est nécessaire au téléchargement.
+2. Vérifie, si tu le souhaites, son empreinte avec le fichier SHA256SUMS joint.
+   La commande PowerShell facultative est : Get-FileHash .\nom-du-fichier.msi -Algorithm SHA256
+3. Double-clique sur le MSI, suis les étapes de l'assistant puis ouvre Cadence
+   Studio depuis le menu Démarrer. Aucun outil de développement n'est requis.
+   L'installateur est non signé : Windows peut afficher une demande de confiance.
+4. Choisis le français si nécessaire. Crée une partition ou ouvre une COPIE de
+   tes fichiers pour les premiers essais. Le coeur de l'application et MS Basic
+   fonctionnent hors ligne, sans compte obligatoire.
+
+Cadence utilise une identité et des dossiers de réglages distincts de MuseScore.
+Conserve tes partitions et sauvegardes d'origine. Un retour vers une version
+antérieure de l'éditeur ou du catalogue local peut perdre certaines informations.
+La désinstallation se fait depuis Applications installées dans Windows.
+
+CE QUI A ÉTÉ TESTÉ POUR CETTE LIVRAISON
+La publication n'est permise qu'après les rapports automatiques du vrai build :
+imports/exports CLI, installation et désinstallation MSI, démarrage/fermeture GUI
+et notices installées. Ces contrôles se déroulent
+sur Windows Server 2022 dans GitHub Actions, avec un profil de test préparé.
+Le parcours complet d'un premier lancement neuf n'est pas validé par ce profil.
+
+LIMITES À CONNAÎTRE
+Les clients Windows 10 et Windows 11 n'ont pas été validés pour cette préversion.
+Les écoutes musicales humaines, le matériel audio/MIDI et les plugins personnels
+ne sont pas validés par ces tests CI. Les fonctions payantes n'ont pas toutes un
+équivalent achevé. Consulte FEATURES.md, STATUS.md et ROADMAP.md dans les sources
+pour les différences et travaux restants. Ne remplace pas tes sauvegardes de travail.
+
+SOURCES ET LICENCES
+La source exacte de l'application, la recette de construction, les sources
+correspondantes des composants et les notices sont des fichiers joints à cette
+même préversion. Le coeur dérive de MuseScore sous GPL ; les sons, polices,
+composants et bibliothèques conservent leurs propres licences et mentions.
+Les liens GitHub automatiques « Source code » désignent le dépôt pilote : utilise
+l'archive -source.tar.gz et les archives -build-recipe.zip, -component-sources.zip
+et -notices.zip jointes pour les sources et informations correspondant au MSI.
+
+Les liens publics ne nécessitent pas de compte et n'ont pas de date d'expiration
+annoncée. Leur maintien dépend de GitHub et du propriétaire du dépôt ; aucune
+permanence n'est garantie. La version et le SHA identifient les fichiers diffusés.
+
+NOUVEAUTÉS ET COMPOSANTS FACULTATIFS
+Le moteur local de transcription WAV monophonique est du code original sous GPL,
+sans modèle appris ni service Python requis. Il produit une ébauche MIDI à corriger ;
+il ne constitue pas une transcription polyphonique complète ni une reconnaissance
+parfaite. Les tests sur fichiers ne remplacent pas une écoute humaine.
+
+Le client de synchronisation utilise QtCore/QtNetwork. Le service de bibliothèque
+Python 3.12+ est facultatif, administré et lancé séparément ; il n'est pas nécessaire
+au coeur hors ligne, n'est pas installé par le MSI et n'est pas un hébergement fourni.
+Le schéma local4 impose de conserver les sauvegardes avant tout retour de version.
+
+Le pont OMR lance Audiveris comme processus externe. Son moteur AGPL3-or-later,
+Java et son installation séparée ne sont pas inclus dans le MSI. Le modèle anglais
+Tesseract/tessdata sous Apache2 s'obtient par une installation/import explicite.
+Aucun moteur ni modèle OMR ne se télécharge silencieusement. Un test de frontière
+avec un processus contrôlé ne prouve pas une reconnaissance réelle dans cette GUI.
+
+Les cinq ressources sonores CC0 sont des téléchargements publics séparés et
+facultatifs. Elles ne sont pas comprises dans ce MSI. Aucun achat ni compte n'est
+nécessaire au coeur ; les notices et licences des fichiers importés restent à respecter.
+Les notices conservées dans la source peuvent citer des essais2005/2006 ou un ancien
+état du catalogue : elles ne constituent pas un rapport de validation de cet EXE2008.
+
+IMPORT WAV PAR LIEN DIRECT ET PARAMÈTRES
+Le dialogue WAV propose aussi un téléchargement explicite depuis un lien HTTPS
+direct autorisé, vers un nouveau fichier choisi (64 Mio et90secondes maximum).
+Il refuse les pages Web, les redirections et les ressources demandant une connexion.
+Il ne convertit pas les pages YouTube/Audio.com : utilise leur export autorisé ou
+un fichier personnel, puis choisis le WAV local. La transcription reste monodique.
+La clé du serveur facultatif reste masquée et temporaire ; son parcours GUI et
+les annonces des lecteurs d'écran ne sont pas encore validés par les tests natifs.
+Les promotions MuseHub automatiques sont désactivées par défaut dans un nouveau
+profil Cadence. Un choix déjà enregistré est conservé. Cela ne promet pas zéro
+requête réseau et ne désactive pas une compatibilité MuseSounds choisie séparément.
