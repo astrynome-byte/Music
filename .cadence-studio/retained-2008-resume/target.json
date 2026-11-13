@@ -14,5 +14,5 @@
   "original_failed_step": 31,
   "original_stage_artifact": 14031621703,
   "original_logs_artifact": 14031566362,
-  "note": "Root-controlled activation of QA only. No installer and no new application compilation."
+  "note": "Root-controlled activation of QA only. No installer and no new application compilation. Preserve literal helper bytes on Windows checkout; QA activation revision2."
 }
