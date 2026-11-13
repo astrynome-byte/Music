@@ -8,6 +8,7 @@ static const std::wstring omrChoose=L"Choisir le document…";
 static const std::wstring wavChoose=L"Choisir un WAV…";
 static const std::wstring wavSave=L"Enregistrer le MIDI et ouvrir…";
 static unsigned importKeys=0, altTaps=0, homeTaps=0, nextRowTaps=0;
+static unsigned initialOmrDocumentRightTaps=0;
 static HWND observedDialog=nullptr;
 static std::vector<std::string> observations;
 // Diagnostics only. These values never admit a key or relax a semantic match.
@@ -152,6 +153,19 @@ static bool readyMain(IUIAutomation* a,const std::filesystem::path& out)
     }
     return block(alive()?"main_readiness_deadline_without_unique_raw_Home_or_Scores_and_valid_context":"main_readiness_process_exited");
 }
+static bool waitInitialImportChoose(IUIAutomation* a,const std::filesystem::path& out,HWND dialog,bool wave)
+{
+    if(waitFocus(a,out,dialog,wave?wavChoose:omrChoose,UIA_ButtonControlTypeId,2))return true;
+    // GUI4 observed this exact OMR edit at initial focus. Sourcea2b7 defines
+    // it readOnly at(row0,col0), beside Choose at(row0,col1); its readOnly
+    // ShortcutOverride handler passes navigation keys through. One Right
+    // may cross to Choose; success still requires its exact semantic button.
+    // Editable WAV/URL controls never enter this OMR-only fallback.
+    if(wave||initialOmrDocumentRightTaps>=1||!observeFocus(a,L"Document de départ",UIA_EditControlTypeId))return false;
+    ++initialOmrDocumentRightTaps;
+    return importKey(a,out,dialog,VK_RIGHT,"move_once_from_observed_readonly_OMR_source_to_adjacent_Choose")
+        &&waitFocus(a,out,dialog,omrChoose,UIA_ButtonControlTypeId,2);
+}
 static bool openThroughFile(IUIAutomation* a,const std::filesystem::path& out,bool wave)
 {
     if(!readyMain(a,out))return false;
@@ -177,7 +191,7 @@ static bool openThroughFile(IUIAutomation* a,const std::filesystem::path& out,bo
     const auto until=std::min(deadline,Clock::now()+std::chrono::seconds(8));
     while(alive()&&Clock::now()<until) {
         observedDialog=exactDialog(wave?wavTitle:omrTitle);
-        if(observedDialog&&waitFocus(a,out,observedDialog,wave?wavChoose:omrChoose,UIA_ButtonControlTypeId,2)) {
+        if(observedDialog&&waitInitialImportChoose(a,out,observedDialog,wave)) {
             snapshot(a,out,wave?L"wav-loaded":L"omr-loaded");return true;
         }
         Sleep(150);
@@ -357,6 +371,7 @@ int wmain(int argc,wchar_t** argv)
         <<"\",\"dialog_handle\":"<<reinterpret_cast<std::uintptr_t>(observedDialog)<<",\"dialog_title\":"<<jsonQuoted(owned(observedDialog)?windowTitle(observedDialog):L"")
         <<",\"rect\":["<<rect.left<<','<<rect.top<<','<<rect.right<<','<<rect.bottom<<"],\"com_hresult\":"<<static_cast<long>(activated)
         <<",\"keys\":"<<importKeys<<",\"alt_taps\":"<<altTaps<<",\"home_taps\":"<<homeTaps<<",\"next_row_taps\":"<<nextRowTaps
+        <<",\"initial_OMR_document_right_taps\":"<<initialOmrDocumentRightTaps
         <<",\"keyboard_failure\":"<<(keyboardFailure?"true":"false")
         <<",\"diagnostics_only\":{\"blocked_guard\":"<<jsonQuoted(std::wstring(blockedGuard.begin(),blockedGuard.end()))
         <<",\"COM_initialization_hresult\":"<<static_cast<long>(initialized)<<",\"automation2_query_hresult\":"<<static_cast<long>(automation2Result)
