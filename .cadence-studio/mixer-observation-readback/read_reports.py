@@ -1,137 +1,85 @@
 # SPDX-License-Identifier: GPL-3.0-only
-"""Read bounded evidence only; never import or execute downloaded artifact files."""
+"""Read exact22 JSON originals from the completed Windows DATAONLY artifact; execute none."""
 import argparse
 import base64
 import hashlib
 import json
 import os
+from pathlib import Path
 import stat
 import urllib.request
-from pathlib import Path
 
-RUN = 43415198550
-ARTIFACT = 14031158386
-DRIVER = '5aed1488550adda6c68240a9651d28e20f9139c6'
-DIGEST = 'sha256:de0099fff63f934cca223d0f2e5de460eb9a93120e5d60ffc6d0e282d89a7ebf'
-PNG_SHA256 = {
-    'app-observation/before-observation.png': '13b9fee974bf5ff8c24721cc3e0dde2d5083dde5c3f3385bacd369f5d2078337',
-    'app-observation/after-observation.png': '6647b55b50a4895dd028db99646843181c0d8d3378da894ecfdae7ec1e827581',
-}
-EXTRA_JSON = (
-    'mixer-observer-build/observer-source-ledger.json',
-    'mixer-observer-build/observation-plan.original.json',
-    'mixer-observer-build/activation-target.original.json',
-)
-
+EXPECTED = json.loads(Path(__file__).with_name('expected-readback.json').read_text())
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
-    def redirect_request(self, *args, **kwargs):
+    def redirect_request(self,*args,**kwargs):
         raise ValueError('Metadata authentication cannot redirect')
 
+def require(ok,message):
+    if not ok:raise ValueError(message)
 
 def verify_metadata(output):
-    if os.environ.get('GITHUB_REPOSITORY') != 'astrynome-byte/Music':
-        raise ValueError('Exact repository context required')
-    token = os.environ['GH_TOKEN']
-    opener = urllib.request.build_opener(NoRedirect)
-    values = {}
-    for endpoint in (f'actions/runs/{RUN}', f'actions/artifacts/{ARTIFACT}'):
-        request = urllib.request.Request('https://api.github.com/repos/astrynome-byte/Music/' + endpoint,
-                                        headers={'Authorization': 'Bearer ' + token,
-                                                 'Accept': 'application/vnd.github+json',
-                                                 'User-Agent': 'Cadence-data-only-observation-reader'})
-        with opener.open(request, timeout=30) as response:
-            raw = response.read(2 * 1024**2 + 1)
-            if response.status != 200 or len(raw) > 2 * 1024**2:
-                raise ValueError('Bounded metadata HTTP200 required')
-            values[endpoint] = json.loads(raw)
-    run = values[f'actions/runs/{RUN}']
-    artifact = values[f'actions/artifacts/{ARTIFACT}']
-    if run['head_sha'] != DRIVER or run['status'] != 'completed' or run['conclusion'] != 'success' or run['run_attempt'] != 1:
-        raise ValueError('Exact successful original F10 collection required')
-    if artifact['id'] != ARTIFACT or artifact['digest'] != DIGEST or artifact['size_in_bytes'] != 226669 or artifact['expired'] is not False or artifact['workflow_run']['id'] != RUN:
-        raise ValueError('Original evidence artifact identity differs')
-    Path(output).write_text(json.dumps(values, indent=2) + '\n')
+    require(os.environ.get('GITHUB_REPOSITORY')=='astrynome-byte/Music','Exact repository context required')
+    token=os.environ['GH_TOKEN'];opener=urllib.request.build_opener(NoRedirect);values={}
+    for endpoint in (f"actions/runs/{EXPECTED['run_id']}",f"actions/artifacts/{EXPECTED['artifact_id']}"):
+        request=urllib.request.Request('https://api.github.com/repos/astrynome-byte/Music/'+endpoint,
+            headers={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','User-Agent':'Cadence-data-only-observation-reader'})
+        with opener.open(request,timeout=30)as response:
+            raw=response.read(2*1024**2+1)
+            require(response.status==200 and len(raw)<=2*1024**2,'Bounded metadata HTTP200 required')
+            values[endpoint]=json.loads(raw)
+    run=values[f"actions/runs/{EXPECTED['run_id']}"];artifact=values[f"actions/artifacts/{EXPECTED['artifact_id']}"]
+    require(run['head_sha']==EXPECTED['driver_commit'] and run['status']=='completed' and run['conclusion']=='success'
+        and run['run_number']==1 and run['run_attempt']==1
+        and run['path']=='.github/workflows/cadence-windows-2008-data-inspection.yml','Exact successful DATAONLY run required')
+    require(artifact['id']==EXPECTED['artifact_id'] and artifact['digest']==EXPECTED['artifact_digest']
+        and artifact['size_in_bytes']==EXPECTED['artifact_bytes'] and artifact['expired']is False
+        and artifact['workflow_run']['id']==EXPECTED['run_id']
+        and artifact['workflow_run']['head_sha']==EXPECTED['driver_commit'],'Exact DATAONLY artifact identity required')
+    Path(output).write_text(json.dumps(values,indent=2)+'\n')
 
-
-def read_reports(root, output):
-    root, output = Path(root), Path(output)
-    if root.is_symlink() or not root.is_dir() or output.exists():
-        raise ValueError('Plain input and new output required')
-    own = root / 'mixer-owned-observation'
-    if own.is_symlink() or not own.is_dir():
-        raise ValueError('Exact owned observation directory required')
-    files = list(own.rglob('*'))
-    if len(files) > 5000:
-        raise ValueError('Evidence inventory exceeds bound')
-    selected = []
-    total = 0
-
-    def select(path, relative_name):
+def read_reports(root,output):
+    root,output=Path(root),Path(output)
+    require(not root.is_symlink() and root.is_dir() and not output.exists(),'Plain input and new output required')
+    selected=[];total=0
+    def collect(name,sha,expected_bytes=None):
         nonlocal total
-        if path.is_symlink() or any(p.is_symlink() for p in path.parents if p != root.parent):
-            raise ValueError('Linked evidence refused')
-        info = path.stat(follow_symlinks=False)
-        if not stat.S_ISREG(info.st_mode) or info.st_size > 2 * 1024**2:
-            raise ValueError('Evidence must be a bounded regular file')
-        raw = path.read_bytes()
-        digest = hashlib.sha256(raw).hexdigest()
-        if relative_name in PNG_SHA256:
-            if digest != PNG_SHA256[relative_name] or not raw.startswith(b'\x89PNG\r\n\x1a\n'):
-                raise ValueError('Original expected capture digest or PNG header differs')
-        elif path.suffix == '.json':
-            json.loads(raw.decode('utf-8-sig'))
-        total += len(raw)
-        if total > 8 * 1024**2 or len(selected) >= 48:
-            raise ValueError('Selected evidence exceeds bound')
-        row = {'path': relative_name, 'bytes': len(raw), 'sha256': digest,
-               'base64_original_bytes': base64.b64encode(raw).decode('ascii')}
-        selected.append((Path(relative_name), raw, row))
-
-    for path in sorted(files):
-        rel = path.relative_to(own)
-        if any(part in ('stage', 'profile', 'runtime') for part in rel.parts):
-            continue
-        name = path.name
-        if not (name in ('result.json', 'observation-result.json', 'observation-report.json', 'app-clock-validation.json')
-                or (len(rel.parts) > 1 and rel.parts[-2] in ('uia', 'clock-stats', 'registered-harness-stats') and path.suffix == '.json')
-                or rel.as_posix() in PNG_SHA256):
-            continue
-        select(path, rel.as_posix())
-    for relative_name in EXTRA_JSON:
-        path = root / relative_name
-        if path.exists() or path.is_symlink():
-            select(path, relative_name)
-    # Nothing is emitted or written until both original capture identities have
-    # been proved. A missing or changed PNG cannot produce a partial success.
-    names = {row['path'] for _, _, row in selected}
-    if not set(PNG_SHA256).issubset(names):
-        raise ValueError('Both exact original before/after captures are required')
+        path=root/name
+        require(not path.is_symlink() and not any(x.is_symlink()for x in path.parents),'Linked evidence refused')
+        info=path.stat(follow_symlinks=False)
+        require(stat.S_ISREG(info.st_mode) and 0<info.st_size<=4*1024**2,'Bounded regular JSON required')
+        raw=path.read_bytes();actual=hashlib.sha256(raw).hexdigest()
+        require(actual==sha and(expected_bytes is None or len(raw)==expected_bytes),'Original JSON length/SHA differs: '+name)
+        value=json.loads(raw.decode('utf-8-sig'));total+=len(raw)
+        require(total<=8*1024**2 and len(selected)<22,'Bounded22 JSONs required')
+        row={'path':name,'bytes':len(raw),'sha256':actual,'base64_original_bytes':base64.b64encode(raw).decode('ascii')}
+        selected.append((Path(name),raw,row));return value
+    receipt=collect('windows2008-inspection-receipt.json',EXPECTED['inspection_receipt_sha256'])
+    require(receipt.get('status')=='actual-retained2008-data-inspected-seven-assets-prepared'
+        and all(receipt.get(k)is False for k in('ready','publication_authorized','activation_target_written','github_write_performed','application_or_installer_executed'))
+        and receipt.get('original_outer_digests_recomputed')is True
+        and receipt.get('reports')==EXPECTED['reports'] and receipt.get('asset_receipts')==EXPECTED['assets']
+        and receipt.get('source')==EXPECTED['source'] and receipt.get('producer')==EXPECTED['producer'],
+        'Authentic nonactivating inspection receipt differs')
+    for kind,row in EXPECTED['reports'].items():
+        collect('windows2008-inspection/observed-reports/'+kind+'.original.json',row['sha256'],row['bytes'])
+    collect('windows2008-inspection/observed-reports/source.original.json',EXPECTED['source_json_sha256'])
+    expected_names={row['path']for _,_,row in selected}
+    actual_names={x.relative_to(root).as_posix()for x in root.rglob('*')if x.is_file()}
+    require(len(selected)==22 and actual_names==expected_names,'Exactly22 expected original JSON files required')
+    # Emit nothing until every original identity has been checked.
     output.mkdir()
-    for rel, raw, row in selected:
-        destination = output / rel
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        destination.write_bytes(raw)
-        print('CADENCE_MIXER_ORIGINAL_FILE_BEGIN')
-        print(json.dumps(row, separators=(',', ':')))
-        print('CADENCE_MIXER_ORIGINAL_FILE_END')
-    receipt = {'scope': 'Original single native F10 collection with partial UIA; data only, visual review pending',
-               'run': RUN, 'artifact': ARTIFACT, 'driver': DRIVER,
-               'expected_archive_bytes': 226669, 'expected_archive_digest': DIGEST,
-               'archive_digest_source': 'Pinned GitHub metadata before one actions/download-artifact request; see action download log for its computed archive digest',
-               'application_or_SDK_executed_by_reader': False,
-               'UIA_complete': False, 'Mixer_visual_review_complete': False,
-               'files': [{k: v for k, v in row.items() if k != 'base64_original_bytes'} for _, _, row in selected]}
-    (output / 'readback-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+    for rel,raw,row in selected:
+        path=output/rel;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        print('CADENCE_WINDOWS2008_ORIGINAL_JSON_BEGIN')
+        print(json.dumps(row,separators=(',',':')))
+        print('CADENCE_WINDOWS2008_ORIGINAL_JSON_END')
+    facts={'scope':'Exact original JSON bytes only; no application, MSI, SDK or acquired code executed','source_run':EXPECTED['run_id'],
+        'source_artifact':EXPECTED['artifact_id'],'producer_file_bytes_recomputed':True,'public_release_published':False,
+        'files':[{k:v for k,v in row.items()if k!='base64_original_bytes'}for _,_,row in selected]}
+    (output/'readback-receipt.json').write_text(json.dumps(facts,indent=2)+'\n')
 
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--metadata-output')
-    parser.add_argument('--root')
-    parser.add_argument('--output')
-    args = parser.parse_args()
-    if args.metadata_output:
-        verify_metadata(args.metadata_output)
-    else:
-        read_reports(args.root, args.output)
+if __name__=='__main__':
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--metadata-output');parser.add_argument('--root');parser.add_argument('--output');args=parser.parse_args()
+    if args.metadata_output:verify_metadata(args.metadata_output)
+    else:read_reports(args.root,args.output)

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-only
-name: Cadence original native F10 collection data-only readback
+name: Cadence original Windows2008 publication reports data-only readback
 on:
   push:
     branches: [cadence-studio/windows-build]
@@ -8,33 +8,33 @@ permissions:
   contents: read
   actions: read
 jobs:
-  read-original-native-f10-collection:
+  read-original-Windows2008-inspection-JSON:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - name: Authenticate the exact successful F10 producer and original226KB evidence artifact
+      - name: Authenticate exact completed Windows DATAONLY producer and107KB original artifact
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 -I .cadence-studio/mixer-observation-readback/read_reports.py --metadata-output "$RUNNER_TEMP/mixer-original-metadata.json"
+        run: python3 -I .cadence-studio/mixer-observation-readback/read_reports.py --metadata-output "$RUNNER_TEMP/windows2008-original-metadata.json"
       - uses: actions/download-artifact@v4
         with:
-          artifact-ids: '14031158386'
-          run-id: '43415198550'
+          artifact-ids: '14038502218'
+          run-id: '43427566994'
           repository: astrynome-byte/Music
           github-token: ${{ github.token }}
           merge-multiple: true
-          path: ${{ runner.temp }}/original-mixer-observation
-      - name: Read the two mandatory original PNG captures and bounded JSON only; never execute their producer
-        run: python3 -I .cadence-studio/mixer-observation-readback/read_reports.py --root "$RUNNER_TEMP/original-mixer-observation" --output "$RUNNER_TEMP/mixer-original-readback"
+          path: ${{ runner.temp }}/original-Windows2008-inspection
+      - name: Verify and print exactly22 original JSON byte streams; execute none
+        run: python3 -I .cadence-studio/mixer-observation-readback/read_reports.py --root "$RUNNER_TEMP/original-Windows2008-inspection" --output "$RUNNER_TEMP/windows2008-original-readback"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cadence-original-mixer-data-only-${{ github.run_id }}
+          name: cadence-original-Windows2008-data-only-${{ github.run_id }}
           path: |
-            ${{ runner.temp }}/mixer-original-readback
-            ${{ runner.temp }}/mixer-original-metadata.json
+            ${{ runner.temp }}/windows2008-original-readback
+            ${{ runner.temp }}/windows2008-original-metadata.json
           retention-days: 14
           if-no-files-found: warn

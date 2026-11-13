@@ -214,7 +214,11 @@ static bool cancelChooser(IUIAutomation* a,const std::filesystem::path& out,HWND
     const auto until=std::min(deadline,Clock::now()+std::chrono::seconds(5));
     while(alive()&&Clock::now()<until) {
         if((!IsWindow(picker)||!IsWindowVisible(picker))&&context(dialog))
-            return waitFocus(a,out,dialog,choose,UIA_ButtonControlTypeId,2);
+            // GUI5 observed the same exact readonly OMR source edit after
+            // native chooser cancellation. Reuse its one-Right-per-phase
+            // guard; WAV chooser restoration keeps its previous behavior.
+            return choose==omrChoose?waitInitialImportChoose(a,out,dialog,false)
+                :waitFocus(a,out,dialog,choose,UIA_ButtonControlTypeId,2);
         Sleep(100);
     }
     return false;

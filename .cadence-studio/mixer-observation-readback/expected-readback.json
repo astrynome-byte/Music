@@ -1,0 +1,197 @@
+{
+  "run_id": 43427566994,
+  "job_id": 131892665664,
+  "driver_commit": "4adc8f7650e472e1ee4ea8d6cc64b9fc38bc0443",
+  "artifact_id": 14038502218,
+  "artifact_bytes": 107406,
+  "artifact_digest": "sha256:901da8f7f7576fa209ee5e9771b0c3e4fb16a53c6101530cc5db530dee00150b",
+  "inspection_receipt_sha256": "3575d16f8166b2449b4968b097fcf23769d519e88be5653641941ce66361841e",
+  "source_json_sha256": "d8150851d20d6f9d631a7f93226753951eb1fb456e8a385a0ef8c834992bf354",
+  "reports": {
+    "bootstrap": {
+      "artifact_role": "original_logs",
+      "member_path": "_temp/cadence-bootstrap.json",
+      "bytes": 571,
+      "sha256": "72c10c499ae423aef97b6c9c7b930dc9583abcaaab6e951b16074b41e0cd4ebe"
+    },
+    "build": {
+      "artifact_role": "stage",
+      "member_path": "cadence-build-result.json",
+      "bytes": 377,
+      "sha256": "d3a65b5a17f762f36311e14f3f63fe1b0d158649aae20d989f6a838f689e9274"
+    },
+    "stage_manifest": {
+      "artifact_role": "stage",
+      "member_path": "stage-manifest.json",
+      "bytes": 3777,
+      "sha256": "266defaed6a0fe9033ef1ea3c50148bfd833ce84e01131508fea1ceedee8da53"
+    },
+    "release_manifest": {
+      "artifact_role": "msi_logs",
+      "member_path": "_temp/retained2008-package/delivery-bundle-report.json",
+      "bytes": 2355,
+      "sha256": "dacba51f9e9baed634ce8424f87905e89731e44e09b40229dedebac8d0b4f21c"
+    },
+    "cli": {
+      "artifact_role": "qa_logs",
+      "member_path": "_temp/qa-cadence/report.json",
+      "bytes": 42066,
+      "sha256": "81827463f144ea807a2b5f2aaa1ca1a123b4414684187a4006ceb88371def4e2"
+    },
+    "msi": {
+      "artifact_role": "msi_logs",
+      "member_path": "_temp/retained2008-installer-qa/actual-msi-test/msi-install-report.json",
+      "bytes": 72855,
+      "sha256": "692d2da71b20e33f9eabf6e602daa67e168e44730a7c293fdfe2d2bfc2aac38e"
+    },
+    "notices": {
+      "artifact_role": "qa_logs",
+      "member_path": "_temp/qa-stage-notices/stage-notices-report.json",
+      "bytes": 73586,
+      "sha256": "88977af9ae4b4b3f61e2766f6ee3bb4e824e14edb06cdac5ec8a824206d1da77"
+    },
+    "components": {
+      "artifact_role": "stage",
+      "member_path": "corresponding-sources/collection-report.json",
+      "bytes": 113790,
+      "sha256": "5fe6cc95c1831123d6437c93a9ae3ee6a358d8c840a388719bf2c6f64eb9908a"
+    },
+    "icu_policy": {
+      "artifact_role": "stage",
+      "member_path": "stage-system-icu-policy.json",
+      "bytes": 656,
+      "sha256": "6c4d10d43f8d0009b26ff77eca8d18601cb9749ea5bf9ea1c4280d8a4dd3764a"
+    },
+    "icu_exports": {
+      "artifact_role": "stage",
+      "member_path": "system-icu-exports.json",
+      "bytes": 18984,
+      "sha256": "a7a9e291ed073c2c1f9df9792f9cf66d3cc502bcbd8d770bb3c3849b4737cda8"
+    },
+    "native_additions": {
+      "artifact_role": "original_logs",
+      "member_path": "_temp/qa-qualification-plan/native-additions-observation.json",
+      "bytes": 2648,
+      "sha256": "d9fdaa5f4de8bb2398e6633c380f4c129d4300cdd957742089f0c5df077ce1cc"
+    },
+    "practice": {
+      "artifact_role": "qa_logs",
+      "member_path": "_temp/qa-practice-native/report.json",
+      "bytes": 5148,
+      "sha256": "73dd581bd74581ccc14625dfdb8aad55ba8d76f2945ee618b833edf8e59eb65f"
+    },
+    "audio_transcription": {
+      "artifact_role": "qa_logs",
+      "member_path": "_temp/qa-audio-transcription/runtime/audio-transcription-report.json",
+      "bytes": 11995,
+      "sha256": "e5631fc18488484852a5c46c5766a917bb05c007fbcbc0bad31dc72684c43887"
+    },
+    "omr_runner": {
+      "artifact_role": "original_logs",
+      "member_path": "_temp/cadence-omr-runner-tests/runner-report.json",
+      "bytes": 1653,
+      "sha256": "e4818f0973aa7e31463ee80f85c64d90ffb9aa1c0a9563dc0bf194dad308119c"
+    },
+    "authorized_wav_https": {
+      "artifact_role": "original_logs",
+      "member_path": "_temp/qa-authorized-wav-HTTPS/qualification-report.json",
+      "bytes": 3205,
+      "sha256": "c2cd8da27e429a7282723ce19c133bb859bd9339673f8c563b26cb266340de18"
+    },
+    "macro_profile": {
+      "artifact_role": "original_logs",
+      "member_path": "_temp/macro-profile-prebuild.json",
+      "bytes": 5451,
+      "sha256": "1a09a81619aee5e74e941dd42c5e9961b8545078ede895fb9f15aeb908035648"
+    },
+    "unity_syntax": {
+      "artifact_role": "original_logs",
+      "member_path": "_temp/project-unity-prebuild/report.json",
+      "bytes": 11338,
+      "sha256": "e16d2a92444cabba4760f4ab824181011a3af008ee964c2fc7eb88160ed3a33d"
+    },
+    "retained_qualification": {
+      "artifact_role": "qa_logs",
+      "member_path": "_temp/retained-qualification.json",
+      "bytes": 5405,
+      "sha256": "1161be5360ab492d2addda8f90e6aab9125dcbddadf747a4dc2ebbc6e51a7f68"
+    },
+    "retained_packaging": {
+      "artifact_role": "msi_logs",
+      "member_path": "_temp/retained2008-package/package-manifest.json",
+      "bytes": 4420,
+      "sha256": "891625924b67e37c9c666101ad106fe53327e175e1e4754eb268c9740fa8ae07"
+    },
+    "retained_installer_wrapper": {
+      "artifact_role": "msi_logs",
+      "member_path": "_temp/retained2008-installer-qa/retained2008-installer-qualification.json",
+      "bytes": 78699,
+      "sha256": "eee1ac794357ee36db623dde25c32af87c2f4988fd74323cceee7c6330d0662e"
+    }
+  },
+  "assets": [
+    {
+      "kind": "msi",
+      "name": "CadenceStudio-4.7.6-cadence.2008-x86_64.msi",
+      "member_path": "CadenceStudio-4.7.6-cadence.2008-x86_64.msi",
+      "bytes": 120979784,
+      "sha256": "a3f934273e2c2002cc035743974941082245655a7bbe4bc6d2540bb921e52a9e"
+    },
+    {
+      "kind": "source_archive",
+      "name": "CadenceStudio-4.7.6-cadence.2008-source.tar.gz",
+      "member_path": "CadenceStudio-4.7.6-cadence.2008-source.tar.gz",
+      "bytes": 166000721,
+      "sha256": "6ffe52e6c5ef0fd21c39f273f423706b78438effb829540fda68f69313ada417"
+    },
+    {
+      "kind": "build_recipe",
+      "name": "CadenceStudio-4.7.6-cadence.2008-build-recipe.zip",
+      "member_path": "CadenceStudio-4.7.6-cadence.2008-build-recipe.zip",
+      "bytes": 23861994,
+      "sha256": "5bee808040e9cf493d9358e42dc2c3bdba18c0dda8ac924dccb0866b6e293a2a"
+    },
+    {
+      "kind": "component_sources",
+      "name": "CadenceStudio-4.7.6-cadence.2008-component-sources.zip",
+      "member_path": "CadenceStudio-4.7.6-cadence.2008-component-sources.zip",
+      "bytes": 160273916,
+      "sha256": "31fc334f34a0054b01b7a9e668ed9c8df227df03182933bf35d218819caa2132"
+    },
+    {
+      "kind": "notices",
+      "name": "CadenceStudio-4.7.6-cadence.2008-notices.zip",
+      "member_path": "CadenceStudio-4.7.6-cadence.2008-notices.zip",
+      "bytes": 886834,
+      "sha256": "37f8d1f892a4f66e2b2b8e2d603fc1490da260692e4c5580d7f2a06c3fbdc11a"
+    },
+    {
+      "kind": "guide",
+      "name": "LIRE-MOI-CadenceStudio-4.7.6-cadence.2008-FR.txt",
+      "member_path": "LIRE-MOI-CadenceStudio-4.7.6-cadence.2008-FR.txt",
+      "bytes": 1346,
+      "sha256": "f26eaea3d82f6418695866c1da63a2c2a9784ba0c16558a7efc17473ff34323d"
+    },
+    {
+      "kind": "checksums",
+      "name": "SHA256SUMS.txt",
+      "member_path": "SHA256SUMS.txt",
+      "bytes": 692,
+      "sha256": "128158c97585289ca460956d18c2e79dd881f15cf77e51cbf9ef75ed2679646e"
+    }
+  ],
+  "source": {
+    "original_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+    "tree": "c5452043983a048ef0aeef085615af903de3f5b0",
+    "source_json_sha256": "d8150851d20d6f9d631a7f93226753951eb1fb456e8a385a0ef8c834992bf354",
+    "patch_sha256": "ce7bc369062d6520785169c89d187bf8fa0c9e8dc069315a5e0d75e8f79247b9",
+    "ci_commit": "95cebb22fe6cbde22919c94f2b480bd14c3eb8de"
+  },
+  "producer": {
+    "run_id": 43425150320,
+    "job_id": 131884644607,
+    "driver_commit": "90d304749a692752a3d5537e82e8f225e94c0737",
+    "run_number": 2,
+    "run_attempt": 1
+  }
+}
