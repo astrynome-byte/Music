@@ -9,10 +9,10 @@ import stat
 import urllib.request
 from pathlib import Path
 
-RUN = 43335448410
-ARTIFACT = 13996064218
-DRIVER = '19707c5783bc1b56ccf698d13cbea32da1568fa6'
-DIGEST = 'sha256:21ef7bc40253f6befdae911e9f63c97e5cf1bf09d96b01fd09c48546735be06f'
+RUN = 43405873102
+ARTIFACT = 14027790752
+DRIVER = '04f5bea5632bdc2497815faa03787c1183ed36ae'
+DIGEST = 'sha256:e609de8ee5b67191d9e7d8238e91be615af14ac9b6c334434c58c4523fa7834d'
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -40,7 +40,7 @@ def verify_metadata(output):
     artifact = values[f'actions/artifacts/{ARTIFACT}']
     if run['head_sha'] != DRIVER or run['status'] != 'completed' or run['conclusion'] != 'failure' or run['run_attempt'] != 1:
         raise ValueError('Exact failed original observation required')
-    if artifact['id'] != ARTIFACT or artifact['digest'] != DIGEST or artifact['size_in_bytes'] != 150676546 or artifact['expired'] is not False or artifact['workflow_run']['id'] != RUN:
+    if artifact['id'] != ARTIFACT or artifact['digest'] != DIGEST or artifact['size_in_bytes'] != 150363436 or artifact['expired'] is not False or artifact['workflow_run']['id'] != RUN:
         raise ValueError('Original evidence artifact identity differs')
     Path(output).write_text(json.dumps(values, indent=2) + '\n')
 
