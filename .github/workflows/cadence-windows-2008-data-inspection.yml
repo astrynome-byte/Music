@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# DATAONLY: no application launch, installation, activation target or GitHub write.
+name: 'Cadence: inspect actual retained2008 data before publication review'
+'on':
+  push:
+    branches:
+    - cadence-studio/windows-build
+    paths:
+    - .github/workflows/cadence-windows-2008-data-inspection.yml
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect-selected-retained2008-without-target:
+    if: github.repository == 'astrynome-byte/Music'
+    runs-on: windows-2022
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        ref: b830cc6697ebd71717f8d660abb0dffffbf9d363
+        path: driver
+        fetch-depth: 1
+        persist-credentials: false
+    - uses: actions/setup-python@v6
+      with:
+        python-version: '3.12'
+    - name: Verify nine immutable recipe inputs without an activation target
+      run: "$helper=\"$env:GITHUB_WORKSPACE/driver/.cadence-studio/windows-2008-public-download-next\"\nif(Test-Path -LiteralPath \"$helper/target.json\"){throw 'Pinned inspection recipe must not contain an activation target.'}\n$pins=@{\n  'Inspect-DeliveryDataOnly.ps1'='e5251c5401b4b645f71dcbc531f89df2db77bbad4343468477c03b323a643dd8'\n  'inspect_delivery.py'='43c62a74d634711beac16aa1f7a6ef64322b56419be0806dffdcaa8f1e32b6d3'\n  'acquire_originals.py'='24f0db07fc760789cbdd15d720a89541c220a7f23768d0379180231f25a431aa'\n  'windows_publication.py'='49958bd7328f47b104ba3c1ef2ffe004082254308d38e9160290a4ffe2eef6c2'\n  'GUIDE-FR.txt'='a124d9588887996cb592c38046f856aa2332409ffa1ce75a6469180b9c55fbac'\n  'target.json.template'='2d55d74e2efa3b3bc2d74c20515050d46586a3b3d4dbeeb60dda373c41c1553c'\n  'expected-inputs.json'='3cdd348922259fd9517d7d95e84b1f2739587008c70235d9f6c2f1eb2ed41f05'\n  'verify_stage_only_producer.py'='d2aa8dfb9ae6c8ae09695de3db1f43d3a97a039609b740a7f9d90f2b958158da'\n  'stage-only-provenance.json'='12351dd87996ce18a2d9679fdba65cf36365b7ae2aff9371054fffe43bf7ce03'\n}\nforeach($entry in $pins.GetEnumerator()){\n    if((Get-FileHash -LiteralPath (Join-Path $helper $entry.Key) -Algorithm SHA256).Hash.ToLowerInvariant()-cne$entry.Value){throw ('Pinned inspection input changed: '+$entry.Key)}\n}\n"
+    - name: Inspect authenticated source-stage, successful QA and MSI producers and prepare seven local files without GitHub write
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: '$helper="$env:GITHUB_WORKSPACE/driver/.cadence-studio/windows-2008-public-download-next"
+
+        & "$helper/Inspect-DeliveryDataOnly.ps1" -WorkDirectory "$env:RUNNER_TEMP/windows2008-inspection" -OutputPath "$env:RUNNER_TEMP/windows2008-inspection-receipt.json"
+
+        '
+    - name: Verify20original report bytes and print nonactivating data receipts
+      run: "$helper=\"$env:GITHUB_WORKSPACE/driver/.cadence-studio/windows-2008-public-download-next\"\n$receiptPath=\"$env:RUNNER_TEMP/windows2008-inspection-receipt.json\"\n$receipt=Get-Content -LiteralPath $receiptPath -Raw -Encoding utf8|ConvertFrom-Json\n$expected=Get-Content -LiteralPath \"$helper/expected-inputs.json\" -Raw -Encoding utf8|ConvertFrom-Json\nif($receipt.status-cne'actual-retained2008-data-inspected-seven-assets-prepared'-or\n   $receipt.ready-isnot[bool]-or$receipt.ready-or\n   $receipt.publication_authorized-isnot[bool]-or$receipt.publication_authorized-or\n   $receipt.activation_target_written-isnot[bool]-or$receipt.activation_target_written-or\n   $receipt.github_write_performed-isnot[bool]-or$receipt.github_write_performed-or\n   $receipt.application_or_installer_executed-isnot[bool]-or$receipt.application_or_installer_executed-or\n   $receipt.original_outer_digests_recomputed-isnot[bool]-or-not$receipt.original_outer_digests_recomputed){throw 'Explicit completed DATAONLY receipt required.'}\nforeach($key in @('run_id','driver_commit','job_id','run_number','run_attempt')){if($receipt.producer.$key-cne$expected.producer.$key){throw 'Actual producer differs from selection.'}}\nforeach($key in @('original_commit','tree','source_json_sha256','patch_sha256')){if($receipt.source.$key-cne$expected.source.$key){throw 'Actual source differs from selection.'}}\n$reportNames=@('bootstrap','build','stage_manifest','release_manifest','cli','msi','notices','components','icu_policy','icu_exports','native_additions','practice','audio_transcription','omr_runner','authorized_wav_https','macro_profile','unity_syntax','retained_qualification','retained_packaging','retained_installer_wrapper')\nif(@($receipt.reports.PSObject.Properties).Count-ne20-or@($receipt.asset_receipts).Count-ne7-or@($receipt.artifacts).Count-ne5){throw 'Exactly20reports,7assets,5originals required.'}\n$folder=\"$env:RUNNER_TEMP/windows2008-inspection/observed-reports\";$names=@('source.original.json')\nforeach($kind in $reportNames){\n    $name=$kind+'.original.json';$names+=$name;$file=Get-Item -LiteralPath (Join-Path $folder $name)\n    if($file.PSIsContainer-or$file.Length-ne$receipt.reports.$kind.bytes-or(Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()-cne$receipt.reports.$kind.sha256){throw ('Original report changed: '+$kind)}\n}\nif((Get-FileHash -LiteralPath (Join-Path $folder 'source.original.json') -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expected.source.source_json_sha256){throw 'Original source.json changed.'}\n[string[]]$actual=@(Get-ChildItem -LiteralPath $folder -File -Force|ForEach-Object Name)\n[Array]::Sort($actual,[StringComparer]::Ordinal);[Array]::Sort($names,[StringComparer]::Ordinal)\nif($actual.Count-ne21){throw 'Only20original JSON reports and source.json may be retained.'}\nfor($i=0;$i-lt21;$i++){if($actual[$i]-cne$names[$i]){throw 'Unexpected inspection output file; no binary upload permitted.'}}\n$candidate=[ordered]@{schema_version=1;scope='Actual data for root review only';ready=$false;publication_authorized=$false;activation_target_written=$false;github_write_performed=$false;inspection_receipt_sha256=(Get-FileHash -LiteralPath $receiptPath -Algorithm SHA256).Hash.ToLowerInvariant();producer=$receipt.producer;stage_producer=$receipt.stage_producer;qualification_producer=$receipt.qualification_producer;source=$receipt.source;artifacts=$receipt.artifacts;reports=$receipt.reports;executable_sha256=$receipt.executable_sha256;msi_sha256=$receipt.msi_sha256;asset_receipts=$receipt.asset_receipts}\nWrite-Host 'CADENCE_WINDOWS2008_READYFALSE_CANDIDATE_BEGIN'\nWrite-Host ($candidate|ConvertTo-Json -Depth 100 -Compress)\nWrite-Host 'CADENCE_WINDOWS2008_READYFALSE_CANDIDATE_END'\n"
+    - name: Retain only20original report JSON,source.json and receipt
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: cadence-windows2008-inspection-data-${{ github.run_number }}-${{ github.run_attempt }}
+        path: '${{ runner.temp }}/windows2008-inspection/observed-reports/*.original.json
+
+          ${{ runner.temp }}/windows2008-inspection-receipt.json'
+        retention-days: 14
+        if-no-files-found: warn
