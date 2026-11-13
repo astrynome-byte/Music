@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "ready": true,
+  "synthetic_only": true,
+  "real_token_used": false,
+  "Cadence_application_executed": false,
+  "server_started": false,
+  "helper_manifest_sha256": "384fdddd5b328de3723b1e191539b880c80bbdb8af9bfdc805e9244d3bdf3a08",
+  "warning": "Inactive template; root alone reviews exact helper bytes and adds a separate target. No app2008, real key, server or GUI client qualification."
+}
