@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "ready": false,
+  "status": "private-source-only-no-Windows-GUI-execution",
+  "source_commit": "5058d29dad67e6131ee46ee617258ccfed8ba4b0",
+  "executable_sha256": "dcfbf9155c6c972c37966a4b2b0dcd212133c8e31fb397c644dda800ac7122be",
+  "source_only_F10_action": "toggle-mixer",
+  "gesture_limit": 1,
+  "application_executed": false,
+  "Windows_compiled": false,
+  "FX_parameters_qualified": false,
+  "FI15_qualified": false,
+  "FI16_qualified": false,
+  "files": [
+    {
+      "path": "Invoke-MixerObservation.ps1",
+      "bytes": 9538,
+      "sha256": "778936d6ccd31a93cd420eca1ab36061756ba03f1349dbc10ffe1f7e71813413"
+    },
+    {
+      "path": "LICENSE-fixture.txt",
+      "bytes": 736,
+      "sha256": "ca1500a6c3dfdb1108784d7a7e9ac2e850a9449c0f19ba603aa82d039adf37de"
+    },
+    {
+      "path": "LICENSE.txt",
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3090,
+      "sha256": "7a37c0ecb69869fc4847828d83cfe7a3e571139e63612aa8259e8e290bce2c04"
+    },
+    {
+      "path": "Run-MixerObservation.ps1",
+      "bytes": 18244,
+      "sha256": "bf05ea5542a7433b7b8ba80dbede4800f28a22c769bb811f3ac5aa9764ccd611"
+    },
+    {
+      "path": "convert_fixture.py",
+      "bytes": 2879,
+      "sha256": "5936290118fb3dc754797a0ec237118ddd8352d30721b0cb72f747bccb062f2d"
+    },
+    {
+      "path": "fixture.musicxml",
+      "bytes": 2329,
+      "sha256": "ced8cabf84b4c3d7b446e8c3c3832a98667886d83e789e320faa9ea4b96d29d6"
+    },
+    {
+      "path": "native/ObserveMixer.cpp",
+      "bytes": 21404,
+      "sha256": "baf2d8cbcefb4e706f50188fdef59b647cb9f8ae8093fc1aacb29b8002c60d68"
+    },
+    {
+      "path": "native/OwnedKeyboard.h",
+      "bytes": 8518,
+      "sha256": "49caa82c040fe59dd1c8f9859eaafcbd3e113b721dd9ab3d3604af7b1e010259"
+    },
+    {
+      "path": "restore_for_observation.py",
+      "bytes": 2376,
+      "sha256": "37f74a141cb6e68b65d0dbfd018492c71703157df7a9f7d1bce9591a142dcbba"
+    },
+    {
+      "path": "runtime/CadenceProfileScope.py",
+      "bytes": 34344,
+      "sha256": "60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c"
+    },
+    {
+      "path": "runtime/OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    },
+    {
+      "path": "runtime/Owned-WindowEvidence.ps1",
+      "bytes": 6367,
+      "sha256": "4de2be84eb0c02f18909796a268f0bebd2dc51101f050699686e934f9f374755"
+    },
+    {
+      "path": "runtime/QaRegistryScope.psm1",
+      "bytes": 10191,
+      "sha256": "8ff30bfb5dddf3ec3976b8ff58dc808ff0a8ccb463128c51be5e3d6b68595268"
+    },
+    {
+      "path": "runtime/Read-EndpointEvidence.py",
+      "bytes": 8646,
+      "sha256": "8f5d3b542f3b9c2bee713aa0faf9c0c0621d7f69e150dc81cf46fde564e5cdde"
+    },
+    {
+      "path": "runtime/Test-VscoExpansion.py",
+      "bytes": 32644,
+      "sha256": "d48a09ecca52f48db76e6b5f6865ada39acc887e3c916d96a19e17af27db5945"
+    },
+    {
+      "path": "runtime/frozen-source.json",
+      "bytes": 635,
+      "sha256": "e0e36a40d2bee76337d8117016d0ca064e24fb2be2b9713b69855d6182a61fa9"
+    },
+    {
+      "path": "runtime/profile-source-contract.json",
+      "bytes": 3310,
+      "sha256": "0023f8d7510c89429dea85cda35d803175b3434532cf14aecaf793ded5663a9e"
+    },
+    {
+      "path": "runtime/verify_producer.py",
+      "bytes": 3613,
+      "sha256": "de4c16facc6d69de4c132acea06044372c5769db8ad10a038eb11b88f2fb621c"
+    },
+    {
+      "path": "source-contract.json",
+      "bytes": 8601,
+      "sha256": "794fc8c8e35877828acf96b49c0def382ae12d6a098f95c1af89cc3725a656aa"
+    },
+    {
+      "path": "validate_clock.py",
+      "bytes": 2671,
+      "sha256": "94ee6e1794696e3a3c8d959f9348949d8610b9149745805131e65f406e1280d9"
+    },
+    {
+      "path": "verify_endpoint_producer.py",
+      "bytes": 2557,
+      "sha256": "e1fce8f56ed91ffb17a6bde04734e38a3ab1873009b475b9c740911a0f35a74c"
+    }
+  ]
+}

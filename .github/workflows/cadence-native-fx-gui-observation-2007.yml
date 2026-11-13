@@ -1,0 +1,125 @@
+name: Cadence original2007 owned mixer observation
+on:
+  workflow_dispatch:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths:
+      - '.cadence-studio/native-fx-gui-observation-2007/target.json'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-native-fx-gui-observation-2007-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  activation:
+    if: github.repository == 'astrynome-byte/Music'
+    runs-on: ubuntu-latest
+    outputs:
+      ready: ${{ steps.gate.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Validate exact inactive source and optional explicit target
+        id: gate
+        shell: python
+        run: |
+          import hashlib,json,os,re
+          from pathlib import Path
+          root=Path(os.environ['GITHUB_WORKSPACE'])/'.cadence-studio/native-fx-gui-observation-2007'
+          raw=(root/'observation-plan.json').read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='5a55a99a66acbcc9acd92ce8c9d8e8b170f59ce854b1ffb96ac3d0980071344e'
+          for row in json.loads(raw)['files']:
+              assert re.fullmatch(r'[A-Za-z0-9_./-]+',row['path']) and '..' not in row['path']
+              p=root/row['path']
+              assert p.is_file() and not p.is_symlink() and p.stat().st_size==row['bytes']
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256']
+          target_path=root/'target.json';ready=False
+          if target_path.exists():
+              target=json.loads(target_path.read_text());assert type(target.get('ready')) is bool
+              ready=target['ready'];target['ready']=False
+              assert target=={'schema_version': 1, 'ready': False, 'scope': 'private-original2007-mixer-observation', 'build_number': 2007, 'source_commit': '5058d29dad67e6131ee46ee617258ccfed8ba4b0', 'executable_sha256': 'dcfbf9155c6c972c37966a4b2b0dcd212133c8e31fb397c644dda800ac7122be', 'stage_producer_run_id': 43266732201, 'stage_artifact_id': 13970570430, 'endpoint_producer_run_id': 43212261044, 'endpoint_artifact_id': 13941567509}
+          with open(os.environ['GITHUB_OUTPUT'],'a') as output:output.write('ready='+str(ready).lower()+'\n')
+  owned-mixer-observation:
+    needs: activation
+    if: github.repository == 'astrynome-byte/Music' && needs.activation.outputs.ready == 'true'
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Authenticate original application and endpoint artifact metadata
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $source=Join-Path $env:GITHUB_WORKSPACE '.cadence-studio/native-fx-gui-observation-2007'
+          python -I "$source/runtime/verify_producer.py" --output "$env:RUNNER_TEMP/mixer-original2007-producer.json" --source-selection "$source/runtime/frozen-source.json"
+          if($LASTEXITCODE-ne0){throw 'Original2007 provenance failed.'}
+          python -I "$source/verify_endpoint_producer.py" --output "$env:RUNNER_TEMP/mixer-original-endpoint-producer.json"
+          if($LASTEXITCODE-ne0){throw 'Original endpoint provenance failed.'}
+      - name: Retrieve only the exact retained full2007 application stage
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: astrynome-byte/Music
+          run-id: '43266732201'
+          artifact-ids: '13970570430'
+          merge-multiple: true
+          path: ${{ runner.temp }}/mixer-original2007-stage-artifact
+      - name: Retrieve only the original qualified user-mode QA endpoint
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: astrynome-byte/Music
+          run-id: '43212261044'
+          artifact-ids: '13941567509'
+          merge-multiple: true
+          path: ${{ runner.temp }}/mixer-original-endpoint-artifact
+      - name: Configure compiler only for the separate Windows UIA observer
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+      - name: Compile the actual one-gesture Windows SDK client
+        shell: pwsh
+        run: |
+          $source=Join-Path $env:GITHUB_WORKSPACE '.cadence-studio/native-fx-gui-observation-2007'
+          $build=Join-Path $env:RUNNER_TEMP 'mixer-observer-build'
+          if(Test-Path -LiteralPath $build){throw 'New observer build required.'}
+          [void][IO.Directory]::CreateDirectory($build)
+          Push-Location $build
+          try {
+            $before=$ErrorActionPreference;$ErrorActionPreference='Continue'
+            try { & cl.exe /nologo /std:c++17 /utf-8 /EHsc "$source/native/ObserveMixer.cpp" /Fe:ObserveMixer.exe /link ole32.lib oleaut32.lib user32.lib uuid.lib bcrypt.lib 2>&1 | Tee-Object compile.log | Out-Host; $status=$LASTEXITCODE }
+            finally { $ErrorActionPreference=$before }
+            if($status-ne0){throw 'Actual Windows observer did not compile.'}
+          } finally { Pop-Location }
+      - name: Open own MSCZ, observe one F10 and close only the owned app
+        shell: pwsh
+        run: |
+          $source=Join-Path $env:GITHUB_WORKSPACE '.cadence-studio/native-fx-gui-observation-2007'
+          & "$source/Invoke-MixerObservation.ps1" `
+            -EndpointArtifactPath "$env:RUNNER_TEMP/mixer-original-endpoint-artifact" `
+            -StageArtifactPath "$env:RUNNER_TEMP/mixer-original2007-stage-artifact" `
+            -ProbePath "$env:RUNNER_TEMP/mixer-observer-build/ObserveMixer.exe" `
+            -WorkPath "$env:RUNNER_TEMP/mixer-owned-observation"
+      - name: Retain every actual observation and cleanup result even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-original2007-mixer-observation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mixer-owned-observation
+            ${{ runner.temp }}/mixer-observer-build
+            ${{ runner.temp }}/mixer-original2007-producer.json
+            ${{ runner.temp }}/mixer-original-endpoint-producer.json
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14
