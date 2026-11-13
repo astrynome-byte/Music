@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-only
-name: Cadence original Mixer observation data-only readback
+name: Cadence original native F10 collection data-only readback
 on:
   push:
     branches: [cadence-studio/windows-build]
@@ -8,26 +8,26 @@ permissions:
   contents: read
   actions: read
 jobs:
-  read-original-failed-observation:
+  read-original-native-f10-collection:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - name: Authenticate the exact completed failed producer and original artifact
+      - name: Authenticate the exact successful F10 producer and original226KB evidence artifact
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 -I .cadence-studio/mixer-observation-readback/read_reports.py --metadata-output "$RUNNER_TEMP/mixer-original-metadata.json"
       - uses: actions/download-artifact@v4
         with:
-          artifact-ids: '14027790752'
-          run-id: '43405873102'
+          artifact-ids: '14031158386'
+          run-id: '43415198550'
           repository: astrynome-byte/Music
           github-token: ${{ github.token }}
           merge-multiple: true
           path: ${{ runner.temp }}/original-mixer-observation
-      - name: Read only original bounded JSON, logs and PNG bytes; never execute their producer
+      - name: Read the two mandatory original PNG captures and bounded JSON only; never execute their producer
         run: python3 -I .cadence-studio/mixer-observation-readback/read_reports.py --root "$RUNNER_TEMP/original-mixer-observation" --output "$RUNNER_TEMP/mixer-original-readback"
       - uses: actions/upload-artifact@v4
         if: always()
