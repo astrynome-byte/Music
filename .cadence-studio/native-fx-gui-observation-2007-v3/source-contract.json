@@ -1,0 +1,191 @@
+{
+  "scope": "Static source only; no runtime or UIA selector proof",
+  "shortcut_proof": [
+    {
+      "path": "src/app/configs/data/shortcuts.xml",
+      "source_commit": "5058d29dad67e6131ee46ee617258ccfed8ba4b0",
+      "sha256": "1c2bf707999e4c48b5534a67547645dfdc8f5ed99b00d09617a1beb1e45079d1",
+      "excerpt": ">\n  <SC>\n    <key>toggle-mixer</key>\n    <seq>F10</seq>\n    <autorepeat>0</autorepeat>\n    </SC>\n  <SC>\n"
+    },
+    {
+      "path": "src/app/configs/data/shortcuts_azerty.xml",
+      "source_commit": "5058d29dad67e6131ee46ee617258ccfed8ba4b0",
+      "sha256": "c389bdc5e8cd7c2600b4ffe6e3735bf5700215f45faf0fccf2e89cd142c74b1c",
+      "excerpt": ">\n  <SC>\n    <key>toggle-mixer</key>\n    <seq>F10</seq>\n    <autorepeat>0</autorepeat>\n    </SC>\n  <SC>\n"
+    }
+  ],
+  "endpoint_provenance": {
+    "schema_version": 1,
+    "ready": false,
+    "scope": "Strict reuse plan for existing user-mode silent ASIO QA endpoint; not a new driver or GUI qualification",
+    "license": "GPL-3.0-only",
+    "sdk_license_basis": "Exact ASIO2.3.4 headers select alternative GPLv3; notices and lock retained. No sample COM code or proprietary license selected.",
+    "original_producer": {
+      "run_id": 43212261044,
+      "job_id": 131162591489,
+      "commit": "be392cc7fa98ff8b18c9d679eb55f42f49030f8c",
+      "artifact": {
+        "id": 13941567509,
+        "bytes": 173154,
+        "digest": "sha256:96657947191133d0d213aa684ddd549c228866cd7ddd098386c1b6279e0919e0",
+        "expires_at": "2026-11-26T11:48:39Z"
+      },
+      "result": {
+        "schema_version": 1,
+        "status": "native-qa-endpoint-direct-factory-harness-passed",
+        "physical_audio_output": false,
+        "listening_validated": false,
+        "application_Cadence_executed": false,
+        "registry_modified": false,
+        "kernel_driver_installed": false,
+        "native_scenarios": 4,
+        "run_id": "43212261044",
+        "commit": "be392cc7fa98ff8b18c9d679eb55f42f49030f8c",
+        "dll_sha256": "08f570d7df0dfb5f2cafe899c6b6679e48d4e1fa132656e58f4b0113a8709fd2",
+        "harness_sha256": "adeea91ef5207b7425dfa90b8c412c23ca0d0e4ad9e99138b6dfe4778bcc9665",
+        "sdk_archive_sha256": "d5ebf0c20dd2c5f43771fd0c1418f4b361bf52434ee670097cfa6b3a335e2eca",
+        "source_manifest_sha256": "061c8801a4de0bb0546091226844fa999b81b02a47fdaeab63088c98bdfc98f3",
+        "corresponding_source_zip_sha256": "5b9204779f64706191eba6428bb7eff1dc37885aa43e488178f38974a80442aa"
+      }
+    },
+    "registered_phase2_observed": {
+      "run_id": 43224732699,
+      "global_status": "failed-or-blocked",
+      "registered_harness_passed": true,
+      "four_stopped_reports": 4,
+      "registry_cleanup_verified": true,
+      "profile_cleanup_verified": true,
+      "owned_job_closed_cleanly": true,
+      "forced_descendants": 0,
+      "same_GUI_render_save_passed": false,
+      "GUI2002_error": "Real GUI did not prove named ASIO driver startup and actual clock callbacks",
+      "GUI2002_clock_callbacks": 0,
+      "GUI2002_driver_named_thread_started": true,
+      "limit": "Registered endpoint/harness and cleanup passed; whole phase2 failed because GUI2002 timed out without stopped clock reports. This is not a prior GUI success."
+    },
+    "registry_scope": {
+      "view": "HKLM native64 on disposable hosted Windows x64 admin token",
+      "keys": [
+        "HKLM\\SOFTWARE\\ASIO\\Cadence QA Clock (silent sink)",
+        "HKLM\\SOFTWARE\\Classes\\CLSID\\{8176CDA0-8AF9-4483-A03D-45EE2F9E864E}",
+        "HKLM\\SOFTWARE\\Classes\\CLSID\\{8176CDA0-8AF9-4483-A03D-45EE2F9E864E}\\InprocServer32"
+      ],
+      "rules": [
+        "HKCU-only registration insufficient for the actual Cadence host",
+        "Refuse preexisting keys, same-CLSID HKCU shadow and reparse/runtime path substitutions",
+        "Use unmodified QaRegistryScope.psm1 with owner marker, exact values/children and native creation disposition check",
+        "Drain owned Job before registry/profile cleanup; only owned exact keys removed; no regsvr32, service, kernel driver, reboot or app/MSI change"
+      ]
+    },
+    "required_environment": {
+      "CI": "true",
+      "GITHUB_ACTIONS": "true",
+      "RUNNER_ENVIRONMENT": "github-hosted",
+      "RUNNER_TEMP": "Actual existing owned hosted CI temp root",
+      "CADENCE_QA_CLOCK_STATS_DIR": "New existing plain per-app directory strictly below RUNNER_TEMP",
+      "warning": "The earlier CLI environment removes GITHUB_*; do not reuse that filter for the clock app. The endpoint refuses initialization if its CI variables or bounded stats path are absent."
+    },
+    "future_reuse_sequence": [
+      "Authenticate exact original artifact metadata/expiry and bytes; no substitution if expired or changed",
+      "Read-EndpointEvidence.py validates exact DLL08f570\u20269fd2, harnessadeea9\u20269665, sourceZIP5b9204\u202642aa and19 source members before execution",
+      "Enter unchanged owned Job then unmodified exact registry scope; execute known harness --registered and require four new reports",
+      "Prepare and verify unchanged ASIO/Cadence QA Clock profile; add only UI languagefr without switching audio API",
+      "Run actual original2007 GUI observation with endpoint environment preserved and separate per-app clock stats",
+      "Close only owned app cleanly; require positive app clock callbacks/frames, no callback errors/nonfinite/clip, then drain before registry and profile cleanup"
+    ],
+    "helpers_and_sources": [
+      {
+        "path": "/workspace/cadence-ci-driver/asio-qa-phase2-next/Read-EndpointEvidence.py",
+        "bytes": 8646,
+        "sha256": "8f5d3b542f3b9c2bee713aa0faf9c0c0621d7f69e150dc81cf46fde564e5cdde"
+      },
+      {
+        "path": "/workspace/cadence-ci-driver/asio-qa-phase2-next/QaRegistryScope.psm1",
+        "bytes": 10191,
+        "sha256": "8ff30bfb5dddf3ec3976b8ff58dc808ff0a8ccb463128c51be5e3d6b68595268"
+      },
+      {
+        "path": "/workspace/cadence-ci-driver/asio-qa-phase2-next/CadenceProfileScope.py",
+        "bytes": 34344,
+        "sha256": "60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c"
+      },
+      {
+        "path": "/workspace/cadence-ci-driver/asio-qa-phase2-next/profile-source-contract.json",
+        "bytes": 3310,
+        "sha256": "0023f8d7510c89429dea85cda35d803175b3434532cf14aecaf793ded5663a9e"
+      },
+      {
+        "path": "/workspace/cadence-ci-driver/asio-qa-phase2-next/OwnProcessJob.psm1",
+        "bytes": 21255,
+        "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+      },
+      {
+        "path": "/workspace/cadence-ci-driver/asio-qa-phase2-next/Invoke-Phase2.ps1",
+        "bytes": 14853,
+        "sha256": "8f17a6b7f74d607668caf3eef6a237dac879bf49602db14e65439fae6c2fc9ec"
+      },
+      {
+        "path": "/workspace/cadence-ci-driver/asio-qa-phase2-next/Run-Retention-WithClock.py",
+        "bytes": 26172,
+        "sha256": "06f2155ac197f8f61b913dc33b3ea9c3c9f8f1d7acce12989e768919ddcbd8d7"
+      },
+      {
+        "path": "/workspace/cadence-ci-driver/asio-qa-endpoint-next/qa_environment.h",
+        "bytes": 2435,
+        "sha256": "fcfd0813fd06bd5b8261c72d80939ed75a5ac459b64a12d9bc4aa014057a6cb5"
+      },
+      {
+        "path": "/workspace/cadence-ci-driver/asio-qa-endpoint-next/qa_clock.cpp",
+        "bytes": 21052,
+        "sha256": "cd0d3df8beea5d49f45c74467cd8de9c9d6d49d833921858cec6d5ad87f3c270"
+      },
+      {
+        "path": "/workspace/cadence-ci-driver/asio-qa-endpoint-next/asio-interfaces.lock.json",
+        "bytes": 1070,
+        "sha256": "7149abed4ce075d317827d96e8433a0cac64fed79d67d6c003579fce0e8104cc"
+      },
+      {
+        "path": "/workspace/cadence-ci-driver/asio-qa-endpoint-next/LICENSE.txt",
+        "bytes": 35147,
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+      },
+      {
+        "path": "/workspace/cadence-ci-driver/asio-qa-endpoint-next/third_party/asio/LICENSE.txt",
+        "bytes": 2640,
+        "sha256": "61e56814f24b32216884b2db0b4dcc317111a5ab354d54d19dd9fc13d71b1c7a"
+      }
+    ],
+    "no_stage_or_endpoint_download_here": true,
+    "no_execution_here": true,
+    "metadata_freshness": "Local frozen producer/phase2 records only; future workflow must recheck original artifact availability/expiry via API."
+  },
+  "native_diff_base": "recovery-backup-2007-next/observation/native/ObserveScore.cpp",
+  "native_changes": [
+    "Opaque RuntimeId required; unknown identity blocks",
+    "Bounded unique-node graph dedup and cycle/alias edge traces",
+    "Single F10 unchanged; original strict PID/focus/whole-window checks retained",
+    "Read-only diagnostics bounded in native stderr and controller stdout"
+  ],
+  "GUI_parameter_claim": false,
+  "backup_recovery_claim": false,
+  "V1_failure": {
+    "run": 43335448410,
+    "gestures": 0,
+    "unique_runtime_ids_available_in_V1": false,
+    "original_evidence_path": "../native-fx-gui-observation-2007-next/evidence/run-43335448410/original",
+    "GUI_passed": false,
+    "forced_owned_app_exit": true
+  },
+  "V2_QA_preference": {
+    "scope": "fresh independent QA profile only, no production change",
+    "key": "musesounds/checkForUpdate",
+    "value": false,
+    "source_path": "src/musesounds/internal/musesoundsconfiguration.cpp",
+    "source_commit": "5058d29dad67e6131ee46ee617258ccfed8ba4b0",
+    "source_sha256": "6e337183d89a57610cac5fa58dd2919382d0502dab4f2fe044b5730106b8e328",
+    "key_present": true,
+    "default_true": true,
+    "description_present": true,
+    "getter_reads_key": true
+  }
+}

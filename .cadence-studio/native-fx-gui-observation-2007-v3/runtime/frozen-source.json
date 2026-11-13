@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "upstream": {
+    "repository": "https://github.com/musescore/MuseScore.git",
+    "tag": "v4.7.6",
+    "commit": "96480d58445e3b24b230a3fe7d4725d639aa2eb3"
+  },
+  "source": {
+    "commit": "5058d29dad67e6131ee46ee617258ccfed8ba4b0",
+    "tree": "58d06a1c89e99173b0473587245187df5bc3b3cf"
+  },
+  "patch": {
+    "file": "changes.patch.gz",
+    "sha256": "87de70f2c00e2d0e92efd1056a6bd7fab50f95a06c1fcc94a728fb3262e946d7"
+  },
+  "qualification": {
+    "schema_version": 1,
+    "python_unit_tests": 36,
+    "store_scenarios": 21,
+    "cli_checks": 57,
+    "reference_outputs": 35,
+    "music_aac_cases": 5
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "scope": "Explicit evidence only; no application stage, input archives, native binaries or object files",
+  "runner_temp_relative_patterns": [
+    "mixer-owned-observation/*.json",
+    "mixer-owned-observation/*.stdout.log",
+    "mixer-owned-observation/*.stderr.log",
+    "mixer-owned-observation/registered-harness-stats/*.json",
+    "mixer-owned-observation/app-observation/*.json",
+    "mixer-owned-observation/app-observation/*.log",
+    "mixer-owned-observation/app-observation/*.png",
+    "mixer-owned-observation/app-observation/cello-input-copy.musicxml",
+    "mixer-owned-observation/app-observation/cello-observation-copy.mscz",
+    "mixer-owned-observation/app-observation/uia/*.json",
+    "mixer-owned-observation/app-observation/clock-stats/*.json",
+    "mixer-owned-observation/app-observation/conversion-clock-stats/*.json",
+    "mixer-observer-build/compile.log",
+    "mixer-observer-build/observer-source-ledger.json",
+    "mixer-observer-build/observation-plan.original.json",
+    "mixer-observer-build/activation-target.original.json",
+    "mixer-original2007-producer.json",
+    "mixer-original-endpoint-producer.json"
+  ],
+  "original_sources_and_cleanup_preserved": true,
+  "stage_retained": false,
+  "input_artifacts_retained": false,
+  "observer_binary_retained": false,
+  "qa_endpoint_binary_retained": false,
+  "provenance_records": [
+    "original-endpoint-evidence.json",
+    "mixer-original2007-producer.json",
+    "mixer-original-endpoint-producer.json",
+    "observer-source-ledger.json",
+    "observation-plan.original.json",
+    "activation-target.original.json"
+  ],
+  "source_of_model": "Existing V2 wrappers retain exact source/copy hashes, exe lock, profile marker/FileID, owned Job and registry cleanup; no guard relaxed"
+}
