@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "scope": "Reviewed StageOnly first-launch helpers; no active target or Windows execution",
+  "source_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 20,
+      "sha256": "e97602ab9cac70102245345c5ab0fc9830df8b17f1072b188265a662a3a547ae"
+    },
+    {
+      "path": "AUDIT.json",
+      "bytes": 1025,
+      "sha256": "4a7e001facc1f91fc74ccd791377bf0e4da5a4503324e7556dc6dc8d7f775ebe"
+    },
+    {
+      "path": "Prepare-UnseededProfile.py",
+      "bytes": 10318,
+      "sha256": "1eb7130e2eb23f4fa27d84c1df798a534e5e6c9f76f4dff06e32b66db434358e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2665,
+      "sha256": "fc230ccad72abc754dc1cf8551eb6cd35d2a7df3aded0ab4fdcfec2ab54697c1"
+    },
+    {
+      "path": "Restore-RetainedRuntime.py",
+      "bytes": 8216,
+      "sha256": "187e490dd3ee1a3fe1a8aa87290da2b7d6a2693baea2fa167c63c9115e8cf35b"
+    },
+    {
+      "path": "Run-FirstLaunchObservation.ps1",
+      "bytes": 15608,
+      "sha256": "2b9b3ac7a4664efb23a83155c6985bbb4d91357fe1822f7ccc9da2865cda6a5b"
+    },
+    {
+      "path": "Win32-ABI-reference.json",
+      "bytes": 649,
+      "sha256": "13e734ae8e9084ff8d835bd33ceaded7eba9ac931fbea0cbe0532935d865fb0d"
+    },
+    {
+      "path": "native/UiReadyProbe.cpp",
+      "bytes": 11882,
+      "sha256": "64b3a594ad35c366deb442441516e521fdc0fa907eac17b487dac9a9ab1d9b1a"
+    },
+    {
+      "path": "read_existing_stage.py",
+      "bytes": 15356,
+      "sha256": "9bdcbc4732057fc50f8ba5387578d68d292682864a21938b717d29df662875ae"
+    },
+    {
+      "path": "runtime/CadenceProfileScope.py",
+      "bytes": 34344,
+      "sha256": "60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c"
+    },
+    {
+      "path": "runtime/OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    },
+    {
+      "path": "runtime/Owned-WindowEvidence.ps1",
+      "bytes": 6367,
+      "sha256": "4de2be84eb0c02f18909796a268f0bebd2dc51101f050699686e934f9f374755"
+    },
+    {
+      "path": "runtime/profile-source-contract.json",
+      "bytes": 3310,
+      "sha256": "0023f8d7510c89429dea85cda35d803175b3434532cf14aecaf793ded5663a9e"
+    },
+    {
+      "path": "selection.json",
+      "bytes": 1496,
+      "sha256": "1886ce76e0e2786ecc778956c4e8f4ba47bbcbe8308b5d8fa0e6dddbe1a69f18"
+    },
+    {
+      "path": "stage-only-provenance.json",
+      "bytes": 5997,
+      "sha256": "7d3dc31520d9421e3340262d9fcd98b478890599460cf0ff8117bb4d81844db5"
+    },
+    {
+      "path": "stage-only-receipt.expected.json",
+      "bytes": 2480,
+      "sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933"
+    },
+    {
+      "path": "verify_stage_only_producer.py",
+      "bytes": 8654,
+      "sha256": "d2aa8dfb9ae6c8ae09695de3db1f43d3a97a039609b740a7f9d90f2b958158da"
+    },
+    {
+      "path": "write_stage_only_receipt.py",
+      "bytes": 7650,
+      "sha256": "9ae88028a059e6ad5b13892f60713f121740220b27c3ac1f14d863da1968e683"
+    }
+  ]
+}

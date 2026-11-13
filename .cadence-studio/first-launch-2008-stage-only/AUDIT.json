@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "scope": "Source preparation for one known failed31 compiled stage; no new Windows execution",
+  "producer_run_id": 43408309742,
+  "producer_job_id": 131828068954,
+  "original_successful_steps": [
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "only_original_failed_step": 31,
+  "full_qualification_complete": false,
+  "MSI_produced_or_tested": false,
+  "readback_run_id": 43417852349,
+  "readback_job_id": 131860160783,
+  "stage_artifact_id": 14031621703,
+  "runtime_files": 2712,
+  "profile_seed_removal": "Only helper-created INI, original prepare+verify first, exact bytes+native FileIdInfo128 and final path on same deletion handle",
+  "application_arguments": [],
+  "setup_completion_qualified": false,
+  "playback_qualified": false,
+  "zero_network_claimed": false,
+  "Windows_execution_in_this_preparation": false,
+  "legacy_source_audit": "The private predecessor preparation retains its original source/API audit and independent review; no app source change is introduced here."
+}

@@ -1,0 +1,104 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Inactive until root adds a separately reviewed ready:true target.json.
+name: 'Cadence Studio: first launch of real 2008 without INI (StageOnly)'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths: ['.cadence-studio/first-launch-2008-stage-only/target.json']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-first-launch-2008-stage-only-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  observe-first-launch-known-failed31-stage:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Refuse inactive target and verify reviewed helper bytes before any download
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/first-launch-2008-stage-only"
+          $target = Get-Content -LiteralPath "$helper/target.json" -Raw | ConvertFrom-Json
+          if ($target.ready -isnot [bool] -or $target.ready -cne $true -or $target.scope -cne 'known-failed31-stage-only-first-launch' -or
+              $target.full_qualification_complete -isnot [bool] -or $target.full_qualification_complete -cne $false -or
+              $target.MSI_produced_or_tested -isnot [bool] -or $target.MSI_produced_or_tested -cne $false) { throw 'Reviewed active StageOnly target required; full QA and MSI remain pending.' }
+          if ((Get-FileHash "$helper/source-manifest.json" -Algorithm SHA256).Hash.ToLowerInvariant() -cne $target.source_manifest_sha256) { throw 'Reviewed source manifest differs.' }
+          $manifest = Get-Content -LiteralPath "$helper/source-manifest.json" -Raw | ConvertFrom-Json
+          foreach ($entry in $manifest.files) {
+            if ($entry.path -cnotmatch '^[A-Za-z0-9_./-]+$' -or $entry.path.Contains('..')) { throw 'Unsafe source path.' }
+            $file = Get-Item -LiteralPath (Join-Path $helper $entry.path) -Force
+            if ($file.PSIsContainer -or ($file.Attributes -band [IO.FileAttributes]::ReparsePoint) -or $file.Length -ne $entry.bytes -or
+                (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant() -cne $entry.sha256) { throw 'Reviewed helper bytes differ.' }
+          }
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Authenticate the exact known failed31 producer with fresh read-only API checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/first-launch-2008-stage-only"
+          python -I "$helper/verify_stage_only_producer.py" --output "$env:RUNNER_TEMP/firstlaunch-producer-guard.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Actual known failed31 producer guard failed.' }
+      - name: Reuse original DATAONLY reader and independently hash both original archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/first-launch-2008-stage-only"
+          python -I "$helper/read_existing_stage.py" --work "$env:RUNNER_TEMP/firstlaunch-data-work" --output "$env:RUNNER_TEMP/firstlaunch-data-output"
+          if ($LASTEXITCODE -ne 0) { throw 'Original stage data authentication failed.' }
+      - name: Restore exact original stage and companions without executing app or installer
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/first-launch-2008-stage-only"
+          python -I "$helper/Restore-RetainedRuntime.py" --reader-root "$helper" --data-work "$env:RUNNER_TEMP/firstlaunch-data-work" --data-output "$env:RUNNER_TEMP/firstlaunch-data-output" --bundle "$env:RUNNER_TEMP/firstlaunch-bundle" --stage "$env:RUNNER_TEMP/firstlaunch-stage" --report "$env:RUNNER_TEMP/firstlaunch-restoration.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Exact runtime restoration failed.' }
+          # The common post-restoration verifier writes the canonical receipt only after rehashing the restored stage.
+          python -I "$helper/write_stage_only_receipt.py" --selection "$helper/stage-only-provenance.json" --guard-report "$env:RUNNER_TEMP/firstlaunch-producer-guard.json" --restoration-report "$env:RUNNER_TEMP/firstlaunch-restoration.json" --data-output "$env:RUNNER_TEMP/firstlaunch-data-output" --stage "$env:RUNNER_TEMP/firstlaunch-stage" --bundle "$env:RUNNER_TEMP/firstlaunch-bundle" --expected-receipt "$helper/stage-only-receipt.expected.json" --output "$env:RUNNER_TEMP/firstlaunch-authentication.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Restored runtime authentication failed.' }
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+      - name: Compile unchanged independent Home and Intro readiness probe
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/first-launch-2008-stage-only"
+          $build = "$env:RUNNER_TEMP/firstlaunch-probe-build"
+          if (Test-Path -LiteralPath $build) { throw 'New probe directory required.' }
+          New-Item -ItemType Directory -Path $build | Out-Null
+          Push-Location $build
+          try {
+            $previousPreference = $ErrorActionPreference
+            $ErrorActionPreference = 'Continue'
+            try {
+              & cl.exe /nologo /std:c++17 /utf-8 /EHsc /MD "$helper/native/UiReadyProbe.cpp" /Fe:UiReadyProbe.exe /link ole32.lib oleaut32.lib user32.lib uuid.lib 2>&1 | Tee-Object compile.log | Out-Host
+              $status = $LASTEXITCODE
+            } finally { $ErrorActionPreference = $previousPreference }
+            if ($status -ne 0) { throw 'Independent Home and Intro probe did not compile.' }
+          } finally { Pop-Location }
+      - name: Observe normal production first launch with no INI then close only owned windows
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/first-launch-2008-stage-only"
+          & "$helper/Run-FirstLaunchObservation.ps1" -StagePath "$env:RUNNER_TEMP/firstlaunch-stage" -StageAuthenticationReceipt "$env:RUNNER_TEMP/firstlaunch-authentication.json" -NativeProbePath "$env:RUNNER_TEMP/firstlaunch-probe-build/UiReadyProbe.exe" -WorkPath "$env:RUNNER_TEMP/firstlaunch-gui-results"
+      - name: Retain original first-launch observations and authentication evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-first-launch-2008-stage-only-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/firstlaunch-gui-results/**
+            ${{ runner.temp }}/firstlaunch-data-output/**
+            ${{ runner.temp }}/firstlaunch-producer-guard.json
+            ${{ runner.temp }}/firstlaunch-restoration.json
+            ${{ runner.temp }}/firstlaunch-authentication.json
+            ${{ runner.temp }}/firstlaunch-probe-build/compile.log
+          retention-days: 14
+          if-no-files-found: warn

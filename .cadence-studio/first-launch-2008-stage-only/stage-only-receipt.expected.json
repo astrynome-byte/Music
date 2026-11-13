@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "status": "authenticated-original2008-stage-for-GUI-only-known-failed31",
+  "scope": "known-failed31-compiled-stage-GUI-only-fullQA-and-MSI-pending",
+  "producer": {
+    "run_id": 43408309742,
+    "job_id": 131828068954,
+    "driver_commit": "a8470ae087841875fd39284188d0e9d11d95e32b",
+    "run_number": 12,
+    "run_attempt": 1,
+    "conclusion": "failure",
+    "passed_steps": [
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "failed_step": 31
+  },
+  "source": {
+    "original_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+    "tree": "c5452043983a048ef0aeef085615af903de3f5b0",
+    "source_json_sha256": "d8150851d20d6f9d631a7f93226753951eb1fb456e8a385a0ef8c834992bf354",
+    "patch_sha256": "ce7bc369062d6520785169c89d187bf8fa0c9e8dc069315a5e0d75e8f79247b9",
+    "ci_commit": "95cebb22fe6cbde22919c94f2b480bd14c3eb8de"
+  },
+  "stage_artifact_id": 14031621703,
+  "stage_outer_archive_bytes": 306891538,
+  "stage_outer_archive_sha256": "8cd00d5df8670837c3b15d3e3bd6e406df290222e404ef88599e4383de048178",
+  "stage": {
+    "archive": "CadenceStudio-v4.7.6-combined-system-aac-stage-build-2008-attempt-1-x64.zip",
+    "archive_bytes": 148420143,
+    "archive_sha256": "360ee31bcd6599af40b8d395aad16db732ec32ebabe76b777aed465c274ae830",
+    "executable_bytes": 81236992,
+    "executable_sha256": "13cd4e6d2f408d2e64b187d4c3bff1188ff4192ac7b670d3a12373bbeb37f6cd",
+    "runtime_files": 2712
+  },
+  "artifact_files": {
+    "SHA256SUMS.txt": {
+      "bytes": 41213,
+      "sha256": "287b934de86a7abede4ced25ec453ce2ad22165d64068c461d71cc42e8f439ab"
+    },
+    "stage-manifest.json": {
+      "bytes": 3777,
+      "sha256": "266defaed6a0fe9033ef1ea3c50148bfd833ce84e01131508fea1ceedee8da53"
+    },
+    "cadence-build.json": {
+      "bytes": 2761,
+      "sha256": "08f7ad0517789123f6161be58f82c1a7b9a2cdf23db4617a7cc868c2b58d3b48"
+    },
+    "cadence-build-result.json": {
+      "bytes": 377,
+      "sha256": "d3a65b5a17f762f36311e14f3f63fe1b0d158649aae20d989f6a838f689e9274"
+    }
+  },
+  "fresh_metadata_guard_canonical_sha256": "39d15f3a37b4a24070ed849e1d2c2f56f474fd169f5c6429f10a30e6b9ef0233",
+  "runtime_inventory_canonical_LF_sha256": "7b3b721f01b0a57610b9dcc1cd72bd15e50747dcd751fcd5e31cfbb96a81a4a4",
+  "runtime_files_rehashed": 2712,
+  "original_companions_rewritten": false,
+  "application_or_installer_executed_by_authentication": false,
+  "GUI_validated": false,
+  "full_qualification_complete": false,
+  "MSI": null
+}

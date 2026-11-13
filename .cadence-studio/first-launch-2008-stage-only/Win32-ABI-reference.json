@@ -1,0 +1,10 @@
+{
+  "scope": "Read-only Microsoft header declaration reference; not a downloaded SDK or a Windows test",
+  "repository": "microsoft/win32metadata",
+  "path": "generation/WinSDK/RecompiledIdlHeaders/um/WinBase.h",
+  "git_blob": "b27c338c070353981b59fe3979a5af068fc99c00",
+  "url": "https://github.com/microsoft/win32metadata/blob/main/generation/WinSDK/RecompiledIdlHeaders/um/WinBase.h",
+  "excerpt": "typedef struct _FILE_DISPOSITION_INFO {\n    BOOLEAN DeleteFile;\n} FILE_DISPOSITION_INFO, *PFILE_DISPOSITION_INFO;",
+  "observed_date": "2026-11-13",
+  "meaning": "FILE_DISPOSITION_INFO.DeleteFile is BOOLEAN (one byte), not BOOL (four bytes)."
+}
