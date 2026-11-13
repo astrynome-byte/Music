@@ -51,12 +51,14 @@
   "authentication_receipt_sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933",
   "full_qualification_complete": false,
   "MSI": null,
-  "harness_note": "GUI2 failed before input: exact observed French MainToolbar Accueil radio50013 prefix now recognized with unchanged PID/role/enabled/onscreen/unicity/context guards; bounded COM/readiness diagnostics and passive owned-foreground capture on failure. Product/source/EXE unchanged; fullQA and MSI remain pending.",
+  "harness_note": "GUI3 reached exact OMR menu by7verified keys and opened the real French dialog; native GetWindowTextW added exactly \" - Cadence Studio\". Harness now accepts only bare semantic title or semantic title + that exact suffix for the two known OMR/WAV dialogs, with unchanged PID/ownerchain/unicity/enabled/context gates; capture corroborates the exact title from native phase. Product/source/EXE unchanged; no GUI success inferred from GUI3 failure.",
   "harness_evidence": {
-    "GUI_failed_run": 43422348685,
-    "GUI_failed_job": 131875162349,
+    "GUI_failed_run": 43424360058,
+    "GUI_failed_job": 131881989691,
     "readback_success_run": 43423501906,
     "readback_success_job": 131879029226,
-    "main_ready_original_sha256": "61353357ee9d08983aa94a736ad7598d1ee2a5e0e89c9b7fab3adc67d2b52393"
+    "main_ready_original_sha256": "61353357ee9d08983aa94a736ad7598d1ee2a5e0e89c9b7fab3adc67d2b52393",
+    "actual_OMR_title": "Reconnaître une partition — PDF ou image - Cadence Studio",
+    "actual_OMR_capture_original_sha256": "3243f9d554df09e879b78f80614c2fca531d91f0d2a2440026a17563419efb84"
   }
 }
