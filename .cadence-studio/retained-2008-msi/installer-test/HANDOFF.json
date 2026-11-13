@@ -1,0 +1,26 @@
+{
+  "status": "prepared_not_Windows_executed",
+  "root_or_remote_modified": false,
+  "wrapper": "Test-Retained2008Installer.ps1",
+  "wrapper_sha256": "d7f26161cac2ce246bca639c90bc009318e17003d7ccc58020a7788b3c32872c",
+  "source_helper": "upstream/Test-MsiInstall.ps1",
+  "source_helper_byte_identical": true,
+  "manifest_sha256": "583dd0016e77d284638534149e181bb9bbc99d136a3fa9c4f2667ce959a04ff6",
+  "parameters": [
+    "MsiPath",
+    "StageBuildResultPath",
+    "RetainedStageExecutablePath",
+    "StageNoticeReportPath",
+    "OutputDirectory",
+    "GuiWrapperPath",
+    "GuiProbePath",
+    "RequireGui(optional switch)"
+  ],
+  "source_and_notice_reports_kept_original": true,
+  "exact_success_codes": "install0 CLI0 cleanGUIclose0 uninstall0 no reboot; absent GUI remains unqualified",
+  "dependencies": "Windows Installer COM and PowerShell7.2+ on CI; for GUI exact Run-CleanGuiProbe.ps1 + Test-ReadyGui.ps1 + separately compiled RUNNER_TEMP/combined-ui-probe/UiReadyProbe.exe; no Python/CMake at runtime",
+  "recipient_needs_development_tools": false,
+  "final_gift_qualified": false,
+  "files": 8,
+  "bytes": 51077
+}

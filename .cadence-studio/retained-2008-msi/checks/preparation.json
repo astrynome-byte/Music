@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "scope": "Local source-pin/AST and native/isolated-mode preparation guards only",
+  "packaging_assets_Git_blobs_verified": 9,
+  "PowerShell_AST_files": 14,
+  "inactive_template_refused": true,
+  "actual_Linux_PS_invocation_refused_before_metadata_output": true,
+  "GUID2008_derived_from_original_namespace": true,
+  "no_language_or_application_target_in_packaging_project": true,
+  "workflow_without_Qt_SDK_application_configure_build_or_repeated_QA": true,
+  "additional_guards": [
+    {
+      "case": "isolated-help-prepare_retained_package.py",
+      "passed": true
+    },
+    {
+      "case": "isolated-help-bundle_delivery.py",
+      "passed": true
+    },
+    {
+      "case": "isolated-help-verify_package_immutability.py",
+      "passed": true
+    },
+    {
+      "case": "isolated-help-Restore-QualifiedQaEvidence.py",
+      "passed": true
+    },
+    {
+      "case": "CMake-native-Windows-guard",
+      "passed": true
+    },
+    {
+      "case": "cross-job-raw-byte-preservation-and-path-escape-rejection",
+      "passed": true
+    },
+    {
+      "case": "inactive-QA-artifact-selection-refused-before-network",
+      "passed": true
+    }
+  ],
+  "Windows_or_MSI_executed": false,
+  "root_or_refs_modified": false
+}

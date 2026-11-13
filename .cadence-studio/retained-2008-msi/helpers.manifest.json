@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "scope": "Retained original2008 runtime packaging/real MSI QA recipe; no app build or public release assertion",
+  "files": [
+    {
+      "name": ".gitattributes",
+      "bytes": 20,
+      "sha256": "e97602ab9cac70102245345c5ab0fc9830df8b17f1072b188265a662a3a547ae"
+    },
+    {
+      "name": "OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    },
+    {
+      "name": "Package-Retained2008.ps1",
+      "bytes": 12432,
+      "sha256": "2cedc25559a01ab8b7c91a0217b2b0648c6836c5006c6820ea2f75616d161240"
+    },
+    {
+      "name": "PackagingOnly.CMakeLists.txt",
+      "bytes": 2877,
+      "sha256": "39153e9f268a03ead4e8be8af0a0dd4cbecde382cc2fd9b3a3e7c63f0e93996e"
+    },
+    {
+      "name": "README.md",
+      "bytes": 8092,
+      "sha256": "59f5586cee5647a210e67d1ffcbed072f4eb140ac5e98511f12b6c622da65c0b"
+    },
+    {
+      "name": "Restore-QualifiedQaEvidence.py",
+      "bytes": 12255,
+      "sha256": "5f2a84fbfc34244b9cbd7c202570b8f4a91b1ca993d1a7363a0eabd892ad2e93"
+    },
+    {
+      "name": "Test-PackageActivation.ps1",
+      "bytes": 2284,
+      "sha256": "b8c234f39c63720d3f319eac8f926d57ae284e0cc1764e70f0b5e6aa52b98ecb"
+    },
+    {
+      "name": "bundle_delivery.py",
+      "bytes": 10919,
+      "sha256": "c0942e1b38c223cb757868a699a23fb2bfa647299fdd9f03815b4e414612f2a7"
+    },
+    {
+      "name": "cadence-retained2008-msi.prepared.yml",
+      "bytes": 10402,
+      "sha256": "b2383d81ebbc319b357ff3b9a286ee7a61d49bfa83a64b72db2025f5943336d1"
+    },
+    {
+      "name": "checks/independent-workflow-step-00.ps1",
+      "bytes": 94,
+      "sha256": "e89a3c598d007a6f2c2a00b0410cdfc385d4a06f3730b29e7466473ef32ef7be"
+    },
+    {
+      "name": "checks/independent-workflow-step-01.ps1",
+      "bytes": 585,
+      "sha256": "61b612cc748efd67c1edb25c80934ae3549515eaa1974ed7a4d799b50486ba18"
+    },
+    {
+      "name": "checks/independent-workflow-step-02.ps1",
+      "bytes": 636,
+      "sha256": "1ae586cd283c87385a31c119881f09cf581f65ce2ccc3d192562a1c4b269baf2"
+    },
+    {
+      "name": "checks/independent-workflow-step-03.ps1",
+      "bytes": 841,
+      "sha256": "45979a46844e87f9237aef3913832e2d2f5dccae7582ffda07a73b6004fbaa40"
+    },
+    {
+      "name": "checks/independent-workflow-step-04.ps1",
+      "bytes": 692,
+      "sha256": "f274261130f0c64cf2326c8836c7aa9e8d16c5400c83b1df71e5bb8935ce5afd"
+    },
+    {
+      "name": "checks/independent-workflow-step-05.ps1",
+      "bytes": 315,
+      "sha256": "6763654545cae6c70555636298e133f9ff009fb9bb379613706c662e66f9cef0"
+    },
+    {
+      "name": "checks/independent-workflow-step-06.ps1",
+      "bytes": 1019,
+      "sha256": "ba2172242f4908b3495ffb91ffd07d59ebc8dbfb6bb1643dc8b93740a91aa34e"
+    },
+    {
+      "name": "checks/independent-workflow-step-07.ps1",
+      "bytes": 438,
+      "sha256": "50fd08635366276b378431f96c60a81267e2498007fcaf1ede43033f667f8e4b"
+    },
+    {
+      "name": "checks/independent-workflow-step-08.ps1",
+      "bytes": 809,
+      "sha256": "c5f596b123277c79400853444ff1f42fda7fd82ab8e2128ed09cf6d692dd1e54"
+    },
+    {
+      "name": "checks/preparation.json",
+      "bytes": 1246,
+      "sha256": "38a5f454336e2adb330d530834613cc689b87466da1fb57344bc402c0e8ffb00"
+    },
+    {
+      "name": "checks/verify_preparation.py",
+      "bytes": 8014,
+      "sha256": "bccdacd3535d44d09d63eabfad66dc60473d4117880ecb535a918e0d34826f72"
+    },
+    {
+      "name": "installer-test/.gitattributes",
+      "bytes": 20,
+      "sha256": "e97602ab9cac70102245345c5ab0fc9830df8b17f1072b188265a662a3a547ae"
+    },
+    {
+      "name": "installer-test/HANDOFF.json",
+      "bytes": 1122,
+      "sha256": "2737332382fb2d6071a19ea583eec71ce1f68882380e1ce6ff8e9353eaee2663"
+    },
+    {
+      "name": "installer-test/README.md",
+      "bytes": 4778,
+      "sha256": "bc0a5bf11a575b8b8adf5e997c0d2ebd4e033c4ad6d4a1a6f545b4e4b30a1a76"
+    },
+    {
+      "name": "installer-test/Test-Retained2008Installer.ps1",
+      "bytes": 14910,
+      "sha256": "d7f26161cac2ce246bca639c90bc009318e17003d7ccc58020a7788b3c32872c"
+    },
+    {
+      "name": "installer-test/checks/platform-refusal.json",
+      "bytes": 203,
+      "sha256": "bf2c7b304b1a98ed8df041f49f882c609ff2217cc7e770be1aa623e01aabacf0"
+    },
+    {
+      "name": "installer-test/checks/powershell-parse.json",
+      "bytes": 1089,
+      "sha256": "867abf0e8dd317d5d060ff7de37e476a2f3bb8b2cefcc0d1f09043d4740dc0c8"
+    },
+    {
+      "name": "installer-test/manifest.json",
+      "bytes": 2084,
+      "sha256": "583dd0016e77d284638534149e181bb9bbc99d136a3fa9c4f2667ce959a04ff6"
+    },
+    {
+      "name": "installer-test/source-audit.json",
+      "bytes": 918,
+      "sha256": "ed699908cce3fd09d73ef830a11cf36dd17837b63a9ec1fbe424ce3a2419d395"
+    },
+    {
+      "name": "installer-test/upstream/Test-MsiInstall.ps1",
+      "bytes": 28530,
+      "sha256": "77c25db2996ddf85f302ef59f78ca842580c695abe5a75692b4d94d85c7f6a4c"
+    },
+    {
+      "name": "installer-test/upstream/source.json",
+      "bytes": 629,
+      "sha256": "729176615c9adbe384e7feb299e9b24105c1fe30c2571975b692d40f45b37c69"
+    },
+    {
+      "name": "known-evidence/dataonly-console-receipt.projection.json",
+      "bytes": 5014,
+      "sha256": "6ea5c0b57d9fd56dd98bbef3018e237077817778af8cfbdaa71a9682d3c2a839"
+    },
+    {
+      "name": "known-evidence/runtime-inventory.MEASURED.json",
+      "bytes": 530785,
+      "sha256": "7b3b721f01b0a57610b9dcc1cd72bd15e50747dcd751fcd5e31cfbb96a81a4a4"
+    },
+    {
+      "name": "package-bindings.template.json",
+      "bytes": 2384,
+      "sha256": "75f0c4d0561d5cc3b0c91c8c2cdf8e9ef76899f7b122976bc329ce5ac8c38c1c"
+    },
+    {
+      "name": "packaging-assets.lock.json",
+      "bytes": 1898,
+      "sha256": "1a6b1796b2460aae402eaab7103942dac40a320c31a3676ed6816ee3129d7897"
+    },
+    {
+      "name": "prepare_publication.py",
+      "bytes": 5203,
+      "sha256": "b7b9225fa66407aa42a0fb6f7b9e7fb7c78793ad77fb5684c064d1cadf20e434"
+    },
+    {
+      "name": "prepare_retained_package.py",
+      "bytes": 19844,
+      "sha256": "3acc274262bfa6738c6febf91ff101cf113aaee71ecee4821e97c0403687f837"
+    },
+    {
+      "name": "qa-artifact.selection.template.json",
+      "bytes": 695,
+      "sha256": "aaa381dee0df747a946cf2a9dbaa82eef18c02303bf5e20f926bbde3aca6d5cc"
+    },
+    {
+      "name": "target.template.json",
+      "bytes": 362,
+      "sha256": "36ea7a4a3c09f95201a4293790d2658581cb78ebf85902335963fcc751d83e12"
+    },
+    {
+      "name": "verify_package_immutability.py",
+      "bytes": 1692,
+      "sha256": "89edada7b9e7d0f26566cccbc0d115d02ae84478d92bacac1dd70df178f93c8e"
+    }
+  ]
+}

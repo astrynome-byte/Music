@@ -1,0 +1,10 @@
+{
+  "derivative_source_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+  "file": "scripts/windows/Test-MsiInstall.ps1",
+  "bytes": 28530,
+  "sha256": "77c25db2996ddf85f302ef59f78ca842580c695abe5a75692b4d94d85c7f6a4c",
+  "scope": "Byte-exact derivative helper; no source rewrite or application modification",
+  "application": "Cadence Studio derivative of MuseScore Studio",
+  "upstream_reference_repository": "https://github.com/musescore/MuseScore",
+  "source_provenance": "Exact local derivative commit/application corresponding sources; this derivative SHA is not asserted to exist in the official upstream repository"
+}

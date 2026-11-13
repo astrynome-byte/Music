@@ -1,0 +1,19 @@
+{
+  "scope": "Read-only local source and identity audit; no MSI/COM/Windows execution",
+  "source_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+  "helper_byte_identical": true,
+  "helper_sha256": "77c25db2996ddf85f302ef59f78ca842580c695abe5a75692b4d94d85c7f6a4c",
+  "helper_bytes": 28530,
+  "helper_direct_development_dependencies_detected": {
+    "Python": false,
+    "CMake": false,
+    "dot_sourced_PS1": false
+  },
+  "ProductCode_formula": "RFC4122UUID5(namespace2e899094-116c-4518-8f13-94847281ff71,nameCadenceStudio-4.7.6.2008)",
+  "expected_ProductCode": "CA4AC56B-9ED9-568F-9F5A-0D9475D4CC26",
+  "previous2007_formula_crosscheck": "9A5BD9DF-6595-553C-9D1E-C992F257340C",
+  "native_GUI_probe_expected_location": "RUNNER_TEMP/combined-ui-probe/UiReadyProbe.exe",
+  "GUI_wrappers_do_not_require_source_in_installed_bin": true,
+  "installer_execution_performed": false,
+  "GUI_execution_performed": false
+}

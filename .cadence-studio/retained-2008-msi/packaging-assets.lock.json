@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "source_original_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+  "source_tree": "c5452043983a048ef0aeef085615af903de3f5b0",
+  "scope": "Exact Git blobs, unaffected by working-checkout EOL; original source assets only",
+  "files": [
+    {
+      "path": "version.cmake",
+      "bytes": 3039,
+      "sha256": "d079b53f46a249d6d1c245f731e88e1c844fe1f35a66412793ebd953cbc4643e"
+    },
+    {
+      "path": "LICENSE.txt",
+      "bytes": 36493,
+      "sha256": "73e75f61f0dfce4fd83ad1f3f45d1d6f9ea8cdfd21a92d7a9216d47e5b3bbb88"
+    },
+    {
+      "path": "buildscripts/cmake/GetPlatformInfo.cmake",
+      "bytes": 3211,
+      "sha256": "8b11f8c67a3274a37854d232e3a9ce88bc487db67e0af920b1ac7961119bb1ab"
+    },
+    {
+      "path": "buildscripts/packaging/Windows/SetupWindowsPackaging.cmake",
+      "bytes": 6625,
+      "sha256": "8b3ca06daaa7d787f42175ce63647f6df6bf4b4f4ae773ddab700efaced87786"
+    },
+    {
+      "path": "buildscripts/packaging/Windows/Installer/WIX.template.in",
+      "bytes": 16690,
+      "sha256": "60863550a4e72d16c7bc53f21a8377606a3ffbe1702814193425327e8e72219d"
+    },
+    {
+      "path": "buildscripts/packaging/Windows/Installer/LICENSE.cadence.rtf",
+      "bytes": 39410,
+      "sha256": "934eae7df4ba6a3313833506e4143a5f806eadc0dc9b241d90fa66ccdd85ffb0"
+    },
+    {
+      "path": "buildscripts/packaging/Windows/Installer/installer_banner_wix.png",
+      "bytes": 3492,
+      "sha256": "254d41f1d148679c315a61ef25af063a5756e69b11ec8023c45ffac54381f429"
+    },
+    {
+      "path": "buildscripts/packaging/Windows/Installer/installer_background_wix.png",
+      "bytes": 8422,
+      "sha256": "7f1e533b8b06b74ad2e56f0356bfc36092909093f8e5dbc59674916bab7c1537"
+    },
+    {
+      "path": "share/icons/AppIcon/MS4_AppIcon.ico",
+      "bytes": 306261,
+      "sha256": "ba4effd59a0e6f5a495294502f54cdd9bb87ce76a1abfd77a0a91c1516c77bb6"
+    }
+  ]
+}

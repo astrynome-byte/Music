@@ -1,0 +1,6 @@
+{
+  "error": "Disposable native hosted Windows x64 CI only.",
+  "output_created": false,
+  "no_native_install_claim": true,
+  "scope": "Actual invocation refused on Linux before file reads/COM/output"
+}

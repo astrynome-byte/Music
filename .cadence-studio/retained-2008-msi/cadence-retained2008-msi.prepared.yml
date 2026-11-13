@@ -1,0 +1,166 @@
+name: Cadence original2008 retained-stage MSI; no application rebuild
+on:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths: [.cadence-studio/retained-2008-msi/target.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-retained2008-msi-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  package-and-install-retained:
+    if: github.repository == 'astrynome-byte/Music'
+    runs-on: windows-2022
+    timeout-minutes: 75
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: ${{ github.workspace }}
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        path: driver
+        ref: ${{ github.sha }}
+        fetch-depth: 1
+        persist-credentials: false
+    - name: Require reviewed real QA artifact activation before downloads or tools
+      run: '& "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2008-msi/Test-PackageActivation.ps1"'
+    - uses: actions/setup-python@v6
+      with:
+        python-version: '3.12'
+    - name: Prepare only packaging tools; no Qt SDK
+      run: |
+        choco install cmake --version=3.31.6 --allow-downgrade --yes --installargs 'ADD_CMAKE_TO_PATH=System'
+        if ($LASTEXITCODE -ne 0) { throw 'CMake installation failed' }
+        choco install ninja --version=1.11.1 --allow-downgrade --yes
+        if ($LASTEXITCODE -ne 0) { throw 'Ninja installation failed' }
+        choco install wixtoolset --version=3.14.1 --allow-downgrade --yes
+        if ($LASTEXITCODE -ne 0) { throw 'WiX installation failed' }
+        'C:\Program Files\CMake\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+        'C:\Program Files (x86)\WiX Toolset v3.14\bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+    - name: Reconstruct original source tree only; no app configure or build
+      run: |
+        $driver="$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source"
+        & "$driver/Restore-Binaries.ps1" -Root $driver
+        & "$driver/Bootstrap.ps1" -DriverPath $driver -SourcePath "$env:GITHUB_WORKSPACE/cadence-src" -ResultPath "$env:RUNNER_TEMP/cadence-new-bootstrap.json"
+        python -I -B "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2008-resume/Bind-OriginalCiSource.py" `
+          --source-root "$env:GITHUB_WORKSPACE/cadence-src" --bootstrap "$env:RUNNER_TEMP/cadence-new-bootstrap.json" `
+          --output "$env:RUNNER_TEMP/retained-source-binding.json"
+        if ($LASTEXITCODE -ne 0) { throw 'Exact original compiled CI95 binding failed' }
+    - name: Authenticate original failed31 stage and companions; data only
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        python -I -B "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2008-data-readback/read_existing_stage.py" `
+          --work "$env:RUNNER_TEMP/retained-data-work" --output "$env:RUNNER_TEMP/retained-data-originals"
+        if ($LASTEXITCODE -ne 0) { throw 'Original partial-stage authentication failed' }
+        python -I -B "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2008-resume/Restore-RetainedRuntime.py" `
+          --reader-root "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2008-data-readback" `
+          --data-work "$env:RUNNER_TEMP/retained-data-work" --data-output "$env:RUNNER_TEMP/retained-data-originals" `
+          --bundle "$env:RUNNER_TEMP/cadence-stage-delivery" --stage "$env:RUNNER_TEMP/stage-cadence" `
+          --report "$env:RUNNER_TEMP/retained-restoration.json"
+        if ($LASTEXITCODE -ne 0) { throw 'Exact 2712-file runtime restoration failed' }
+    - name: Authenticate actual successful QA and relocate its ten raw JSON reports
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        python -I -B "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2008-msi/Restore-QualifiedQaEvidence.py" `
+          --selection "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2008-msi/qa-artifact.selection.json" `
+          --reader-root "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2008-data-readback" `
+          --work "$env:RUNNER_TEMP/retained-qa-work" --output "$env:RUNNER_TEMP/retained-qa-evidence" `
+          --bindings-template "$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2008-msi/package-bindings.json" `
+          --bindings-output "$env:RUNNER_TEMP/retained-package-bindings.MEASURED.json"
+        if ($LASTEXITCODE -ne 0) { throw 'Actual successful QA evidence is unavailable or differs' }
+    - name: Select reproducible original driver recipe without development environment
+      run: |
+        $recipe="$env:RUNNER_TEMP/selected-build-recipe"
+        [void][IO.Directory]::CreateDirectory($recipe)
+        foreach ($name in @('combined-2008-source','retained-2008-resume','retained-2008-data-readback')) {
+          Copy-Item -LiteralPath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/$name" -Destination "$recipe/$name" -Recurse
+        }
+    - name: Package unchanged stage with CMake LANGUAGES NONE and original WiX
+      run: |
+        $msi="$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2008-msi"
+        & "$msi/Package-Retained2008.ps1" `
+          -StagePath "$env:RUNNER_TEMP/stage-cadence" -ApplicationSource "$env:GITHUB_WORKSPACE/cadence-src" `
+          -SourceProfilePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/source.json" `
+          -ArtifactDirectory "$env:RUNNER_TEMP/cadence-stage-delivery" `
+          -RuntimeInventoryPath "$msi/known-evidence/runtime-inventory.MEASURED.json" `
+          -ReadbackReceiptPath "$msi/known-evidence/dataonly-console-receipt.projection.json" `
+          -PackageBindingsPath "$env:RUNNER_TEMP/retained-package-bindings.MEASURED.json" `
+          -QualificationReportPath "$env:RUNNER_TEMP/retained-qa-evidence/retained-qualification.json" `
+          -QualificationEvidenceRoot "$env:RUNNER_TEMP/retained-qa-evidence" `
+          -CorrespondingSourceBundle "$env:RUNNER_TEMP/cadence-stage-delivery/corresponding-sources" `
+          -BuildRecipeDirectory "$env:RUNNER_TEMP/selected-build-recipe" `
+          -OutputDirectory "$env:RUNNER_TEMP/retained2008-package"
+    - name: Use MSVC SDK only for standalone QA observer
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+        vsversion: '2022'
+        sdk: 10.0.26100.0
+    - name: Compile only small Windows SDK UI readiness probe
+      run: |
+        $probe="$env:RUNNER_TEMP/combined-ui-probe"
+        [void][IO.Directory]::CreateDirectory($probe)
+        Push-Location $probe
+        try {
+          & cl.exe /nologo /std:c++17 /utf-8 /EHsc /MD `
+            "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/UiReadyProbe.cpp" `
+            /Fe:UiReadyProbe.exe /link ole32.lib oleaut32.lib user32.lib uuid.lib
+          if ($LASTEXITCODE -ne 0) { throw 'Standalone SDK observer did not compile' }
+        } finally { Pop-Location }
+    - name: Real MSI install CLI GUI clean close and exact-product uninstall
+      run: |
+        $msi="$env:GITHUB_WORKSPACE/driver/.cadence-studio/retained-2008-msi"
+        & "$msi/installer-test/Test-Retained2008Installer.ps1" `
+          -MsiPath "$env:RUNNER_TEMP/retained2008-package/deliverables/CadenceStudio-4.7.6-cadence.2008-x86_64.msi" `
+          -StageBuildResultPath "$env:RUNNER_TEMP/cadence-stage-delivery/cadence-build-result.json" `
+          -RetainedStageExecutablePath "$env:RUNNER_TEMP/stage-cadence/bin/CadenceStudio4.exe" `
+          -StageNoticeReportPath "$env:RUNNER_TEMP/retained-qa-evidence/qa-stage-notices/stage-notices-report.json" `
+          -OutputDirectory "$env:RUNNER_TEMP/retained2008-installer-qa" `
+          -GuiWrapperPath "$env:GITHUB_WORKSPACE/cadence-src/scripts/windows/Run-CleanGuiProbe.ps1" `
+          -GuiProbePath "$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source/Test-ReadyGui.ps1" `
+          -RequireGui
+    - name: Retain the seven produced delivery files only after actual installed GUI succeeds
+      uses: actions/upload-artifact@v4
+      with:
+        name: cadence-retained2008-msi-delivery-${{ github.run_number }}-${{ github.run_attempt }}
+        path: |
+          ${{ runner.temp }}/retained2008-package/deliverables/CadenceStudio-4.7.6-cadence.2008-x86_64.msi
+          ${{ runner.temp }}/retained2008-package/deliverables/CadenceStudio-4.7.6-cadence.2008-source.tar.gz
+          ${{ runner.temp }}/retained2008-package/deliverables/CadenceStudio-4.7.6-cadence.2008-component-sources.zip
+          ${{ runner.temp }}/retained2008-package/deliverables/CadenceStudio-4.7.6-cadence.2008-notices.zip
+          ${{ runner.temp }}/retained2008-package/deliverables/CadenceStudio-4.7.6-cadence.2008-build-recipe.zip
+          ${{ runner.temp }}/retained2008-package/deliverables/LIRE-MOI-CadenceStudio-4.7.6-cadence.2008-FR.txt
+          ${{ runner.temp }}/retained2008-package/deliverables/SHA256SUMS.txt
+        retention-days: 14
+        if-no-files-found: error
+    - name: Retain authentic original and MSI reports even on failure
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: cadence-retained2008-msi-logs-${{ github.run_number }}-${{ github.run_attempt }}
+        path: |
+          ${{ runner.temp }}/retained2008-package/*.json
+          ${{ runner.temp }}/retained2008-package/*.log
+          ${{ runner.temp }}/retained2008-package/internal/packaging-build/CPackConfig.cmake
+          ${{ runner.temp }}/retained2008-package/deliverables/_CPack_Packages/**/*.log
+          ${{ runner.temp }}/retained2008-installer-qa/**
+          ${{ runner.temp }}/retained-qa-evidence/**
+          ${{ runner.temp }}/retained-data-originals/**
+          ${{ runner.temp }}/cadence-stage-delivery/*.json
+          ${{ runner.temp }}/cadence-stage-delivery/SHA256SUMS.txt
+          ${{ runner.temp }}/cadence-stage-delivery/corresponding-sources/collection-report.json
+          ${{ runner.temp }}/cadence-stage-delivery/corresponding-sources/sources.lock.json
+          ${{ runner.temp }}/retained-restoration.json
+          ${{ runner.temp }}/retained-source-binding.json
+          ${{ runner.temp }}/retained-package-bindings.MEASURED.json
+          ${{ runner.temp }}/cadence-new-bootstrap.json
+          ${{ runner.temp }}/combined-ui-probe/UiReadyProbe.exe
+          ${{ github.workspace }}/driver/.cadence-studio/retained-2008-msi/**
+        retention-days: 14
+        if-no-files-found: warn
+        include-hidden-files: true

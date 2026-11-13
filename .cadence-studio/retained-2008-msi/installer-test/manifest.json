@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "scope": "Prepared retained2008 MSI qualification wrapper; no Windows/MSI execution here",
+  "source_original_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+  "source_CI_commit": "95cebb22fe6cbde22919c94f2b480bd14c3eb8de",
+  "source_tree": "c5452043983a048ef0aeef085615af903de3f5b0",
+  "expected_executable_sha256": "13cd4e6d2f408d2e64b187d4c3bff1188ff4192ac7b670d3a12373bbeb37f6cd",
+  "byte_exact_helper_sha256": "77c25db2996ddf85f302ef59f78ca842580c695abe5a75692b4d94d85c7f6a4c",
+  "ProductCode": "{CA4AC56B-9ED9-568F-9F5A-0D9475D4CC26}",
+  "UpgradeCode": "{319B992F-470A-465B-9A79-6B0CBFC7D6C7}",
+  "MSI_ProductVersion": "4.7.6.2008",
+  "local_AST_parses_passed": 2,
+  "actual_Linux_platform_guard_refusal_passed": true,
+  "MSI_executed": false,
+  "application_executed": false,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 20,
+      "sha256": "e97602ab9cac70102245345c5ab0fc9830df8b17f1072b188265a662a3a547ae"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4778,
+      "sha256": "bc0a5bf11a575b8b8adf5e997c0d2ebd4e033c4ad6d4a1a6f545b4e4b30a1a76"
+    },
+    {
+      "path": "Test-Retained2008Installer.ps1",
+      "bytes": 14910,
+      "sha256": "d7f26161cac2ce246bca639c90bc009318e17003d7ccc58020a7788b3c32872c"
+    },
+    {
+      "path": "checks/platform-refusal.json",
+      "bytes": 203,
+      "sha256": "bf2c7b304b1a98ed8df041f49f882c609ff2217cc7e770be1aa623e01aabacf0"
+    },
+    {
+      "path": "checks/powershell-parse.json",
+      "bytes": 1089,
+      "sha256": "867abf0e8dd317d5d060ff7de37e476a2f3bb8b2cefcc0d1f09043d4740dc0c8"
+    },
+    {
+      "path": "source-audit.json",
+      "bytes": 918,
+      "sha256": "ed699908cce3fd09d73ef830a11cf36dd17837b63a9ec1fbe424ce3a2419d395"
+    },
+    {
+      "path": "upstream/Test-MsiInstall.ps1",
+      "bytes": 28530,
+      "sha256": "77c25db2996ddf85f302ef59f78ca842580c695abe5a75692b4d94d85c7f6a4c"
+    },
+    {
+      "path": "upstream/source.json",
+      "bytes": 629,
+      "sha256": "729176615c9adbe384e7feb299e9b24105c1fe30c2571975b692d40f45b37c69"
+    }
+  ]
+}

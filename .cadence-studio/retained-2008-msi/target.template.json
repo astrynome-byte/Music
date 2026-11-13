@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "ready": false,
+  "mode": "package-and-test-retained2008-no-application-rebuild",
+  "helpers_manifest_sha256": null,
+  "bindings_sha256": null,
+  "qa_selection_sha256": null,
+  "note": "Root-controlled inactive recipe. Activate only after actual QA43421094979 completes successfully and raw artifact/report pins have been reviewed."
+}

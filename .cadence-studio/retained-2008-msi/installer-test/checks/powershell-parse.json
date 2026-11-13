@@ -1,0 +1,39 @@
+{
+  "GUI_executed": false,
+  "installer_executed": false,
+  "files": [
+    {
+      "sha256": "d7f26161cac2ce246bca639c90bc009318e17003d7ccc58020a7788b3c32872c",
+      "path": "Test-Retained2008Installer.ps1",
+      "AST_parse_passed": true,
+      "parameters": [
+        "MsiPath",
+        "StageBuildResultPath",
+        "RetainedStageExecutablePath",
+        "StageNoticeReportPath",
+        "OutputDirectory",
+        "GuiWrapperPath",
+        "GuiProbePath",
+        "RequireGui"
+      ]
+    },
+    {
+      "sha256": "77c25db2996ddf85f302ef59f78ca842580c695abe5a75692b4d94d85c7f6a4c",
+      "path": "upstream/Test-MsiInstall.ps1",
+      "AST_parse_passed": true,
+      "parameters": [
+        "MsiPath",
+        "StageBuildResultPath",
+        "OutputDirectory",
+        "ExpectedVersion",
+        "GuiWrapperPath",
+        "GuiProbePath",
+        "StageNoticeReportPath",
+        "RetainedStageExecutablePath",
+        "RequireSystemIcu",
+        "ExpectedProductVersion"
+      ]
+    }
+  ],
+  "scope": "PowerShell syntax and native-Windows guard only; no MSI, COM or app execution"
+}

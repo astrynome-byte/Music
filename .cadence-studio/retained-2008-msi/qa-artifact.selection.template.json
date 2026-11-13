@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "ready": false,
+  "repository": "astrynome-byte/Music",
+  "run_id": 43421094979,
+  "job_id": 131870989277,
+  "head_sha": "cc88a26de1fd0966c311aae5a8e5e25b130b6629",
+  "source_temp_root": "D:\\a\\_temp",
+  "artifact": {"id": 14035210409, "name": "cadence-retained2008-resume-logs-2-1", "bytes": 14680371, "sha256": "d908339d0857a34f8f8134f6bb34cb3cf6f7f6f43579a7c74397b3597b70409d"},
+  "qualification": {"mode": "measure-raw-member-after-authenticated-outer", "bytes": null, "sha256": null},
+  "note": "Inactive acquisition recipe. Actual successful QA outer is pinned; raw aggregate bytes/SHA are measured only after downloading and authenticating that entire ZIP."
+}
