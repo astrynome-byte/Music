@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: Cadence original Mixer observation data-only readback
+on:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths: ['.cadence-studio/mixer-observation-readback/**', '.github/workflows/cadence-mixer-observation-readback.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  read-original-failed-observation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Authenticate the exact completed failed producer and original artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -I .cadence-studio/mixer-observation-readback/read_reports.py --metadata-output "$RUNNER_TEMP/mixer-original-metadata.json"
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '13996064218'
+          run-id: '43335448410'
+          repository: astrynome-byte/Music
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/original-mixer-observation
+      - name: Read only original bounded JSON, logs and PNG bytes; never execute their producer
+        run: python3 -I .cadence-studio/mixer-observation-readback/read_reports.py --root "$RUNNER_TEMP/original-mixer-observation" --output "$RUNNER_TEMP/mixer-original-readback"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cadence-original-mixer-data-only-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/mixer-original-readback
+            ${{ runner.temp }}/mixer-original-metadata.json
+          retention-days: 14
+          if-no-files-found: warn
