@@ -55,6 +55,29 @@ function Invoke-OwnedPython([string]$Name,[string[]]$Arguments) {
   if($p.ExitCode-ne0){throw "Owned Python command failed: $Name"}
  }finally{if($started-and-not$p.HasExited){$p.Kill($true);[void]$p.WaitForExit(5000)};$p.Dispose()}
 }
+function Save-PassiveBlockedForeground([string]$PhaseName) {
+ # Read only the already-foreground owned window. Never bring a window forward,
+ # set focus, send input, or infer a passed UI phase from this diagnostic PNG.
+ try {
+  $app.Refresh();if($app.HasExited){throw 'Owned app exited before passive diagnostic capture.'}
+  $window=[CadenceLibraryWindowNative]::GetForegroundWindow()
+  if(-not[CadenceLibraryWindowNative]::Owned($window,$app.Id)-or-not[CadenceLibraryWindowNative]::IsWindowVisible($window)){throw 'Foreground window is not a visible owned window; passive capture skipped.'}
+  $rect=[CadenceLibraryWindowNative+Rect]::new()
+  if(-not[CadenceLibraryWindowNative]::GetWindowRect($window,[ref]$rect)){throw 'Owned foreground rectangle unavailable.'}
+  $width=$rect.Right-$rect.Left;$height=$rect.Bottom-$rect.Top
+  if($width-lt100-or$height-lt100-or([long]$width*$height)-gt12000000){throw 'Owned foreground capture bounds refused.'}
+  $title=[CadenceLibraryWindowNative]::Title($window)
+  Add-Type -AssemblyName System.Drawing
+  $bitmap=[Drawing.Bitmap]::new($width,$height)
+  try {
+   $graphics=[Drawing.Graphics]::FromImage($bitmap)
+   try{$graphics.CopyFromScreen($rect.Left,$rect.Top,0,0,$bitmap.Size)}finally{$graphics.Dispose()}
+   if(-not[CadenceLibraryWindowNative]::Owned($window,$app.Id)-or[CadenceLibraryWindowNative]::GetForegroundWindow()-ne$window-or[CadenceLibraryWindowNative]::Title($window)-cne$title){throw 'Owned foreground changed during passive capture.'}
+   $path=Join-Path $OutputDirectory "$PhaseName-blocked-passive.png";$bitmap.Save($path,[Drawing.Imaging.ImageFormat]::Png)
+   $report.captures+=,@{path=$path;pid=$app.Id;title=$title;bytes=(Get-Item $path).Length;sha256=Hash $path;status='blocked_diagnostic_requires_visual_review';method='passive_desktop_crop_of_already_foreground_owned_window';UI_phase_pass_inferred=$false}
+  }finally{$bitmap.Dispose()}
+ }catch{$report['blocked_capture_diagnostic']=$_.Exception.Message}
+}
 function Invoke-Phase([string]$Phase) {
  $app.Refresh();if($app.HasExited){throw 'Owned app exited before native UIA phase.'}
  if((Hash $exe)-cne$target.stage.executable_sha256){throw 'EXE changed between UIA phases.'}
@@ -72,7 +95,7 @@ function Invoke-Phase([string]$Phase) {
   $path=Join-Path $directory 'import-dialog-phase.json';if(-not(Test-Path $path)-or(Get-Item $path).Length-gt1048576){throw 'Missing or oversized native phase report.'}
   $n=Get-Content -LiteralPath $path -Raw -Encoding UTF8|ConvertFrom-Json
   $report.phases+=,@{phase=$Phase;directory=$directory;pid=$app.Id;client_exit_code=$p.ExitCode;report=$n;sha256=Hash $path}
-  if($p.ExitCode-ne0-or$n.schema_version-ne1-or$n.pid-ne$app.Id-or$n.phase-cne$Phase-or$n.status-cne'passed_owned_import_dialog_phase'-or$n.keyboard_failure-isnot[bool]-or$n.keyboard_failure-or$n.alt_taps-gt1-or$n.home_taps-gt1-or$n.next_row_taps-gt2-or$n.keys-gt70){throw 'Native dialog phase failed or did not prove its exact owned UI claims.'}
+  if($p.ExitCode-ne0-or$n.schema_version-ne1-or$n.pid-ne$app.Id-or$n.phase-cne$Phase-or$n.status-cne'passed_owned_import_dialog_phase'-or$n.keyboard_failure-isnot[bool]-or$n.keyboard_failure-or$n.alt_taps-gt1-or$n.home_taps-gt1-or$n.next_row_taps-gt2-or$n.keys-gt70){Save-PassiveBlockedForeground $phaseName;throw 'Native dialog phase failed or did not prove its exact owned UI claims.'}
   if($Phase-in@('open-omr','open-wav','analyze-wav')){
    $title=if($Phase-eq'open-omr'){'Reconnaître une partition — PDF ou image'}else{'Transcrire une mélodie WAV locale'}
    Capture-OwnedImportDialog $n $title $app "$phaseName.png" $OutputDirectory $report

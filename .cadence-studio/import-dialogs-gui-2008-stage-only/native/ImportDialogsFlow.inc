@@ -10,6 +10,13 @@ static const std::wstring wavSave=L"Enregistrer le MIDI et ouvrir…";
 static unsigned importKeys=0, altTaps=0, homeTaps=0, nextRowTaps=0;
 static HWND observedDialog=nullptr;
 static std::vector<std::string> observations;
+// Diagnostics only. These values never admit a key or relax a semantic match.
+static std::string blockedGuard;
+static bool readinessEntered=false,readinessPassed=false;
+static unsigned readinessIterations=0;
+static std::vector<std::string> readinessFrames;
+static HRESULT automation2Result=E_UNEXPECTED,connectionTimeoutResult=E_UNEXPECTED,transactionTimeoutResult=E_UNEXPECTED;
+static bool block(const char* reason) {if(blockedGuard.empty())blockedGuard=reason;return false;}
 static bool nodeIs(const Node& node,const std::wstring& label,int role,bool enabled=true)
 {
     return node.pid==static_cast<int>(targetPid) && node.type==role && !node.offscreen
@@ -40,10 +47,14 @@ static bool context(HWND w)
 }
 static bool importKey(IUIAutomation* a,const std::filesystem::path& out,HWND w,WORD key,const char* purpose)
 {
-    if(!context(w)||importKeys>=70||keyboardFailure||(key==VK_MENU&&altTaps>=1)
-        ||(key==VK_HOME&&homeTaps>=1)||(key==VK_NEXT&&nextRowTaps>=2))return false;
+    if(!context(w))return block("import_key_context_not_owned_visible_enabled_alive_before_deadline");
+    if(importKeys>=70||keyboardFailure||(key==VK_MENU&&altTaps>=1)
+        ||(key==VK_HOME&&homeTaps>=1)||(key==VK_NEXT&&nextRowTaps>=2))return block("import_key_budget_or_prior_keyboard_failure");
     const Node before=focusedNode(a);
-    if(before.pid!=0&&before.pid!=static_cast<int>(targetPid))return false;
+    if(before.pid!=0&&before.pid!=static_cast<int>(targetPid)) {
+        observations.push_back("{\"diagnostic_only\":true,\"blocked_before_any_input\":true,\"foreign_focus_pid\":"+std::to_string(before.pid)+",\"name\":"+jsonQuoted(before.name)+",\"role\":"+std::to_string(before.type)+'}');
+        return block("import_key_foreign_focused_element_pid");
+    }
     const std::wstring frame=std::to_wstring(importKeys+1);
     snapshot(a,out,(frame+L"-before-import-key").c_str());
     if(key==VK_MENU)++altTaps;
@@ -81,15 +92,58 @@ static bool pressExact(IUIAutomation* a,const std::filesystem::path& out,HWND w,
 {
     return focusExact(a,out,w,label,role)&&observeFocus(a,label,role)&&importKey(a,out,w,VK_RETURN,purpose);
 }
+static const Node* findReadyMainHome(const std::vector<Node>& nodes)
+{
+    const Node* found=nullptr;
+    for(const Node& n:nodes) {
+        // Source AccessibleItemInterface prepends its active panel's name.
+        // The full French value below was observed, with this exact role, in
+        // GUI2 original main-ready.json (SHA256 61353357...); no suffix match
+        // or generic prefix removal is admitted for readiness.
+        if(n.pid!=static_cast<int>(targetPid)||n.type!=UIA_RadioButtonControlTypeId||!n.enabled||n.offscreen)continue;
+        if(n.name!=L"Accueil"&&n.name!=L"Home"
+            &&n.name!=L"Panneau Barre d'outils principale la direction est horizontale, Accueil")continue;
+        if(found)return nullptr;
+        found=&n;
+    }
+    return found;
+}
 static bool readyMain(IUIAutomation* a,const std::filesystem::path& out)
 {
+    readinessEntered=true;
     while(alive()&&Clock::now()<deadline) {
         if(closeIntroductionOnly())Sleep(200);
         const auto nodes=snapshot(a,out,L"main-ready");
-        if(context(mainWindow())&&(find(nodes,{L"Accueil",L"Home"})||find(nodes,{L"Partitions",L"Scores"})))return true;
+        const HWND main=mainWindow();const bool validContext=context(main);
+        const Node* home=findReadyMainHome(nodes);const Node* scores=find(nodes,{L"Partitions",L"Scores"});
+        ++readinessIterations;
+        unsigned targetNodes=0,rawHome=0,rawScores=0,normalizedHome=0,normalizedScores=0,exactObservedToolbarHome=0;
+        for(const Node& n:nodes) {
+            if(n.pid!=static_cast<int>(targetPid))continue;
+            ++targetNodes;
+            if(!n.enabled||n.offscreen||!interactiveType(n.type))continue;
+            if(n.name==L"Accueil"||n.name==L"Home")++rawHome;
+            if(n.name==L"Partitions"||n.name==L"Scores")++rawScores;
+            if(n.type==UIA_RadioButtonControlTypeId&&n.name==L"Panneau Barre d'outils principale la direction est horizontale, Accueil")++exactObservedToolbarHome;
+            const auto label=controlLabel(n.name);
+            if(label==L"Accueil"||label==L"Home")++normalizedHome;
+            if(label==L"Partitions"||label==L"Scores")++normalizedScores;
+        }
+        const std::string frame="{\"iteration\":"+std::to_string(readinessIterations)+",\"alive\":"+(alive()?"true":"false")
+            +",\"deadline_reached\":"+(Clock::now()>=deadline?"true":"false")+",\"main_handle\":"+std::to_string(reinterpret_cast<std::uintptr_t>(main))
+            +",\"main_title\":"+jsonQuoted(windowTitle(main))+",\"main_owned\":"+(owned(main)?"true":"false")
+            +",\"main_visible\":"+(main&&IsWindowVisible(main)?"true":"false")+",\"main_enabled\":"+(main&&IsWindowEnabled(main)?"true":"false")
+            +",\"main_context_passed\":"+(validContext?"true":"false")+",\"foreground_handle\":"+std::to_string(reinterpret_cast<std::uintptr_t>(GetForegroundWindow()))
+            +",\"node_count\":"+std::to_string(nodes.size())+",\"target_pid_node_count\":"+std::to_string(targetNodes)
+            +",\"raw_home_candidates\":"+std::to_string(rawHome)+",\"raw_scores_candidates\":"+std::to_string(rawScores)
+            +",\"normalized_home_candidates_diagnostic_only\":"+std::to_string(normalizedHome)+",\"normalized_scores_candidates_diagnostic_only\":"+std::to_string(normalizedScores)
+            +",\"exact_observed_toolbar_home_candidates\":"+std::to_string(exactObservedToolbarHome)
+            +",\"unique_role50013_home\":"+(home?"true":"false")+",\"unique_raw_scores\":"+(scores?"true":"false")+'}';
+        if(readinessFrames.size()<8)readinessFrames.push_back(frame);else readinessFrames.back()=frame;
+        if(validContext&&(home||scores)){readinessPassed=true;return true;}
         Sleep(200);
     }
-    return false;
+    return block(alive()?"main_readiness_deadline_without_unique_raw_Home_or_Scores_and_valid_context":"main_readiness_process_exited");
 }
 static bool openThroughFile(IUIAutomation* a,const std::filesystem::path& out,bool wave)
 {
@@ -269,7 +323,10 @@ int wmain(int argc,wchar_t** argv)
         ComPtr<IUIAutomation> a;activated=CoCreateInstance(__uuidof(CUIAutomation8),nullptr,CLSCTX_INPROC_SERVER,IID_PPV_ARGS(&a));
         if(FAILED(activated))activated=CoCreateInstance(__uuidof(CUIAutomation),nullptr,CLSCTX_INPROC_SERVER,IID_PPV_ARGS(&a));
         ComPtr<IUIAutomation2> bounded;
-        if(SUCCEEDED(activated)&&SUCCEEDED(a.As(&bounded))&&SUCCEEDED(bounded->put_ConnectionTimeout(800))&&SUCCEEDED(bounded->put_TransactionTimeout(1000))) {
+        if(SUCCEEDED(activated))automation2Result=a.As(&bounded);
+        if(SUCCEEDED(automation2Result))connectionTimeoutResult=bounded->put_ConnectionTimeout(800);
+        if(SUCCEEDED(connectionTimeoutResult))transactionTimeoutResult=bounded->put_TransactionTimeout(1000);
+        if(SUCCEEDED(activated)&&SUCCEEDED(automation2Result)&&SUCCEEDED(connectionTimeoutResult)&&SUCCEEDED(transactionTimeoutResult)) {
             if(phase==L"open-omr"||phase==L"open-wav")passed=openThroughFile(a.Get(),output,phase==L"open-wav");
             else if(phase==L"close-omr"||phase==L"close-wav")passed=closeDialog(a.Get(),output,phase==L"close-wav",true);
             else if(phase==L"analyze-wav")passed=analyzeWave(a.Get(),output,waveRoot,wave);
@@ -277,6 +334,14 @@ int wmain(int argc,wchar_t** argv)
             snapshot(a.Get(),output,L"phase-final");
         }
         a.Reset();bounded.Reset();CoUninitialize();
+    }
+    if(!passed&&blockedGuard.empty()) {
+        if(FAILED(initialized))blockedGuard="COM_initialization";
+        else if(FAILED(activated))blockedGuard="UIAutomation_creation";
+        else if(FAILED(automation2Result))blockedGuard="UIAutomation2_query";
+        else if(FAILED(connectionTimeoutResult))blockedGuard="UIAutomation_connection_timeout_setup";
+        else if(FAILED(transactionTimeoutResult))blockedGuard="UIAutomation_transaction_timeout_setup";
+        else blockedGuard="later_semantic_phase_guard";
     }
     RECT rect{};if(owned(observedDialog))GetWindowRect(observedDialog,&rect);
     std::ofstream result(output/L"import-dialog-phase.json",std::ios::binary);
@@ -286,6 +351,12 @@ int wmain(int argc,wchar_t** argv)
         <<",\"rect\":["<<rect.left<<','<<rect.top<<','<<rect.right<<','<<rect.bottom<<"],\"com_hresult\":"<<static_cast<long>(activated)
         <<",\"keys\":"<<importKeys<<",\"alt_taps\":"<<altTaps<<",\"home_taps\":"<<homeTaps<<",\"next_row_taps\":"<<nextRowTaps
         <<",\"keyboard_failure\":"<<(keyboardFailure?"true":"false")
+        <<",\"diagnostics_only\":{\"blocked_guard\":"<<jsonQuoted(std::wstring(blockedGuard.begin(),blockedGuard.end()))
+        <<",\"COM_initialization_hresult\":"<<static_cast<long>(initialized)<<",\"automation2_query_hresult\":"<<static_cast<long>(automation2Result)
+        <<",\"connection_timeout_hresult\":"<<static_cast<long>(connectionTimeoutResult)<<",\"transaction_timeout_hresult\":"<<static_cast<long>(transactionTimeoutResult)
+        <<",\"readiness_entered\":"<<(readinessEntered?"true":"false")<<",\"readiness_passed\":"<<(readinessPassed?"true":"false")<<",\"readiness_iterations\":"<<readinessIterations
+        <<",\"readiness_frames_bounded_to8\":[";
+    for(size_t i=0;i<readinessFrames.size();++i){if(i)result<<',';result<<readinessFrames[i];}result<<"]}"
         <<",\"observations\":[";
     for(size_t i=0;i<observations.size();++i){if(i)result<<',';result<<observations[i];}result<<"],\"actions\":[";
     for(size_t i=0;i<actions.size();++i){if(i)result<<',';result<<actions[i];}

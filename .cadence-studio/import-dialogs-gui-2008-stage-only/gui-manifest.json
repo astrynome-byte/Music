@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "private-actual-stage-only-not-Windows-validated",
+  "status": "private-actual-stage-only-harness-prefix-and-diagnostics-not-Windows-validated",
   "files": [
     {
       "path": ".gitattributes",
@@ -49,8 +49,8 @@
     },
     {
       "path": "Run-ImportDialogsGui.ps1",
-      "bytes": 15038,
-      "sha256": "e34e9ecc3237b801f2d1d8381cbb1049dab09d32cf1217343d861c5da1c84312"
+      "bytes": 17052,
+      "sha256": "127cb170986e534eb1fdb2df416d648485c3b1f60988a648a569236356b44f3d"
     },
     {
       "path": "cadence-import-dialogs-gui-2008-stage-only.yml",
@@ -74,8 +74,8 @@
     },
     {
       "path": "native/ImportDialogsFlow.inc",
-      "bytes": 19867,
-      "sha256": "fdb33f12b4fdecc8f5fec0725062d061eaceba43697db0fbd0a7043f2169eacd"
+      "bytes": 25682,
+      "sha256": "73a44b914a59141f79877d1519159a1ab1383677ec9c9ba76c5d9091d54d3a64"
     },
     {
       "path": "native/OwnedKeyboard.h",
@@ -95,7 +95,7 @@
     {
       "path": "native/SHA256SUMS.txt",
       "bytes": 413,
-      "sha256": "2ebe08cdc4fc94bb785abfa3ebc2d9d00757b5d2c43a2688e510fda1d1f2dce0"
+      "sha256": "e692eec09f9216972d628043eb662001cce13bfdbb8b99615ed8d4d09e2d130e"
     },
     {
       "path": "native/UiaProbe.cpp",
