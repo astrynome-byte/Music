@@ -124,6 +124,9 @@ static bool readyMain(IUIAutomation* a,const std::filesystem::path& out)
     readinessEntered=true;
     while(alive()&&Clock::now()<deadline) {
         if(closeIntroductionOnly())Sleep(200);
+        // GUI7 reached readiness before this PID had a visible native window.
+        // Wait within the existing deadline before the strict UIA snapshot.
+        if(windows().empty()){Sleep(200);continue;}
         const auto nodes=snapshot(a,out,L"main-ready");
         if(observationIncomplete)return block("main_readiness_snapshot_incomplete");
         const HWND main=mainWindow();const bool validContext=context(main);
