@@ -15,6 +15,7 @@
 #include <vector>
 #include "OwnedKeyboard.h"
 #include "OwnedWaveFileDialog.h"
+#include "OwnedMidiSaveDialog.h"
 #include "ObservationGraph.h"
 
 using Microsoft::WRL::ComPtr;

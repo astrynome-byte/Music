@@ -518,8 +518,169 @@ static bool closeReadyWave(IUIAutomation* a,const std::filesystem::path& out)
     if(!pressExact(a,out,dialog,label,UIA_ButtonControlTypeId,"discard_only_unsaved_test_draft_and_close"))return false;
     Sleep(200);return importDialogGone(wavTitle)&&context(mainWindow());
 }
+// SPDX-License-Identifier: GPL-3.0-only
+// Insert after closeReadyWave(), before finalLocalState(), in the current Inc.
+// UiaProbe.cpp must first include OwnedMidiSaveDialog.h beside its WAV helper.
+// No keyboard shortcut enters notes: this only saves and observes an import.
+static bool savedMidiObserved=false, savedScoreFocusObserved=false;
+static std::wstring savedMidiPath;
+
+static unsigned savedScoreProofAttempts=0,savedScoreNavigationKeys=0;
+static std::string firstSavedScoreRefusal="null",lastSavedScoreRefusal="null";
+static bool focusedSavedMidiScore(IUIAutomation* a)
+{
+    ++savedScoreProofAttempts;
+    const HWND main=mainWindow();Node focused;
+    std::string chain="[";
+    auto refused=[&](const char* reason,HRESULT hr=S_OK) {
+        const std::string result="{\"attempt\":"+std::to_string(savedScoreProofAttempts)
+            +",\"reason\":\""+reason+"\",\"hresult\":"+std::to_string(static_cast<long>(hr))
+            +",\"main_handle\":"+std::to_string(reinterpret_cast<std::uintptr_t>(main))
+            +",\"main_title\":"+jsonQuoted(windowTitle(main))
+            +",\"focused_name\":"+jsonQuoted(focused.name)+",\"focused_type\":"+std::to_string(focused.type)
+            +",\"focused_pid\":"+std::to_string(focused.pid)+",\"has_focus\":"+(focused.focused?"true":"false")
+            +",\"blocking_observation_failure\":"+(blockingObservationFailure?"true":"false")
+            +",\"local_focus_failure_operation\":"+jsonQuoted(std::wstring(localFocusFailureOperation.begin(),localFocusFailureOperation.end()))
+            +",\"local_focus_failure_hresult\":"+std::to_string(static_cast<long>(localFocusFailureResult))
+            +",\"ancestors_bounded_to18\":"+chain+']'+'}';
+        if(firstSavedScoreRefusal=="null")firstSavedScoreRefusal=result;
+        lastSavedScoreRefusal=result;return false;
+    };
+    if(!context(main))return refused("native_main_context_not_ready");
+    if(!liveImportFocus(a,main,focused))return refused("liveImportFocus_not_proved");
+    ComPtr<IUIAutomationTreeWalker> walker;
+    HRESULT read=a->get_RawViewWalker(&walker);
+    if(read!=S_OK||!walker)return refused("RawViewWalker_unavailable",read);
+    ComPtr<IUIAutomationElement> current=focused.element;
+    std::set<RuntimeId> seen;
+    for(unsigned depth=0;current&&depth<18&&context(main);++depth) {
+        SnapshotState state;const auto id=runtimeIdentity(current.Get(),state);
+        if(state.incomplete||id.empty())return refused("ancestor_identity_unavailable",state.failure);
+        if(!seen.insert(id).second)return refused("ancestor_identity_cycle",E_FAIL);
+        int pid=0,type=0;BSTR raw=nullptr;
+        read=current->get_CurrentProcessId(&pid);
+        if(read!=S_OK||pid!=static_cast<int>(targetPid))return refused("ancestor_process_scope",read==S_OK?E_ACCESSDENIED:read);
+        read=current->get_CurrentControlType(&type);
+        if(read!=S_OK)return refused("ancestor_CurrentControlType",read);
+        read=current->get_CurrentName(&raw);const auto name=text(raw);
+        if(read!=S_OK)return refused("ancestor_CurrentName",read);
+        if(depth)chain+=',';
+        chain+="{\"name\":"+jsonQuoted(name)+",\"type\":"+std::to_string(type)+",\"pid\":"+std::to_string(pid)+'}';
+        // Application-source Windows Panel->StaticText mapping; exact local
+        // .mid basename is retained in project displayName. No title override.
+        if(type==UIA_TextControlTypeId
+            &&(name==L"Partition Cadence-QA-three-notes-transcription.mid"
+               ||name==L"Score Cadence-QA-three-notes-transcription.mid")) {
+            Node now;BOOL same=FALSE;
+            if(!liveImportFocus(a,main,now))return refused("named_score_focus_recheck_not_proved");
+            read=a->CompareElements(now.element.Get(),focused.element.Get(),&same);
+            if(read!=S_OK||!same||now.runtimeId!=focused.runtimeId||!context(main))return refused("named_score_focus_changed",read);
+            observations.push_back("{\"expected_imported_score\":"+jsonQuoted(name)
+                +",\"observed_role\":"+std::to_string(type)+",\"pid\":"+std::to_string(pid)
+                +",\"focused_ancestor_verified\":true}");
+            return true;
+        }
+        if(type==UIA_WindowControlTypeId) {
+            UIA_HWND native{};read=current->get_CurrentNativeWindowHandle(&native);
+            if(read!=S_OK)return refused("ancestor_WindowNativeHandle",read);
+            if(reinterpret_cast<HWND>(native)==main)return refused("owned_main_reached_without_named_score");
+        }
+        ComPtr<IUIAutomationElement> parent;
+        read=walker->GetParentElement(current.Get(),&parent);
+        if(read!=S_OK)return refused("ancestor_GetParentElement",read);
+        current=parent;
+    }
+    return refused("exact_named_imported_score_not_found_within_bounds");
+}
+static bool navigateToSavedScore(IUIAutomation* a,const std::filesystem::path& out,WORD key)
+{
+    const HWND main=mainWindow();
+    const std::wstring expectedTitle=L"Cadence-QA-three-notes-transcription.mid - Cadence Studio";
+    if((key!=VK_F6&&key!=VK_ESCAPE)||savedScoreNavigationKeys>=2||importKeys>=70
+        ||keyboardFailure||!context(main)||windowTitle(main)!=expectedTitle)return false;
+    // This is the same non-musical F6/Escape navigation route qualified by
+    // score5. The exact native main/title and a positive current UIA PID are
+    // required; the following score proof still requires true keyboard focus
+    // and the named Text50020 ancestry before it can pass.
+    auto nativeMainProof=[&](const OwnedKeyResult& native) {
+        if(!context(main)||windowTitle(main)!=expectedTitle
+            ||!cadence_owned_keyboard_detail::nativeContext(main,targetPid,native))return false;
+        ComPtr<IUIAutomationElement> current;int pid=0;
+        if(a->GetFocusedElement(&current)!=S_OK||!current
+            ||current->get_CurrentProcessId(&pid)!=S_OK||pid!=static_cast<int>(targetPid))return false;
+        return context(main)&&windowTitle(main)==expectedTitle;
+    };
+    ++savedScoreNavigationKeys;++importKeys;
+    const auto result=SendOwnedKey(targetPid,targetProcess,main,key,nativeMainProof);
+    if(!result.sent)keyboardFailure=true;
+    actions.push_back(std::string("{\"action\":\"bounded_nonmusical_saved_score_focus_navigation\",\"key\":")
+        +std::to_string(key)+",\"native_main_title\":"+jsonQuoted(expectedTitle)
+        +",\"sent\":"+(result.sent?"true":"false")+",\"error\":"+std::to_string(result.error)+'}');
+    Sleep(150);importSnapshot(a,out,key==VK_F6?L"saved-score-after-F6":L"saved-score-after-Escape");
+    return result.sent&&!blockingObservationFailure;
+}
+static bool saveAndOpenWaveDraft(IUIAutomation* a,const std::filesystem::path& out,
+                                 const std::wstring& fixtureRoot,const std::wstring& midiPath)
+{
+    const HWND dialog=exactDialog(wavTitle);
+    if(!dialog||!pressExact(a,out,dialog,wavSave,UIA_ButtonControlTypeId,
+        "save_only_new_original_fixture_MIDI_derivative",true))return false;
+    const auto remaining=std::chrono::duration_cast<std::chrono::milliseconds>(deadline-Clock::now()).count();
+    if(remaining<=0)return block("MIDI_save_phase_deadline_before_native_dialog");
+    const auto saved=SaveOwnedMidiDraft(a,targetPid,targetProcess,dialog,fixtureRoot,midiPath,
+        static_cast<unsigned>(std::min<long long>(remaining,20000)),
+        [&](HWND picker,const wchar_t*) {
+            Node current;
+            if(!liveImportFocus(a,picker,current))return false;
+            expectFocus(picker,current);return true;
+        },
+        [&](const wchar_t* phase) {
+            importSnapshot(a,out,phase);
+            if(blockingObservationFailure||Clock::now()>=deadline||!alive())throw E_ABORT;
+        });
+    actions.push_back("{\"action\":\"save_only_new_controlled_MIDI_derivative\",\"saved\":"
+        +std::string(saved.saved?"true":"false")+",\"path\":"+jsonQuoted(saved.path)
+        +",\"native_save_closed\":"+(saved.saveDialogClosed?"true":"false")
+        +",\"transcription_dialog_hidden\":"+(saved.transcriptionDialogHidden?"true":"false")
+        +",\"diagnostic\":"+jsonQuoted(saved.diagnostic)+'}');
+    if(!saved.saved||!saved.MIDIFileObserved||!saved.saveDialogClosed||!saved.transcriptionDialogHidden)
+        return block("new_MIDI_save_not_proved");
+    savedMidiObserved=true;savedMidiPath=saved.path;nativeChooserGapWindow=saved.dialog;
+    const auto until=std::min(deadline,Clock::now()+std::chrono::seconds(12));
+    bool resumed=false,focusNavigationAttempted=false;
+    while(alive()&&Clock::now()<until) {
+        if(importDialogGone(wavTitle)&&(!IsWindow(saved.dialog)||!IsWindowVisible(saved.dialog))&&context(mainWindow())) {
+            if(!resumed) {
+                nativeChooserGapActive=false;++nativeChooserRawResumptions;resumed=true;
+                importSnapshot(a,out,L"new-MIDI-save-closed-import-context");
+                if(blockingObservationFailure)return false;
+            }
+            bool score=focusedSavedMidiScore(a);
+            if(!score&&!blockingObservationFailure&&!focusNavigationAttempted) {
+                focusNavigationAttempted=true;
+                if(!navigateToSavedScore(a,out,VK_F6))return block("saved_score_F6_navigation_not_proved");
+                score=focusedSavedMidiScore(a);
+                if(!score&&!blockingObservationFailure) {
+                    if(!navigateToSavedScore(a,out,VK_ESCAPE))return block("saved_score_Escape_navigation_not_proved");
+                    score=focusedSavedMidiScore(a);
+                }
+            }
+            if(score) {
+                savedScoreFocusObserved=true;observedDialog=mainWindow();
+                importSnapshot(a,out,L"actual-saved-MIDI-score-opened");
+                return !blockingObservationFailure&&focusedSavedMidiScore(a);
+            }
+        }
+        Sleep(150);
+    }
+    // MIDI may be physically saved while the named score focus is unavailable.
+    // Preserve that distinction; never turn an attempted opening into PASS.
+    return block("saved_MIDI_exists_but_named_GUI_score_focus_not_proved");
+}
+
 static bool finalLocalState(IUIAutomation* a,const std::wstring& phase)
 {
+    if(phase==L"save-open-wav")return savedMidiObserved&&savedScoreFocusObserved&&focusedSavedMidiScore(a);
     if(phase==L"open-omr"||phase==L"open-wav"||phase==L"analyze-wav") {
         const bool omr=phase==L"open-omr";
         const HWND dialog=exactDialog(omr?omrTitle:wavTitle);
@@ -534,18 +695,20 @@ static bool finalLocalState(IUIAutomation* a,const std::wstring& phase)
 int wmain(int argc,wchar_t** argv)
 {
     if((argc-1)%2)return 1;
-    std::filesystem::path output;std::wstring phase,waveRoot,wave;
+    std::filesystem::path output;std::wstring phase,waveRoot,wave,midiOutput;
     for(int i=1;i+1<argc;i+=2) {
         const std::wstring key=argv[i];
         if(key==L"--pid")targetPid=wcstoul(argv[i+1],nullptr,10);
         else if(key==L"--output")output=argv[i+1];
         else if(key==L"--phase")phase=argv[i+1];
         else if(key==L"--fixture-root")waveRoot=argv[i+1];
-        else if(key==L"--fixture-wav")wave=argv[i+1];else return 1;
+        else if(key==L"--fixture-wav")wave=argv[i+1];
+        else if(key==L"--midi-output")midiOutput=argv[i+1];else return 1;
     }
-    const std::vector<std::wstring> phases{L"open-omr",L"close-omr",L"open-wav",L"close-wav",L"analyze-wav",L"close-ready-wav"};
+    const std::vector<std::wstring> phases{L"open-omr",L"close-omr",L"open-wav",L"close-wav",L"analyze-wav",L"close-ready-wav",L"save-open-wav"};
     if(!targetPid||output.empty()||!std::filesystem::is_directory(output)||std::find(phases.begin(),phases.end(),phase)==phases.end())return 1;
     if(phase==L"analyze-wav"&&(waveRoot.empty()||wave.empty()))return 1;
+    if(phase==L"save-open-wav"&&(waveRoot.empty()||midiOutput.empty()))return 1;
     targetProcess=OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION|SYNCHRONIZE,FALSE,targetPid);if(!alive())return 1;
     deadline=Clock::now()+std::chrono::seconds(60);bool passed=false;
     HRESULT initialized=CoInitializeEx(nullptr,COINIT_MULTITHREADED),activated=initialized;
@@ -561,6 +724,7 @@ int wmain(int argc,wchar_t** argv)
             else if(phase==L"close-omr"||phase==L"close-wav")passed=closeDialog(a.Get(),output,phase==L"close-wav",true);
             else if(phase==L"analyze-wav")passed=analyzeWave(a.Get(),output,waveRoot,wave);
             else if(phase==L"close-ready-wav")passed=closeReadyWave(a.Get(),output);
+            else if(phase==L"save-open-wav")passed=saveAndOpenWaveDraft(a.Get(),output,waveRoot,midiOutput);
             importSnapshot(a.Get(),output,L"phase-final");
             if(blockingObservationFailure){passed=false;block("phase_snapshot_blocking_failure");}
             if(passed){
@@ -610,6 +774,14 @@ int wmain(int argc,wchar_t** argv)
     for(size_t i=0;i<observations.size();++i){if(i)result<<',';result<<observations[i];}result<<"],\"local_focus_evidence_bounded_to16\":[";
     for(size_t i=0;i<localFocusEvidence.size();++i){if(i)result<<',';result<<localFocusEvidence[i];}result<<"],\"actions\":[";
     for(size_t i=0;i<actions.size();++i){if(i)result<<',';result<<actions[i];}
-    result<<"],\"real_Audiveris_executed\":false,\"MIDI_saved_or_opened\":false,\"score_editing\":false,\"listening\":false}";
+    result<<"],\"real_Audiveris_executed\":false,\"MIDI_file_saved\":"<<(savedMidiObserved?"true":"false")
+        <<",\"GUI_imported_score_focus_verified\":"<<(savedScoreFocusObserved?"true":"false")
+        <<",\"saved_midi_path\":"<<jsonQuoted(savedMidiPath)
+        <<",\"saved_score_focus_proof_attempts\":"<<savedScoreProofAttempts
+        <<",\"saved_score_navigation_keys\":"<<savedScoreNavigationKeys
+        <<",\"saved_score_first_refusal\":"<<firstSavedScoreRefusal
+        <<",\"saved_score_last_refusal\":"<<lastSavedScoreRefusal
+        <<",\"MIDI_saved_or_opened\":"<<(passed&&savedMidiObserved&&savedScoreFocusObserved?"true":"false")
+        <<",\"score_editing\":false,\"listening\":false}";
     CloseHandle(targetProcess);return passed&&!keyboardFailure?0:2;
 }

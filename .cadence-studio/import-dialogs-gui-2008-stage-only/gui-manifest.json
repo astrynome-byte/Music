@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "private-actual-stage-only-controlled-WAV-analysis-draft-opt-in-not-Windows-validated",
+  "status": "private-actual-stage-only-controlled-WAV-save-and-native-import-extension-not-Windows-validated",
   "files": [
     {
       "path": ".gitattributes",
@@ -29,8 +29,8 @@
     },
     {
       "path": "Print-ImportGuiEvidence.ps1",
-      "bytes": 14087,
-      "sha256": "283376448112b022a5a7428a7e93b7b4ca58fa82f94ef41ba05559f651d664f1"
+      "bytes": 14979,
+      "sha256": "e6745da359e91ed35e95be72a62ada308724409040f8aa506d16a8781a4eb677"
     },
     {
       "path": "README.md",
@@ -49,13 +49,13 @@
     },
     {
       "path": "Run-ImportDialogsGui.ps1",
-      "bytes": 17052,
-      "sha256": "127cb170986e534eb1fdb2df416d648485c3b1f60988a648a569236356b44f3d"
+      "bytes": 23804,
+      "sha256": "114ecaa9400c59d2db47ef04c863c6bec0adf31b28dae045feccfcdc93c610b6"
     },
     {
       "path": "cadence-import-dialogs-gui-2008-stage-only.yml",
-      "bytes": 9617,
-      "sha256": "1b42d0796da3de1cc2dcee6c26d03e6ec9ec015e5f6a5d0f377ddc41eb423ae9"
+      "bytes": 9635,
+      "sha256": "982bd3d7739fcd12b40f92a551da7cd66651fbd48e1c689fefea653894cc99ab"
     },
     {
       "path": "fixtures/LICENSE.txt",
@@ -74,8 +74,8 @@
     },
     {
       "path": "native/ImportDialogsFlow.inc",
-      "bytes": 43297,
-      "sha256": "87bd4d44e41a5189c3a3b414f9a995bbd8fbe6dd417ca730a55cf6efadcc9ced"
+      "bytes": 54352,
+      "sha256": "aaf335e655c39faa0e9a2c937a81fac3516d9e5d145fc6b3b362d5baa4aac97b"
     },
     {
       "path": "native/ObservationGraph.h",
@@ -86,6 +86,11 @@
       "path": "native/OwnedKeyboard.h",
       "bytes": 11200,
       "sha256": "a8698a416e03ce120b7b1261ec2a61442af4ca0dc7646b1c92c1e0a59a56725d"
+    },
+    {
+      "path": "native/OwnedMidiSaveDialog.h",
+      "bytes": 16756,
+      "sha256": "80b9d909d9a0e2b6aafa7dea889d117253a11c9096ce8ad99802389e62b991f7"
     },
     {
       "path": "native/OwnedWaveFileDialog.h",
@@ -99,13 +104,13 @@
     },
     {
       "path": "native/SHA256SUMS.txt",
-      "bytes": 498,
-      "sha256": "16cec218c06e273197d81abaf7b42bd534868c719552c42f9c87c59d76a081c9"
+      "bytes": 586,
+      "sha256": "d32cad173b154efc9e5365698eb119e87a86f020f571702ab79cc9fd35fcb0cc"
     },
     {
       "path": "native/UiaProbe.cpp",
-      "bytes": 28552,
-      "sha256": "3864019e775888659cb4b7b6eee57ade7cc394157ee02831b8c3b67a542fb50d"
+      "bytes": 28585,
+      "sha256": "f0ccf7813905176f0d269b540c21f6f949486de30325baadb5e5570f47f51d6f"
     },
     {
       "path": "profile-source-contract.json",
@@ -141,6 +146,11 @@
       "path": "target.inactive-template.json",
       "bytes": 2255,
       "sha256": "f5b2798bfc4d55000a00830a129b5998ebc1352a8db7f6e5c96d4b7cf2acee37"
+    },
+    {
+      "path": "verify_saved_wave_midi.py",
+      "bytes": 8107,
+      "sha256": "346b0e842a36d273977833892174064548dede8f599d029ab9a1958dbc187737"
     },
     {
       "path": "verify_stage_only_producer.py",

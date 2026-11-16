@@ -107,7 +107,7 @@ jobs:
       run: "$helper = \"$env:GITHUB_WORKSPACE/driver/.cadence-studio/import-dialogs-gui-2008-stage-only\"\n& \"$helper/Run-ImportDialogsGui.ps1\"\
         \ `\n  -TargetPath \"$helper/target.json\" `\n  -SourceSelectionDirectory \"$env:GITHUB_WORKSPACE/driver/.cadence-studio/combined-2008-source\"\
         \ `\n  -StagePath \"$env:RUNNER_TEMP/import-dialogs-stage\" `\n  -RestorationPath \"$env:RUNNER_TEMP/import-dialogs-stage-restoration.json\"\
-        \ `\n  -ProbePath \"$env:RUNNER_TEMP/import-dialogs-gui-probe-build/UiaProbe.exe\" `\n  -AnalyzeFixture `\n  -OutputDirectory \"$env:RUNNER_TEMP/import-dialogs-gui-results\"\
+        \ `\n  -ProbePath \"$env:RUNNER_TEMP/import-dialogs-gui-probe-build/UiaProbe.exe\" `\n  -AnalyzeFixture `\n  -SaveFixture `\n  -OutputDirectory \"$env:RUNNER_TEMP/import-dialogs-gui-results\"\
         \n"
     - name: Read back existing bounded GUI evidence even on failure
       if: always()
