@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "private-actual-stage-only-local-focused-scope-known-sibling-E_FAIL-not-Windows-validated",
+  "status": "private-actual-stage-only-native-picker-diagnostic-gap-not-Windows-validated",
   "files": [
     {
       "path": ".gitattributes",
@@ -29,8 +29,8 @@
     },
     {
       "path": "Print-ImportGuiEvidence.ps1",
-      "bytes": 12899,
-      "sha256": "eaeac4c1d6c869a5c6249483739252c71f52c0f09b4f673a095ab104f5481291"
+      "bytes": 14087,
+      "sha256": "283376448112b022a5a7428a7e93b7b4ca58fa82f94ef41ba05559f651d664f1"
     },
     {
       "path": "README.md",
@@ -74,8 +74,8 @@
     },
     {
       "path": "native/ImportDialogsFlow.inc",
-      "bytes": 38958,
-      "sha256": "9eefef79da237b81d61f80543d85c9ceb0f54e1b1993ba77337eb22b8d37ddc9"
+      "bytes": 43297,
+      "sha256": "87bd4d44e41a5189c3a3b414f9a995bbd8fbe6dd417ca730a55cf6efadcc9ced"
     },
     {
       "path": "native/ObservationGraph.h",
@@ -100,7 +100,7 @@
     {
       "path": "native/SHA256SUMS.txt",
       "bytes": 498,
-      "sha256": "02f50fa1a4827b5cfc0815e1fb735500e42b368886ff42655440f90226a5c7ff"
+      "sha256": "16cec218c06e273197d81abaf7b42bd534868c719552c42f9c87c59d76a081c9"
     },
     {
       "path": "native/UiaProbe.cpp",

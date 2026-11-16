@@ -31,7 +31,7 @@ function Select-DiagnosticScalars([Collections.IDictionary]$Data,[string[]]$Name
  return $selected
 }
 function Get-DiagnosticProjection([Collections.IDictionary]$Data){
- $p=Select-DiagnosticScalars $Data @('schema_version','phase','status','pid','bounded','max_nodes','max_depth','max_edges','walker_hresult','first_failure_operation','first_failure_hresult','deadline_reached','node_limit_reached','tree_incomplete','phase_observation_incomplete','observation_incomplete','blocking_observation_failure','local_focus_only_eligible','only_sibling_navigation_failure','local_focus_scope','full_tree_complete_claimed','raw_tree_incomplete_observed','partial_tree_local_focus_used','local_final_state_verified','runtime_identity_unknown','foreign_node_refused','unique_runtime_ids','cycle_edges','duplicate_edges','keys','alt_taps','home_taps','next_row_taps','initial_OMR_document_right_taps','keyboard_failure','com_hresult','dialog_handle','dialog_title')
+ $p=Select-DiagnosticScalars $Data @('schema_version','phase','status','pid','bounded','max_nodes','max_depth','max_edges','walker_hresult','first_failure_operation','first_failure_hresult','deadline_reached','node_limit_reached','tree_incomplete','phase_observation_incomplete','observation_incomplete','blocking_observation_failure','local_focus_only_eligible','only_sibling_navigation_failure','local_focus_scope','full_tree_complete_claimed','raw_tree_incomplete_observed','partial_tree_local_focus_used','local_final_state_verified','native_chooser_observation_gap_observed','native_chooser_observation_gap_active','native_chooser_gap_frames','native_chooser_raw_resumptions','observation_gap','raw_tree_walk_performed','gap_reason','gap_owner_handle','gap_picker_handle','native_sample_owned','native_sample_error','native_foreground_handle','native_foreground_pid','native_focus_handle','native_focus_pid','native_windows_total','last_local_proof_timing','runtime_identity_unknown','foreign_node_refused','unique_runtime_ids','cycle_edges','duplicate_edges','keys','alt_taps','home_taps','next_row_taps','initial_OMR_document_right_taps','keyboard_failure','com_hresult','dialog_handle','dialog_title')
  foreach($field in @('nodes','graph_edges','inspected_windows')){
   $p[$field+'_count']=if(-not$Data.Contains($field)){$null}elseif($null-eq$Data[$field]){0}else{@($Data[$field]).Count}
  }
@@ -40,6 +40,16 @@ function Get-DiagnosticProjection([Collections.IDictionary]$Data){
   if($window-is[Collections.IDictionary]){$windows.Add((Select-DiagnosticScalars $window @('handle','title','pid','enabled','owner_handle','element_from_handle_hresult')))}
  }
  $p['inspected_windows_bounded_to8']=$windows.ToArray()
+ $nativeWindows=[Collections.Generic.List[object]]::new()
+ foreach($window in @($Data['native_windows_bounded_to8']|Select-Object -First 8)){
+  if($window-is[Collections.IDictionary]){$nativeWindows.Add((Select-DiagnosticScalars $window @('handle','title','pid','enabled','owner_handle')))}
+ }
+ $p['native_windows_bounded_to8']=$nativeWindows.ToArray()
+ if($Data['last_successful_local_focus_proof']-is[Collections.IDictionary]){
+  $proof=$Data['last_successful_local_focus_proof']
+  $p['last_successful_local_focus_proof_projection']=Select-DiagnosticScalars $proof @('expected_native_context','native_foreground','native_focus','focused_name','focused_role')
+  $p['last_successful_local_focus_proof_projection']['ancestor_count']=@($proof['ancestors']).Count
+ }
  $focused=[Collections.Generic.List[object]]::new();$focusCount=0
  foreach($node in @($Data['nodes'])){
   if($node-is[Collections.IDictionary]-and$node['keyboard_focus']-eq$true){
