@@ -51,7 +51,7 @@
   "authentication_receipt_sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933",
   "full_qualification_complete": false,
   "MSI": null,
-  "harness_note": "GUI10 actual MSVC and bounded Print passed. Open-OMR passed in exact local-focus scope with8keys,49owned ancestry proofs and final Choose verified; no full-tree completeness was claimed. Close-OMR sent one qualified Return to open its native chooser, then its immediate global diagnostic RawTree returned runtimeIdentity.process_scope/E_ACCESSDENIED with foreign_node_refused=true after147nodes. Existing foreign guards correctly stopped all further input; no cancellation was claimed. The next QA suspends only global RawTree diagnostics from successfully sent exact Choose/Return until that native picker is proven gone/hidden and its import context restored. Frames explicitly declare native-only observation_gap/tree_incomplete/raw_tree_walk_performed=false, bounded native metadata and a previous local proof labeled not a postcondition. Native picker identity, live focus/ancestry/lease/input callback, strict WAV FindAll/PID/owner controls and all existing sticky errors remain unchanged. Escape requires fresh independent proof; no old destroyed HWND is required after it. RawTree resumes after proven native closure, before exact restored Choose verification. No foreign node is accepted or whitelisted. Optional controlled-WAV selection keeps its independent guards and phase deadline callback. Source/EXE/MSI,60s/70keys and all provider/owner/budget guards unchanged; actual validation of this diagnostic gap remains pending.",
+  "harness_note": "GUI11 actual Windows MSVC and four local import-dialog phases passed (8/8/8/12keys), with strict focused-element/owned-ancestor/native-context proofs, exact final states, clean exit0, no forced process, no QML errors. Native chooser cancellation gaps were explicitly declared and RawTree resumed after proven close; no complete accessibility tree was claimed. This separate opt-in adds only the existing -AnalyzeFixture switch to the workflow. It repeats the four phases, then opens WAV again, selects a verified temporary copy of the original synthetic CC0 [64,67,69] WAV, launches local approximate monophonic analysis, observes the enabled Enregistrer le MIDI et ouvrir button and captures the draft, then closes/discards it. Existing code does NOT save a MIDI, import/open it as a score, verify notes, or listen. No such claim is authorized by this activation. All native/launcher/reader logic, guards, budgets, source/EXE/MSI and fixtures remain unchanged; actual execution of the analysis opt-in remains pending.",
   "harness_evidence": {
     "GUI_failed_run": 43427743544,
     "GUI_failed_job": 131893253451,
@@ -81,7 +81,7 @@
     "GUI6_post_Home_original_sha256": "bec2a4cbb57337e858026cd4506494722cdb50ce78633d7e51e1c54bce2c401f",
     "GUI6_phase_final_original_sha256": "2395f29a3cc023969f00f6a8079499c56168bf009e992ac79d8ec06dc1672c2e",
     "GUI6_result_original_sha256": "6f279260066b4359a5380c42c1b99d38b7ea633e21e8b4110aa628570c62a776",
-    "next_harness_actual_Windows_compiled": false,
+    "next_harness_actual_Windows_compiled": true,
     "snapshot_identity_mode": "per-snapshot bounded RuntimeId graph; exact PID before any dedup skip; unknown identity fails closed",
     "phase_budget_seconds": 60,
     "GUI7_failed_run": 43951328097,
@@ -100,7 +100,7 @@
     "GUI7_main_ready_deadline_reached": false,
     "GUI7_main_ready_runtime_identity_unknown": false,
     "GUI7_main_ready_foreign_node_refused": false,
-    "next_startup_wait_actual_Windows_validated": false,
+    "next_startup_wait_actual_Windows_validated": true,
     "GUI8_failed_run": 43956356204,
     "GUI8_failed_job": 133611831190,
     "GUI8_actual_MSVC_compilation": "success",
@@ -150,7 +150,7 @@
     "GUI9_initial_root_attempts": 6,
     "GUI9_initial_root_timeout_waits": 5,
     "GUI9_initial_root_last_hresult": 0,
-    "next_local_focus_actual_Windows_validated": false,
+    "next_local_focus_actual_Windows_validated": true,
     "next_local_focus_scope": "focused-element-and-owned-ancestors-only; no full-tree completeness claim",
     "next_partial_tree_exception": "Every failure exactly walk.GetNextSiblingElement/E_FAIL, no foreign/unknown identity, bounds, deadline or exited process; partial nodes never selectable.",
     "next_direct_reader_console_limit_bytes": 524288,
@@ -177,8 +177,46 @@
     "GUI10_Print_console_utf8_bytes": 295347,
     "GUI10_chooser_cancelled": false,
     "GUI10_WAV_phases_reached": false,
-    "next_native_picker_gap_actual_Windows_validated": false,
+    "next_native_picker_gap_actual_Windows_validated": true,
     "next_native_picker_gap_scope": "diagnostic RawTree only between sent exactChooseReturn and nativepicker gone/hidden+import context; no accepted foreign identities or relaxed action guards",
-    "next_native_picker_gap_postcondition": "after native disappearance/context, resume RawTree and prove exact restored Choose; previous proof in gap frame is explicitly not a postcondition"
+    "next_native_picker_gap_postcondition": "after native disappearance/context, resume RawTree and prove exact restored Choose; previous proof in gap frame is explicitly not a postcondition",
+    "GUI11_success_run": 43966565503,
+    "GUI11_success_job": 133647449258,
+    "GUI11_driver": "ddcb9de0afbcb36588c43140906fe522a5bb8b52",
+    "GUI11_actual_MSVC_compilation": "success",
+    "GUI11_local_passed_phases": [
+      "open-omr",
+      "close-omr",
+      "open-wav",
+      "close-wav"
+    ],
+    "GUI11_phase_keys": [
+      8,
+      8,
+      8,
+      12
+    ],
+    "GUI11_all_final_local_states_verified": true,
+    "GUI11_all_blocking_observation_failures": false,
+    "GUI11_report_original_sha256_from_runner": "2be64a9e9ae97b0a59e17b634b4a417933f77f9c06ff11ac45fbc80595129b2a",
+    "GUI11_report_original_bytes": 129893,
+    "GUI11_Print_utf8_bytes": 274900,
+    "GUI11_actual_EXE_sha256": "13cd4e6d2f408d2e64b187d4c3bff1188ff4192ac7b670d3a12373bbeb37f6cd",
+    "GUI11_actual_app_exit_code": 0,
+    "GUI11_actual_forced": false,
+    "GUI11_actual_QML_errors": [],
+    "next_analysis_fixture_requested": true,
+    "next_analysis_fixture_actual_Windows_validated": false,
+    "next_analysis_fixture_scope": "Existing local analysis draft only, then discard; no MIDI save/import/note-accuracy/listening claim",
+    "next_analysis_fixture_extra_phases": [
+      "open-wav",
+      "analyze-wav",
+      "close-ready-wav"
+    ],
+    "next_analysis_fixture_expected_notes_are_generation_inputs_not_validated_output": [
+      64,
+      67,
+      69
+    ]
   }
 }
