@@ -90,7 +90,7 @@ try{
  Import-Module "$PSScriptRoot/OwnProcessJob.psm1" -Force;$job=New-OwnedProcessJob
  Invoke-Python 'prepare-profile' @('-I',"$PSScriptRoot/CadenceProfileScope.py",'prepare','--record',$profile)
  $record=Get-Content -LiteralPath $profile -Raw -Encoding UTF8|ConvertFrom-Json;if($record.status-cne'prepared'){throw 'Fresh owned profile required.'};$localData=$record.local_org_root
- $seed="[application]`nhasCompletedFirstLaunchSetup=true`n`n[languages]`nlanguage=en`n`n[io]`naudioApi=WASAPI`noutputDevice=`nbufferSize=256`nsampleRate=48000`n"
+ $seed="[General]`nlanguage=en`n`n[application]`nhasCompletedFirstLaunchSetup=true`n`n[io]`naudioApi=WASAPI`noutputDevice=`nbufferSize=256`nsampleRate=48000`n"
  [IO.File]::WriteAllText($record.settings_file,$seed,[Text.UTF8Encoding]::new($false))
  $inputCopy=Join-Path $scoreDirectory 'empty-piano.original-copy.musicxml';Copy-Item -LiteralPath $fixture -Destination $inputCopy
  # The original data and a native immutable baseline are retained. GUI opens a

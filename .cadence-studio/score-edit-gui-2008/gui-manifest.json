@@ -35,8 +35,8 @@
     },
     {
       "path": "Print-ScoreEditEvidence.ps1",
-      "bytes": 1021,
-      "sha256": "e06e3932fb23b0fd6289123ff2fdd9a58235381eddcc259f9e9847d427b8ce19"
+      "bytes": 2463,
+      "sha256": "ed710db022326b71ac5ac2acb3a9f613bdafa1b8ffe93e3ff44dbb19bec30db9"
     },
     {
       "path": "Read-ActualImportTarget.ps1",
@@ -50,8 +50,8 @@
     },
     {
       "path": "Run-ScoreEditGui.ps1",
-      "bytes": 17091,
-      "sha256": "14c8b4f7040d8b86c545c996894e4a0ff0b736b8fcdadd0bc941ec1435886fc0"
+      "bytes": 17089,
+      "sha256": "d8f6f64057a6a33fe09b52292787ccf5f73272497ef149d720269c7126e4665b"
     },
     {
       "path": "fixtures/LICENSE.txt",
