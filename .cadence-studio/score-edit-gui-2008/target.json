@@ -82,5 +82,5 @@
     "publicly_published": true
   },
   "historical_stage_scope_notice": "full_qualification_complete=false and MSI=null above describe only original stage/authentication, not later successful qualification, MSI or public release.",
-  "gui_manifest_sha256": "914aedeee53652c1f5e7327d77b6248a73c86754ff83206a32e7e1fb42a572ea"
+  "gui_manifest_sha256": "98c31cced5786a1225582ae2b8b090934922ad0405f5cdf143acadae75c05655"
 }
