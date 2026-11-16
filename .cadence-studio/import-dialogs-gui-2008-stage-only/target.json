@@ -51,7 +51,7 @@
   "authentication_receipt_sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933",
   "full_qualification_complete": false,
   "MSI": null,
-  "harness_note": "GUI7 MSVC compiled the actual RuntimeId-graph probe successfully, then open-OMR blocked before any key because its first main-ready snapshot ran before any visible owned native window existed: no nodes/windows, no deadline/unknown-RuntimeId/foreign-node failure. readyMain now waits for windows() to be nonempty before its strict snapshot, within the existing alive/deadline loop. The snapshot still rejects empty/incomplete/provider-failed observations, and exact PID, RuntimeId, semantic, context and keyboard guards are unchanged. Product source/EXE/MSI unchanged; actual Windows validation of this startup wait remains pending GUI8.",
+  "harness_note": "GUI8 compiled the native probe successfully and advanced beyond GUI7 native-window absence, then blocked with0keys at its initial snapshot.ElementFromHandle/UIA_E_TIMEOUT0x80131505 while inspecting the owned visible Cadence Studio startup window. Exact DATAONLY originals confirm0nodes/RuntimeIds/edges and no deadline/unknown-identity/foreign-node failure. Before the first strict readiness snapshot only, the probe now requires S_OK and a non-null UIA root for the owned visible native main HWND. Exactly UIA_E_TIMEOUT waits200ms within the unchanged alive/60s loop; every other HRESULT or null root blocks with exact diagnostics. Later strict snapshots, sticky incomplete state, identities/owners, semantic selectors, keyboard guards and budgets are unchanged. Product source/EXE/MSI unchanged; actual Windows validation of this startup gate is pending.",
   "harness_evidence": {
     "GUI_failed_run": 43427743544,
     "GUI_failed_job": 131893253451,
@@ -100,6 +100,33 @@
     "GUI7_main_ready_deadline_reached": false,
     "GUI7_main_ready_runtime_identity_unknown": false,
     "GUI7_main_ready_foreign_node_refused": false,
-    "next_startup_wait_actual_Windows_validated": false
+    "next_startup_wait_actual_Windows_validated": false,
+    "GUI8_failed_run": 43956356204,
+    "GUI8_failed_job": 133611831190,
+    "GUI8_actual_MSVC_compilation": "success",
+    "GUI8_open_OMR_keys_sent": 0,
+    "GUI8_DATAONLY_success_run": 43957608856,
+    "GUI8_DATAONLY_success_job": 133616200680,
+    "GUI8_main_ready_original_sha256": "0f162eb8e592b1ab2a577a822dc3fe0d2b44fb51c1c555274aa9d4d882b3025a",
+    "GUI8_phase_final_original_sha256": "0f162eb8e592b1ab2a577a822dc3fe0d2b44fb51c1c555274aa9d4d882b3025a",
+    "GUI8_import_dialog_phase_original_sha256": "c919f7167a2bd1c1988166ff86fe67f0ed727537cbe175e7d2ab518f43f07c23",
+    "GUI8_first_failure_operation": "snapshot.ElementFromHandle",
+    "GUI8_first_failure_hresult": -2146233083,
+    "GUI8_first_failure_hresult_name": "UIA_E_TIMEOUT",
+    "GUI8_inspected_native_handle": 327746,
+    "GUI8_main_ready_nodes": 0,
+    "GUI8_main_ready_inspected_windows": 1,
+    "GUI8_main_ready_unique_runtime_ids": 0,
+    "GUI8_main_ready_graph_edges": 0,
+    "GUI8_main_ready_deadline_reached": false,
+    "GUI8_main_ready_runtime_identity_unknown": false,
+    "GUI8_main_ready_foreign_node_refused": false,
+    "next_initial_UIA_root_gate": "Before first strict readiness snapshot only: S_OK/non-null native-main root required; retry exact UIA_E_TIMEOUT only inside original phase deadline, no input; other result blocks.",
+    "next_initial_UIA_root_gate_diagnostic_fields": [
+      "readiness_root_attempts",
+      "readiness_root_timeout_waits",
+      "readiness_root_last_hresult",
+      "readiness_root_last_handle"
+    ]
   }
 }
