@@ -51,7 +51,7 @@
   "authentication_receipt_sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933",
   "full_qualification_complete": false,
   "MSI": null,
-  "harness_note": "GUI8 compiled the native probe successfully and advanced beyond GUI7 native-window absence, then blocked with0keys at its initial snapshot.ElementFromHandle/UIA_E_TIMEOUT0x80131505 while inspecting the owned visible Cadence Studio startup window. Exact DATAONLY originals confirm0nodes/RuntimeIds/edges and no deadline/unknown-identity/foreign-node failure. Before the first strict readiness snapshot only, the probe now requires S_OK and a non-null UIA root for the owned visible native main HWND. Exactly UIA_E_TIMEOUT waits200ms within the unchanged alive/60s loop; every other HRESULT or null root blocks with exact diagnostics. Later strict snapshots, sticky incomplete state, identities/owners, semantic selectors, keyboard guards and budgets are unchanged. Product source/EXE/MSI unchanged; actual Windows validation of this startup gate is pending.",
+  "harness_note": "GUI9 actual MSVC passed; the initial UIA-root gate waited5exact timeouts then obtained S_OK on attempt6. Its first strict RawView snapshot read12target-PID RuntimeIds and12edges, including focused exact Home50013, then GetNextSiblingElement returned E_FAIL. The next QA qualifies only current focused control plus bounded owned UIA ancestry and native foreground/focus/owner context for this exact sibling/E_FAIL-only partial-tree case. Every state.fail must match; foreign/unknown identities, limits, deadline/process exit and every other snapshot error remain sticky-blocking. Partial nodes are always cleared for selectors and never used for SetFocus. Semantic focus identity/name/role remains anchored through the read-only last-instant input callback; native context is resampled before insertion. After final diagnostic snapshot, the new expected dialog/main state is proved again. Closure requires zero visible target-PID windows with the exact import title; disabled/ambiguous matches block. Reports explicitly declare focused-element-and-owned-ancestors-only scope and incomplete trees; these four import phases do not claim global accessibility completeness. Print now emits bounded direct original-hash receipts/projections and optional small JSON originals, total console512KiB including report/PNG. Source/EXE/MSI and all phase/keyboard/provider budgets unchanged; new actual Windows validation pending.",
   "harness_evidence": {
     "GUI_failed_run": 43427743544,
     "GUI_failed_job": 131893253451,
@@ -127,6 +127,33 @@
       "readiness_root_timeout_waits",
       "readiness_root_last_hresult",
       "readiness_root_last_handle"
-    ]
+    ],
+    "GUI9_failed_run": 43959140186,
+    "GUI9_failed_job": 133621523140,
+    "GUI9_actual_MSVC_compilation": "success",
+    "GUI9_open_OMR_keys_sent": 0,
+    "GUI9_DATAONLY_success_run": 43959972197,
+    "GUI9_DATAONLY_success_job": 133624432074,
+    "GUI9_main_ready_original_sha256": "07f45bf4db81b777ffa631ce78d2ed8d873ac8258772ecd58ffdd050df1ff31a",
+    "GUI9_phase_final_original_sha256": "07f45bf4db81b777ffa631ce78d2ed8d873ac8258772ecd58ffdd050df1ff31a",
+    "GUI9_import_dialog_phase_original_sha256": "a901efb22d9b1eef7f385168598bf99b15669e359056b2d5e1813f1048383dd0",
+    "GUI9_first_failure_operation": "walk.GetNextSiblingElement",
+    "GUI9_first_failure_hresult": -2147467259,
+    "GUI9_main_ready_nodes": 12,
+    "GUI9_main_ready_unique_runtime_ids": 12,
+    "GUI9_main_ready_graph_edges": 12,
+    "GUI9_main_ready_cycle_edges": 0,
+    "GUI9_main_ready_duplicate_edges": 0,
+    "GUI9_main_ready_deadline_reached": false,
+    "GUI9_main_ready_runtime_identity_unknown": false,
+    "GUI9_main_ready_foreign_node_refused": false,
+    "GUI9_initial_root_attempts": 6,
+    "GUI9_initial_root_timeout_waits": 5,
+    "GUI9_initial_root_last_hresult": 0,
+    "next_local_focus_actual_Windows_validated": false,
+    "next_local_focus_scope": "focused-element-and-owned-ancestors-only; no full-tree completeness claim",
+    "next_partial_tree_exception": "Every failure exactly walk.GetNextSiblingElement/E_FAIL, no foreign/unknown identity, bounds, deadline or exited process; partial nodes never selectable.",
+    "next_direct_reader_console_limit_bytes": 524288,
+    "next_direct_reader_original_JSON_limit_bytes": 131072
   }
 }
