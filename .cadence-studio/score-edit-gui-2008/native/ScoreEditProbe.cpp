@@ -33,6 +33,9 @@ static bool diagnosticTreeIncomplete = false;
 static unsigned int localFocusSampleCount = 0;
 static std::string firstLocalFocusSample = "null", lastLocalFocusSample = "null", firstLocalFocusRefusal = "null";
 static std::string firstLocalFocusGetterFailure = "null";
+static std::vector<std::string> localFocusNavigationHeads;
+static std::set<int> localFocusHeadNavigationCounts;
+static int escapeNavigationAttempts = 0;
 using cadence_observation::RuntimeId;
 struct SnapshotState {
     bool incomplete = false, runtimeIdentityUnknown = false, foreignNodeObserved = false;
@@ -360,6 +363,8 @@ struct LocalFocusDiagnostic {
     OwnedKeyResult native, rechecked;
     bool nativeSampleAttempted = false, nativeContextAttempted = false;
     bool recheckSampleAttempted = false, recheckContextAttempted = false;
+    bool focusedTypeRead = false;
+    int focusedType = 0;
     std::vector<std::string> reads;
     std::vector<Ancestor> ancestors;
 
@@ -403,6 +408,25 @@ struct LocalFocusDiagnostic {
         if(firstLocalFocusSample=="null")firstLocalFocusSample=result;
         lastLocalFocusSample=result;
         if(!verified && firstLocalFocusRefusal=="null")firstLocalFocusRefusal=result;
+        // One small head per existing navigation count, without another getter
+        // or another attempt to acquire focus. The full initial/last/refusal
+        // samples above retain the detailed property reads.
+        if(localFocusNavigationHeads.size()<49 && localFocusHeadNavigationCounts.insert(navigationCount).second) {
+            const std::string focusedName=!ancestors.empty() && ancestors.front().nameRead?jsonQuoted(ancestors.front().name):"null";
+            std::string candidate="null";
+            for(const auto& node:ancestors) {
+                if(node.nameRead && node.name==L"Score Cadence-QA-edit") {
+                    candidate="{\"name\":"+jsonQuoted(node.name)+",\"control_type\":"+(node.typeRead?std::to_string(node.type):"null")
+                        +",\"depth\":"+std::to_string(node.depth)+'}';break;
+                }
+            }
+            localFocusNavigationHeads.push_back("{\"sample_index\":"+std::to_string(index)+",\"navigation_gestures\":"+std::to_string(navigationCount)
+                +",\"stop_operation\":"+jsonQuoted(std::wstring(operation,operation+std::char_traits<char>::length(operation)))
+                +",\"stop_kind\":"+jsonQuoted(std::wstring(kind,kind+std::char_traits<char>::length(kind)))
+                +",\"stop_hresult\":"+(std::string(kind)=="getter" || std::string(kind)=="runtime_identity"?std::to_string(static_cast<long>(hr)):"null")
+                +",\"focused_control_type\":"+(focusedTypeRead?std::to_string(focusedType):"null")
+                +",\"focused_name\":"+focusedName+",\"first_score_ancestor_candidate\":"+candidate+'}');
+        }
         return verified;
     }
 };
@@ -433,6 +457,7 @@ static bool liveScoreFocus(IUIAutomation* automation)
     if (FAILED(result)) return diagnostic.finish(false,"focused.CurrentProcessId","getter",result);
     if (pid!=static_cast<int>(targetPid)) return diagnostic.finish(false,"focused.pid_not_owned","predicate");
     result=focused->get_CurrentControlType(&type);diagnostic.read("focused.CurrentControlType",result,std::to_string(type));
+    diagnostic.focusedType=type;diagnostic.focusedTypeRead=SUCCEEDED(result);
     if (FAILED(result)) return diagnostic.finish(false,"focused.CurrentControlType","getter",result);
     if (type==UIA_EditControlTypeId) return diagnostic.finish(false,"focused.edit_refused","predicate");
     result=focused->get_CurrentIsEnabled(&enabled);diagnostic.read("focused.CurrentIsEnabled",result,enabled?"true":"false");
@@ -471,9 +496,10 @@ static bool liveScoreFocus(IUIAutomation* automation)
         if(depth)chain+=',';
         chain+="{\"name\":"+jsonQuoted(name)+",\"control_type\":"+std::to_string(currentType)
             +",\"pid\":"+std::to_string(currentPid)+",\"runtime_id\":"+runtimeJson(id)+'}';
-        // Source AccessibleRoot::accessibleName + role Panel, with one known
-        // filename. Bare \"Score\" is the unrelated main toolbar radio too.
-        if (name==L"Score Cadence-QA-edit" && currentType==UIA_PaneControlTypeId) {
+        // AccessibleRoot is a Panel in a2 source, but its Windows interface
+        // exposes QAccessible::StaticText, mapped by Qt6.10.2 to UIA Text.
+        // Keep the exact score name; bare \"Score\" also names a toolbar radio.
+        if (name==L"Score Cadence-QA-edit" && currentType==UIA_TextControlTypeId) {
             OwnedKeyResult rechecked;
             if (!exactMainReady()) return diagnostic.finish(false,"exactMainReady.recheck","predicate");
             diagnostic.recheckSampleAttempted=true;
@@ -508,13 +534,21 @@ static void recordInput(const char* action,const OwnedKeyResult& result)
 static bool navigation(IUIAutomation* automation,const std::filesystem::path& output,WORD key)
 {
     if (!exactMainReady() || ++scoreNavigationAttempts>48 || Clock::now()>=deadline) return false;
+    if (key==VK_ESCAPE && ++escapeNavigationAttempts>1) return false;
     auto result=SendOwnedKey(targetPid,targetProcess,mainWindow(),key);++keyboardGestureAttempts;
-    recordInput(key==VK_F6?"F6_focus_navigation":"Tab_focus_navigation",result);
+    recordInput(key==VK_F6?"F6_focus_navigation":key==VK_ESCAPE?"Escape_default_score_navigation":"Tab_focus_navigation",result);
     if (!result.sent) { keyboardFailure=true;return false; }
     Sleep(120);return true;
 }
 static bool acquireScoreFocus(IUIAutomation* automation,const std::filesystem::path& output)
 {
+    if (liveScoreFocus(automation)) return true;
+    // Establish framework navigation, then use the source global Escape route
+    // to the page's default Score control. Each one key is followed by the same
+    // strict local UIA/native proof before any score editing is permitted.
+    if (!navigation(automation,output,VK_F6)) return false;
+    if (liveScoreFocus(automation)) return true;
+    if (!navigation(automation,output,VK_ESCAPE)) return false;
     if (liveScoreFocus(automation)) return true;
     // Source F6 selects a section; Tab selects panels. Observe after every one.
     for (int section=0;section<7;++section) {
@@ -587,6 +621,8 @@ int wmain(int argc,wchar_t** argv)
     report<<"],\"local_focus_diagnostics\":{\"diagnostic_only\":true,\"sample_count\":"<<localFocusSampleCount
         <<",\"max_ancestor_depth\":18,\"retained_sample_limit\":3,\"initial_sample\":"<<firstLocalFocusSample
         <<",\"last_sample\":"<<lastLocalFocusSample<<",\"first_refusal\":"<<firstLocalFocusRefusal
-        <<",\"first_getter_failure\":"<<firstLocalFocusGetterFailure<<"}}";report.close();
+        <<",\"first_getter_failure\":"<<firstLocalFocusGetterFailure<<",\"navigation_head_limit\":49,\"navigation_heads\":[";
+    for(size_t i=0;i<localFocusNavigationHeads.size();++i){if(i)report<<',';report<<localFocusNavigationHeads[i];}
+    report<<"]}}";report.close();
     automation.Reset();if(SUCCEEDED(initialized))CoUninitialize();CloseHandle(targetProcess);return passed?0:2;
 }
