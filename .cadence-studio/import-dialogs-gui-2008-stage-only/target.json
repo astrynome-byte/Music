@@ -51,7 +51,7 @@
   "authentication_receipt_sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933",
   "full_qualification_complete": false,
   "MSI": null,
-  "harness_note": "GUI11 run43966565503 four local import-dialog phases and analysis-only run43968843424 seven phases actually passed. This separate candidate opts into SaveFixture: save one new controlled MIDI through the exact owned native dialog, observe the named imported score, close GUI normally, then export the saved MIDI using the real CLI and compare exact notes/timing. No Windows success of this new save/open candidate is claimed. Application source, runtime, MSI, existing fixture and normal action guards are unchanged.",
+  "harness_note": "The previous complete SaveFixture candidate failed before GUI execution at observer MSVC compilation (run43971956911/job133666098457, C2664 SetValue requires BSTR). This retry changes only that SDK allocation contract using the already exercised WAV helper pattern. No application source/EXE/MSI, musical logic, dialog actions or guards changed. Save/open and exact MIDI/native MusicXML timings remain unqualified until an actual successful Windows run.",
   "harness_evidence": {
     "GUI_failed_run": 43427743544,
     "GUI_failed_job": 131893253451,
@@ -223,7 +223,7 @@
     "analysis_fixture_actual_driver_prefix": "e7ffe1a3",
     "current_MIDI_save_extension_requested": true,
     "current_MIDI_save_extension_actual_Windows_validated": false,
-    "current_MIDI_save_extension_manifest_sha256": "d5e9b1c8bc63bb3de078a682643282750c08d9dc935a70d73d3ce4bcbf19e6f0",
+    "current_MIDI_save_extension_manifest_sha256": "002aec724bf33a55837ba5ee568099cf14561469e3737ff33ef96d156df1e1b2",
     "current_MIDI_save_extension_expected_MIDI": [
       64,
       67,
@@ -244,6 +244,12 @@
       ]
     ],
     "current_MIDI_save_extension_expected_timing_origin": "Separate Linux standalone frozen native engine observation; not Windows qualification",
-    "current_MIDI_save_extension_phase": "save-open-wav replaces close-ready-wav only when SaveFixture explicitly true"
+    "current_MIDI_save_extension_phase": "save-open-wav replaces close-ready-wav only when SaveFixture explicitly true",
+    "MIDI_save_first_compile_run": 43971956911,
+    "MIDI_save_first_compile_job": 133666098457,
+    "MIDI_save_first_compile_driver": "3a4379d8de29d86ad9975b7057ead54f9a2451c4",
+    "MIDI_save_first_compile_error": "OwnedMidiSaveDialog.h199 C2664: SetValue(BSTR) rejected const wchar_t*",
+    "MIDI_save_first_compile_GUI_executed": false,
+    "MIDI_save_next_fix_scope": "Only allocate/free exact filename BSTR for Windows SDK SetValue; existing WAV helper contract"
   }
 }
