@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "private-actual-stage-only-native-picker-diagnostic-gap-not-Windows-validated",
+  "status": "private-actual-stage-only-controlled-WAV-analysis-draft-opt-in-not-Windows-validated",
   "files": [
     {
       "path": ".gitattributes",
@@ -54,8 +54,8 @@
     },
     {
       "path": "cadence-import-dialogs-gui-2008-stage-only.yml",
-      "bytes": 9596,
-      "sha256": "6b25c44682d28602b413dfbd17e0a78767a4f32e1a82bc847565a368777dbd74"
+      "bytes": 9617,
+      "sha256": "1b42d0796da3de1cc2dcee6c26d03e6ec9ec015e5f6a5d0f377ddc41eb423ae9"
     },
     {
       "path": "fixtures/LICENSE.txt",
