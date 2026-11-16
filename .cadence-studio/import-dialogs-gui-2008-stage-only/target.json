@@ -51,7 +51,7 @@
   "authentication_receipt_sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933",
   "full_qualification_complete": false,
   "MSI": null,
-  "harness_note": "GUI6 open-OMR/close-OMR/open-WAV passed; close-WAV safely cancelled its chooser and observed tempo/grid/noise, then the post-Home diagnostic snapshot exhausted the unchanged60s budget while repeatedly descending Window/List paths. QA traversal now reuses the bounded v3/f10 RuntimeId graph, including sibling-repeat termination. Exact target PID is validated before identity dedup; missing/foreign identities and incomplete/limited observations block all subsequent input and the phase result. Product source/EXE unchanged; actual MSVC compilation and this specific cycle resolution remain pending the next run.",
+  "harness_note": "GUI7 MSVC compiled the actual RuntimeId-graph probe successfully, then open-OMR blocked before any key because its first main-ready snapshot ran before any visible owned native window existed: no nodes/windows, no deadline/unknown-RuntimeId/foreign-node failure. readyMain now waits for windows() to be nonempty before its strict snapshot, within the existing alive/deadline loop. The snapshot still rejects empty/incomplete/provider-failed observations, and exact PID, RuntimeId, semantic, context and keyboard guards are unchanged. Product source/EXE/MSI unchanged; actual Windows validation of this startup wait remains pending GUI8.",
   "harness_evidence": {
     "GUI_failed_run": 43427743544,
     "GUI_failed_job": 131893253451,
@@ -83,6 +83,23 @@
     "GUI6_result_original_sha256": "6f279260066b4359a5380c42c1b99d38b7ea633e21e8b4110aa628570c62a776",
     "next_harness_actual_Windows_compiled": false,
     "snapshot_identity_mode": "per-snapshot bounded RuntimeId graph; exact PID before any dedup skip; unknown identity fails closed",
-    "phase_budget_seconds": 60
+    "phase_budget_seconds": 60,
+    "GUI7_failed_run": 43951328097,
+    "GUI7_failed_job": 133594277619,
+    "GUI7_actual_MSVC_compilation": "success",
+    "GUI7_open_OMR_keys_sent": 0,
+    "GUI7_DATAONLY_success_run": 43951995838,
+    "GUI7_DATAONLY_success_job": 133596623221,
+    "GUI7_main_ready_original_sha256": "01a270536cda427eeab469316158ee18f47a00cff89ded5fa0d8617a336ac111",
+    "GUI7_phase_final_original_sha256": "01a270536cda427eeab469316158ee18f47a00cff89ded5fa0d8617a336ac111",
+    "GUI7_import_dialog_phase_original_sha256": "c937a456b867d997e0f3ad12619aeeef5be560258b8e0f12408373c7f4a57770",
+    "GUI7_first_failure_operation": "snapshot.no_owned_nodes",
+    "GUI7_first_failure_hresult": -2147467259,
+    "GUI7_main_ready_nodes": 0,
+    "GUI7_main_ready_inspected_windows": 0,
+    "GUI7_main_ready_deadline_reached": false,
+    "GUI7_main_ready_runtime_identity_unknown": false,
+    "GUI7_main_ready_foreign_node_refused": false,
+    "next_startup_wait_actual_Windows_validated": false
   }
 }
