@@ -51,7 +51,7 @@
   "authentication_receipt_sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933",
   "full_qualification_complete": false,
   "MSI": null,
-  "harness_note": "The previous complete SaveFixture candidate failed before GUI execution at observer MSVC compilation (run43971956911/job133666098457, C2664 SetValue requires BSTR). This retry changes only that SDK allocation contract using the already exercised WAV helper pattern. No application source/EXE/MSI, musical logic, dialog actions or guards changed. Save/open and exact MIDI/native MusicXML timings remain unqualified until an actual successful Windows run.",
+  "harness_note": "The previous complete SaveFixture candidate failed before GUI execution at observer MSVC compilation (run43971956911/job133666098457, C2664 SetValue requires BSTR). This retry changes only that SDK allocation contract using the already exercised WAV helper pattern. No application source/EXE/MSI, musical logic, dialog actions or guards changed. Save/open and exact MIDI/native MusicXML timings remain unqualified until an actual successful Windows run. Close only the exact temporary imported MIDI score via File/Close; conditionally discard its independently proved save question; verify exact Home, then normal application close and real native export.",
   "harness_evidence": {
     "GUI_failed_run": 43427743544,
     "GUI_failed_job": 131893253451,
@@ -223,7 +223,7 @@
     "analysis_fixture_actual_driver_prefix": "e7ffe1a3",
     "current_MIDI_save_extension_requested": true,
     "current_MIDI_save_extension_actual_Windows_validated": false,
-    "current_MIDI_save_extension_manifest_sha256": "002aec724bf33a55837ba5ee568099cf14561469e3737ff33ef96d156df1e1b2",
+    "current_MIDI_save_extension_manifest_sha256": "6320ecd6e39129ecf1d36541c8cab54cc5f29785048071353c744141e09225c1",
     "current_MIDI_save_extension_expected_MIDI": [
       64,
       67,
@@ -244,12 +244,23 @@
       ]
     ],
     "current_MIDI_save_extension_expected_timing_origin": "Separate Linux standalone frozen native engine observation; not Windows qualification",
-    "current_MIDI_save_extension_phase": "save-open-wav replaces close-ready-wav only when SaveFixture explicitly true",
+    "current_MIDI_save_extension_phase": "save-open-wav followed by close-saved-midi-score (conditional exact DontSave), then normal app close and native MusicXML comparison",
     "MIDI_save_first_compile_run": 43971956911,
     "MIDI_save_first_compile_job": 133666098457,
     "MIDI_save_first_compile_driver": "3a4379d8de29d86ad9975b7057ead54f9a2451c4",
     "MIDI_save_first_compile_error": "OwnedMidiSaveDialog.h199 C2664: SetValue(BSTR) rejected const wchar_t*",
     "MIDI_save_first_compile_GUI_executed": false,
-    "MIDI_save_next_fix_scope": "Only allocate/free exact filename BSTR for Windows SDK SetValue; existing WAV helper contract"
+    "MIDI_save_next_fix_scope": "Only allocate/free exact filename BSTR for Windows SDK SetValue; existing WAV helper contract",
+    "MIDI_saved_GUI_followup_run": 43973123714,
+    "MIDI_saved_GUI_followup_job": 133670148499,
+    "MIDI_saved_GUI_followup_driver": "19aa2916a4665e520c0e06d3f6ef5b0ca1273045",
+    "MIDI_saved_GUI_followup_phase_count": 7,
+    "MIDI_saved_GUI_followup_written": true,
+    "MIDI_saved_GUI_followup_GUI_focus_verified": true,
+    "MIDI_saved_GUI_followup_app_close_forced": true,
+    "MIDI_saved_GUI_followup_CLI_comparison": false,
+    "controlled_score_close_phase_requested": true,
+    "controlled_score_close_phase_Windows_validated": false,
+    "controlled_score_close_confirmation_policy": "Only exact named temporary score; conditional exact question/body/button; stable owned question anchor independent of current button; no Save action; return exact Home; all failures sticky"
   }
 }
