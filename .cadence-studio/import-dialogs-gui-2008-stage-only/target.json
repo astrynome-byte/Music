@@ -51,7 +51,7 @@
   "authentication_receipt_sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933",
   "full_qualification_complete": false,
   "MSI": null,
-  "harness_note": "GUI5 open-OMR passed with8verified keys and1boundedRight; the owned native chooser opened and cancelled safely. Cancellation returned focus to the same exact readOnly Document de départ/Edit50004. OMR-only cancel restoration now reuses the unchanged existing1Right-per-phase guard then requires exact Choose; WAV behavior unchanged. Entire GUI5 job remains failure, source/EXE unchanged.",
+  "harness_note": "GUI6 open-OMR/close-OMR/open-WAV passed; close-WAV safely cancelled its chooser and observed tempo/grid/noise, then the post-Home diagnostic snapshot exhausted the unchanged60s budget while repeatedly descending Window/List paths. QA traversal now reuses the bounded v3/f10 RuntimeId graph, including sibling-repeat termination. Exact target PID is validated before identity dedup; missing/foreign identities and incomplete/limited observations block all subsequent input and the phase result. Product source/EXE unchanged; actual MSVC compilation and this specific cycle resolution remain pending the next run.",
   "harness_evidence": {
     "GUI_failed_run": 43427743544,
     "GUI_failed_job": 131893253451,
@@ -64,6 +64,25 @@
     "actual_initial_OMR_role": 50004,
     "GUI_actual_passed_phase": "open-omr",
     "GUI_actual_open_OMR_keys": 8,
-    "GUI_actual_owned_chooser_cancelled": true
+    "GUI_actual_owned_chooser_cancelled": true,
+    "GUI6_failed_run": 43428772768,
+    "GUI6_failed_job": 131896686179,
+    "GUI6_passed_phases": [
+      "open-omr",
+      "close-omr",
+      "open-wav"
+    ],
+    "GUI6_close_WAV_keys_sent": 8,
+    "GUI6_app_exit_code": 0,
+    "GUI6_app_close_forced": false,
+    "GUI6_QML_errors": [],
+    "GUI6_DATAONLY_success_run": 43430306374,
+    "GUI6_DATAONLY_success_job": 131901841805,
+    "GUI6_post_Home_original_sha256": "bec2a4cbb57337e858026cd4506494722cdb50ce78633d7e51e1c54bce2c401f",
+    "GUI6_phase_final_original_sha256": "2395f29a3cc023969f00f6a8079499c56168bf009e992ac79d8ec06dc1672c2e",
+    "GUI6_result_original_sha256": "6f279260066b4359a5380c42c1b99d38b7ea633e21e8b4110aa628570c62a776",
+    "next_harness_actual_Windows_compiled": false,
+    "snapshot_identity_mode": "per-snapshot bounded RuntimeId graph; exact PID before any dedup skip; unknown identity fails closed",
+    "phase_budget_seconds": 60
   }
 }
