@@ -15,6 +15,7 @@
 #include <vector>
 #include "OwnedKeyboard.h"
 #include "OwnedWaveFileDialog.h"
+#include "ObservationGraph.h"
 
 using Microsoft::WRL::ComPtr;
 using Clock = std::chrono::steady_clock;
@@ -27,6 +28,17 @@ static int keyboardGestureAttempts = 0;
 static int f6GestureAttempts = 0, tabGestureAttempts = 0, rightGestureAttempts = 0, leftGestureAttempts = 0, downGestureAttempts = 0, returnGestureAttempts = 0;
 static bool keyboardFailure = false;
 static int endGestureAttempts = 0;
+static bool observationIncomplete = false;
+using cadence_observation::RuntimeId;
+struct SnapshotState {
+    bool incomplete = false, runtimeIdentityUnknown = false, foreignNodeObserved = false;
+    HRESULT failure = S_OK;
+    std::string operation;
+    void fail(const char* name, HRESULT hr) {
+        incomplete = true; observationIncomplete = true;
+        if (operation.empty()) { operation = name; failure = hr; }
+    }
+};
 
 static std::string utf8(const std::wstring& value)
 {
@@ -111,6 +123,7 @@ static bool closeIntroductionOnly()
 
 struct Node {
     ComPtr<IUIAutomationElement> element;
+    RuntimeId runtimeId;
     std::wstring name, id;
     int pid = 0, type = 0, depth = 0;
     BOOL enabled = FALSE, offscreen = TRUE, focused = FALSE;
@@ -143,36 +156,114 @@ static Node focusedNode(IUIAutomation* automation)
     }
     return node;
 }
-static void walk(IUIAutomationTreeWalker* walker, IUIAutomationElement* element, int depth, std::vector<Node>& nodes)
+static RuntimeId runtimeIdentity(IUIAutomationElement* element, SnapshotState& state)
 {
-    if (!element || nodes.size() >= 1200 || depth > 18 || Clock::now() > deadline || !alive()) return;
-    Node node;
-    node.element = element; node.depth = depth;
-    BSTR name = nullptr, id = nullptr;
-    element->get_CurrentName(&name); node.name = text(name);
-    element->get_CurrentAutomationId(&id); node.id = text(id);
-    element->get_CurrentProcessId(&node.pid); element->get_CurrentControlType(&node.type);
-    element->get_CurrentIsEnabled(&node.enabled); element->get_CurrentIsOffscreen(&node.offscreen);
-    element->get_CurrentHasKeyboardFocus(&node.focused);
-    nodes.push_back(node);
-    if (node.pid != static_cast<int>(targetPid) && node.pid != 0) return;
-    ComPtr<IUIAutomationElement> child;
-    if (FAILED(walker->GetFirstChildElement(element, &child))) return;
-    while (child && nodes.size() < 1200 && Clock::now() <= deadline) {
-        walk(walker, child.Get(), depth + 1, nodes);
-        ComPtr<IUIAutomationElement> sibling;
-        if (FAILED(walker->GetNextSiblingElement(child.Get(), &sibling))) break;
-        child = sibling;
+    // Reuse the bounded RuntimeId reader from the v3/f10 observation client.
+    // Scope is checked before identity lookup, including for repeated nodes.
+    int pid = 0;
+    const HRESULT processResult = element ? element->get_CurrentProcessId(&pid) : E_POINTER;
+    if (FAILED(processResult) || pid != static_cast<int>(targetPid)) {
+        state.foreignNodeObserved = true;
+        state.fail("runtimeIdentity.process_scope", FAILED(processResult) ? processResult : E_ACCESSDENIED); return {};
     }
+    SAFEARRAY* raw = nullptr;
+    const HRESULT fetched = element->GetRuntimeId(&raw);
+    struct ArrayOwner { SAFEARRAY* value; ~ArrayOwner() { if (value) SafeArrayDestroy(value); } } owner {raw};
+    LONG first = 0, last = -1;
+    VARTYPE kind = VT_EMPTY;
+    if (FAILED(fetched) || !raw || SafeArrayGetDim(raw) != 1
+        || SafeArrayGetElemsize(raw) != sizeof(int)
+        || FAILED(SafeArrayGetVartype(raw,&kind)) || kind != VT_I4
+        || FAILED(SafeArrayGetLBound(raw,1,&first)) || FAILED(SafeArrayGetUBound(raw,1,&last))
+        || last < first || static_cast<long long>(last) - static_cast<long long>(first) + 1 > cadence_observation::Graph::maxIdParts) {
+        state.runtimeIdentityUnknown = true;
+        state.fail("runtimeIdentity.GetRuntimeId_or_SAFEARRAY_shape", FAILED(fetched) ? fetched : E_INVALIDARG); return {};
+    }
+    RuntimeId id;
+    for (LONG index = first; index <= last; ++index) {
+        int part = 0;
+        const HRESULT readPart = SafeArrayGetElement(raw,&index,&part);
+        if (FAILED(readPart)) {
+            state.runtimeIdentityUnknown = true;
+            state.fail("runtimeIdentity.SafeArrayGetElement",readPart); return {};
+        }
+        id.push_back(part);
+        if (index == last) break;
+    }
+    return id;
+}
+static std::string runtimeJson(const RuntimeId& id)
+{
+    std::string out = "[";
+    for (size_t i = 0; i < id.size(); ++i) { if (i) out += ','; out += std::to_string(id[i]); }
+    return out + ']';
+}
+static void walk(IUIAutomationTreeWalker* walker, IUIAutomationElement* element, const RuntimeId& id,
+                 int depth, std::vector<Node>& nodes, cadence_observation::Graph& graph,
+                 SnapshotState& state, const RuntimeId& parent, const std::string& relation)
+{
+    if (state.incomplete) return;
+    if (Clock::now() > deadline || !alive()) { state.fail("walk.deadline_or_process_exit",E_ABORT); return; }
+    Node node;
+    node.element = element; node.runtimeId = id; node.depth = depth;
+    const HRESULT processResult = element ? element->get_CurrentProcessId(&node.pid) : E_POINTER;
+    if (FAILED(processResult) || node.pid != static_cast<int>(targetPid)) {
+        state.foreignNodeObserved = true;
+        state.fail("walk.process_scope",FAILED(processResult) ? processResult : E_ACCESSDENIED); return;
+    }
+    // Do not skip a duplicate until its current PID has been validated.
+    const auto visit = graph.enter(id,parent,relation);
+    if (visit == cadence_observation::Visit::cycle || visit == cadence_observation::Visit::duplicate) return;
+    if (visit != cadence_observation::Visit::first || depth > 18) {
+        state.fail(depth > 18 ? "walk.depth_limit" : "walk.identity_or_graph_limit",E_FAIL); return;
+    }
+    cadence_observation::ActiveScope leave(graph,id);
+    BSTR name = nullptr, automationId = nullptr;
+    const HRESULT named = element->get_CurrentName(&name); node.name = text(name);
+    const HRESULT identified = element->get_CurrentAutomationId(&automationId); node.id = text(automationId);
+    const HRESULT typed = element->get_CurrentControlType(&node.type);
+    const HRESULT enabled = element->get_CurrentIsEnabled(&node.enabled);
+    const HRESULT offscreen = element->get_CurrentIsOffscreen(&node.offscreen);
+    const HRESULT focused = element->get_CurrentHasKeyboardFocus(&node.focused);
+    if (FAILED(named) || FAILED(identified) || FAILED(typed) || FAILED(enabled) || FAILED(offscreen) || FAILED(focused)) {
+        state.fail("walk.node_property",FAILED(named) ? named : FAILED(identified) ? identified : FAILED(typed) ? typed
+                   : FAILED(enabled) ? enabled : FAILED(offscreen) ? offscreen : focused); return;
+    }
+    nodes.push_back(node);
+    ComPtr<IUIAutomationElement> child;
+    const HRESULT firstChildResult = walker->GetFirstChildElement(element,&child);
+    if (FAILED(firstChildResult)) { state.fail("walk.GetFirstChildElement",firstChildResult); return; }
+    std::set<RuntimeId> siblings;
+    std::string edge = "first_child";
+    RuntimeId edgeSource = id;
+    while (child && Clock::now() <= deadline && alive() && !state.incomplete) {
+        const auto childId = runtimeIdentity(child.Get(),state);
+        if (childId.empty()) break;
+        if (!siblings.insert(childId).second) {
+            if (!graph.siblingRepeat(edgeSource,childId)) state.fail("walk.sibling_edge_limit",E_FAIL);
+            break;
+        }
+        walk(walker,child.Get(),childId,depth+1,nodes,graph,state,edgeSource,edge);
+        if (state.incomplete) break;
+        ComPtr<IUIAutomationElement> sibling;
+        const HRESULT nextSiblingResult = walker->GetNextSiblingElement(child.Get(),&sibling);
+        if (FAILED(nextSiblingResult)) { state.fail("walk.GetNextSiblingElement",nextSiblingResult); break; }
+        edgeSource = childId; child = sibling; edge = "next_sibling";
+    }
+    if (Clock::now() > deadline || !alive()) state.fail("walk.deadline_or_process_exit",E_ABORT);
 }
 static std::vector<Node> snapshot(IUIAutomation* automation, const std::filesystem::path& output, const wchar_t* phase)
 {
     std::vector<Node> nodes;
+    SnapshotState state;
+    cadence_observation::Graph graph;
     std::vector<std::string> inspectedWindows;
     ComPtr<IUIAutomationTreeWalker> walker;
     const HRESULT walkerResult = automation->get_RawViewWalker(&walker);
-    if (SUCCEEDED(walkerResult)) {
+    if (FAILED(walkerResult) || !walker) state.fail("snapshot.RawViewWalker",FAILED(walkerResult) ? walkerResult : E_POINTER);
+    if (SUCCEEDED(walkerResult) && walker) {
         for (HWND window : windows()) {
+            if (state.incomplete) break;
             ComPtr<IUIAutomationElement> element;
             if (!owned(window)) continue;
             const HRESULT elementResult = automation->ElementFromHandle(window, &element);
@@ -182,9 +273,16 @@ static std::vector<Node> snapshot(IUIAutomation* automation, const std::filesyst
                                        + ",\"enabled\":" + (IsWindowEnabled(window) ? "true" : "false")
                                        + ",\"owner_handle\":" + std::to_string(reinterpret_cast<std::uintptr_t>(GetWindow(window, GW_OWNER)))
                                        + ",\"element_from_handle_hresult\":" + std::to_string(static_cast<long>(elementResult)) + '}');
-            if (SUCCEEDED(elementResult)) walk(walker.Get(), element.Get(), 0, nodes);
+            if (FAILED(elementResult)) state.fail("snapshot.ElementFromHandle",elementResult);
+            else {
+                const auto id = runtimeIdentity(element.Get(),state);
+                if (!id.empty()) walk(walker.Get(),element.Get(),id,0,nodes,graph,state,{},"owned_window");
+            }
         }
     }
+    if (nodes.empty()) state.fail("snapshot.no_owned_nodes",E_FAIL);
+    if (nodes.size() >= 1200) state.fail("snapshot.node_limit",E_FAIL);
+    if (Clock::now() > deadline || !alive()) state.fail("snapshot.deadline_or_process_exit",E_ABORT);
     std::ofstream file(output / (std::wstring(phase) + L".json"), std::ios::binary);
     file << "{\"pid\":" << targetPid << ",\"bounded\":true,\"max_nodes\":1200,\"max_depth\":18,\"deadline_reached\":"
          << (Clock::now() > deadline ? "true" : "false") << ",\"node_limit_reached\":" << (nodes.size() >= 1200 ? "true" : "false") << ",\"nodes\":[";
@@ -193,13 +291,33 @@ static std::vector<Node> snapshot(IUIAutomation* automation, const std::filesyst
         if (!first) file << ',';
         first = false;
         file << "{\"name\":" << jsonQuoted(node.name) << ",\"automation_id\":" << jsonQuoted(node.id)
+             << ",\"runtime_id\":" << runtimeJson(node.runtimeId)
              << ",\"control_type\":" << node.type << ",\"pid\":" << node.pid << ",\"depth\":" << node.depth
              << ",\"enabled\":" << (node.enabled ? "true" : "false") << ",\"offscreen\":" << (node.offscreen ? "true" : "false")
              << ",\"keyboard_focus\":" << (node.focused ? "true" : "false") << '}';
     }
     file << "],\"walker_hresult\":" << static_cast<long>(walkerResult) << ",\"inspected_windows\":[";
     for (size_t i = 0; i < inspectedWindows.size(); ++i) { if (i) file << ','; file << inspectedWindows[i]; }
+    file << "],\"tree_incomplete\":" << (state.incomplete ? "true" : "false")
+         << ",\"phase_observation_incomplete\":" << (observationIncomplete ? "true" : "false")
+         << ",\"runtime_identity_unknown\":" << (state.runtimeIdentityUnknown ? "true" : "false")
+         << ",\"foreign_node_refused\":" << (state.foreignNodeObserved ? "true" : "false")
+         << ",\"first_failure_operation\":" << jsonQuoted(std::wstring(state.operation.begin(),state.operation.end()))
+         << ",\"first_failure_hresult\":" << static_cast<long>(state.failure)
+         << ",\"unique_runtime_ids\":" << graph.uniqueNodes() << ",\"cycle_edges\":" << graph.cycleEdges
+         << ",\"duplicate_edges\":" << graph.duplicateEdges << ",\"max_edges\":3600,\"graph_edges\":[";
+    for (size_t i = 0; i < graph.edges.size(); ++i) {
+        if (i) file << ',';
+        const auto& edge = graph.edges[i];
+        file << "{\"from\":" << runtimeJson(edge.from) << ",\"to\":" << runtimeJson(edge.to)
+             << ",\"relation\":" << jsonQuoted(std::wstring(edge.relation.begin(),edge.relation.end()))
+             << ",\"cycle\":" << (edge.cycle ? "true" : "false")
+             << ",\"duplicate\":" << (edge.duplicate ? "true" : "false") << '}';
+    }
     file << "]}";
+    // Preserve diagnostic nodes on disk, but never use a partial projection
+    // to select a semantic control or claim a complete GUI phase.
+    if (state.incomplete) nodes.clear();
     return nodes;
 }
 static bool interactiveType(int type)

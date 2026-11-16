@@ -50,7 +50,7 @@ static HWND exactDialog(const std::wstring& title)
 }
 static bool context(HWND w)
 {
-    if(!alive()||Clock::now()>=deadline||!owned(w)||!IsWindowVisible(w)||!IsWindowEnabled(w))return false;
+    if(observationIncomplete||!alive()||Clock::now()>=deadline||!owned(w)||!IsWindowVisible(w)||!IsWindowEnabled(w))return false;
     return w==mainWindow() || cadence_owned_file_dialog_detail::ownedChain(w,mainWindow(),targetPid);
 }
 static bool importKey(IUIAutomation* a,const std::filesystem::path& out,HWND w,WORD key,const char* purpose)
@@ -65,6 +65,7 @@ static bool importKey(IUIAutomation* a,const std::filesystem::path& out,HWND w,W
     }
     const std::wstring frame=std::to_wstring(importKeys+1);
     snapshot(a,out,(frame+L"-before-import-key").c_str());
+    if(observationIncomplete)return block("import_key_snapshot_incomplete_before_input");
     if(key==VK_MENU)++altTaps;
     if(key==VK_HOME)++homeTaps;
     if(key==VK_NEXT)++nextRowTaps;
@@ -76,7 +77,9 @@ static bool importKey(IUIAutomation* a,const std::filesystem::path& out,HWND w,W
         +",\"focus\":"+std::to_string(reinterpret_cast<std::uintptr_t>(result.focus))+",\"input_count\":"+std::to_string(result.inputCount)
         +",\"observed_name_before\":"+jsonQuoted(before.name)+",\"observed_role_before\":"+std::to_string(before.type)
         +",\"sent\":"+(result.sent?"true":"false")+",\"error\":"+std::to_string(result.error)+'}');
-    Sleep(150);snapshot(a,out,(frame+L"-after-import-key").c_str());return result.sent;
+    Sleep(150);snapshot(a,out,(frame+L"-after-import-key").c_str());
+    if(observationIncomplete)return block("import_key_snapshot_incomplete_after_input");
+    return result.sent;
 }
 static bool focusExact(IUIAutomation* a,const std::filesystem::path& out,HWND w,const std::wstring& label,int role)
 {
@@ -122,6 +125,7 @@ static bool readyMain(IUIAutomation* a,const std::filesystem::path& out)
     while(alive()&&Clock::now()<deadline) {
         if(closeIntroductionOnly())Sleep(200);
         const auto nodes=snapshot(a,out,L"main-ready");
+        if(observationIncomplete)return block("main_readiness_snapshot_incomplete");
         const HWND main=mainWindow();const bool validContext=context(main);
         const Node* home=findReadyMainHome(nodes);const Node* scores=find(nodes,{L"Partitions",L"Scores"});
         ++readinessIterations;
@@ -289,7 +293,7 @@ static bool analyzeWave(IUIAutomation* a,const std::filesystem::path& out,const 
 {
     const HWND dialog=exactDialog(wavTitle);if(!dialog||!pressExact(a,out,dialog,wavChoose,UIA_ButtonControlTypeId,"choose_only_original_CC0_WAV_copy"))return false;
     const auto selected=SelectOwnedWaveFile(a,targetPid,targetProcess,dialog,root,wave,
-        [&](const wchar_t* phase){snapshot(a,out,phase);});
+        [&](const wchar_t* phase){snapshot(a,out,phase);if(observationIncomplete)throw E_ABORT;});
     actions.push_back("{\"action\":\"select_only_controlled_WAV_copy\",\"selected\":"+std::string(selected.selected?"true":"false")
         +",\"path\":"+jsonQuoted(wave)+",\"diagnostic\":"+jsonQuoted(selected.diagnostic)+'}');
     if(!selected.selected||!waitFocus(a,out,dialog,wavChoose,UIA_ButtonControlTypeId))return false;
@@ -357,6 +361,7 @@ int wmain(int argc,wchar_t** argv)
             else if(phase==L"analyze-wav")passed=analyzeWave(a.Get(),output,waveRoot,wave);
             else if(phase==L"close-ready-wav")passed=closeReadyWave(a.Get(),output);
             snapshot(a.Get(),output,L"phase-final");
+            if(observationIncomplete){passed=false;block("phase_snapshot_incomplete");}
         }
         a.Reset();bounded.Reset();CoUninitialize();
     }
@@ -377,6 +382,7 @@ int wmain(int argc,wchar_t** argv)
         <<",\"keys\":"<<importKeys<<",\"alt_taps\":"<<altTaps<<",\"home_taps\":"<<homeTaps<<",\"next_row_taps\":"<<nextRowTaps
         <<",\"initial_OMR_document_right_taps\":"<<initialOmrDocumentRightTaps
         <<",\"keyboard_failure\":"<<(keyboardFailure?"true":"false")
+        <<",\"observation_incomplete\":"<<(observationIncomplete?"true":"false")
         <<",\"diagnostics_only\":{\"blocked_guard\":"<<jsonQuoted(std::wstring(blockedGuard.begin(),blockedGuard.end()))
         <<",\"COM_initialization_hresult\":"<<static_cast<long>(initialized)<<",\"automation2_query_hresult\":"<<static_cast<long>(automation2Result)
         <<",\"connection_timeout_hresult\":"<<static_cast<long>(connectionTimeoutResult)<<",\"transaction_timeout_hresult\":"<<static_cast<long>(transactionTimeoutResult)

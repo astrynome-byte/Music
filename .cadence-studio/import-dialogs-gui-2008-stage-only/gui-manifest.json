@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "private-actual-stage-only-OMR-cancel-reuses-existing-bounded-readonly-focus-guard-not-Windows-validated",
+  "status": "private-actual-stage-only-runtime-identity-graph-dedup-not-Windows-validated",
   "files": [
     {
       "path": ".gitattributes",
@@ -74,8 +74,13 @@
     },
     {
       "path": "native/ImportDialogsFlow.inc",
-      "bytes": 27405,
-      "sha256": "32c4ca4a2997826e72bc8b2461cdf85def38f4fa3fedc35e19fe53ea567025d0"
+      "bytes": 27905,
+      "sha256": "1217bb16c2195db50169d85495787b2de1c908e66658cffead92d03eff2420f6"
+    },
+    {
+      "path": "native/ObservationGraph.h",
+      "bytes": 2016,
+      "sha256": "962ff67c78dff88acd4d0188ef3c73feecffde0757f47bb5da82af2de65b57cd"
     },
     {
       "path": "native/OwnedKeyboard.h",
@@ -94,13 +99,13 @@
     },
     {
       "path": "native/SHA256SUMS.txt",
-      "bytes": 413,
-      "sha256": "aa5c7bef76664cbb49e23ba01a8dc93853a77a71b5c23de6a22944afe1aa49fa"
+      "bytes": 498,
+      "sha256": "318a03523405ba1af8d66531c0ae58e01282d92ae637f2cfd72705d314ea4035"
     },
     {
       "path": "native/UiaProbe.cpp",
-      "bytes": 19203,
-      "sha256": "7acb74c2f4ea4cc77b68c7e8874be402b3b7f5033b9a3db82dc97ccb2a3310d8"
+      "bytes": 26225,
+      "sha256": "2da9256be56fcde8651d4470e687c226398d01d45bb40b051a5f57710dedf0d1"
     },
     {
       "path": "profile-source-contract.json",
