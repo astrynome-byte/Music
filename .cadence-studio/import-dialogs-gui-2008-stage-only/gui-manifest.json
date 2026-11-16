@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "private-actual-stage-only-startup-window-wait-not-Windows-validated",
+  "status": "private-actual-stage-only-initial-UIA-root-timeout-wait-not-Windows-validated",
   "files": [
     {
       "path": ".gitattributes",
@@ -74,8 +74,8 @@
     },
     {
       "path": "native/ImportDialogsFlow.inc",
-      "bytes": 28113,
-      "sha256": "87b4c4a6bbc445e617f4996893f519ba449f594f0820db53e47816c0bacc61cb"
+      "bytes": 29426,
+      "sha256": "ace31ae4e036bfa566a9cf9934c09f16e8c1855e4a95c1c23d603dfc4b1d1d56"
     },
     {
       "path": "native/ObservationGraph.h",
@@ -100,7 +100,7 @@
     {
       "path": "native/SHA256SUMS.txt",
       "bytes": 498,
-      "sha256": "54fbe7ee479caa49cde4dc4865febc9ddae319d7dffae3804255420a96e05223"
+      "sha256": "c685488b3c1cd321ec6060f95b99db8c0c937e7b3a9cd0cc7c454244f2154b07"
     },
     {
       "path": "native/UiaProbe.cpp",

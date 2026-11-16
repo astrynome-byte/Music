@@ -15,6 +15,9 @@ static std::vector<std::string> observations;
 static std::string blockedGuard;
 static bool readinessEntered=false,readinessPassed=false;
 static unsigned readinessIterations=0;
+static unsigned readinessRootAttempts=0,readinessRootTimeoutWaits=0;
+static HRESULT readinessRootResult=E_UNEXPECTED;
+static HWND readinessRootWindow=nullptr;
 static std::vector<std::string> readinessFrames;
 static HRESULT automation2Result=E_UNEXPECTED,connectionTimeoutResult=E_UNEXPECTED,transactionTimeoutResult=E_UNEXPECTED;
 static bool block(const char* reason) {if(blockedGuard.empty())blockedGuard=reason;return false;}
@@ -122,11 +125,26 @@ static const Node* findReadyMainHome(const std::vector<Node>& nodes)
 static bool readyMain(IUIAutomation* a,const std::filesystem::path& out)
 {
     readinessEntered=true;
+    bool initialRootReady=false;
     while(alive()&&Clock::now()<deadline) {
         if(closeIntroductionOnly())Sleep(200);
-        // GUI7 reached readiness before this PID had a visible native window.
-        // Wait within the existing deadline before the strict UIA snapshot.
-        if(windows().empty()){Sleep(200);continue;}
+        // GUI8's initial owned native window still returned UIA_E_TIMEOUT.
+        // Gate only the first strict snapshot on an available main UIA root.
+        // No input or partial-tree acceptance occurs during this startup wait.
+        if(!initialRootReady) {
+            const HWND nativeMain=mainWindow();
+            if(!owned(nativeMain)||!IsWindowVisible(nativeMain)){Sleep(200);continue;}
+            readinessRootWindow=nativeMain;
+            ComPtr<IUIAutomationElement> root;
+            ++readinessRootAttempts;
+            readinessRootResult=a->ElementFromHandle(nativeMain,&root);
+            if(readinessRootResult==static_cast<HRESULT>(0x80131505L)) { // UIA_E_TIMEOUT only
+                ++readinessRootTimeoutWaits;Sleep(200);continue;
+            }
+            if(readinessRootResult!=S_OK)return block("main_readiness_initial_root_ElementFromHandle_not_S_OK");
+            if(!root)return block("main_readiness_initial_root_ElementFromHandle_null");
+            initialRootReady=true;
+        }
         const auto nodes=snapshot(a,out,L"main-ready");
         if(observationIncomplete)return block("main_readiness_snapshot_incomplete");
         const HWND main=mainWindow();const bool validContext=context(main);
@@ -390,6 +408,8 @@ int wmain(int argc,wchar_t** argv)
         <<",\"COM_initialization_hresult\":"<<static_cast<long>(initialized)<<",\"automation2_query_hresult\":"<<static_cast<long>(automation2Result)
         <<",\"connection_timeout_hresult\":"<<static_cast<long>(connectionTimeoutResult)<<",\"transaction_timeout_hresult\":"<<static_cast<long>(transactionTimeoutResult)
         <<",\"readiness_entered\":"<<(readinessEntered?"true":"false")<<",\"readiness_passed\":"<<(readinessPassed?"true":"false")<<",\"readiness_iterations\":"<<readinessIterations
+        <<",\"readiness_root_attempts\":"<<readinessRootAttempts<<",\"readiness_root_timeout_waits\":"<<readinessRootTimeoutWaits
+        <<",\"readiness_root_last_hresult\":"<<static_cast<long>(readinessRootResult)<<",\"readiness_root_last_handle\":"<<reinterpret_cast<std::uintptr_t>(readinessRootWindow)
         <<",\"readiness_frames_bounded_to8\":[";
     for(size_t i=0;i<readinessFrames.size();++i){if(i)result<<',';result<<readinessFrames[i];}result<<"]}"
         <<",\"observations\":[";
