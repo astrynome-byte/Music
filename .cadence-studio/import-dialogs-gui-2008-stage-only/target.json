@@ -51,7 +51,7 @@
   "authentication_receipt_sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933",
   "full_qualification_complete": false,
   "MSI": null,
-  "harness_note": "GUI11 actual Windows MSVC and four local import-dialog phases passed (8/8/8/12keys), with strict focused-element/owned-ancestor/native-context proofs, exact final states, clean exit0, no forced process, no QML errors. Native chooser cancellation gaps were explicitly declared and RawTree resumed after proven close; no complete accessibility tree was claimed. This separate opt-in adds only the existing -AnalyzeFixture switch to the workflow. It repeats the four phases, then opens WAV again, selects a verified temporary copy of the original synthetic CC0 [64,67,69] WAV, launches local approximate monophonic analysis, observes the enabled Enregistrer le MIDI et ouvrir button and captures the draft, then closes/discards it. Existing code does NOT save a MIDI, import/open it as a score, verify notes, or listen. No such claim is authorized by this activation. All native/launcher/reader logic, guards, budgets, source/EXE/MSI and fixtures remain unchanged; actual execution of the analysis opt-in remains pending.",
+  "harness_note": "GUI11 run43966565503 four local import-dialog phases and analysis-only run43968843424 seven phases actually passed. This separate candidate opts into SaveFixture: save one new controlled MIDI through the exact owned native dialog, observe the named imported score, close GUI normally, then export the saved MIDI using the real CLI and compare exact notes/timing. No Windows success of this new save/open candidate is claimed. Application source, runtime, MSI, existing fixture and normal action guards are unchanged.",
   "harness_evidence": {
     "GUI_failed_run": 43427743544,
     "GUI_failed_job": 131893253451,
@@ -206,7 +206,7 @@
     "GUI11_actual_forced": false,
     "GUI11_actual_QML_errors": [],
     "next_analysis_fixture_requested": true,
-    "next_analysis_fixture_actual_Windows_validated": false,
+    "next_analysis_fixture_actual_Windows_validated": true,
     "next_analysis_fixture_scope": "Existing local analysis draft only, then discard; no MIDI save/import/note-accuracy/listening claim",
     "next_analysis_fixture_extra_phases": [
       "open-wav",
@@ -217,6 +217,33 @@
       64,
       67,
       69
-    ]
+    ],
+    "analysis_fixture_actual_success_run": 43968843424,
+    "analysis_fixture_actual_success_job": 133655319453,
+    "analysis_fixture_actual_driver_prefix": "e7ffe1a3",
+    "current_MIDI_save_extension_requested": true,
+    "current_MIDI_save_extension_actual_Windows_validated": false,
+    "current_MIDI_save_extension_manifest_sha256": "d5e9b1c8bc63bb3de078a682643282750c08d9dc935a70d73d3ce4bcbf19e6f0",
+    "current_MIDI_save_extension_expected_MIDI": [
+      64,
+      67,
+      69
+    ],
+    "current_MIDI_save_extension_expected_ticks": [
+      [
+        0,
+        480
+      ],
+      [
+        720,
+        1200
+      ],
+      [
+        1320,
+        1800
+      ]
+    ],
+    "current_MIDI_save_extension_expected_timing_origin": "Separate Linux standalone frozen native engine observation; not Windows qualification",
+    "current_MIDI_save_extension_phase": "save-open-wav replaces close-ready-wav only when SaveFixture explicitly true"
   }
 }
