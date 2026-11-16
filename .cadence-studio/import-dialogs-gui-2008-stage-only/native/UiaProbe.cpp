@@ -29,13 +29,17 @@ static int f6GestureAttempts = 0, tabGestureAttempts = 0, rightGestureAttempts =
 static bool keyboardFailure = false;
 static int endGestureAttempts = 0;
 static bool observationIncomplete = false;
+static bool blockingObservationFailure = false;
+static bool localFocusScopeUsed = false, lastSnapshotLocalFocusOnly = false;
 using cadence_observation::RuntimeId;
 struct SnapshotState {
     bool incomplete = false, runtimeIdentityUnknown = false, foreignNodeObserved = false;
+    bool onlySiblingNavigationFailure = true;
     HRESULT failure = S_OK;
     std::string operation;
     void fail(const char* name, HRESULT hr) {
         incomplete = true; observationIncomplete = true;
+        if (std::string(name) != "walk.GetNextSiblingElement" || hr != E_FAIL) onlySiblingNavigationFailure = false;
         if (operation.empty()) { operation = name; failure = hr; }
     }
 };
@@ -144,16 +148,27 @@ static std::wstring controlLabel(const std::wstring& name)
     for (const auto& prefix : prefixes) if (name.rfind(prefix, 0) == 0) return name.substr(prefix.size());
     return name;
 }
-static Node focusedNode(IUIAutomation* automation)
+static Node focusedNode(IUIAutomation* automation, HRESULT* readResult = nullptr, std::string* operation = nullptr)
 {
     Node node;
-    if (SUCCEEDED(automation->GetFocusedElement(&node.element)) && node.element) {
-        BSTR name = nullptr;
-        node.element->get_CurrentName(&name); node.name = text(name);
-        node.element->get_CurrentProcessId(&node.pid); node.element->get_CurrentControlType(&node.type);
-        node.element->get_CurrentIsEnabled(&node.enabled); node.element->get_CurrentIsOffscreen(&node.offscreen);
-        node.element->get_CurrentHasKeyboardFocus(&node.focused);
-    }
+    auto refused = [&](const char* name, HRESULT result) {
+        if (readResult) *readResult = result;
+        if (operation) *operation = name;
+        return Node{};
+    };
+    HRESULT result = automation ? automation->GetFocusedElement(&node.element) : E_POINTER;
+    if (result != S_OK || !node.element) return refused("focus.GetFocusedElement",result == S_OK ? E_POINTER : result);
+    if ((result=node.element->get_CurrentProcessId(&node.pid)) != S_OK) return refused("focus.CurrentProcessId",result);
+    if (node.pid != static_cast<int>(targetPid)) return refused("focus.process_scope",E_ACCESSDENIED);
+    BSTR name = nullptr;
+    result = node.element->get_CurrentName(&name); node.name = text(name);
+    if (result != S_OK) return refused("focus.CurrentName",result);
+    if ((result=node.element->get_CurrentControlType(&node.type)) != S_OK) return refused("focus.CurrentControlType",result);
+    if ((result=node.element->get_CurrentIsEnabled(&node.enabled)) != S_OK) return refused("focus.CurrentIsEnabled",result);
+    if ((result=node.element->get_CurrentIsOffscreen(&node.offscreen)) != S_OK) return refused("focus.CurrentIsOffscreen",result);
+    if ((result=node.element->get_CurrentHasKeyboardFocus(&node.focused)) != S_OK) return refused("focus.CurrentHasKeyboardFocus",result);
+    if (readResult) *readResult = S_OK;
+    if (operation) operation->clear();
     return node;
 }
 static RuntimeId runtimeIdentity(IUIAutomationElement* element, SnapshotState& state)
@@ -283,6 +298,14 @@ static std::vector<Node> snapshot(IUIAutomation* automation, const std::filesyst
     if (nodes.empty()) state.fail("snapshot.no_owned_nodes",E_FAIL);
     if (nodes.size() >= 1200) state.fail("snapshot.node_limit",E_FAIL);
     if (Clock::now() > deadline || !alive()) state.fail("snapshot.deadline_or_process_exit",E_ABORT);
+    // A known RawView sibling failure makes this a diagnostic partial tree.
+    // Only independently checked live focus may qualify a local GUI action.
+    lastSnapshotLocalFocusOnly = state.incomplete && state.onlySiblingNavigationFailure
+        && !state.runtimeIdentityUnknown && !state.foreignNodeObserved
+        && nodes.size() < 1200 && graph.edges.size() < cadence_observation::Graph::maxEdges
+        && Clock::now() < deadline && alive() && !blockingObservationFailure;
+    if (state.incomplete && !lastSnapshotLocalFocusOnly) blockingObservationFailure = true;
+    if (lastSnapshotLocalFocusOnly) localFocusScopeUsed = true;
     std::ofstream file(output / (std::wstring(phase) + L".json"), std::ios::binary);
     file << "{\"pid\":" << targetPid << ",\"bounded\":true,\"max_nodes\":1200,\"max_depth\":18,\"deadline_reached\":"
          << (Clock::now() > deadline ? "true" : "false") << ",\"node_limit_reached\":" << (nodes.size() >= 1200 ? "true" : "false") << ",\"nodes\":[";
@@ -300,6 +323,10 @@ static std::vector<Node> snapshot(IUIAutomation* automation, const std::filesyst
     for (size_t i = 0; i < inspectedWindows.size(); ++i) { if (i) file << ','; file << inspectedWindows[i]; }
     file << "],\"tree_incomplete\":" << (state.incomplete ? "true" : "false")
          << ",\"phase_observation_incomplete\":" << (observationIncomplete ? "true" : "false")
+         << ",\"blocking_observation_failure\":" << (blockingObservationFailure ? "true" : "false")
+         << ",\"local_focus_only_eligible\":" << (lastSnapshotLocalFocusOnly ? "true" : "false")
+         << ",\"only_sibling_navigation_failure\":" << (state.onlySiblingNavigationFailure ? "true" : "false")
+         << ",\"local_focus_scope\":\"focused-element-and-owned-ancestors-only\",\"full_tree_complete_claimed\":false"
          << ",\"runtime_identity_unknown\":" << (state.runtimeIdentityUnknown ? "true" : "false")
          << ",\"foreign_node_refused\":" << (state.foreignNodeObserved ? "true" : "false")
          << ",\"first_failure_operation\":" << jsonQuoted(std::wstring(state.operation.begin(),state.operation.end()))

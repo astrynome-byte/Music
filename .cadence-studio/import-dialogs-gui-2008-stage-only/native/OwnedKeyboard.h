@@ -3,6 +3,7 @@
 #pragma once
 
 #include <windows.h>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -55,6 +56,25 @@ inline bool windowOwned(HWND window, DWORD expectedPid)
     return window && GetWindowThreadProcessId(window, &pid) != 0 && pid == expectedPid;
 }
 
+// A native popup may be a top-level window owned by the expected context.
+// Never treat another same-PID window as interchangeable with that context.
+inline bool rootOwnedByContext(HWND window, HWND expected, DWORD expectedPid)
+{
+    HWND current = window ? GetAncestor(window, GA_ROOT) : nullptr;
+    for (unsigned depth = 0; current && depth < 16; ++depth) {
+        if (!windowOwned(current, expectedPid)) return false;
+        if (current == expected) return true;
+        current = GetWindow(current, GW_OWNER);
+    }
+    return false;
+}
+inline bool nativeContext(HWND expected, DWORD expectedPid, const OwnedKeyResult& result)
+{
+    return windowOwned(expected,expectedPid) && IsWindowVisible(expected) && IsWindowEnabled(expected)
+        && rootOwnedByContext(result.foreground,expected,expectedPid)
+        && rootOwnedByContext(result.focus,expected,expectedPid);
+}
+
 inline bool modifiersDown()
 {
     const int modifiers[] { VK_CONTROL, VK_LCONTROL, VK_RCONTROL,
@@ -100,7 +120,8 @@ inline bool sampleOwnedFocus(DWORD expectedPid, OwnedKeyResult& result)
 // mouse message or process cleanup occurs.
 // SendInput cannot be atomically addressed to a PID: foreground and focus are
 // checked again immediately before insertion, and mismatches always stop it.
-inline OwnedKeyResult SendOwnedKey(DWORD expectedPid, HANDLE process, HWND main, WORD virtualKey)
+inline OwnedKeyResult SendOwnedKey(DWORD expectedPid, HANDLE process, HWND main, WORD virtualKey,
+                                  const std::function<bool(const OwnedKeyResult&)>& focusedContext = {})
 {
     using namespace cadence_owned_keyboard_detail;
     OwnedKeyResult result;
@@ -122,6 +143,7 @@ inline OwnedKeyResult SendOwnedKey(DWORD expectedPid, HANDLE process, HWND main,
 
     result.foreground = GetForegroundWindow();
     if (!windowOwned(result.foreground, expectedPid)) {
+        if (focusedContext) { result.error = ERROR_ACCESS_DENIED; return result; }
         // Foreground activation may be denied by Windows. Never compensate with
         // AttachThreadInput, a modifier key, a click, or a global keyboard hook.
         const ULONGLONG started = GetTickCount64();
@@ -146,6 +168,10 @@ inline OwnedKeyResult SendOwnedKey(DWORD expectedPid, HANDLE process, HWND main,
     if (!sampleOwnedFocus(expectedPid, result)) {
         return result;
     }
+    if (focusedContext && !nativeContext(main,expectedPid,result)) {
+        result.error = ERROR_ACCESS_DENIED; return result;
+    }
+    const HWND provedForeground = result.foreground, provedFocus = result.focus;
 
     INPUT inputs[2] {};
     inputs[0].type = INPUT_KEYBOARD;
@@ -173,6 +199,21 @@ inline OwnedKeyResult SendOwnedKey(DWORD expectedPid, HANDLE process, HWND main,
     if (GetForegroundWindow() != result.foreground || !windowOwned(result.focus, expectedPid)) {
         result.error = ERROR_ACCESS_DENIED;
         return result;
+    }
+    if (focusedContext) {
+        if (result.foreground != provedForeground || result.focus != provedFocus
+            || !nativeContext(main,expectedPid,result) || !focusedContext(result)) {
+            result.error = ERROR_ACCESS_DENIED; return result;
+        }
+        // The read-only UIA callback may take time. Resample native ownership
+        // immediately afterwards; no callback is run after the input gesture.
+        if (!processAlive(expectedPid,process,result.error) || modifiersDown()
+            || !sampleOwnedFocus(expectedPid,result) || result.foreground != provedForeground
+            || result.focus != provedFocus || !nativeContext(main,expectedPid,result)
+            || GetForegroundWindow() != result.foreground) {
+            if (!result.error) result.error = ERROR_ACCESS_DENIED;
+            return result;
+        }
     }
 
     SetLastError(ERROR_SUCCESS);

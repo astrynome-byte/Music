@@ -19,19 +19,38 @@ static unsigned readinessRootAttempts=0,readinessRootTimeoutWaits=0;
 static HRESULT readinessRootResult=E_UNEXPECTED;
 static HWND readinessRootWindow=nullptr;
 static std::vector<std::string> readinessFrames;
+static unsigned localFocusProofs=0;
+static std::vector<std::string> localFocusEvidence;
+static std::string localFocusFailureOperation;
+static HRESULT localFocusFailureResult=S_OK;
+static bool localFinalStateVerified=false;
+struct ExpectedFocus {
+    HWND context=nullptr;RuntimeId id;std::wstring name;int role=0;
+};
+static ExpectedFocus expectedFocus;
 static HRESULT automation2Result=E_UNEXPECTED,connectionTimeoutResult=E_UNEXPECTED,transactionTimeoutResult=E_UNEXPECTED;
 static bool block(const char* reason) {if(blockedGuard.empty())blockedGuard=reason;return false;}
+static bool context(HWND w);
+static bool liveImportFocus(IUIAutomation* a,HWND w,Node& node,OwnedKeyResult* proof=nullptr);
+static void expectFocus(HWND w,const Node& node){expectedFocus={w,node.runtimeId,node.name,node.type};}
+static bool matchesExpectedFocus(HWND w,const Node& node)
+{
+    return expectedFocus.context==w&&!expectedFocus.id.empty()&&expectedFocus.id==node.runtimeId
+        &&expectedFocus.name==node.name&&expectedFocus.role==node.type;
+}
 static bool nodeIs(const Node& node,const std::wstring& label,int role,bool enabled=true)
 {
     return node.pid==static_cast<int>(targetPid) && node.type==role && !node.offscreen
         && (!enabled||node.enabled) && controlLabel(node.name)==label;
 }
-static bool observeFocus(IUIAutomation* a,const std::wstring& label,int role)
+static bool observeFocus(IUIAutomation* a,HWND w,const std::wstring& label,int role)
 {
-    const Node n=focusedNode(a);
-    const bool yes=nodeIs(n,label,role);
+    Node n;
+    const bool scoped=liveImportFocus(a,w,n);
+    const bool yes=scoped&&nodeIs(n,label,role);
+    if(yes)expectFocus(w,n);
     observations.push_back("{\"expected\":"+jsonQuoted(label)+",\"actual\":"+jsonQuoted(n.name)
-        +",\"role\":"+std::to_string(n.type)+",\"pid\":"+std::to_string(n.pid)+",\"matched\":"+(yes?"true":"false")+'}');
+        +",\"role\":"+std::to_string(n.type)+",\"pid\":"+std::to_string(n.pid)+",\"local_focus_verified\":"+(scoped?"true":"false")+",\"matched\":"+(yes?"true":"false")+'}');
     return yes;
 }
 static bool exactImportDialogTitle(const std::wstring& actual,const std::wstring& semantic)
@@ -51,29 +70,108 @@ static HWND exactDialog(const std::wstring& title)
     }
     return match;
 }
+static bool importDialogGone(const std::wstring& title)
+{
+    if(title!=omrTitle&&title!=wavTitle)return false;
+    // A failed unique/enabled lookup is not evidence of absence. Every
+    // visible target-PID window with this exact import title forbids closure,
+    // including disabled matches and matches with an unexpected owner chain.
+    for(HWND w:windows())if(exactImportDialogTitle(windowTitle(w),title))return false;
+    return true;
+}
 static bool context(HWND w)
 {
-    if(observationIncomplete||!alive()||Clock::now()>=deadline||!owned(w)||!IsWindowVisible(w)||!IsWindowEnabled(w))return false;
+    if(blockingObservationFailure||!alive()||Clock::now()>=deadline||!owned(w)||!IsWindowVisible(w)||!IsWindowEnabled(w))return false;
     return w==mainWindow() || cadence_owned_file_dialog_detail::ownedChain(w,mainWindow(),targetPid);
+}
+static bool refuseLocalFocus(const char* operation,HRESULT result)
+{
+    blockingObservationFailure=true;
+    if(localFocusFailureOperation.empty()){localFocusFailureOperation=operation;localFocusFailureResult=result;}
+    return block("local_focus_proof_failed");
+}
+static bool liveImportFocus(IUIAutomation* a,HWND w,Node& node,OwnedKeyResult* proof)
+{
+    if(!context(w))return false;
+    OwnedKeyResult nativeBefore;
+    if(!cadence_owned_keyboard_detail::sampleOwnedFocus(targetPid,nativeBefore)
+        ||!cadence_owned_keyboard_detail::nativeContext(w,targetPid,nativeBefore))return false;
+    HRESULT read=S_OK;std::string operation;
+    node=focusedNode(a,&read,&operation);
+    if(read!=S_OK)return refuseLocalFocus(operation.c_str(),read);
+    if(node.pid!=static_cast<int>(targetPid))return refuseLocalFocus("focus.process_scope",E_ACCESSDENIED);
+    if(!node.enabled||node.offscreen||!node.focused)return false;
+    SnapshotState identity;
+    node.runtimeId=runtimeIdentity(node.element.Get(),identity);
+    if(identity.incomplete||node.runtimeId.empty())return refuseLocalFocus(identity.operation.c_str(),identity.failure);
+    ComPtr<IUIAutomationTreeWalker> walker;
+    read=a->get_RawViewWalker(&walker);
+    if(read!=S_OK||!walker)return refuseLocalFocus("focus.RawViewWalker",read==S_OK?E_POINTER:read);
+    ComPtr<IUIAutomationElement> current=node.element;
+    std::set<RuntimeId> visited;std::string chain="[";
+    for(unsigned depth=0;current&&depth<18&&context(w);++depth) {
+        SnapshotState ancestor;
+        const auto id=depth?runtimeIdentity(current.Get(),ancestor):node.runtimeId;
+        if(ancestor.incomplete||id.empty())return refuseLocalFocus(ancestor.operation.c_str(),ancestor.failure);
+        if(!visited.insert(id).second)return refuseLocalFocus("focus.ancestor_cycle",E_FAIL);
+        int pid=0,type=0;UIA_HWND rawHandle{};
+        if((read=current->get_CurrentProcessId(&pid))!=S_OK)return refuseLocalFocus("focus.ancestor_CurrentProcessId",read);
+        if(pid!=static_cast<int>(targetPid))return refuseLocalFocus("focus.ancestor_process_scope",E_ACCESSDENIED);
+        if((read=current->get_CurrentControlType(&type))!=S_OK)return refuseLocalFocus("focus.ancestor_CurrentControlType",read);
+        if((read=current->get_CurrentNativeWindowHandle(&rawHandle))!=S_OK)return refuseLocalFocus("focus.ancestor_CurrentNativeWindowHandle",read);
+        const HWND native=reinterpret_cast<HWND>(rawHandle);
+        if(native&&!owned(native))return refuseLocalFocus("focus.ancestor_native_process_scope",E_ACCESSDENIED);
+        if(depth)chain+=',';
+        chain+="{\"pid\":"+std::to_string(pid)+",\"control_type\":"+std::to_string(type)+",\"runtime_id\":"+runtimeJson(id)
+            +",\"native_handle\":"+std::to_string(reinterpret_cast<std::uintptr_t>(native))+'}';
+        if(native&&GetAncestor(native,GA_ROOT)==native
+            &&cadence_owned_keyboard_detail::rootOwnedByContext(native,w,targetPid)) {
+            ComPtr<IUIAutomationElement> stillFocused;BOOL same=FALSE;
+            if((read=a->GetFocusedElement(&stillFocused))!=S_OK||!stillFocused)return refuseLocalFocus("focus.recheck_GetFocusedElement",read==S_OK?E_POINTER:read);
+            if((read=a->CompareElements(stillFocused.Get(),node.element.Get(),&same))!=S_OK)return refuseLocalFocus("focus.recheck_CompareElements",read);
+            OwnedKeyResult nativeAfter;
+            if(!same||!context(w)||!cadence_owned_keyboard_detail::sampleOwnedFocus(targetPid,nativeAfter)
+                ||nativeAfter.foreground!=nativeBefore.foreground||nativeAfter.focus!=nativeBefore.focus
+                ||!cadence_owned_keyboard_detail::nativeContext(w,targetPid,nativeAfter))return false;
+            if(proof)*proof=nativeAfter;
+            ++localFocusProofs;
+            const std::string frame="{\"expected_native_context\":"+std::to_string(reinterpret_cast<std::uintptr_t>(w))
+                +",\"native_foreground\":"+std::to_string(reinterpret_cast<std::uintptr_t>(nativeAfter.foreground))
+                +",\"native_focus\":"+std::to_string(reinterpret_cast<std::uintptr_t>(nativeAfter.focus))
+                +",\"focused_name\":"+jsonQuoted(node.name)+",\"focused_role\":"+std::to_string(node.type)
+                +",\"focused_runtime_id\":"+runtimeJson(node.runtimeId)+",\"ancestors\":"+chain+']'+'}';
+            if(localFocusEvidence.size()<16)localFocusEvidence.push_back(frame);else localFocusEvidence.back()=frame;
+            return true;
+        }
+        ComPtr<IUIAutomationElement> parent;
+        if((read=walker->GetParentElement(current.Get(),&parent))!=S_OK)return refuseLocalFocus("focus.GetParentElement",read);
+        current=parent;
+    }
+    return refuseLocalFocus("focus.owned_native_ancestor_not_proved_within_bounds",E_FAIL);
 }
 static bool importKey(IUIAutomation* a,const std::filesystem::path& out,HWND w,WORD key,const char* purpose)
 {
     if(!context(w))return block("import_key_context_not_owned_visible_enabled_alive_before_deadline");
     if(importKeys>=70||keyboardFailure||(key==VK_MENU&&altTaps>=1)
         ||(key==VK_HOME&&homeTaps>=1)||(key==VK_NEXT&&nextRowTaps>=2))return block("import_key_budget_or_prior_keyboard_failure");
-    const Node before=focusedNode(a);
-    if(before.pid!=0&&before.pid!=static_cast<int>(targetPid)) {
-        observations.push_back("{\"diagnostic_only\":true,\"blocked_before_any_input\":true,\"foreign_focus_pid\":"+std::to_string(before.pid)+",\"name\":"+jsonQuoted(before.name)+",\"role\":"+std::to_string(before.type)+'}');
-        return block("import_key_foreign_focused_element_pid");
-    }
+    Node before;
+    if(!liveImportFocus(a,w,before))return block("import_key_live_focus_not_proved_before_snapshot");
+    if(!matchesExpectedFocus(w,before))return block("import_key_focus_changed_since_semantic_observation");
     const std::wstring frame=std::to_wstring(importKeys+1);
     snapshot(a,out,(frame+L"-before-import-key").c_str());
-    if(observationIncomplete)return block("import_key_snapshot_incomplete_before_input");
+    if(blockingObservationFailure)return block("import_key_snapshot_blocking_failure_before_input");
     if(key==VK_MENU)++altTaps;
     if(key==VK_HOME)++homeTaps;
     if(key==VK_NEXT)++nextRowTaps;
     ++importKeys;
-    const OwnedKeyResult result=SendOwnedKey(targetPid,targetProcess,w,key);
+    const OwnedKeyResult result=SendOwnedKey(targetPid,targetProcess,w,key,[&](const OwnedKeyResult& native){
+        Node current;OwnedKeyResult proof;BOOL same=FALSE;
+        if(!liveImportFocus(a,w,current,&proof)||proof.foreground!=native.foreground||proof.focus!=native.focus)return false;
+        const HRESULT compared=a->CompareElements(before.element.Get(),current.element.Get(),&same);
+        if(compared!=S_OK)return refuseLocalFocus("focus.before_input_CompareElements",compared);
+        return context(w)&&same&&matchesExpectedFocus(w,current)&&before.runtimeId==current.runtimeId
+            &&before.name==current.name&&before.type==current.type;
+    });
     if(!result.sent)keyboardFailure=true;
     actions.push_back(std::string("{\"action\":\"import_owned_key\",\"purpose\":\"")+purpose+"\",\"key\":"+std::to_string(key)
         +",\"pid\":"+std::to_string(targetPid)+",\"foreground\":"+std::to_string(reinterpret_cast<std::uintptr_t>(result.foreground))
@@ -81,21 +179,23 @@ static bool importKey(IUIAutomation* a,const std::filesystem::path& out,HWND w,W
         +",\"observed_name_before\":"+jsonQuoted(before.name)+",\"observed_role_before\":"+std::to_string(before.type)
         +",\"sent\":"+(result.sent?"true":"false")+",\"error\":"+std::to_string(result.error)+'}');
     Sleep(150);snapshot(a,out,(frame+L"-after-import-key").c_str());
-    if(observationIncomplete)return block("import_key_snapshot_incomplete_after_input");
+    if(blockingObservationFailure)return block("import_key_snapshot_blocking_failure_after_input");
     return result.sent;
 }
 static bool focusExact(IUIAutomation* a,const std::filesystem::path& out,HWND w,const std::wstring& label,int role)
 {
     if(!context(w))return false;
-    if(observeFocus(a,label,role))return true;
+    if(observeFocus(a,w,label,role))return true;
     auto nodes=snapshot(a,out,L"focus-import-control");const Node* chosen=nullptr;
+    if(blockingObservationFailure)return false;
+    if(lastSnapshotLocalFocusOnly)return observeFocus(a,w,label,role);
     for(const Node& n:nodes)if(nodeIs(n,label,role)) {if(chosen)return false;chosen=&n;}
     if(!chosen)return false;
     const HRESULT hr=chosen->element->SetFocus();Sleep(100);
     ComPtr<IUIAutomationElement> current;BOOL same=FALSE;
     const bool equal=SUCCEEDED(a->GetFocusedElement(&current))&&current
         && SUCCEEDED(a->CompareElements(current.Get(),chosen->element.Get(),&same))&&same;
-    return SUCCEEDED(hr)&&equal&&observeFocus(a,label,role);
+    return SUCCEEDED(hr)&&equal&&observeFocus(a,w,label,role);
 }
 static bool waitFocus(IUIAutomation* a,const std::filesystem::path& out,HWND w,const std::wstring& label,int role,unsigned seconds=5)
 {
@@ -104,7 +204,7 @@ static bool waitFocus(IUIAutomation* a,const std::filesystem::path& out,HWND w,c
 }
 static bool pressExact(IUIAutomation* a,const std::filesystem::path& out,HWND w,const std::wstring& label,int role,const char* purpose)
 {
-    return focusExact(a,out,w,label,role)&&observeFocus(a,label,role)&&importKey(a,out,w,VK_RETURN,purpose);
+    return focusExact(a,out,w,label,role)&&observeFocus(a,w,label,role)&&importKey(a,out,w,VK_RETURN,purpose);
 }
 static const Node* findReadyMainHome(const std::vector<Node>& nodes)
 {
@@ -146,9 +246,14 @@ static bool readyMain(IUIAutomation* a,const std::filesystem::path& out)
             initialRootReady=true;
         }
         const auto nodes=snapshot(a,out,L"main-ready");
-        if(observationIncomplete)return block("main_readiness_snapshot_incomplete");
+        if(blockingObservationFailure)return block("main_readiness_snapshot_blocking_failure");
         const HWND main=mainWindow();const bool validContext=context(main);
-        const Node* home=findReadyMainHome(nodes);const Node* scores=find(nodes,{L"Partitions",L"Scores"});
+        const Node* home=lastSnapshotLocalFocusOnly?nullptr:findReadyMainHome(nodes);
+        const Node* scores=lastSnapshotLocalFocusOnly?nullptr:find(nodes,{L"Partitions",L"Scores"});
+        Node localHome;
+        const bool localHomeVerified=lastSnapshotLocalFocusOnly&&validContext&&liveImportFocus(a,main,localHome)
+            &&findReadyMainHome(std::vector<Node>{localHome});
+        if(blockingObservationFailure)return block("main_readiness_local_focus_not_proved");
         ++readinessIterations;
         unsigned targetNodes=0,rawHome=0,rawScores=0,normalizedHome=0,normalizedScores=0,exactObservedToolbarHome=0;
         for(const Node& n:nodes) {
@@ -171,9 +276,15 @@ static bool readyMain(IUIAutomation* a,const std::filesystem::path& out)
             +",\"raw_home_candidates\":"+std::to_string(rawHome)+",\"raw_scores_candidates\":"+std::to_string(rawScores)
             +",\"normalized_home_candidates_diagnostic_only\":"+std::to_string(normalizedHome)+",\"normalized_scores_candidates_diagnostic_only\":"+std::to_string(normalizedScores)
             +",\"exact_observed_toolbar_home_candidates\":"+std::to_string(exactObservedToolbarHome)
+            +",\"partial_tree_local_focus_only\":"+(lastSnapshotLocalFocusOnly?"true":"false")
+            +",\"exact_focused_home_with_owned_ancestors\":"+(localHomeVerified?"true":"false")
             +",\"unique_role50013_home\":"+(home?"true":"false")+",\"unique_raw_scores\":"+(scores?"true":"false")+'}';
         if(readinessFrames.size()<8)readinessFrames.push_back(frame);else readinessFrames.back()=frame;
-        if(validContext&&(home||scores)){readinessPassed=true;return true;}
+        if(validContext&&(lastSnapshotLocalFocusOnly?localHomeVerified:bool(home||scores))){
+            Node qualified=localHome;
+            if(!lastSnapshotLocalFocusOnly&&!liveImportFocus(a,main,qualified))return block("main_readiness_live_focus_not_proved");
+            expectFocus(main,qualified);readinessPassed=true;return true;
+        }
         Sleep(200);
     }
     return block(alive()?"main_readiness_deadline_without_unique_raw_Home_or_Scores_and_valid_context":"main_readiness_process_exited");
@@ -186,7 +297,7 @@ static bool waitInitialImportChoose(IUIAutomation* a,const std::filesystem::path
     // ShortcutOverride handler passes navigation keys through. One Right
     // may cross to Choose; success still requires its exact semantic button.
     // Editable WAV/URL controls never enter this OMR-only fallback.
-    if(wave||initialOmrDocumentRightTaps>=1||!observeFocus(a,L"Document de départ",UIA_EditControlTypeId))return false;
+    if(wave||initialOmrDocumentRightTaps>=1||!observeFocus(a,dialog,L"Document de départ",UIA_EditControlTypeId))return false;
     ++initialOmrDocumentRightTaps;
     return importKey(a,out,dialog,VK_RIGHT,"move_once_from_observed_readonly_OMR_source_to_adjacent_Choose")
         &&waitFocus(a,out,dialog,omrChoose,UIA_ButtonControlTypeId,2);
@@ -208,8 +319,9 @@ static bool openThroughFile(IUIAutomation* a,const std::filesystem::path& out,bo
         if(focusExact(a,out,main,target,UIA_MenuItemControlTypeId)) {
             requested=pressExact(a,out,main,target,UIA_MenuItemControlTypeId,"activate_exact_import_file_menu_item");break;
         }
-        const Node n=focusedNode(a);
-        if(n.pid!=static_cast<int>(targetPid)||n.type!=UIA_MenuItemControlTypeId||!n.enabled||n.offscreen)return false;
+        Node n;
+        if(!liveImportFocus(a,main,n)||n.type!=UIA_MenuItemControlTypeId)return false;
+        expectFocus(main,n);
         if(!importKey(a,out,main,VK_DOWN,"inspect_file_menu_items_without_activating_other_actions"))return false;
     }
     if(!requested)return false;
@@ -235,6 +347,9 @@ static bool cancelChooser(IUIAutomation* a,const std::filesystem::path& out,HWND
     }
     if(!picker||!cadence_owned_file_dialog_detail::isDialog(picker,dialog,targetPid))return false;
     snapshot(a,out,L"native-chooser-before-cancel");
+    Node pickerFocus;
+    if(!liveImportFocus(a,picker,pickerFocus))return false;
+    expectFocus(picker,pickerFocus);
     if(!importKey(a,out,picker,VK_ESCAPE,"cancel_exact_owned_native_chooser_without_selecting_file"))return false;
     const auto until=std::min(deadline,Clock::now()+std::chrono::seconds(5));
     while(alive()&&Clock::now()<until) {
@@ -252,7 +367,7 @@ static bool focusWaveAcknowledgementFromSource(IUIAutomation* a,const std::files
 {
     // The sourcea2b7 URL field is empty. Observe its real public edit control,
     // then use the Up/Down navigation that TextInputField does not override.
-    if(!observeFocus(a,wavChoose,UIA_ButtonControlTypeId)
+    if(!observeFocus(a,dialog,wavChoose,UIA_ButtonControlTypeId)
         ||!importKey(a,out,dialog,VK_DOWN,"observe_empty_direct_WAV_URL_without_saisie_or_network")
         ||!waitFocus(a,out,dialog,L"Lien du WAV autorisé ou de sa page source",UIA_EditControlTypeId,2))return false;
     return importKey(a,out,dialog,VK_DOWN,"observe_unchecked_WAV_approximation_after_empty_URL")
@@ -266,9 +381,11 @@ static bool focusWaveCloseFromAcknowledgement(IUIAutomation* a,const std::filesy
     // nav-nextrow-control shortcut, which sets column=0 before selecting.
     // End is not deterministic because Last compares row and column jointly.
     const std::wstring ack=L"J'accepte une conversion approximative à corriger ; mon WAV reste inchangé.";
-    if(!observeFocus(a,ack,UIA_CheckBoxControlTypeId)
+    if(!observeFocus(a,dialog,ack,UIA_CheckBoxControlTypeId)
         ||!importKey(a,out,dialog,VK_NEXT,"move_from_observed_ack_to_footer_close_with_next_row_navigation"))return false;
-    const Node n=focusedNode(a);return nodeIs(n,L"Fermer",UIA_ButtonControlTypeId)||nodeIs(n,L"Close",UIA_ButtonControlTypeId);
+    Node n;
+    if(!liveImportFocus(a,dialog,n)||(!nodeIs(n,L"Fermer",UIA_ButtonControlTypeId)&&!nodeIs(n,L"Close",UIA_ButtonControlTypeId)))return false;
+    expectFocus(dialog,n);return true;
 }
 static bool closeDialog(IUIAutomation* a,const std::filesystem::path& out,bool wave,bool cancelFile)
 {
@@ -308,13 +425,13 @@ static bool closeDialog(IUIAutomation* a,const std::filesystem::path& out,bool w
         || (label!=L"Fermer"&&label!=L"Close"))return false;
     if(!pressExact(a,out,dialog,label,UIA_ButtonControlTypeId,"close_observed_import_dialog"))return false;
     const auto until=std::min(deadline,Clock::now()+std::chrono::seconds(5));
-    while(alive()&&Clock::now()<until){if(!exactDialog(title)&&context(mainWindow()))return true;Sleep(100);}return false;
+    while(alive()&&Clock::now()<until){if(importDialogGone(title)&&context(mainWindow()))return true;Sleep(100);}return false;
 }
 static bool analyzeWave(IUIAutomation* a,const std::filesystem::path& out,const std::wstring& root,const std::wstring& wave)
 {
     const HWND dialog=exactDialog(wavTitle);if(!dialog||!pressExact(a,out,dialog,wavChoose,UIA_ButtonControlTypeId,"choose_only_original_CC0_WAV_copy"))return false;
     const auto selected=SelectOwnedWaveFile(a,targetPid,targetProcess,dialog,root,wave,
-        [&](const wchar_t* phase){snapshot(a,out,phase);if(observationIncomplete)throw E_ABORT;});
+        [&](const wchar_t* phase){snapshot(a,out,phase);if(blockingObservationFailure)throw E_ABORT;});
     actions.push_back("{\"action\":\"select_only_controlled_WAV_copy\",\"selected\":"+std::string(selected.selected?"true":"false")
         +",\"path\":"+jsonQuoted(wave)+",\"diagnostic\":"+jsonQuoted(selected.diagnostic)+'}');
     if(!selected.selected||!waitFocus(a,out,dialog,wavChoose,UIA_ButtonControlTypeId))return false;
@@ -349,7 +466,20 @@ static bool closeReadyWave(IUIAutomation* a,const std::filesystem::path& out)
     const Node n=focusedNode(a);const auto label=controlLabel(n.name);
     if(label!=L"Fermer"&&label!=L"Close")return false;
     if(!pressExact(a,out,dialog,label,UIA_ButtonControlTypeId,"discard_only_unsaved_test_draft_and_close"))return false;
-    Sleep(200);return !exactDialog(wavTitle)&&context(mainWindow());
+    Sleep(200);return importDialogGone(wavTitle)&&context(mainWindow());
+}
+static bool finalLocalState(IUIAutomation* a,const std::wstring& phase)
+{
+    if(phase==L"open-omr"||phase==L"open-wav"||phase==L"analyze-wav") {
+        const bool omr=phase==L"open-omr";
+        const HWND dialog=exactDialog(omr?omrTitle:wavTitle);
+        const std::wstring& label=phase==L"analyze-wav"?wavSave:omr?omrChoose:wavChoose;
+        return dialog&&dialog==observedDialog&&observeFocus(a,dialog,label,UIA_ButtonControlTypeId);
+    }
+    const bool omr=phase==L"close-omr";
+    if(!importDialogGone(omr?omrTitle:wavTitle))return false;
+    Node current;
+    return liveImportFocus(a,mainWindow(),current);
 }
 int wmain(int argc,wchar_t** argv)
 {
@@ -382,7 +512,11 @@ int wmain(int argc,wchar_t** argv)
             else if(phase==L"analyze-wav")passed=analyzeWave(a.Get(),output,waveRoot,wave);
             else if(phase==L"close-ready-wav")passed=closeReadyWave(a.Get(),output);
             snapshot(a.Get(),output,L"phase-final");
-            if(observationIncomplete){passed=false;block("phase_snapshot_incomplete");}
+            if(blockingObservationFailure){passed=false;block("phase_snapshot_blocking_failure");}
+            if(passed){
+                localFinalStateVerified=finalLocalState(a.Get(),phase);
+                if(!localFinalStateVerified){passed=false;block("phase_final_local_state_not_proved");}
+            }
         }
         a.Reset();bounded.Reset();CoUninitialize();
     }
@@ -404,16 +538,24 @@ int wmain(int argc,wchar_t** argv)
         <<",\"initial_OMR_document_right_taps\":"<<initialOmrDocumentRightTaps
         <<",\"keyboard_failure\":"<<(keyboardFailure?"true":"false")
         <<",\"observation_incomplete\":"<<(observationIncomplete?"true":"false")
+        <<",\"blocking_observation_failure\":"<<(blockingObservationFailure?"true":"false")
+        <<",\"raw_tree_incomplete_observed\":"<<(observationIncomplete?"true":"false")
+        <<",\"local_focus_scope\":\"focused-element-and-owned-ancestors-only\",\"full_tree_complete_claimed\":false"
+        <<",\"partial_tree_local_focus_used\":"<<(localFocusScopeUsed?"true":"false")
+        <<",\"local_final_state_verified\":"<<(localFinalStateVerified?"true":"false")
         <<",\"diagnostics_only\":{\"blocked_guard\":"<<jsonQuoted(std::wstring(blockedGuard.begin(),blockedGuard.end()))
         <<",\"COM_initialization_hresult\":"<<static_cast<long>(initialized)<<",\"automation2_query_hresult\":"<<static_cast<long>(automation2Result)
         <<",\"connection_timeout_hresult\":"<<static_cast<long>(connectionTimeoutResult)<<",\"transaction_timeout_hresult\":"<<static_cast<long>(transactionTimeoutResult)
         <<",\"readiness_entered\":"<<(readinessEntered?"true":"false")<<",\"readiness_passed\":"<<(readinessPassed?"true":"false")<<",\"readiness_iterations\":"<<readinessIterations
         <<",\"readiness_root_attempts\":"<<readinessRootAttempts<<",\"readiness_root_timeout_waits\":"<<readinessRootTimeoutWaits
         <<",\"readiness_root_last_hresult\":"<<static_cast<long>(readinessRootResult)<<",\"readiness_root_last_handle\":"<<reinterpret_cast<std::uintptr_t>(readinessRootWindow)
+        <<",\"local_focus_successful_proofs\":"<<localFocusProofs<<",\"local_focus_failure_operation\":"<<jsonQuoted(std::wstring(localFocusFailureOperation.begin(),localFocusFailureOperation.end()))
+        <<",\"local_focus_failure_hresult\":"<<static_cast<long>(localFocusFailureResult)
         <<",\"readiness_frames_bounded_to8\":[";
     for(size_t i=0;i<readinessFrames.size();++i){if(i)result<<',';result<<readinessFrames[i];}result<<"]}"
         <<",\"observations\":[";
-    for(size_t i=0;i<observations.size();++i){if(i)result<<',';result<<observations[i];}result<<"],\"actions\":[";
+    for(size_t i=0;i<observations.size();++i){if(i)result<<',';result<<observations[i];}result<<"],\"local_focus_evidence_bounded_to16\":[";
+    for(size_t i=0;i<localFocusEvidence.size();++i){if(i)result<<',';result<<localFocusEvidence[i];}result<<"],\"actions\":[";
     for(size_t i=0;i<actions.size();++i){if(i)result<<',';result<<actions[i];}
     result<<"],\"real_Audiveris_executed\":false,\"MIDI_saved_or_opened\":false,\"score_editing\":false,\"listening\":false}";
     CloseHandle(targetProcess);return passed&&!keyboardFailure?0:2;

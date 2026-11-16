@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "private-actual-stage-only-initial-UIA-root-timeout-wait-not-Windows-validated",
+  "status": "private-actual-stage-only-local-focused-scope-known-sibling-E_FAIL-not-Windows-validated",
   "files": [
     {
       "path": ".gitattributes",
@@ -29,8 +29,8 @@
     },
     {
       "path": "Print-ImportGuiEvidence.ps1",
-      "bytes": 2703,
-      "sha256": "22efe6c0957d81d6c57f4bcbbbe6417e41edef623a1cb46d7c3d1b2eb74de170"
+      "bytes": 12899,
+      "sha256": "eaeac4c1d6c869a5c6249483739252c71f52c0f09b4f673a095ab104f5481291"
     },
     {
       "path": "README.md",
@@ -74,8 +74,8 @@
     },
     {
       "path": "native/ImportDialogsFlow.inc",
-      "bytes": 29426,
-      "sha256": "ace31ae4e036bfa566a9cf9934c09f16e8c1855e4a95c1c23d603dfc4b1d1d56"
+      "bytes": 38958,
+      "sha256": "9eefef79da237b81d61f80543d85c9ceb0f54e1b1993ba77337eb22b8d37ddc9"
     },
     {
       "path": "native/ObservationGraph.h",
@@ -84,8 +84,8 @@
     },
     {
       "path": "native/OwnedKeyboard.h",
-      "bytes": 9043,
-      "sha256": "27431ad585fbf10627573db63f432743d4423011cff009bedd00361fd60ddfc3"
+      "bytes": 11200,
+      "sha256": "a8698a416e03ce120b7b1261ec2a61442af4ca0dc7646b1c92c1e0a59a56725d"
     },
     {
       "path": "native/OwnedWaveFileDialog.h",
@@ -100,12 +100,12 @@
     {
       "path": "native/SHA256SUMS.txt",
       "bytes": 498,
-      "sha256": "c685488b3c1cd321ec6060f95b99db8c0c937e7b3a9cd0cc7c454244f2154b07"
+      "sha256": "02f50fa1a4827b5cfc0815e1fb735500e42b368886ff42655440f90226a5c7ff"
     },
     {
       "path": "native/UiaProbe.cpp",
-      "bytes": 26225,
-      "sha256": "2da9256be56fcde8651d4470e687c226398d01d45bb40b051a5f57710dedf0d1"
+      "bytes": 28552,
+      "sha256": "3864019e775888659cb4b7b6eee57ade7cc394157ee02831b8c3b67a542fb50d"
     },
     {
       "path": "profile-source-contract.json",
