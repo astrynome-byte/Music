@@ -14,8 +14,8 @@
     },
     {
       "path": "Run-RecoveredMsiQa.ps1",
-      "bytes": 7856,
-      "sha256": "a18e690098711b6d30af26138585c5e65941d6078ec7ffaf4fb201da9df60f0e"
+      "bytes": 8948,
+      "sha256": "dfcacf6b8d183564bd6e50821f61a95771d5abeac82d96e8991ab6301b549d4c"
     },
     {
       "path": "Recover-RuntimeFromMsi.ps1",

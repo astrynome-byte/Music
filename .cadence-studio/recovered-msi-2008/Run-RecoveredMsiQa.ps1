@@ -9,6 +9,21 @@ if ($env:GITHUB_REPOSITORY -ne 'astrynome-byte/Music' -or
     $env:GITHUB_RUN_ID -notmatch '^\d{1,20}$' -or $env:GITHUB_RUN_ATTEMPT -notmatch '^\d{1,5}$' -or
     -not $env:RUNNER_TEMP) { throw 'Exact disposable GitHub driver environment required.' }
 function Hash([string]$Path) { (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant() }
+function Verify-ReviewedWorkflow([string]$Active, [string]$Reviewed) {
+    $activeHash = Hash $Active
+    $reviewedHash = Hash $Reviewed
+    $normalizedHash = $activeHash
+    if ($activeHash -ne $reviewedHash) {
+        # Windows checkout may convert LF to CRLF outside the namespace's
+        # -text scope. Accept only that exact byte conversion, no whitespace,
+        # Unicode, YAML, BOM or source-content normalization.
+        $utf8 = [Text.UTF8Encoding]::new($false, $true)
+        $normalized = $utf8.GetBytes($utf8.GetString([IO.File]::ReadAllBytes($Active)).Replace("`r`n", "`n"))
+        $normalizedHash = [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($normalized)).ToLowerInvariant()
+        if ($normalizedHash -ne $reviewedHash) { throw 'Active workflow differs beyond exact CRLF-to-LF checkout conversion.' }
+    }
+    return [ordered]@{ active_sha256=$activeHash; reviewed_sha256=$reviewedHash; normalized_sha256=$normalizedHash; CRLF_checkout_conversion=($activeHash -ne $reviewedHash) }
+}
 function Require-Plain([string]$Path) {
     for ($part = [IO.Path]::GetFullPath($Path); $part; $part = [IO.Path]::GetDirectoryName($part)) {
         if ((Test-Path -LiteralPath $part) -and ((Get-Item -LiteralPath $part -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw 'Reparse path refused.' }
@@ -36,7 +51,8 @@ foreach ($row in $manifest.files) {
     if ((Get-Item -LiteralPath $path).Length -ne $row.bytes -or (Hash $path) -ne $row.sha256) { throw "Helper differs: $($row.path)" }
 }
 $workflow = Join-Path $env:GITHUB_WORKSPACE 'driver/.github/workflows/cadence-recovered-msi-2008.yml'
-if ((Hash $workflow) -ne (Hash (Join-Path $PSScriptRoot 'cadence-recovered-msi-2008.yml'))) { throw 'Active workflow differs from reviewed copy.' }
+$workflowComparison = Verify-ReviewedWorkflow $workflow (Join-Path $PSScriptRoot 'cadence-recovered-msi-2008.yml')
+Write-Host ('CADENCE_RECOVERY_WORKFLOW_CHECK ' + ($workflowComparison | ConvertTo-Json -Compress))
 if ($ValidateOnly) { Write-Host 'Pinned MSI extraction/comparison QA activation verified; no download, installer or application executed.'; return }
 $root = Join-Path $env:RUNNER_TEMP ("cadence-recovered-msi-2008-$($env:GITHUB_RUN_ID)-$($env:GITHUB_RUN_ATTEMPT)")
 Require-Plain $root
