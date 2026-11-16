@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "ready": true,
+  "mode": "public-MSI-administrative-extraction-and-runtime-comparison-only",
+  "product_version": "4.7.6.2008",
+  "msi_sha256": "a3f934273e2c2002cc035743974941082245655a7bbe4bc6d2540bb921e52a9e",
+  "executable_sha256": "13cd4e6d2f408d2e64b187d4c3bff1188ff4192ac7b670d3a12373bbeb37f6cd",
+  "runtime_files": 2712,
+  "notice_files": 338,
+  "helpers_manifest_sha256": "523f850e9aa5a718ceb59f8b72040816273a3d7d7e59f6e4ae8738bd76d2f796",
+  "application_launch_requested": false,
+  "build_requested": false,
+  "note": "Root activation only. New MSI recovered provenance, not a replacement producer receipt or portable qualification."
+}
