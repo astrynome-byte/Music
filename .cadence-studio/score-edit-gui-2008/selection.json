@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "scope": "Known failed31 after authenticating a real compiled stage; GUI or continuation QA only, full qualification pending",
+  "run_id": 43408309742,
+  "job_id": 131828068954,
+  "driver_commit": "a8470ae087841875fd39284188d0e9d11d95e32b",
+  "driver_tree": "29c51afb85c8c98b3eaf0fcb4b52e34b16be571a",
+  "source": {
+    "original_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+    "tree": "c5452043983a048ef0aeef085615af903de3f5b0",
+    "source_json_sha256": "d8150851d20d6f9d631a7f93226753951eb1fb456e8a385a0ef8c834992bf354",
+    "patch_sha256": "ce7bc369062d6520785169c89d187bf8fa0c9e8dc069315a5e0d75e8f79247b9"
+  },
+  "executable_sha256": "13cd4e6d2f408d2e64b187d4c3bff1188ff4192ac7b670d3a12373bbeb37f6cd",
+  "artifacts": [
+    {
+      "role": "stage",
+      "id": 14031621703,
+      "name": "cadence-combined-system-aac-stage-experimental-12-1",
+      "bytes": 306891538,
+      "sha256": "8cd00d5df8670837c3b15d3e3bd6e406df290222e404ef88599e4383de048178"
+    },
+    {
+      "role": "logs",
+      "id": 14031566362,
+      "name": "cadence-combined-system-aac-logs-12-1",
+      "bytes": 6546788,
+      "sha256": "12f746febc7ca371fb00dcc33aa4a8151031e63ca03c5a8eaa24add50e3dfc8c"
+    }
+  ],
+  "actual_stage_manifest_SHA256": null,
+  "actual_stage_archive_SHA256": null,
+  "actual_stage_archive_bytes": null,
+  "actual_companion_receipts": null,
+  "actual_source_ci_commit": null,
+  "MSI": null,
+  "GUI_validated": false,
+  "full_qualification_complete": false
+}

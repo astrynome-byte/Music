@@ -99,6 +99,11 @@
       "sha256": "5c3bc35d7cd4c7a7b1a7ed337688e2feedc6ec060bdfc1f7029a2863d8edbcff"
     },
     {
+      "path": "selection.json",
+      "bytes": 1496,
+      "sha256": "1886ce76e0e2786ecc778956c4e8f4ba47bbcbe8308b5d8fa0e6dddbe1a69f18"
+    },
+    {
       "path": "stage-only-provenance.json",
       "bytes": 5997,
       "sha256": "7d3dc31520d9421e3340262d9fcd98b478890599460cf0ff8117bb4d81844db5"
