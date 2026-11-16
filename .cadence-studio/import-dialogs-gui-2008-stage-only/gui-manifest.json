@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "private-actual-stage-only-controlled-WAV-save-and-native-import-extension-not-Windows-validated",
+  "status": "private-controlled-imported-score-close-confirmation-before-native-export-not-Windows-validated",
   "files": [
     {
       "path": ".gitattributes",
@@ -29,8 +29,8 @@
     },
     {
       "path": "Print-ImportGuiEvidence.ps1",
-      "bytes": 14979,
-      "sha256": "e6745da359e91ed35e95be72a62ada308724409040f8aa506d16a8781a4eb677"
+      "bytes": 15310,
+      "sha256": "03bf45f87ac92109f04fb88a3dcf5282e50ce422a5fb7feafbbaaa4b0de2dce2"
     },
     {
       "path": "README.md",
@@ -49,8 +49,8 @@
     },
     {
       "path": "Run-ImportDialogsGui.ps1",
-      "bytes": 23804,
-      "sha256": "114ecaa9400c59d2db47ef04c863c6bec0adf31b28dae045feccfcdc93c610b6"
+      "bytes": 24074,
+      "sha256": "cd8ee04deba4811bd6bb31b3517d1981b11a24c618c1588d6c615c4fe02b83cf"
     },
     {
       "path": "cadence-import-dialogs-gui-2008-stage-only.yml",
@@ -74,8 +74,8 @@
     },
     {
       "path": "native/ImportDialogsFlow.inc",
-      "bytes": 54352,
-      "sha256": "aaf335e655c39faa0e9a2c937a81fac3516d9e5d145fc6b3b362d5baa4aac97b"
+      "bytes": 69034,
+      "sha256": "d23ab2170e5fb125064b521c994929df567e8064a26294e97e3682ab24cc5179"
     },
     {
       "path": "native/ObservationGraph.h",
@@ -105,7 +105,7 @@
     {
       "path": "native/SHA256SUMS.txt",
       "bytes": 586,
-      "sha256": "1e9c0417d01f9c4a10954e5c264732b98508912a96d2659aa11524ec43c81cbb"
+      "sha256": "2187aea4d46f5050a638871620d53aac24c01c2e7e3e79e23fd20157ba472a9e"
     },
     {
       "path": "native/UiaProbe.cpp",

@@ -31,7 +31,7 @@ function Select-DiagnosticScalars([Collections.IDictionary]$Data,[string[]]$Name
  return $selected
 }
 function Get-DiagnosticProjection([Collections.IDictionary]$Data){
- $p=Select-DiagnosticScalars $Data @('schema_version','phase','status','pid','bounded','max_nodes','max_depth','max_edges','walker_hresult','first_failure_operation','first_failure_hresult','deadline_reached','node_limit_reached','tree_incomplete','phase_observation_incomplete','observation_incomplete','blocking_observation_failure','local_focus_only_eligible','only_sibling_navigation_failure','local_focus_scope','full_tree_complete_claimed','raw_tree_incomplete_observed','partial_tree_local_focus_used','local_final_state_verified','native_chooser_observation_gap_observed','native_chooser_observation_gap_active','native_chooser_gap_frames','native_chooser_raw_resumptions','observation_gap','raw_tree_walk_performed','gap_reason','gap_owner_handle','gap_picker_handle','native_sample_owned','native_sample_error','native_foreground_handle','native_foreground_pid','native_focus_handle','native_focus_pid','native_windows_total','last_local_proof_timing','runtime_identity_unknown','foreign_node_refused','unique_runtime_ids','cycle_edges','duplicate_edges','keys','alt_taps','home_taps','next_row_taps','initial_OMR_document_right_taps','keyboard_failure','com_hresult','dialog_handle','dialog_title','MIDI_file_saved','GUI_imported_score_focus_verified','saved_midi_path','saved_score_focus_proof_attempts','saved_score_navigation_keys')
+ $p=Select-DiagnosticScalars $Data @('schema_version','phase','status','pid','bounded','max_nodes','max_depth','max_edges','walker_hresult','first_failure_operation','first_failure_hresult','deadline_reached','node_limit_reached','tree_incomplete','phase_observation_incomplete','observation_incomplete','blocking_observation_failure','local_focus_only_eligible','only_sibling_navigation_failure','local_focus_scope','full_tree_complete_claimed','raw_tree_incomplete_observed','partial_tree_local_focus_used','local_final_state_verified','native_chooser_observation_gap_observed','native_chooser_observation_gap_active','native_chooser_gap_frames','native_chooser_raw_resumptions','observation_gap','raw_tree_walk_performed','gap_reason','gap_owner_handle','gap_picker_handle','native_sample_owned','native_sample_error','native_foreground_handle','native_foreground_pid','native_focus_handle','native_focus_pid','native_windows_total','last_local_proof_timing','runtime_identity_unknown','foreign_node_refused','unique_runtime_ids','cycle_edges','duplicate_edges','keys','alt_taps','home_taps','next_row_taps','initial_OMR_document_right_taps','keyboard_failure','com_hresult','dialog_handle','dialog_title','MIDI_file_saved','GUI_imported_score_focus_verified','saved_midi_path','controlled_score_closed_to_home','close_confirmation_observed','close_confirmation_discarded','close_confirmation_navigation_keys','close_home_navigation_keys','temporary_score_close_gap_active','close_question_anchor_count','close_stable_question_anchors','close_anchor_operation','close_anchor_hresult','saved_score_focus_proof_attempts','saved_score_navigation_keys')
  foreach($field in @('nodes','graph_edges','inspected_windows')){
   $p[$field+'_count']=if(-not$Data.Contains($field)){$null}elseif($null-eq$Data[$field]){0}else{@($Data[$field]).Count}
  }
@@ -105,7 +105,7 @@ foreach($capture in @($report.captures|Select-Object -First 2)){
  $blocks.Add(@{tag='PNG';entry=$entry;extra_key='original_PNG_base64';extra=[Convert]::ToBase64String($bytes);full_representation='original_PNG_bytes_base64_with_hash_receipt'});++$pngCount
 }
 $failureJSONCount=0;$failedPhase=$null;$phaseOrdinal=0;$phaseRows=@($report.phases)
-if($phaseRows.Count-gt7){throw 'Unexpected number of native phases.'}
+if($phaseRows.Count-gt8){throw 'Unexpected number of native phases.'}
 if($report.status-ceq'failed-or-blocked'){
  for($i=0;$i-lt$phaseRows.Count;++$i){
   $phase=$phaseRows[$i]
@@ -113,7 +113,7 @@ if($report.status-ceq'failed-or-blocked'){
  }
 }
 if($null-ne$failedPhase){
- if($failedPhase.phase-cnotin@('open-omr','close-omr','open-wav','close-wav','analyze-wav','close-ready-wav','save-open-wav')){throw 'Unknown native phase name.'}
+ if($failedPhase.phase-cnotin@('open-omr','close-omr','open-wav','close-wav','analyze-wav','close-ready-wav','save-open-wav','close-saved-midi-score')){throw 'Unknown native phase name.'}
  $expectedDirectory=Join-Path $root ('{0:D2}-{1}'-f$phaseOrdinal,$failedPhase.phase)
  if($failedPhase.directory.Length-gt1024-or-not[IO.Path]::IsPathFullyQualified($failedPhase.directory)-or-not[IO.Path]::GetFullPath($failedPhase.directory).Equals($expectedDirectory,[StringComparison]::OrdinalIgnoreCase)){throw 'Failed phase directory differs from its exact report sequence and name.'}
  $phaseDirectory=(Get-CheckedEvidenceItem $expectedDirectory $true).FullName

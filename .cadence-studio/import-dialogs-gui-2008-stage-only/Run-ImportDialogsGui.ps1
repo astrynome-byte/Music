@@ -145,6 +145,10 @@ function Invoke-Phase([string]$Phase) {
    $report.MIDI_file_saved=$true;$report.GUI_imported_score_focus_verified=$true
    Save-PassiveScoreForeground $phaseName
   }
+  if($Phase-eq'close-saved-midi-score'){
+   if(-not$n.controlled_score_closed_to_home){throw 'Only the controlled imported score must close and restore exact Home before app shutdown.'}
+   Save-PassiveScoreForeground $phaseName
+  }
   if($Phase-in@('open-omr','open-wav','analyze-wav')){
    $title=if($Phase-eq'open-omr'){'Reconnaître une partition — PDF ou image'}else{'Transcrire une mélodie WAV locale'}
    Capture-OwnedImportDialog $n $title $app "$phaseName.png" $OutputDirectory $report
@@ -180,7 +184,7 @@ try{
  foreach($phase in @('open-omr','close-omr','open-wav','close-wav')){Invoke-Phase $phase}
  if($AnalyzeFixture){
   foreach($phase in @('open-wav','analyze-wav')){Invoke-Phase $phase}
-  if($SaveFixture){Invoke-Phase 'save-open-wav'}else{Invoke-Phase 'close-ready-wav'}
+  if($SaveFixture){Invoke-Phase 'save-open-wav';Invoke-Phase 'close-saved-midi-score'}else{Invoke-Phase 'close-ready-wav'}
  }
  $report.status='UI-phases-passed-cleanup-and-log-review-pending'
 }catch{$report.errors+=,$_.Exception.Message}

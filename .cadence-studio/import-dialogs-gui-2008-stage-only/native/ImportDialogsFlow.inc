@@ -31,6 +31,7 @@ static ExpectedFocus expectedFocus;
 static bool nativeChooserGapActive=false,nativeChooserGapObserved=false;
 static HWND nativeChooserGapOwner=nullptr,nativeChooserGapWindow=nullptr;
 static unsigned nativeChooserGapFrames=0,nativeChooserRawResumptions=0;
+static bool temporaryScoreCloseGapActive=false;
 static HRESULT automation2Result=E_UNEXPECTED,connectionTimeoutResult=E_UNEXPECTED,transactionTimeoutResult=E_UNEXPECTED;
 static bool block(const char* reason) {if(blockedGuard.empty())blockedGuard=reason;return false;}
 static bool context(HWND w);
@@ -154,7 +155,7 @@ static bool liveImportFocus(IUIAutomation* a,HWND w,Node& node,OwnedKeyResult* p
 }
 static std::vector<Node> importSnapshot(IUIAutomation* a,const std::filesystem::path& out,const wchar_t* phase)
 {
-    if(!nativeChooserGapActive)return snapshot(a,out,phase);
+    if(!nativeChooserGapActive&&!temporaryScoreCloseGapActive)return snapshot(a,out,phase);
     // The common-file-picker transition is observed natively and by the
     // independent exact-focus proof, never by walking its shell subtrees.
     // This records a declared observation gap and cannot qualify any input.
@@ -165,7 +166,8 @@ static std::vector<Node> importSnapshot(IUIAutomation* a,const std::filesystem::
     if(native.focus)GetWindowThreadProcessId(native.focus,&focusPid);
     std::ofstream file(out/(std::wstring(phase)+L".json"),std::ios::binary);
     file<<"{\"pid\":"<<targetPid<<",\"bounded\":true,\"tree_incomplete\":true,\"observation_gap\":true"
-        <<",\"raw_tree_walk_performed\":false,\"gap_reason\":\"owned-native-common-file-picker-transition\""
+        <<",\"raw_tree_walk_performed\":false,\"gap_reason\":"
+        <<(temporaryScoreCloseGapActive?"\"owned-temporary-score-close-confirmation-transition\"":"\"owned-native-common-file-picker-transition\"")
         <<",\"local_focus_scope\":\"focused-element-and-owned-ancestors-only\",\"full_tree_complete_claimed\":false"
         <<",\"phase_observation_incomplete\":"<<(observationIncomplete?"true":"false")
         <<",\"blocking_observation_failure\":"<<(blockingObservationFailure?"true":"false")
@@ -188,7 +190,8 @@ static std::vector<Node> importSnapshot(IUIAutomation* a,const std::filesystem::
     if(localFocusEvidence.empty())file<<"null";else file<<localFocusEvidence.back();
     file<<'}';return {};
 }
-static bool importKey(IUIAutomation* a,const std::filesystem::path& out,HWND w,WORD key,const char* purpose,bool opensNativeChooser=false)
+static bool importKey(IUIAutomation* a,const std::filesystem::path& out,HWND w,WORD key,const char* purpose,bool opensNativeChooser=false,
+                      bool closesControlledScore=false,const std::function<bool()>& finalSemanticProof={})
 {
     if(!context(w))return block("import_key_context_not_owned_visible_enabled_alive_before_deadline");
     if(importKeys>=70||keyboardFailure||(key==VK_MENU&&altTaps>=1)
@@ -208,10 +211,12 @@ static bool importKey(IUIAutomation* a,const std::filesystem::path& out,HWND w,W
         if(!liveImportFocus(a,w,current,&proof)||proof.foreground!=native.foreground||proof.focus!=native.focus)return false;
         const HRESULT compared=a->CompareElements(before.element.Get(),current.element.Get(),&same);
         if(compared!=S_OK)return refuseLocalFocus("focus.before_input_CompareElements",compared);
-        return context(w)&&same&&matchesExpectedFocus(w,current)&&before.runtimeId==current.runtimeId
+        const bool unchanged=context(w)&&same&&matchesExpectedFocus(w,current)&&before.runtimeId==current.runtimeId
             &&before.name==current.name&&before.type==current.type;
+        return unchanged&&(!finalSemanticProof||finalSemanticProof())&&context(w);
     });
     if(!result.sent)keyboardFailure=true;
+    if(result.sent&&closesControlledScore)temporaryScoreCloseGapActive=true;
     if(result.sent&&opensNativeChooser){
         nativeChooserGapActive=true;nativeChooserGapObserved=true;nativeChooserGapOwner=w;nativeChooserGapWindow=nullptr;
     }
@@ -678,8 +683,203 @@ static bool saveAndOpenWaveDraft(IUIAutomation* a,const std::filesystem::path& o
     return block("saved_MIDI_exists_but_named_GUI_score_focus_not_proved");
 }
 
+// SPDX-License-Identifier: GPL-3.0-only
+// Close only the already proved temporary imported score, never another file.
+static bool controlledScoreClosedToHome=false,closeQuestionObserved=false,closeQuestionDiscarded=false;
+static unsigned closeQuestionNavigation=0,closeHomeNavigation=0;
+static std::string closeInitialObservation="null",closeLastObservation="null";
+static std::vector<Node> closeQuestionAnchors;
+static unsigned closeStableQuestionAnchors=0,closeQuestionAnchorCount=0;
+static std::string closeAnchorOperation;
+static HRESULT closeAnchorResult=S_OK;
+static HWND closeQuestionWindow=nullptr;
+
+static bool observeCloseState(IUIAutomation* a,HWND window,Node& node,const char* stage)
+{
+    const bool verified=liveImportFocus(a,window,node);
+    const std::string frame="{\"stage\":\""+std::string(stage)+"\",\"expected_window\":"
+        +std::to_string(reinterpret_cast<std::uintptr_t>(window))+",\"native_title\":"+jsonQuoted(windowTitle(window))
+        +",\"local_focus_verified\":"+(verified?"true":"false")+",\"focused_name\":"+jsonQuoted(node.name)
+        +",\"focused_type\":"+std::to_string(node.type)+",\"pid\":"+std::to_string(node.pid)
+        +",\"keyboard_focus\":"+(node.focused?"true":"false")+'}';
+    if(closeInitialObservation=="null")closeInitialObservation=frame;
+    closeLastObservation=frame;return verified;
+}
+static HWND ownedCloseQuestionWindow(HWND main)
+{
+    HWND result=nullptr;
+    if(!owned(main)||IsWindowEnabled(main))return nullptr;
+    for(HWND window:windows()) {
+        if(window==main||windowTitle(window)!=L"Cadence Studio"||!IsWindowEnabled(window)
+            ||!cadence_owned_file_dialog_detail::ownedChain(window,main,targetPid))continue;
+        if(result){block("ambiguous_owned_score_close_confirmation");return nullptr;}
+        result=window;
+    }
+    return result;
+}
+static bool exactCloseQuestionName(const std::wstring& name)
+{
+    const std::wstring content=L"Voulez-vous enregistrer les modifications de la partition \"Cadence-QA-three-notes-transcription.mid\" avant la fermeture ? "
+        L"Vos modifications seront perdues si vous ne les sauvegardez pas. Enregistrer";
+    return name==content||name==L"Panneau Attention, "+content||name==L"Attention panel, "+content;
+}
+static bool collectCloseQuestionAnchors(IUIAutomation* a,HWND window)
+{
+    auto failed=[&](const char* operation,HRESULT hr){closeAnchorOperation=operation;closeAnchorResult=hr;return false;};
+    if(!context(window)||windowTitle(window)!=L"Cadence Studio"||IsWindowEnabled(mainWindow()))return failed("question.native_context",E_ACCESSDENIED);
+    ComPtr<IUIAutomationElement> root;HRESULT hr=a->ElementFromHandle(window,&root);
+    if(hr!=S_OK||!root)return failed("question.ElementFromHandle",hr==S_OK?E_POINTER:hr);
+    int rootPid=0;if((hr=root->get_CurrentProcessId(&rootPid))!=S_OK||rootPid!=static_cast<int>(targetPid))
+        return failed("question.root_process_scope",hr==S_OK?E_ACCESSDENIED:hr);
+    VARIANT type;VariantInit(&type);type.vt=VT_I4;type.lVal=UIA_ButtonControlTypeId;
+    ComPtr<IUIAutomationCondition> condition;
+    if((hr=a->CreatePropertyCondition(UIA_ControlTypePropertyId,type,&condition))!=S_OK)return failed("question.CreatePropertyCondition",hr);
+    ComPtr<IUIAutomationElementArray> rows;
+    if((hr=root->FindAll(TreeScope_Descendants,condition.Get(),&rows))!=S_OK||!rows)
+        return failed("question.FindAll_owned_dialog",hr==S_OK?E_POINTER:hr);
+    int count=0;if((hr=rows->get_Length(&count))!=S_OK||count<0||count>128)
+        return failed("question.element_bound",hr==S_OK?E_INVALIDARG:hr);
+    std::set<RuntimeId> seen;closeQuestionAnchors.clear();
+    for(int index=0;index<count&&context(window);++index) {
+        Node candidate;if((hr=rows->GetElement(index,&candidate.element))!=S_OK||!candidate.element)
+            return failed("question.GetElement",hr==S_OK?E_POINTER:hr);
+        if((hr=candidate.element->get_CurrentProcessId(&candidate.pid))!=S_OK)return failed("question.CurrentProcessId",hr);
+        if(candidate.pid!=static_cast<int>(targetPid))continue;
+        BSTR raw=nullptr;hr=candidate.element->get_CurrentName(&raw);candidate.name=text(raw);
+        if(hr!=S_OK)return failed("question.CurrentName",hr);
+        if(!exactCloseQuestionName(candidate.name))continue;
+        if((hr=candidate.element->get_CurrentControlType(&candidate.type))!=S_OK||candidate.type!=UIA_ButtonControlTypeId)
+            return failed("question.CurrentControlType",hr==S_OK?E_INVALIDARG:hr);
+        SnapshotState identity;candidate.runtimeId=runtimeIdentity(candidate.element.Get(),identity);
+        if(identity.incomplete||candidate.runtimeId.empty())return failed("question.RuntimeId",identity.failure);
+        if(!seen.insert(candidate.runtimeId).second)continue;
+        const auto remaining=std::chrono::duration_cast<std::chrono::milliseconds>(deadline-Clock::now()).count();
+        if(remaining<=0||!cadence_owned_midi_save_detail::belongsToDialog(a,candidate.element.Get(),window,targetPid,
+            GetTickCount64()+static_cast<ULONGLONG>(remaining)))return failed("question.owned_ancestry",E_ACCESSDENIED);
+        if(closeQuestionAnchors.size()>=8)return failed("question.anchor_bound",E_INVALIDARG);
+        closeQuestionAnchors.push_back(candidate);closeQuestionAnchorCount=static_cast<unsigned>(closeQuestionAnchors.size());
+    }
+    return !closeQuestionAnchors.empty()&&context(window);
+}
+static bool closeQuestionStillExact(IUIAutomation* a,HWND window,bool independentOfCurrentButton=false)
+{
+    closeStableQuestionAnchors=0;
+    if(window!=closeQuestionWindow||!context(window)||windowTitle(window)!=L"Cadence Studio"
+        ||IsWindowEnabled(mainWindow())||closeQuestionAnchors.empty())return false;
+    ComPtr<IUIAutomationElement> focused;
+    if(independentOfCurrentButton&&(a->GetFocusedElement(&focused)!=S_OK||!focused))return false;
+    for(const Node& candidate:closeQuestionAnchors) {
+        int pid=0;BSTR raw=nullptr;
+        if(candidate.element->get_CurrentProcessId(&pid)!=S_OK||pid!=static_cast<int>(targetPid))return false;
+        const HRESULT named=candidate.element->get_CurrentName(&raw);const auto name=text(raw);
+        if(named!=S_OK)return false;
+        if(!exactCloseQuestionName(name))continue; // A Save button's temporary announcement is not a stable question anchor.
+        SnapshotState identity;const auto id=runtimeIdentity(candidate.element.Get(),identity);
+        const auto remaining=std::chrono::duration_cast<std::chrono::milliseconds>(deadline-Clock::now()).count();
+        if(identity.incomplete||id!=candidate.runtimeId||remaining<=0
+            ||!cadence_owned_midi_save_detail::belongsToDialog(a,candidate.element.Get(),window,targetPid,
+                GetTickCount64()+static_cast<ULONGLONG>(remaining)))return false;
+        if(independentOfCurrentButton) {
+            BOOL same=FALSE;if(a->CompareElements(focused.Get(),candidate.element.Get(),&same)!=S_OK)return false;
+            if(same)continue; // Never qualify DontSave from its own transient announcement.
+        }
+        ++closeStableQuestionAnchors;
+    }
+    return (independentOfCurrentButton?closeStableQuestionAnchors==1:closeStableQuestionAnchors>0)&&context(window);
+}
+static bool homeFocusAfterControlledClose(IUIAutomation* a,HWND main)
+{
+    if(!context(main)||windowTitle(main)!=L"Cadence Studio")return false;
+    Node node;if(!observeCloseState(a,main,node,"observe_home_after_temporary_score_close"))return false;
+    if(!findReadyMainHome(std::vector<Node>{node}))return false;
+    expectFocus(main,node);return true;
+}
+static bool closeOnlyControlledImportedScore(IUIAutomation* a,const std::filesystem::path& out)
+{
+    const HWND main=mainWindow();
+    if(windowTitle(main)!=L"Cadence-QA-three-notes-transcription.mid - Cadence Studio"
+        ||!focusedSavedMidiScore(a))return block("temporary_named_score_not_proved_before_close");
+    Node initial;if(!observeCloseState(a,main,initial,"before_close_controlled_imported_score"))return false;
+    expectFocus(main,initial);
+    if(!importKey(a,out,main,VK_MENU,"open_application_menu_for_temporary_score_close"))return false;
+    if(!waitFocus(a,out,main,L"Fichier",UIA_ButtonControlTypeId,3)
+        ||!importKey(a,out,main,VK_RETURN,"open_file_menu_for_temporary_score_close"))return false;
+    bool requested=false;
+    for(unsigned step=0;step<24&&context(main);++step) {
+        if(focusExact(a,out,main,L"Fermer",UIA_MenuItemControlTypeId)) {
+            if(!observeFocus(a,main,L"Fermer",UIA_MenuItemControlTypeId))return false;
+            requested=importKey(a,out,main,VK_RETURN,"close_only_named_temporary_imported_score",false,true,
+                [&](){return mainWindow()==main&&context(main)
+                    &&windowTitle(main)==L"Cadence-QA-three-notes-transcription.mid - Cadence Studio";});break;
+        }
+        Node node;if(!liveImportFocus(a,main,node)||node.type!=UIA_MenuItemControlTypeId)return false;
+        expectFocus(main,node);
+        if(!importKey(a,out,main,VK_DOWN,"inspect_file_menu_until_exact_close_without_other_activation"))return false;
+    }
+    if(!requested)return block("exact_file_close_not_activated");
+    const auto until=std::min(deadline,Clock::now()+std::chrono::seconds(12));
+    while(alive()&&Clock::now()<until) {
+        if(context(main)&&windowTitle(main)==L"Cadence Studio") {
+            if(homeFocusAfterControlledClose(a,main)) {
+                temporaryScoreCloseGapActive=false;
+                importSnapshot(a,out,L"controlled-score-closed-home");
+                if(blockingObservationFailure||!homeFocusAfterControlledClose(a,main))return false;
+                controlledScoreClosedToHome=true;observedDialog=main;return true;
+            }
+            if(blockingObservationFailure)return false;
+            // Source F6 changes a navigation section. One bounded attempt only;
+            // Home must still be the exact focused role50013 before PASS.
+            if(closeHomeNavigation==0) {
+                Node node;if(observeCloseState(a,main,node,"before_home_navigation")) {
+                    expectFocus(main,node);++closeHomeNavigation;
+                    if(!importKey(a,out,main,VK_F6,"restore_home_focus_after_only_temporary_score_close"))return false;
+                }
+            }
+        } else if(!closeQuestionDiscarded) {
+            const HWND dialog=ownedCloseQuestionWindow(main);
+            if(dialog) {
+                Node info;
+                if(!observeCloseState(a,dialog,info,"temporary_score_close_confirmation")) {
+                    if(blockingObservationFailure)return false;
+                    Sleep(120);continue; // No input while the local proof is not ready.
+                }
+                if(!closeQuestionObserved) {
+                    if(info.type==UIA_ButtonControlTypeId&&(info.name==L"Enregistrer"
+                        ||info.name==L"Panneau Attention, Enregistrer"||info.name==L"Attention panel, Enregistrer")) {
+                        // StyledDialogView schedules accessibleInfo after500ms.
+                        // Wait for the exact question, without pressing Save.
+                        Sleep(120);continue;
+                    }
+                    if(info.type!=UIA_ButtonControlTypeId||!exactCloseQuestionName(info.name))
+                        return block("close_confirmation_question_for_exact_temporary_filename_not_proved");
+                    closeQuestionWindow=dialog;
+                    if(!collectCloseQuestionAnchors(a,dialog))return block("independent_owned_close_question_anchors_not_proved");
+                    closeQuestionObserved=true;
+                }
+                if(!closeQuestionStillExact(a,dialog))return block("close_confirmation_question_changed");
+                if(info.type==UIA_ButtonControlTypeId&&(info.name==L"Ne pas enregistrer"
+                    ||info.name==L"Panneau Attention, Ne pas enregistrer"||info.name==L"Attention panel, Ne pas enregistrer")) {
+                    expectFocus(dialog,info);
+                    if(!importKey(a,out,dialog,VK_RETURN,"discard_only_temporary_imported_notation_without_saving",false,false,
+                        [&](){return closeQuestionStillExact(a,dialog,true);}))return false;
+                    closeQuestionDiscarded=true;
+                } else {
+                    if(closeQuestionNavigation>=3)return block("exact_dont_save_not_focused_within_three_right_keys");
+                    expectFocus(dialog,info);++closeQuestionNavigation;
+                    if(!importKey(a,out,dialog,VK_RIGHT,"observe_source_ordered_confirmation_buttons_without_activation",false,false,
+                        [&](){return closeQuestionStillExact(a,dialog);}))return false;
+                }
+            }
+        }
+        if(blockingObservationFailure)return false;
+        Sleep(120);
+    }
+    return block(alive()?"temporary_score_close_did_not_restore_exact_home_before_deadline":"application_exited_while_only_score_should_close");
+}
+
 static bool finalLocalState(IUIAutomation* a,const std::wstring& phase)
 {
+    if(phase==L"close-saved-midi-score")return controlledScoreClosedToHome&&homeFocusAfterControlledClose(a,mainWindow());
     if(phase==L"save-open-wav")return savedMidiObserved&&savedScoreFocusObserved&&focusedSavedMidiScore(a);
     if(phase==L"open-omr"||phase==L"open-wav"||phase==L"analyze-wav") {
         const bool omr=phase==L"open-omr";
@@ -705,7 +905,7 @@ int wmain(int argc,wchar_t** argv)
         else if(key==L"--fixture-wav")wave=argv[i+1];
         else if(key==L"--midi-output")midiOutput=argv[i+1];else return 1;
     }
-    const std::vector<std::wstring> phases{L"open-omr",L"close-omr",L"open-wav",L"close-wav",L"analyze-wav",L"close-ready-wav",L"save-open-wav"};
+    const std::vector<std::wstring> phases{L"open-omr",L"close-omr",L"open-wav",L"close-wav",L"analyze-wav",L"close-ready-wav",L"save-open-wav",L"close-saved-midi-score"};
     if(!targetPid||output.empty()||!std::filesystem::is_directory(output)||std::find(phases.begin(),phases.end(),phase)==phases.end())return 1;
     if(phase==L"analyze-wav"&&(waveRoot.empty()||wave.empty()))return 1;
     if(phase==L"save-open-wav"&&(waveRoot.empty()||midiOutput.empty()))return 1;
@@ -725,6 +925,7 @@ int wmain(int argc,wchar_t** argv)
             else if(phase==L"analyze-wav")passed=analyzeWave(a.Get(),output,waveRoot,wave);
             else if(phase==L"close-ready-wav")passed=closeReadyWave(a.Get(),output);
             else if(phase==L"save-open-wav")passed=saveAndOpenWaveDraft(a.Get(),output,waveRoot,midiOutput);
+            else if(phase==L"close-saved-midi-score")passed=closeOnlyControlledImportedScore(a.Get(),output);
             importSnapshot(a.Get(),output,L"phase-final");
             if(blockingObservationFailure){passed=false;block("phase_snapshot_blocking_failure");}
             if(passed){
@@ -732,7 +933,7 @@ int wmain(int argc,wchar_t** argv)
                 if(!localFinalStateVerified){passed=false;block("phase_final_local_state_not_proved");}
             }
         }
-        a.Reset();bounded.Reset();CoUninitialize();
+        closeQuestionAnchors.clear();a.Reset();bounded.Reset();CoUninitialize();
     }
     if(!passed&&blockedGuard.empty()) {
         if(FAILED(initialized))blockedGuard="COM_initialization";
@@ -781,6 +982,18 @@ int wmain(int argc,wchar_t** argv)
         <<",\"saved_score_navigation_keys\":"<<savedScoreNavigationKeys
         <<",\"saved_score_first_refusal\":"<<firstSavedScoreRefusal
         <<",\"saved_score_last_refusal\":"<<lastSavedScoreRefusal
+        <<",\"controlled_score_closed_to_home\":"<<(controlledScoreClosedToHome?"true":"false")
+        <<",\"close_confirmation_observed\":"<<(closeQuestionObserved?"true":"false")
+        <<",\"close_confirmation_discarded\":"<<(closeQuestionDiscarded?"true":"false")
+        <<",\"close_confirmation_navigation_keys\":"<<closeQuestionNavigation
+        <<",\"close_question_anchor_count\":"<<closeQuestionAnchorCount
+        <<",\"close_stable_question_anchors\":"<<closeStableQuestionAnchors
+        <<",\"close_anchor_operation\":\""<<closeAnchorOperation<<"\""
+        <<",\"close_anchor_hresult\":"<<static_cast<long>(closeAnchorResult)
+        <<",\"close_home_navigation_keys\":"<<closeHomeNavigation
+        <<",\"close_initial_observation\":"<<closeInitialObservation
+        <<",\"close_last_observation\":"<<closeLastObservation
+        <<",\"temporary_score_close_gap_active\":"<<(temporaryScoreCloseGapActive?"true":"false")
         <<",\"MIDI_saved_or_opened\":"<<(passed&&savedMidiObserved&&savedScoreFocusObserved?"true":"false")
         <<",\"score_editing\":false,\"listening\":false}";
     CloseHandle(targetProcess);return passed&&!keyboardFailure?0:2;
