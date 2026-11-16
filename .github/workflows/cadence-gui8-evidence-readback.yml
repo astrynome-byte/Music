@@ -1,4 +1,4 @@
-name: Cadence failed GUI8 main-readiness original evidence DATAONLY
+name: Cadence failed score2 original native phase evidence DATAONLY
 on:
   push:
     branches: [cadence-studio/windows-build]
@@ -7,7 +7,7 @@ permissions:
   contents: read
   actions: read
 jobs:
-  read-original-gui8:
+  read-original-score2:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
@@ -15,14 +15,14 @@ jobs:
         with:
           persist-credentials: false
           ref: ${{ github.sha }}
-      - name: Read only hash-pinned359KB failed GUI8 main-readiness JSON evidence; never execute its payload
+      - name: Read hash-pinned failed score2 phase JSON and screenshot originals only
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 -I .cadence-studio/gui8-evidence-readback/read_gui8.py --output "$RUNNER_TEMP/gui8-dataonly"
+        run: python3 -I .cadence-studio/gui8-evidence-readback/read_gui8.py --output "$RUNNER_TEMP/score2-dataonly"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cadence-GUI8-dataonly-${{ github.run_id }}
-          path: ${{ runner.temp }}/gui8-dataonly/readback-receipt.json
+          name: cadence-score2-dataonly-${{ github.run_id }}
+          path: ${{ runner.temp }}/score2-dataonly/readback-receipt.json
           retention-days: 7
           if-no-files-found: warn

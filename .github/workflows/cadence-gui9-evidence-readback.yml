@@ -1,0 +1,28 @@
+name: Cadence failed GUI9 main-readiness original evidence DATAONLY
+on:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths: ['.cadence-studio/gui9-evidence-readback/**', '.github/workflows/cadence-gui9-evidence-readback.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  read-original-gui9:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - name: Read only hash-pinned383KB failed GUI9 main-readiness JSON evidence; never execute its payload
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -I .cadence-studio/gui9-evidence-readback/read_gui9.py --output "$RUNNER_TEMP/gui9-dataonly"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cadence-GUI9-dataonly-${{ github.run_id }}
+          path: ${{ runner.temp }}/gui9-dataonly/readback-receipt.json
+          retention-days: 7
+          if-no-files-found: warn
