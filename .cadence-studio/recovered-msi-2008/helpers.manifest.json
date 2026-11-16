@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "scope": "Dedicated public-MSI administrative extraction and complete runtime comparison; no application execution",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 20,
+      "sha256": "e97602ab9cac70102245345c5ab0fc9830df8b17f1072b188265a662a3a547ae"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1817,
+      "sha256": "6ada6262267a45579abd91c1d419ff9a4133af46f15208522b9ce59bc65283c1"
+    },
+    {
+      "path": "Run-RecoveredMsiQa.ps1",
+      "bytes": 7856,
+      "sha256": "a18e690098711b6d30af26138585c5e65941d6078ec7ffaf4fb201da9df60f0e"
+    },
+    {
+      "path": "Recover-RuntimeFromMsi.ps1",
+      "bytes": 4886,
+      "sha256": "fd16c62ec6f9cdcf354911132506b5090a17bbb0bdb924c4418668054a40d82f"
+    },
+    {
+      "path": "Compare-RecoveredRuntime.py",
+      "bytes": 4360,
+      "sha256": "9d4747a42ea67da688e13109ace71ff0a42da2d1be6690a243d16953d6a4dea5"
+    },
+    {
+      "path": "cadence-recovered-msi-2008.yml",
+      "bytes": 1881,
+      "sha256": "446947dfca99b231eaeac900edb204f397ae820fa560fbfc053d992766a78a34"
+    },
+    {
+      "path": "runtime-inventory.MEASURED.json",
+      "bytes": 530785,
+      "sha256": "7b3b721f01b0a57610b9dcc1cd72bd15e50747dcd751fcd5e31cfbb96a81a4a4"
+    }
+  ]
+}

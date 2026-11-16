@@ -1,0 +1,44 @@
+# SPDX-License-Identifier: GPL-3.0-only
+name: Cadence public MSI2008 runtime recovery and complete comparison
+on:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths: ['.cadence-studio/recovered-msi-2008/target.json']
+permissions:
+  contents: read
+concurrency:
+  group: cadence-recovered-msi-2008-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  recover-and-compare-only:
+    if: github.repository == 'astrynome-byte/Music'
+    runs-on: windows-2022
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: driver
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Require exact reviewed activation before downloads or installer operation
+        run: '& "$env:GITHUB_WORKSPACE/driver/.cadence-studio/recovered-msi-2008/Run-RecoveredMsiQa.ps1" -ValidateOnly'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Download public MSI anonymously extract administratively and compare all2712 files
+        run: '& "$env:GITHUB_WORKSPACE/driver/.cadence-studio/recovered-msi-2008/Run-RecoveredMsiQa.ps1"'
+      - name: Remove only owned temporary MSI and administrative runtime image
+        if: always()
+        run: '& "$env:GITHUB_WORKSPACE/driver/.cadence-studio/recovered-msi-2008/Run-RecoveredMsiQa.ps1" -CleanupOnly'
+      - name: Retain small runtime provenance comparison and administrative extraction log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-public-msi2008-runtime-recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cadence-recovered-msi-2008-${{ github.run_id }}-${{ github.run_attempt }}/evidence/**
+          retention-days: 14
+          if-no-files-found: warn
