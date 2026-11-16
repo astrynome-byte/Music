@@ -51,7 +51,7 @@
   "authentication_receipt_sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933",
   "full_qualification_complete": false,
   "MSI": null,
-  "harness_note": "The previous complete SaveFixture candidate failed before GUI execution at observer MSVC compilation (run43971956911/job133666098457, C2664 SetValue requires BSTR). This retry changes only that SDK allocation contract using the already exercised WAV helper pattern. No application source/EXE/MSI, musical logic, dialog actions or guards changed. Save/open and exact MIDI/native MusicXML timings remain unqualified until an actual successful Windows run. Close only the exact temporary imported MIDI score via File/Close; conditionally discard its independently proved save question; verify exact Home, then normal application close and real native export. Observed Windows File/Close menu item name includes both shortcuts; match only exact Fermer Ctrl+F4; Ctrl+W.",
+  "harness_note": "The previous complete SaveFixture candidate failed before GUI execution at observer MSVC compilation (run43971956911/job133666098457, C2664 SetValue requires BSTR). This retry changes only that SDK allocation contract using the already exercised WAV helper pattern. No application source/EXE/MSI, musical logic, dialog actions or guards changed. Save/open and exact MIDI/native MusicXML timings remain unqualified until an actual successful Windows run. Close only the exact temporary imported MIDI score via File/Close; conditionally discard its independently proved save question; verify exact Home, then normal application close and real native export. Observed Windows File/Close menu item name includes both shortcuts; match only exact Fermer Ctrl+F4; Ctrl+W. Capture only the actually focused exact question as a candidate; no FindAll. Before DontSave it must independently retain canonical full question text and differ from the focused button.",
   "harness_evidence": {
     "GUI_failed_run": 43427743544,
     "GUI_failed_job": 131893253451,
@@ -223,7 +223,7 @@
     "analysis_fixture_actual_driver_prefix": "e7ffe1a3",
     "current_MIDI_save_extension_requested": true,
     "current_MIDI_save_extension_actual_Windows_validated": false,
-    "current_MIDI_save_extension_manifest_sha256": "cc4005da35e26f2ae9cae1ea3c8d9612d2e9e2599304fdaa1193b5bee46ff5a4",
+    "current_MIDI_save_extension_manifest_sha256": "a736fca0ab89f2f4b049ec4e660fcc6fb4ea681834da5a5baeceb10e0c691250",
     "current_MIDI_save_extension_expected_MIDI": [
       64,
       67,
@@ -269,6 +269,14 @@
     "MIDI_close_first_actual_MenuItem_name": "Fermer Ctrl+F4; Ctrl+W",
     "MIDI_close_first_close_command_sent": false,
     "MIDI_close_first_DontSave_sent": false,
-    "MIDI_close_first_native_XML_comparison": false
+    "MIDI_close_first_native_XML_comparison": false,
+    "MIDI_close_question_observed_run": 43978017627,
+    "MIDI_close_question_observed_job": 133686909049,
+    "MIDI_close_question_observed_driver": "15ab578c556b5a8142d50fa74e3f71cd6766dde8",
+    "MIDI_close_question_observed_native_title": "Cadence Studio",
+    "MIDI_close_question_observed_exact_focused_type": 50000,
+    "MIDI_close_question_observed_exact_file": "Cadence-QA-three-notes-transcription.mid",
+    "MIDI_close_question_previous_anchor_refusal": "question.element_bound/E_INVALIDARG on enumeration; DontSave not sent; raw enumeration count not recorded",
+    "MIDI_close_question_next_anchor_mode": "Already focused exact question element only; no enumeration; full canonical text/RuntimeId/owner revalidated and distinct from DontSave at final callback"
   }
 }
