@@ -692,6 +692,7 @@ static std::vector<Node> closeQuestionAnchors;
 static unsigned closeStableQuestionAnchors=0,closeQuestionAnchorCount=0;
 static std::string closeAnchorOperation;
 static HRESULT closeAnchorResult=S_OK;
+static std::wstring closeAnchorLastName;
 static HWND closeQuestionWindow=nullptr;
 
 static bool observeCloseState(IUIAutomation* a,HWND window,Node& node,const char* stage)
@@ -723,43 +724,29 @@ static bool exactCloseQuestionName(const std::wstring& name)
         L"Vos modifications seront perdues si vous ne les sauvegardez pas. Enregistrer";
     return name==content||name==L"Panneau Attention, "+content||name==L"Attention panel, "+content;
 }
-static bool collectCloseQuestionAnchors(IUIAutomation* a,HWND window)
+static bool collectCloseQuestionAnchors(IUIAutomation* a,HWND window,const Node& info)
 {
     auto failed=[&](const char* operation,HRESULT hr){closeAnchorOperation=operation;closeAnchorResult=hr;return false;};
-    if(!context(window)||windowTitle(window)!=L"Cadence Studio"||IsWindowEnabled(mainWindow()))return failed("question.native_context",E_ACCESSDENIED);
-    ComPtr<IUIAutomationElement> root;HRESULT hr=a->ElementFromHandle(window,&root);
-    if(hr!=S_OK||!root)return failed("question.ElementFromHandle",hr==S_OK?E_POINTER:hr);
-    int rootPid=0;if((hr=root->get_CurrentProcessId(&rootPid))!=S_OK||rootPid!=static_cast<int>(targetPid))
-        return failed("question.root_process_scope",hr==S_OK?E_ACCESSDENIED:hr);
-    VARIANT type;VariantInit(&type);type.vt=VT_I4;type.lVal=UIA_ButtonControlTypeId;
-    ComPtr<IUIAutomationCondition> condition;
-    if((hr=a->CreatePropertyCondition(UIA_ControlTypePropertyId,type,&condition))!=S_OK)return failed("question.CreatePropertyCondition",hr);
-    ComPtr<IUIAutomationElementArray> rows;
-    if((hr=root->FindAll(TreeScope_Descendants,condition.Get(),&rows))!=S_OK||!rows)
-        return failed("question.FindAll_owned_dialog",hr==S_OK?E_POINTER:hr);
-    int count=0;if((hr=rows->get_Length(&count))!=S_OK||count<0||count>128)
-        return failed("question.element_bound",hr==S_OK?E_INVALIDARG:hr);
-    std::set<RuntimeId> seen;closeQuestionAnchors.clear();
-    for(int index=0;index<count&&context(window);++index) {
-        Node candidate;if((hr=rows->GetElement(index,&candidate.element))!=S_OK||!candidate.element)
-            return failed("question.GetElement",hr==S_OK?E_POINTER:hr);
-        if((hr=candidate.element->get_CurrentProcessId(&candidate.pid))!=S_OK)return failed("question.CurrentProcessId",hr);
-        if(candidate.pid!=static_cast<int>(targetPid))continue;
-        BSTR raw=nullptr;hr=candidate.element->get_CurrentName(&raw);candidate.name=text(raw);
-        if(hr!=S_OK)return failed("question.CurrentName",hr);
-        if(!exactCloseQuestionName(candidate.name))continue;
-        if((hr=candidate.element->get_CurrentControlType(&candidate.type))!=S_OK||candidate.type!=UIA_ButtonControlTypeId)
-            return failed("question.CurrentControlType",hr==S_OK?E_INVALIDARG:hr);
-        SnapshotState identity;candidate.runtimeId=runtimeIdentity(candidate.element.Get(),identity);
-        if(identity.incomplete||candidate.runtimeId.empty())return failed("question.RuntimeId",identity.failure);
-        if(!seen.insert(candidate.runtimeId).second)continue;
-        const auto remaining=std::chrono::duration_cast<std::chrono::milliseconds>(deadline-Clock::now()).count();
-        if(remaining<=0||!cadence_owned_midi_save_detail::belongsToDialog(a,candidate.element.Get(),window,targetPid,
-            GetTickCount64()+static_cast<ULONGLONG>(remaining)))return failed("question.owned_ancestry",E_ACCESSDENIED);
-        if(closeQuestionAnchors.size()>=8)return failed("question.anchor_bound",E_INVALIDARG);
-        closeQuestionAnchors.push_back(candidate);closeQuestionAnchorCount=static_cast<unsigned>(closeQuestionAnchors.size());
-    }
-    return !closeQuestionAnchors.empty()&&context(window);
+    if(!context(window)||windowTitle(window)!=L"Cadence Studio"||IsWindowEnabled(mainWindow())
+        ||!info.element||info.pid!=static_cast<int>(targetPid)||info.type!=UIA_ButtonControlTypeId
+        ||!info.focused||!info.enabled||info.offscreen||!exactCloseQuestionName(info.name)||info.runtimeId.empty())
+        return failed("question.capture_current_owned_element_context",E_ACCESSDENIED);
+    ComPtr<IUIAutomationElement> current;BOOL same=FALSE;
+    HRESULT hr=a->GetFocusedElement(&current);
+    if(hr!=S_OK||!current)return failed("question.capture_GetFocusedElement",hr==S_OK?E_POINTER:hr);
+    hr=a->CompareElements(current.Get(),info.element.Get(),&same);
+    if(hr!=S_OK||!same)return failed("question.capture_CompareElements",hr==S_OK?E_ACCESSDENIED:hr);
+    SnapshotState identity;const auto id=runtimeIdentity(info.element.Get(),identity);
+    if(identity.incomplete||id!=info.runtimeId)return failed("question.capture_RuntimeId",identity.incomplete?identity.failure:E_ACCESSDENIED);
+    const auto remaining=std::chrono::duration_cast<std::chrono::milliseconds>(deadline-Clock::now()).count();
+    if(remaining<=0||!cadence_owned_midi_save_detail::belongsToDialog(a,info.element.Get(),window,targetPid,
+        GetTickCount64()+static_cast<ULONGLONG>(remaining)))return failed("question.capture_owned_ancestry",E_ACCESSDENIED);
+    // Capture the exact element already proved by local focus, never enumerate
+    // unrelated controls. If it was merely Save announcing the question, its
+    // name will revert after Right and the independent pre-DontSave proof fails.
+    closeQuestionAnchors.clear();closeQuestionAnchors.push_back(info);closeQuestionAnchorCount=1;
+    closeAnchorOperation="question.capture_current_owned_element";closeAnchorResult=S_OK;closeAnchorLastName=info.name;
+    return context(window);
 }
 static bool closeQuestionStillExact(IUIAutomation* a,HWND window,bool independentOfCurrentButton=false)
 {
@@ -772,6 +759,7 @@ static bool closeQuestionStillExact(IUIAutomation* a,HWND window,bool independen
         int pid=0;BSTR raw=nullptr;
         if(candidate.element->get_CurrentProcessId(&pid)!=S_OK||pid!=static_cast<int>(targetPid))return false;
         const HRESULT named=candidate.element->get_CurrentName(&raw);const auto name=text(raw);
+        closeAnchorOperation="question.recheck_CurrentName";closeAnchorResult=named;closeAnchorLastName=name;
         if(named!=S_OK)return false;
         if(!exactCloseQuestionName(name))continue; // A Save button's temporary announcement is not a stable question anchor.
         SnapshotState identity;const auto id=runtimeIdentity(candidate.element.Get(),identity);
@@ -785,7 +773,9 @@ static bool closeQuestionStillExact(IUIAutomation* a,HWND window,bool independen
         }
         ++closeStableQuestionAnchors;
     }
-    return (independentOfCurrentButton?closeStableQuestionAnchors==1:closeStableQuestionAnchors>0)&&context(window);
+    const bool valid=(independentOfCurrentButton?closeStableQuestionAnchors==1:closeStableQuestionAnchors>0)&&context(window);
+    closeAnchorOperation=valid?"question.canonical_owned_anchor_verified":"question.no_stable_independent_canonical_anchor";
+    closeAnchorResult=valid?S_OK:E_ACCESSDENIED;return valid;
 }
 static bool homeFocusAfterControlledClose(IUIAutomation* a,HWND main)
 {
@@ -853,7 +843,7 @@ static bool closeOnlyControlledImportedScore(IUIAutomation* a,const std::filesys
                     if(info.type!=UIA_ButtonControlTypeId||!exactCloseQuestionName(info.name))
                         return block("close_confirmation_question_for_exact_temporary_filename_not_proved");
                     closeQuestionWindow=dialog;
-                    if(!collectCloseQuestionAnchors(a,dialog))return block("independent_owned_close_question_anchors_not_proved");
+                    if(!collectCloseQuestionAnchors(a,dialog,info))return block("independent_owned_close_question_anchors_not_proved");
                     closeQuestionObserved=true;
                 }
                 if(!closeQuestionStillExact(a,dialog))return block("close_confirmation_question_changed");
@@ -990,6 +980,8 @@ int wmain(int argc,wchar_t** argv)
         <<",\"close_stable_question_anchors\":"<<closeStableQuestionAnchors
         <<",\"close_anchor_operation\":\""<<closeAnchorOperation<<"\""
         <<",\"close_anchor_hresult\":"<<static_cast<long>(closeAnchorResult)
+        <<",\"close_anchor_last_name\":"<<jsonQuoted(closeAnchorLastName)
+        <<",\"close_anchor_capture_mode\":\"already-proved-focused-question-element-no-enumeration\""
         <<",\"close_home_navigation_keys\":"<<closeHomeNavigation
         <<",\"close_initial_observation\":"<<closeInitialObservation
         <<",\"close_last_observation\":"<<closeLastObservation
