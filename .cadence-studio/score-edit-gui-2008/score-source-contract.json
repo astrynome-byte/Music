@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "scope": "Read-only inspection of exact original application source; no Windows execution or success claim",
+  "source_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+  "source_tree": "c5452043983a048ef0aeef085615af903de3f5b0",
+  "ci_commit": "95cebb22fe6cbde22919c94f2b480bd14c3eb8de",
+  "expected_midi": [
+    72,
+    74,
+    76,
+    77
+  ],
+  "keyboard_sequence": [
+    "CtrlHome",
+    "N",
+    "5",
+    "C",
+    "D",
+    "E",
+    "F",
+    "Escape",
+    "CtrlS",
+    "CtrlZ",
+    "CtrlS",
+    "CtrlY",
+    "CtrlS"
+  ],
+  "excerpts": [
+    {
+      "source_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+      "path": "src/engraving/editing/cmd.cpp",
+      "file_sha256": "17e45ffa320121bbd8beab05b3b93c9a966284f4f714e7058a7c8053ea4768d3",
+      "start_line": 5100,
+      "end_line": 5157,
+      "reason": "For the first pitched note after the initial treble clef at tick0, line2pitch(4,clef,Key::C) selects C72; later letters choose nearest octave.",
+      "excerpt": "\n    static const int tab[] = { 0, 2, 4, 5, 7, 9, 11 };\n\n    // if adding notes, add above the upNote of the current chord\n    EngravingItem* el = selection().element();\n    if (addFlag && el && el->isNote()) {\n        Chord* chord = toNote(el)->chord();\n        Note* n      = chord->upNote();\n        int tpc = n->tpc();\n        octave = (n->epitch() - int(tpc2alter(tpc))) / PITCH_DELTA_OCTAVE;\n        if (note <= tpc2step(tpc)) {\n            octave++;\n        }\n    } else {\n        int curPitch = 60;\n        if (is.segment()) {\n            Staff* staff = Score::staff(is.track() / VOICES);\n            Segment* seg = is.segment()->prev1(SegmentType::ChordRest | SegmentType::Clef | SegmentType::HeaderClef);\n            while (seg) {\n                if (seg->isChordRestType()) {\n                    EngravingItem* p = seg->element(is.track());\n                    if (p && p->isChord()) {\n                        Note* n = toChord(p)->downNote();\n                        // forget any accidental and/or adjustment due to key signature\n                        curPitch = n->epitch() - static_cast<int>(tpc2alter(n->tpc()));\n                        break;\n                    }\n                } else if (seg->isClefType() || seg->isHeaderClefType()) {\n                    EngravingItem* p = seg->element(trackZeroVoice(is.track()));                  // clef on voice 1\n                    if (p && p->isClef()) {\n                        Clef* clef = toClef(p);\n                        // check if it's an actual change or just a courtesy\n                        ClefType ctb = staff->clef(clef->tick() - Fraction::eps());\n                        if (ctb != clef->clefType() || clef->tick().isZero()) {\n                            curPitch = line2pitch(4, clef->clefType(), Key::C);                     // C 72 for treble clef\n                            break;\n                        }\n                    }\n                }\n                seg = seg->prev1MM(SegmentType::ChordRest | SegmentType::Clef | SegmentType::HeaderClef);\n            }\n            octave = curPitch / 12;\n        }\n\n        int delta = octave * 12 + tab[note] - curPitch;\n        if (delta > 6) {\n            --octave;\n        } else if (delta < -6) {\n            ++octave;\n        }\n    }\n\n    out.step = octave * 7 + note;\n    return true;\n}\n\n//---------------------------------------------------------\n//   cmdAddPitch"
+    },
+    {
+      "source_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+      "path": "src/engraving/accessibility/accessibleroot.cpp",
+      "file_sha256": "9c69ff36e63aa16425b54f5efe0022a27a451a0027b3f78f1be198f4e180aa65",
+      "start_line": 97,
+      "end_line": 110,
+      "reason": "Score root role Panel and localized name Score plus score filename, with English profile.",
+      "excerpt": "const IAccessible* AccessibleRoot::accessibleParent() const\n{\n    return accessibilityController()->accessibleRoot();\n}\n\nIAccessible::Role AccessibleRoot::accessibleRole() const\n{\n    return IAccessible::Panel;\n}\n\nQString AccessibleRoot::accessibleName() const\n{\n    return muse::qtrc(\"engraving\", \"Score\") + \" \" + element()->score()->name();\n}"
+    }
+  ]
+}

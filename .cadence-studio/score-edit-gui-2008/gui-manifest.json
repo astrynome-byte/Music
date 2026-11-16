@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "scope": "External Windows SDK observer and owned GUI runner for exact published Cadence2008 executable",
+  "source_commit": "a2b7abaf045a8f3cb84ec2953d9e0e51b9e78903",
+  "source_tree": "c5452043983a048ef0aeef085615af903de3f5b0",
+  "executable_sha256": "13cd4e6d2f408d2e64b187d4c3bff1188ff4192ac7b670d3a12373bbeb37f6cd",
+  "application_rebuilt": false,
+  "MSI_modified": false,
+  "Windows_GUI_executed_during_preparation": false,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "CadenceProfileScope.py",
+      "bytes": 34344,
+      "sha256": "60b6bb2353467cf338e2c671151af37d3fd36d76748e52cda6a1e3ab22c4c27c"
+    },
+    {
+      "path": "Check-StageInventory.py",
+      "bytes": 1282,
+      "sha256": "e34a6cd64af2f06d5c5503a1de3d6cfdd70f3b7744d40ccbc4f4e0c2e1db0ba9"
+    },
+    {
+      "path": "OwnProcessJob.psm1",
+      "bytes": 21255,
+      "sha256": "e24bb615520a35091898f43728e08d5d6152fd69032d57c497e3cda6eb234b77"
+    },
+    {
+      "path": "Owned-WindowEvidence.ps1",
+      "bytes": 8859,
+      "sha256": "df3932ef9cc58674bf770ff886264d337d2fce3bb0eec3291a8ef27ffcc0742c"
+    },
+    {
+      "path": "Print-ScoreEditEvidence.ps1",
+      "bytes": 1021,
+      "sha256": "e06e3932fb23b0fd6289123ff2fdd9a58235381eddcc259f9e9847d427b8ce19"
+    },
+    {
+      "path": "Read-ActualImportTarget.ps1",
+      "bytes": 6280,
+      "sha256": "96b7b7f23cfdf97d0a505a512f5664850c19ee1dcef86a2dcaeecf95d3684ce6"
+    },
+    {
+      "path": "Restore-RetainedRuntime.py",
+      "bytes": 8216,
+      "sha256": "187e490dd3ee1a3fe1a8aa87290da2b7d6a2693baea2fa167c63c9115e8cf35b"
+    },
+    {
+      "path": "Run-ScoreEditGui.ps1",
+      "bytes": 17091,
+      "sha256": "14c8b4f7040d8b86c545c996894e4a0ff0b736b8fcdadd0bc941ec1435886fc0"
+    },
+    {
+      "path": "fixtures/LICENSE.txt",
+      "bytes": 354,
+      "sha256": "8f696575bbb2c9550024dc997b9a7e1ff7434f312ab002037cfa982ac345c11f"
+    },
+    {
+      "path": "fixtures/empty-piano.musicxml",
+      "bytes": 886,
+      "sha256": "78a31f116570b6cdb88fd296af61b739f3d91580181c9b7cf43f9af02c1d6de7"
+    },
+    {
+      "path": "native/ObservationGraph.h",
+      "bytes": 2016,
+      "sha256": "962ff67c78dff88acd4d0188ef3c73feecffde0757f47bb5da82af2de65b57cd"
+    },
+    {
+      "path": "native/OwnedKeyboard.h",
+      "bytes": 9043,
+      "sha256": "27431ad585fbf10627573db63f432743d4423011cff009bedd00361fd60ddfc3"
+    },
+    {
+      "path": "native/OwnedScoreKeyboard.h",
+      "bytes": 3302,
+      "sha256": "b2dc5d60b029238dd2d7d16ff3fbb381dde8882287be5c4e22912b0fd437f80b"
+    },
+    {
+      "path": "native/ScoreEditProbe.cpp",
+      "bytes": 26839,
+      "sha256": "69cbe715e3c513506728f139f2f811bff5dfd38f06475db33627c1b55bf0c4c6"
+    },
+    {
+      "path": "profile-source-contract.json",
+      "bytes": 3310,
+      "sha256": "0023f8d7510c89429dea85cda35d803175b3434532cf14aecaf793ded5663a9e"
+    },
+    {
+      "path": "read_existing_stage.py",
+      "bytes": 15356,
+      "sha256": "9bdcbc4732057fc50f8ba5387578d68d292682864a21938b717d29df662875ae"
+    },
+    {
+      "path": "score-source-contract.json",
+      "bytes": 4258,
+      "sha256": "5c3bc35d7cd4c7a7b1a7ed337688e2feedc6ec060bdfc1f7029a2863d8edbcff"
+    },
+    {
+      "path": "stage-only-provenance.json",
+      "bytes": 5997,
+      "sha256": "7d3dc31520d9421e3340262d9fcd98b478890599460cf0ff8117bb4d81844db5"
+    },
+    {
+      "path": "stage-only-receipt.expected.json",
+      "bytes": 2480,
+      "sha256": "83326738a0ce85a82e3ff3cec6609413c563c25cae77b1ffd2634b9d21cb8933"
+    },
+    {
+      "path": "verify_score_edits.py",
+      "bytes": 3920,
+      "sha256": "09a393f6b1e05004a04605f990f4d33deb05043af6330d2623e3c14ce55c6230"
+    },
+    {
+      "path": "verify_stage_only_producer.py",
+      "bytes": 8654,
+      "sha256": "d2aa8dfb9ae6c8ae09695de3db1f43d3a97a039609b740a7f9d90f2b958158da"
+    },
+    {
+      "path": "write_stage_only_receipt.py",
+      "bytes": 7650,
+      "sha256": "9ae88028a059e6ad5b13892f60713f121740220b27c3ac1f14d863da1968e683"
+    }
+  ]
+}

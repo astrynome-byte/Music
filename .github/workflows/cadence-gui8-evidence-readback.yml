@@ -1,0 +1,28 @@
+name: Cadence failed GUI8 main-readiness original evidence DATAONLY
+on:
+  push:
+    branches: [cadence-studio/windows-build]
+    paths: ['.cadence-studio/gui8-evidence-readback/**', '.github/workflows/cadence-gui8-evidence-readback.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  read-original-gui8:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - name: Read only hash-pinned359KB failed GUI8 main-readiness JSON evidence; never execute its payload
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -I .cadence-studio/gui8-evidence-readback/read_gui8.py --output "$RUNNER_TEMP/gui8-dataonly"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cadence-GUI8-dataonly-${{ github.run_id }}
+          path: ${{ runner.temp }}/gui8-dataonly/readback-receipt.json
+          retention-days: 7
+          if-no-files-found: warn

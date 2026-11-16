@@ -1,0 +1,137 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Publication alone is inactive: a separately reviewed target.json activates it.
+name: 'Cadence Studio: real 2008 score edit save undo redo'
+on:
+  push:
+    branches: ['cadence-studio/windows-build']
+    paths: ['.cadence-studio/score-edit-gui-2008/target.json']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cadence-score-edit-gui-2008-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  actual-score-edit-save-undo-redo:
+    if: github.repository == 'astrynome-byte/Music'
+    runs-on: windows-2022
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Require active target metadata and closed helper manifest before restoration
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/score-edit-gui-2008"
+          $selection = "$env:GITHUB_WORKSPACE/.cadence-studio/combined-2008-source"
+          . "$helper/Read-ActualImportTarget.ps1"
+          $target = Read-ActualImportTarget "$helper/target.json" $selection -MetadataOnly
+          $manifestPath = "$helper/gui-manifest.json"
+          if ((Get-FileHash -LiteralPath $manifestPath -Algorithm SHA256).Hash.ToLowerInvariant() -cne $target.gui_manifest_sha256) { throw 'Reviewed helper manifest differs.' }
+          $manifest = Get-Content -LiteralPath $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
+          if ($manifest.schema_version -ne 1 -or $manifest.application_rebuilt -isnot [bool] -or $manifest.application_rebuilt) { throw 'Independent helper manifest required.' }
+          $expected = @('gui-manifest.json','target.json')
+          foreach ($entry in $manifest.files) {
+            if ($entry.path -cnotmatch '^[A-Za-z0-9_.\-/]+$' -or $entry.path.Contains('..') -or $entry.path -in $expected) { throw 'Unsafe or duplicate helper path.' }
+            $path = Join-Path $helper $entry.path
+            $item = Get-Item -LiteralPath $path -Force
+            if ($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -or $item.Length -ne $entry.bytes -or
+                (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() -cne $entry.sha256) { throw "Reviewed helper bytes differ: $($entry.path)" }
+            $expected += $entry.path
+          }
+          $actual = @(Get-ChildItem -LiteralPath $helper -Recurse -Force | ForEach-Object {
+            if ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'Helper reparse entries refused.' }
+            if (-not $_.PSIsContainer) { [IO.Path]::GetRelativePath($helper,$_.FullName).Replace('\','/') }
+          })
+          if (@(Compare-Object ($expected | Sort-Object) ($actual | Sort-Object)).Count) { throw 'Closed helper file extent differs.' }
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Restore and authenticate the exact frozen binary source inputs as data
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/score-edit-gui-2008"
+          $selection = "$env:GITHUB_WORKSPACE/.cadence-studio/combined-2008-source"
+          $pins = @{
+            'Restore-Binaries.ps1' = 'c42225dd56553edf087fd65a99bf666e2cfb8e0dfc492ac25039c5dabb282bd8'
+            'binary-parts.json' = 'c83c5cd09c63e378339e63d36f758c32a42968f9c35c09873d5b6b7e215fba6b'
+          }
+          foreach ($name in $pins.Keys) {
+            $file = Get-Item -LiteralPath (Join-Path $selection $name) -Force
+            if ($file.PSIsContainer -or ($file.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
+                (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant() -cne $pins[$name]) { throw 'Pinned source binary restoration inputs differ' }
+          }
+          & "$selection/Restore-Binaries.ps1" -Root $selection
+          . "$helper/Read-ActualImportTarget.ps1"
+          [void](Read-ActualImportTarget "$helper/target.json" $selection)
+      - name: Authenticate original producer failure31 and passed compilation steps25 through30
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/score-edit-gui-2008"
+          python -I "$helper/verify_stage_only_producer.py" --output "$env:RUNNER_TEMP/score-edit-producer-guard.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Original producer authentication failed.' }
+      - name: Reuse original DATAONLY reader and rehash both retained archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/score-edit-gui-2008"
+          python -I "$helper/read_existing_stage.py" --work "$env:RUNNER_TEMP/score-edit-data-work" --output "$env:RUNNER_TEMP/score-edit-data-output"
+          if ($LASTEXITCODE -ne 0) { throw 'Original archives did not authenticate.' }
+      - name: Restore and independently rehash exact original stage without application rebuild
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/score-edit-gui-2008"
+          python -I "$helper/Restore-RetainedRuntime.py" --reader-root "$helper" --data-work "$env:RUNNER_TEMP/score-edit-data-work" --data-output "$env:RUNNER_TEMP/score-edit-data-output" --bundle "$env:RUNNER_TEMP/score-edit-bundle" --stage "$env:RUNNER_TEMP/score-edit-stage" --report "$env:RUNNER_TEMP/score-edit-restoration.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Exact original runtime restoration failed.' }
+          python -I "$helper/write_stage_only_receipt.py" --selection "$helper/stage-only-provenance.json" --guard-report "$env:RUNNER_TEMP/score-edit-producer-guard.json" --restoration-report "$env:RUNNER_TEMP/score-edit-restoration.json" --data-output "$env:RUNNER_TEMP/score-edit-data-output" --stage "$env:RUNNER_TEMP/score-edit-stage" --bundle "$env:RUNNER_TEMP/score-edit-bundle" --expected-receipt "$helper/stage-only-receipt.expected.json" --output "$env:RUNNER_TEMP/score-edit-authentication.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Fresh restored-stage authentication failed.' }
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          vsversion: '2022'
+          sdk: '10.0.26100.0'
+      - name: Compile only independent Windows SDK keyboard observer
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/score-edit-gui-2008"
+          $build = "$env:RUNNER_TEMP/score-edit-probe-build"
+          if (Test-Path -LiteralPath $build) { throw 'Fresh observer build directory required.' }
+          New-Item -ItemType Directory -Path $build | Out-Null
+          Push-Location $build
+          try {
+            $previousPreference = $ErrorActionPreference
+            $ErrorActionPreference = 'Continue'
+            try {
+              & cl.exe /nologo /std:c++17 /utf-8 /EHsc /MD "$helper/native/ScoreEditProbe.cpp" /Fe:ScoreEditProbe.exe /link ole32.lib oleaut32.lib user32.lib uuid.lib 2>&1 | Tee-Object compile.log | Out-Host
+              $status = $LASTEXITCODE
+            } finally { $ErrorActionPreference = $previousPreference }
+            if ($status -ne 0) { throw 'Independent Windows SDK observer compilation failed.' }
+          } finally { Pop-Location }
+      - name: Enter four quarter notes then save single undo save single redo save and verify native exports
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/score-edit-gui-2008"
+          & "$helper/Run-ScoreEditGui.ps1" -TargetPath "$helper/target.json" -SourceSelectionDirectory "$env:GITHUB_WORKSPACE/.cadence-studio/combined-2008-source" -StagePath "$env:RUNNER_TEMP/score-edit-stage" -RestorationPath "$env:RUNNER_TEMP/score-edit-authentication.json" -InventoryPath "$env:RUNNER_TEMP/score-edit-data-output/runtime-inventory.MEASURED.json" -ProbePath "$env:RUNNER_TEMP/score-edit-probe-build/ScoreEditProbe.exe" -OutputDirectory "$env:RUNNER_TEMP/score-edit-gui-results"
+      - name: Print bounded original result receipt even on failure
+        if: always()
+        run: |
+          $helper = "$env:GITHUB_WORKSPACE/.cadence-studio/score-edit-gui-2008"
+          & "$helper/Print-ScoreEditEvidence.ps1" -ResultPath "$env:RUNNER_TEMP/score-edit-gui-results"
+      - name: Preserve original diagnostics scores exports and cleanup receipts even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadence-score-edit-gui-2008-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/score-edit-gui-results/**
+            ${{ runner.temp }}/score-edit-data-output/**
+            ${{ runner.temp }}/score-edit-producer-guard.json
+            ${{ runner.temp }}/score-edit-restoration.json
+            ${{ runner.temp }}/score-edit-authentication.json
+            ${{ runner.temp }}/score-edit-probe-build/compile.log
+            ${{ github.workspace }}/.cadence-studio/score-edit-gui-2008/gui-manifest.json
+            ${{ github.workspace }}/.cadence-studio/score-edit-gui-2008/target.json
+          retention-days: 14
+          if-no-files-found: warn

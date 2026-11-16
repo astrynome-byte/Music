@@ -1,0 +1,6 @@
+CC0 1.0 Universal — original generated data.
+The one-measure exercise empty-piano.musicxml was created for Cadence QA.
+To the extent possible under law, its author has waived all copyright and
+related or neighboring rights under CC0 1.0:
+https://creativecommons.org/publicdomain/zero/1.0/
+No third-party musical score, recording or sample is included.
