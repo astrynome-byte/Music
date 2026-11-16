@@ -806,8 +806,8 @@ static bool closeOnlyControlledImportedScore(IUIAutomation* a,const std::filesys
         ||!importKey(a,out,main,VK_RETURN,"open_file_menu_for_temporary_score_close"))return false;
     bool requested=false;
     for(unsigned step=0;step<24&&context(main);++step) {
-        if(focusExact(a,out,main,L"Fermer",UIA_MenuItemControlTypeId)) {
-            if(!observeFocus(a,main,L"Fermer",UIA_MenuItemControlTypeId))return false;
+        if(focusExact(a,out,main,L"Fermer Ctrl+F4; Ctrl+W",UIA_MenuItemControlTypeId)) {
+            if(!observeFocus(a,main,L"Fermer Ctrl+F4; Ctrl+W",UIA_MenuItemControlTypeId))return false;
             requested=importKey(a,out,main,VK_RETURN,"close_only_named_temporary_imported_score",false,true,
                 [&](){return mainWindow()==main&&context(main)
                     &&windowTitle(main)==L"Cadence-QA-three-notes-transcription.mid - Cadence Studio";});break;
