@@ -1,4 +1,4 @@
-name: Cadence saved MIDI and imported score originals DATAONLY
+name: Cadence failed close confirmation originals DATAONLY
 on:
   push:
     branches: [cadence-studio/windows-build]
@@ -7,7 +7,7 @@ permissions:
   contents: read
   actions: read
 jobs:
-  read-saved-midi-originals:
+  read-close-confirmation-originals:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
@@ -15,14 +15,14 @@ jobs:
         with:
           persist-credentials: false
           ref: ${{ github.sha }}
-      - name: Read exact saved MIDI and score PNG originals from failed overall run without executing payload
+      - name: Read two original close confirmation JSON and PNG members from failed run without executing payload
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 -I .cadence-studio/gui8-evidence-readback/read_gui8.py --output "$RUNNER_TEMP/saved-midi-original-dataonly"
+        run: python3 -I .cadence-studio/gui8-evidence-readback/read_gui8.py --output "$RUNNER_TEMP/close-confirmation-original-dataonly"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cadence-saved-midi-original-dataonly-${{ github.run_id }}
-          path: ${{ runner.temp }}/saved-midi-original-dataonly/readback-receipt.json
+          name: cadence-close-confirmation-original-dataonly-${{ github.run_id }}
+          path: ${{ runner.temp }}/close-confirmation-original-dataonly/readback-receipt.json
           retention-days: 7
           if-no-files-found: warn
