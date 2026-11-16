@@ -80,8 +80,8 @@
     },
     {
       "path": "native/ScoreEditProbe.cpp",
-      "bytes": 26839,
-      "sha256": "69cbe715e3c513506728f139f2f811bff5dfd38f06475db33627c1b55bf0c4c6"
+      "bytes": 35735,
+      "sha256": "bd4b46a2090f001f3d55f68d3df280e595ec7c0c69336d20e548e7190f97e908"
     },
     {
       "path": "profile-source-contract.json",

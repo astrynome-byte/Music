@@ -30,6 +30,9 @@ static int f6GestureAttempts = 0, tabGestureAttempts = 0, rightGestureAttempts =
 static bool keyboardFailure = false;
 static int endGestureAttempts = 0;
 static bool diagnosticTreeIncomplete = false;
+static unsigned int localFocusSampleCount = 0;
+static std::string firstLocalFocusSample = "null", lastLocalFocusSample = "null", firstLocalFocusRefusal = "null";
+static std::string firstLocalFocusGetterFailure = "null";
 using cadence_observation::RuntimeId;
 struct SnapshotState {
     bool incomplete = false, runtimeIdentityUnknown = false, foreignNodeObserved = false;
@@ -341,36 +344,130 @@ static void diagnosticSnapshot(IUIAutomation* automation,const std::filesystem::
     deadline=std::min(phaseDeadline,Clock::now()+std::chrono::milliseconds(1500));
     snapshot(automation,output,label);deadline=phaseDeadline;
 }
+// Diagnostic projection of the exact checks below. It neither calls a Windows
+// API nor supplies a value used to authorize input. Only three bounded samples
+// are retained: first, last, and first refusal. Ancestors are the existing walk.
+struct LocalFocusDiagnostic {
+    struct Ancestor {
+        int depth = 0, type = 0, pid = 0;
+        bool identityRead = false, nameRead = false, typeRead = false, pidRead = false;
+        RuntimeId id;
+        std::wstring name;
+    };
+    unsigned int index = ++localFocusSampleCount;
+    int navigationCount = scoreNavigationAttempts;
+    HWND main = nullptr;
+    OwnedKeyResult native, rechecked;
+    bool nativeSampleAttempted = false, nativeContextAttempted = false;
+    bool recheckSampleAttempted = false, recheckContextAttempted = false;
+    std::vector<std::string> reads;
+    std::vector<Ancestor> ancestors;
+
+    void read(const char* operation,HRESULT hr,const std::string& value,int depth=-1) {
+        reads.push_back("{\"operation\":"+jsonQuoted(std::wstring(operation,operation+std::char_traits<char>::length(operation)))
+            +",\"hresult\":"+std::to_string(static_cast<long>(hr))+",\"depth\":"+std::to_string(depth)
+            +",\"value\":"+(SUCCEEDED(hr)?value:"null")+'}');
+        if (FAILED(hr) && firstLocalFocusGetterFailure=="null") {
+            firstLocalFocusGetterFailure="{\"sample_index\":"+std::to_string(index)+",\"navigation_gestures\":"
+                +std::to_string(navigationCount)+",\"operation\":"+jsonQuoted(std::wstring(operation,operation+std::char_traits<char>::length(operation)))
+                +",\"hresult\":"+std::to_string(static_cast<long>(hr))+",\"depth\":"+std::to_string(depth)+'}';
+        }
+    }
+    static std::string nativeJson(const OwnedKeyResult& sample,bool attempted,bool contextAttempted) {
+        return "{\"sample_attempted\":"+std::string(attempted?"true":"false")
+            +",\"main_context_check_attempted\":"+(contextAttempted?"true":"false")
+            +",\"foreground_handle\":"+std::to_string(reinterpret_cast<std::uintptr_t>(sample.foreground))
+            +",\"focus_handle\":"+std::to_string(reinterpret_cast<std::uintptr_t>(sample.focus))
+            +",\"win32_error\":"+std::to_string(sample.error)+'}';
+    }
+    bool finish(bool verified,const char* operation,const char* kind,HRESULT hr=S_OK) {
+        std::string result="{\"sample_index\":"+std::to_string(index)+",\"navigation_gestures\":"+std::to_string(navigationCount)
+            +",\"verified\":"+(verified?"true":"false")+",\"stop_operation\":"
+            +jsonQuoted(std::wstring(operation,operation+std::char_traits<char>::length(operation)))
+            +",\"stop_kind\":"+jsonQuoted(std::wstring(kind,kind+std::char_traits<char>::length(kind)))
+            +",\"stop_hresult\":"+(std::string(kind)=="getter" || std::string(kind)=="runtime_identity" ? std::to_string(static_cast<long>(hr)) : "null")
+            +",\"expected_main_handle\":"+std::to_string(reinterpret_cast<std::uintptr_t>(main))
+            +",\"native_initial\":"+nativeJson(native,nativeSampleAttempted,nativeContextAttempted)
+            +",\"native_rechecked\":"+nativeJson(rechecked,recheckSampleAttempted,recheckContextAttempted)+",\"getters\":[";
+        for (size_t i=0;i<reads.size();++i) { if(i)result+=',';result+=reads[i]; }
+        result+="],\"ancestors\":[";
+        for (size_t i=0;i<ancestors.size();++i) {
+            if(i)result+=',';
+            const auto& node=ancestors[i];
+            result+="{\"depth\":"+std::to_string(node.depth)+",\"runtime_id\":"+(node.identityRead?runtimeJson(node.id):"null")
+                +",\"name\":"+(node.nameRead?jsonQuoted(node.name):"null")
+                +",\"control_type\":"+(node.typeRead?std::to_string(node.type):"null")
+                +",\"pid\":"+(node.pidRead?std::to_string(node.pid):"null")+'}';
+        }
+        result+="]}";
+        if(firstLocalFocusSample=="null")firstLocalFocusSample=result;
+        lastLocalFocusSample=result;
+        if(!verified && firstLocalFocusRefusal=="null")firstLocalFocusRefusal=result;
+        return verified;
+    }
+};
 static bool liveScoreFocus(IUIAutomation* automation)
 {
-    if (!exactMainReady() || Clock::now()>=deadline) return false;
+    LocalFocusDiagnostic diagnostic;
+    if (!exactMainReady()) return diagnostic.finish(false,"exactMainReady","predicate");
+    if (Clock::now()>=deadline) return diagnostic.finish(false,"deadline","predicate");
     const HWND main=mainWindow();
+    diagnostic.main=main;
     OwnedKeyResult nativeFocus;
     // UIA can retain its last focused element after another process becomes
     // foreground. Require the live native focus and foreground to resolve to
     // this exact main window before accepting the semantic score context.
-    if (!cadence_owned_keyboard_detail::sampleOwnedFocus(targetPid,nativeFocus)
-        || !ExactScoreMainContext(main,nativeFocus)) return false;
+    diagnostic.nativeSampleAttempted=true;
+    const bool nativeSampleOkay=cadence_owned_keyboard_detail::sampleOwnedFocus(targetPid,nativeFocus);
+    diagnostic.native=nativeFocus;
+    if (!nativeSampleOkay) return diagnostic.finish(false,"sampleOwnedFocus.initial","win32");
+    diagnostic.nativeContextAttempted=true;
+    if (!ExactScoreMainContext(main,nativeFocus)) return diagnostic.finish(false,"ExactScoreMainContext.initial","predicate");
     ComPtr<IUIAutomationElement> focused;
     HRESULT result=automation->GetFocusedElement(&focused);
-    if (FAILED(result) || !focused) return false;
+    diagnostic.read("GetFocusedElement",result,focused?"true":"false");
+    if (FAILED(result)) return diagnostic.finish(false,"GetFocusedElement","getter",result);
+    if (!focused) return diagnostic.finish(false,"GetFocusedElement.null_element","predicate");
     int pid=0,type=0;BOOL enabled=FALSE,offscreen=TRUE,hasFocus=FALSE;
-    if (FAILED(focused->get_CurrentProcessId(&pid)) || pid!=static_cast<int>(targetPid)
-        || FAILED(focused->get_CurrentControlType(&type)) || type==UIA_EditControlTypeId
-        || FAILED(focused->get_CurrentIsEnabled(&enabled)) || !enabled
-        || FAILED(focused->get_CurrentIsOffscreen(&offscreen)) || offscreen
-        || FAILED(focused->get_CurrentHasKeyboardFocus(&hasFocus)) || !hasFocus) return false;
+    result=focused->get_CurrentProcessId(&pid);diagnostic.read("focused.CurrentProcessId",result,std::to_string(pid));
+    if (FAILED(result)) return diagnostic.finish(false,"focused.CurrentProcessId","getter",result);
+    if (pid!=static_cast<int>(targetPid)) return diagnostic.finish(false,"focused.pid_not_owned","predicate");
+    result=focused->get_CurrentControlType(&type);diagnostic.read("focused.CurrentControlType",result,std::to_string(type));
+    if (FAILED(result)) return diagnostic.finish(false,"focused.CurrentControlType","getter",result);
+    if (type==UIA_EditControlTypeId) return diagnostic.finish(false,"focused.edit_refused","predicate");
+    result=focused->get_CurrentIsEnabled(&enabled);diagnostic.read("focused.CurrentIsEnabled",result,enabled?"true":"false");
+    if (FAILED(result)) return diagnostic.finish(false,"focused.CurrentIsEnabled","getter",result);
+    if (!enabled) return diagnostic.finish(false,"focused.disabled","predicate");
+    result=focused->get_CurrentIsOffscreen(&offscreen);diagnostic.read("focused.CurrentIsOffscreen",result,offscreen?"true":"false");
+    if (FAILED(result)) return diagnostic.finish(false,"focused.CurrentIsOffscreen","getter",result);
+    if (offscreen) return diagnostic.finish(false,"focused.offscreen","predicate");
+    result=focused->get_CurrentHasKeyboardFocus(&hasFocus);diagnostic.read("focused.CurrentHasKeyboardFocus",result,hasFocus?"true":"false");
+    if (FAILED(result)) return diagnostic.finish(false,"focused.CurrentHasKeyboardFocus","getter",result);
+    if (!hasFocus) return diagnostic.finish(false,"focused.no_keyboard_focus","predicate");
     ComPtr<IUIAutomationTreeWalker> walker;
-    if (FAILED(automation->get_RawViewWalker(&walker)) || !walker) return false;
+    result=automation->get_RawViewWalker(&walker);diagnostic.read("RawViewWalker",result,walker?"true":"false");
+    if (FAILED(result)) return diagnostic.finish(false,"RawViewWalker","getter",result);
+    if (!walker) return diagnostic.finish(false,"RawViewWalker.null_walker","predicate");
     ComPtr<IUIAutomationElement> current=focused;
     std::set<RuntimeId> visited;std::string chain="[";
-    for (int depth=0;current && depth<18 && Clock::now()<deadline;++depth) {
+    int depth=0;
+    for (;current && depth<18 && Clock::now()<deadline;++depth) {
+        diagnostic.ancestors.emplace_back();diagnostic.ancestors.back().depth=depth;
+        auto& ancestor=diagnostic.ancestors.back();
         SnapshotState state;auto id=runtimeIdentity(current.Get(),state);
-        if (state.incomplete || id.empty() || !visited.insert(id).second) return false;
+        if (state.incomplete) return diagnostic.finish(false,state.operation.c_str(),"runtime_identity",state.failure);
+        ancestor.id=id;ancestor.identityRead=true;
+        if (id.empty()) return diagnostic.finish(false,"ancestor.empty_runtime_id","predicate");
+        if (!visited.insert(id).second) return diagnostic.finish(false,"ancestor.runtime_id_cycle","predicate");
         BSTR raw=nullptr;result=current->get_CurrentName(&raw);auto name=text(raw);
+        diagnostic.read("ancestor.CurrentName",result,jsonQuoted(name),depth);ancestor.name=name;ancestor.nameRead=SUCCEEDED(result);
         int currentType=0, currentPid=0;
-        if (FAILED(result) || FAILED(current->get_CurrentControlType(&currentType))
-            || FAILED(current->get_CurrentProcessId(&currentPid)) || currentPid!=static_cast<int>(targetPid)) return false;
+        if (FAILED(result)) return diagnostic.finish(false,"ancestor.CurrentName","getter",result);
+        result=current->get_CurrentControlType(&currentType);diagnostic.read("ancestor.CurrentControlType",result,std::to_string(currentType),depth);ancestor.type=currentType;ancestor.typeRead=SUCCEEDED(result);
+        if (FAILED(result)) return diagnostic.finish(false,"ancestor.CurrentControlType","getter",result);
+        result=current->get_CurrentProcessId(&currentPid);diagnostic.read("ancestor.CurrentProcessId",result,std::to_string(currentPid),depth);ancestor.pid=currentPid;ancestor.pidRead=SUCCEEDED(result);
+        if (FAILED(result)) return diagnostic.finish(false,"ancestor.CurrentProcessId","getter",result);
+        if (currentPid!=static_cast<int>(targetPid)) return diagnostic.finish(false,"ancestor.pid_not_owned","predicate");
         if(depth)chain+=',';
         chain+="{\"name\":"+jsonQuoted(name)+",\"control_type\":"+std::to_string(currentType)
             +",\"pid\":"+std::to_string(currentPid)+",\"runtime_id\":"+runtimeJson(id)+'}';
@@ -378,22 +475,27 @@ static bool liveScoreFocus(IUIAutomation* automation)
         // filename. Bare \"Score\" is the unrelated main toolbar radio too.
         if (name==L"Score Cadence-QA-edit" && currentType==UIA_PaneControlTypeId) {
             OwnedKeyResult rechecked;
-            if (!exactMainReady()
-                || !cadence_owned_keyboard_detail::sampleOwnedFocus(targetPid,rechecked)
-                || rechecked.foreground!=nativeFocus.foreground || rechecked.focus!=nativeFocus.focus
-                || !ExactScoreMainContext(main,rechecked)) return false;
+            if (!exactMainReady()) return diagnostic.finish(false,"exactMainReady.recheck","predicate");
+            diagnostic.recheckSampleAttempted=true;
+            const bool recheckOkay=cadence_owned_keyboard_detail::sampleOwnedFocus(targetPid,rechecked);diagnostic.rechecked=rechecked;
+            if (!recheckOkay) return diagnostic.finish(false,"sampleOwnedFocus.recheck","win32");
+            if (rechecked.foreground!=nativeFocus.foreground) return diagnostic.finish(false,"native_foreground_changed","predicate");
+            if (rechecked.focus!=nativeFocus.focus) return diagnostic.finish(false,"native_focus_changed","predicate");
+            diagnostic.recheckContextAttempted=true;
+            if (!ExactScoreMainContext(main,rechecked)) return diagnostic.finish(false,"ExactScoreMainContext.recheck","predicate");
             if(focusEvidence.size()<160)focusEvidence.push_back("{\"native_foreground_handle\":"
                 +std::to_string(reinterpret_cast<std::uintptr_t>(rechecked.foreground))
                 +",\"native_focus_handle\":"+std::to_string(reinterpret_cast<std::uintptr_t>(rechecked.focus))
                 +",\"root_owner_handle\":"+std::to_string(reinterpret_cast<std::uintptr_t>(main))
                 +",\"ancestors\":"+chain+']'+'}');
-            return true;
+            return diagnostic.finish(true,"score_ancestry_verified","verified");
         }
         ComPtr<IUIAutomationElement> parent;
-        if (FAILED(walker->GetParentElement(current.Get(),&parent))) return false;
+        result=walker->GetParentElement(current.Get(),&parent);diagnostic.read("ancestor.GetParentElement",result,parent?"true":"false",depth);
+        if (FAILED(result)) return diagnostic.finish(false,"ancestor.GetParentElement","getter",result);
         current=parent;
     }
-    return false;
+    return diagnostic.finish(false,!current?"ancestor.parent_null":depth>=18?"ancestor.depth_limit":"ancestor.deadline","predicate");
 }
 static void recordInput(const char* action,const OwnedKeyResult& result)
 {
@@ -481,6 +583,10 @@ int wmain(int argc,wchar_t** argv)
         <<",\"keyboard_failure\":"<<(keyboardFailure?"true":"false")<<",\"gestures\":"<<keyboardGestureAttempts
         <<",\"navigation_gestures\":"<<scoreNavigationAttempts<<",\"error\":"<<jsonQuoted(std::wstring(error.begin(),error.end()))<<",\"actions\":[";
     for(size_t i=0;i<actions.size();++i){if(i)report<<',';report<<actions[i];}report<<"],\"local_focus_scope\":\"focused-element-and-ancestors-only\",\"local_score_focus_verified\":"<<(passed?"true":"false")<<",\"score_focus_evidence\":[";
-    for(size_t i=0;i<focusEvidence.size();++i){if(i)report<<',';report<<focusEvidence[i];}report<<"]}";report.close();
+    for(size_t i=0;i<focusEvidence.size();++i){if(i)report<<',';report<<focusEvidence[i];}
+    report<<"],\"local_focus_diagnostics\":{\"diagnostic_only\":true,\"sample_count\":"<<localFocusSampleCount
+        <<",\"max_ancestor_depth\":18,\"retained_sample_limit\":3,\"initial_sample\":"<<firstLocalFocusSample
+        <<",\"last_sample\":"<<lastLocalFocusSample<<",\"first_refusal\":"<<firstLocalFocusRefusal
+        <<",\"first_getter_failure\":"<<firstLocalFocusGetterFailure<<"}}";report.close();
     automation.Reset();if(SUCCEEDED(initialized))CoUninitialize();CloseHandle(targetProcess);return passed?0:2;
 }
