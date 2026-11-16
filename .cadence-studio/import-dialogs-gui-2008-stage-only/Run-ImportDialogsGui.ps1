@@ -204,7 +204,17 @@ finally{
    if(@($logs.files).Count-eq0){$report.errors+=,'No fresh application log tail is available; absence of QML failures cannot be inferred.'}
   }catch{$report.errors+=,$_.Exception.Message}finally{$app.Dispose()}
  }
- if($SaveFixture-and$report.status-ceq'UI-phases-passed-cleanup-and-log-review-pending'-and$report.app_exit_code-eq0-and-not$report.app_close_forced){
+ # Musical file verification is independent of the later Home-focus verdict.
+ # Global PASS still requires all UI phases and cleanup; never reset that error.
+ $savedFlowReady=$SaveFixture-and$report.MIDI_file_saved-and$report.GUI_imported_score_focus_verified-and@($report.phases).Count-ge7
+ $savedFlowNames=@('open-omr','close-omr','open-wav','close-wav','open-wav','analyze-wav','save-open-wav')
+ if($savedFlowReady){for($index=0;$index-lt7;++$index){
+  $phase=$report.phases[$index]
+  if($phase.phase-cne$savedFlowNames[$index]-or$phase.client_exit_code-ne0-or$phase.report.status-cne'passed_owned_import_dialog_phase'){$savedFlowReady=$false;break}
+ }}
+ $report['native_import_comparison_eligible']=$savedFlowReady-and$report.app_exit_code-eq0-and-not$report.app_close_forced-and-not$report.probe_forced
+ $report['native_import_comparison_scope']='Independent musical comparison after7passed save/import phases and clean application exit; does not infer Home focus or reset any phase failure.'
+ if($report.native_import_comparison_eligible){
   try{
    $midi=$report.fixture.output_midi_path;Plain $midi
    if(-not(Test-Path -LiteralPath $midi -PathType Leaf)-or(Get-Item $midi).Length-gt1MB){throw 'Bounded saved MIDI derivative absent.'}
@@ -212,8 +222,15 @@ finally{
    $comparison=Join-Path $OutputDirectory 'saved-midi-comparison.json'
    if((Test-Path -LiteralPath $xml)-or(Test-Path -LiteralPath $comparison)){throw 'Fresh native output and comparison required.'}
    Invoke-OwnedCadenceExport $midi $xml
-   Invoke-OwnedPython 'verify-saved-MIDI-and-native-MusicXML' @('-I',"$PSScriptRoot/verify_saved_wave_midi.py",'--midi',$midi,'--musicxml',$xml,'--output',$comparison)
-   $observed=Get-Content -LiteralPath $comparison -Raw -Encoding UTF8|ConvertFrom-Json
+   $observed=$null
+   try{Invoke-OwnedPython 'verify-saved-MIDI-and-native-MusicXML' @('-I',"$PSScriptRoot/verify_saved_wave_midi.py",'--midi',$midi,'--musicxml',$xml,'--output',$comparison)}
+   finally{
+    if(Test-Path -LiteralPath $comparison -PathType Leaf){
+     Plain $comparison;if((Get-Item $comparison).Length-gt1MB){throw 'Bounded original musical comparison required.'}
+     $observed=Get-Content -LiteralPath $comparison -Raw -Encoding UTF8|ConvertFrom-Json
+     $report.native_import_comparison=$observed
+    }
+   }
    if($observed.status-cne'passed_actual_saved_MIDI_and_native_import_exact'-or-not$observed.midi_vs_musicxml_timing_exact-or(Hash $midi)-cne$midiSha){throw 'Actual saved MIDI/native import did not preserve exact fixture notes and timings.'}
    $report.native_import_comparison=$observed;$report.MIDI_saved_or_opened=$true
    $report['saved_MIDI_receipt']=@{path=$midi;bytes=(Get-Item $midi).Length;sha256=$midiSha}

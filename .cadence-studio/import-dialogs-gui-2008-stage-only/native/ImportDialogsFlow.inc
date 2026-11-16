@@ -784,6 +784,35 @@ static bool homeFocusAfterControlledClose(IUIAutomation* a,HWND main)
     if(!findReadyMainHome(std::vector<Node>{node}))return false;
     expectFocus(main,node);return true;
 }
+static bool bootstrapControlledHomeNavigation(IUIAutomation* a,const std::filesystem::path& out,HWND main)
+{
+    if(closeHomeNavigation!=0||importKeys>=70||keyboardFailure||!context(main)
+        ||mainWindow()!=main||windowTitle(main)!=L"Cadence Studio"
+        ||!importDialogGone(omrTitle)||!importDialogGone(wavTitle)
+        ||(closeQuestionObserved&&(!closeQuestionDiscarded
+            ||(IsWindow(closeQuestionWindow)&&IsWindowVisible(closeQuestionWindow)))))return false;
+    auto exactNativeWindowProof=[&](const OwnedKeyResult& native) {
+        if(!context(main)||mainWindow()!=main||windowTitle(main)!=L"Cadence Studio"
+            ||GetAncestor(native.foreground,GA_ROOT)!=main||GetAncestor(native.focus,GA_ROOT)!=main
+            ||!cadence_owned_keyboard_detail::nativeContext(main,targetPid,native))return false;
+        ComPtr<IUIAutomationElement> current,root;int pid=0,type=0;BOOL same=FALSE;BSTR raw=nullptr;
+        if(a->GetFocusedElement(&current)!=S_OK||!current||current->get_CurrentProcessId(&pid)!=S_OK
+            ||pid!=static_cast<int>(targetPid)||current->get_CurrentControlType(&type)!=S_OK
+            ||type!=UIA_WindowControlTypeId)return false;
+        const HRESULT named=current->get_CurrentName(&raw);const auto name=text(raw);
+        if(named!=S_OK||name!=L"Cadence Studio"||a->ElementFromHandle(main,&root)!=S_OK||!root
+            ||a->CompareElements(current.Get(),root.Get(),&same)!=S_OK||!same)return false;
+        return context(main)&&mainWindow()==main&&windowTitle(main)==L"Cadence Studio";
+    };
+    ++closeHomeNavigation;++importKeys;
+    const auto result=SendOwnedKey(targetPid,targetProcess,main,VK_F6,exactNativeWindowProof);
+    if(!result.sent)keyboardFailure=true;
+    actions.push_back(std::string("{\"action\":\"single_native_F6_from_exact_owned_main_window_before_strict_Home_proof\",\"sent\":")
+        +(result.sent?"true":"false")+",\"error\":"+std::to_string(result.error)+",\"window_is_not_a_Home_proof\":true}");
+    Sleep(150);importSnapshot(a,out,L"home-after-native-F6-bootstrap");
+    return result.sent&&!blockingObservationFailure;
+}
+
 static bool closeOnlyControlledImportedScore(IUIAutomation* a,const std::filesystem::path& out)
 {
     const HWND main=mainWindow();
@@ -823,6 +852,11 @@ static bool closeOnlyControlledImportedScore(IUIAutomation* a,const std::filesys
                 Node node;if(observeCloseState(a,main,node,"before_home_navigation")) {
                     expectFocus(main,node);++closeHomeNavigation;
                     if(!importKey(a,out,main,VK_F6,"restore_home_focus_after_only_temporary_score_close"))return false;
+                } else if(!blockingObservationFailure) {
+                    // The observed UIA element may still be the exact owned
+                    // Window with HasKeyboardFocus=false. F6 is navigation only;
+                    // final success still requires the focused Home radio.
+                    if(!bootstrapControlledHomeNavigation(a,out,main))return block("exact_native_home_F6_bootstrap_not_proved");
                 }
             }
         } else if(!closeQuestionDiscarded) {
