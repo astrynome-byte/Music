@@ -196,7 +196,13 @@ inline OwnedMidiSaveResult SaveOwnedMidiDraft(
     if (!context() || !missing(path)
         || !focusedFilename(automation, edit.Get(), result.dialog, pid, until, proof, L"immediately-before-MIDI-filename-value"))
         return stop(L"Save context, filename focus or fresh target changed.");
-    if (value->SetValue(path.c_str()) != S_OK) return stop(L"Setting exact derivative path failed.");
+    // Windows SDK declares this automation method as SetValue(BSTR).
+    // Match the already exercised WAV chooser helper's allocation contract.
+    BSTR selectedValue = SysAllocStringLen(path.data(), static_cast<UINT>(path.size()));
+    if (!selectedValue) return stop(L"Cannot allocate the exact MIDI filename BSTR.", E_OUTOFMEMORY);
+    const HRESULT assigned = value->SetValue(selectedValue);
+    SysFreeString(selectedValue);
+    if (assigned != S_OK) return stop(L"Setting exact derivative path failed.", assigned);
     result.valueSet = true;
     BSTR raw = nullptr;
     const HRESULT readValue = value->get_CurrentValue(&raw); auto actualPath = takeString(raw);

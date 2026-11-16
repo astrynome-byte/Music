@@ -89,8 +89,8 @@
     },
     {
       "path": "native/OwnedMidiSaveDialog.h",
-      "bytes": 16756,
-      "sha256": "80b9d909d9a0e2b6aafa7dea889d117253a11c9096ce8ad99802389e62b991f7"
+      "bytes": 17178,
+      "sha256": "a94bff5ce1366d503a265d0eeb220e7e77c91f91537ba0a1d7949d616a512368"
     },
     {
       "path": "native/OwnedWaveFileDialog.h",
@@ -105,7 +105,7 @@
     {
       "path": "native/SHA256SUMS.txt",
       "bytes": 586,
-      "sha256": "d32cad173b154efc9e5365698eb119e87a86f020f571702ab79cc9fd35fcb0cc"
+      "sha256": "1e9c0417d01f9c4a10954e5c264732b98508912a96d2659aa11524ec43c81cbb"
     },
     {
       "path": "native/UiaProbe.cpp",
